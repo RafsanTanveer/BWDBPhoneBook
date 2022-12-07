@@ -1,0 +1,39 @@
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+
+
+    <View style={{
+        flexDirection: 'row', paddingLeft: 10, paddingRight: 10,marginUp:10, height: 190, borderBottomColor: 'grey',
+        borderBottomWidth: StyleSheet.hairlineWidth, }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+            <Image style={styles.logo} source={{
+                uri: item.image
+            }} />
+        </View>
+        <View style={{
+            flex: 3,  padding: 5
+        }}>
+            <Text style={{ fontSize: 17, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+            <Text style={{ fontSize: 15, fontFamily: 'serif', marginTop: 3, color: 'grey' }}>{item.designation} </Text>
+            <Text style={{ fontFamily: 'serif', marginTop: 3, color: 'grey' }}>{item.office} </Text>
+
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <Text style={{ flex: 1.2, justifyContent: 'center', alignContent: 'center' }} >Personal Contact</Text>
+                <Text style={{ flex: 1 }}>{item.personalContact}</Text>
+                <Button style={{ flex: 1 }} title="Call" />
+            </View>
+            <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 10 }}>
+                <Text style={{ flex: 1.2, justifyContent: 'center' }} >Office</Text>
+                <Text style={{ flex: 1 }}>{item.officeContact}</Text>
+
+                <TouchableOpacity onPress={onPress} style={styles.button}>
+                    <Text style={styles.buttonText}>Call</Text>
+                </TouchableOpacity>
+            </View>
+
+        </View>
+    </View>
+
+    // <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    //     <Text style={[styles.title, textColor]}>{item.title}</Text>
+    // </TouchableOpacity>
+);
