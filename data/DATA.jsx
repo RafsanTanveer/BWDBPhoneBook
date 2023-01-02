@@ -5,7 +5,7 @@ export const DATA_SDE_CIVIL = [
         name: 'Arif Ikramul Azim',
         designation: 'Sub-divitional Engineer(Civil) (C.C)',
         image: 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg',
-        office: 'Directorate of Human Resource Development Resource Developmentmmmmmmmmm',
+        office: 'Directorate of Human Resource Development Resource Developmentmmmmmmmmm ResourceResource',
         personalContact: '01795045357',
         officeContact: '30309'
     },
@@ -70,8 +70,8 @@ export const DATA_SDE_CIVIL = [
 export const DATA_AE = [
     {
         id: '920209001',
-        name: 'Arif Ikramul Azim',
-        designation: 'Addl. Director General',
+        name: 'Arif Ikramul Azim Arif Ikramul Azim Arif Ikramul Azim',
+        designation: 'Addl. Director General General General General General',
         image: 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg',
         office: 'Directorate of Human Resource Development Resource Developmentmmmmmmmmm',
         personalContact: '01795045357',

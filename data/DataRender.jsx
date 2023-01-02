@@ -16,7 +16,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 
 
     <View style={{
-        flexDirection: 'row', paddingLeft: 10, paddingRight: 10, height: height / 7
+        flexDirection: 'row', paddingLeft: 10, paddingRight: 10, 
     }}>
 
         <View style={{ justifyContent: 'center', alignContent: 'center', }}>
@@ -28,14 +28,19 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
             flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
             borderBottomWidth: StyleSheet.hairlineWidth,
         }}>
+            <View style={{ flex: 1 }}>
+                <View style={{ flex: 1,}}>
+                    <Text style={{  fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+                </View>
+                <View style={{ flex: 1,marginTop:1}}>
+                    <Text style={{  fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{item.designation} </Text>
+                </View>
+                <View style={{ flex: 1, }}>
+                    <Text style={{  fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
+                </View>
 
-            <Text style={{ height: height * (1 / 33), fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
-            <Text style={{ height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{item.designation} </Text>
-            <Text style={{ height: height * (1 / 22), fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
-            {/* <Text style={{ backgroundColor: 'lime', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.designation} </Text> */}
-
-
-            <View style={{ flexDirection: "row-reverse", }}>
+            </View>
+            <View style={{ flexDirection: "row-reverse", marginTop:3 }}>
 
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.personalContact}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
                     <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
@@ -69,10 +74,17 @@ const DataRender = ({ DATA }) => {
     const [search, setSearch] = useState('')
 
 
+
+
+    //{ DATA.map((employee) => { console.log(employee.Name);})}
+
     const searchFilter = (text) => {
+        //setMasterData(DATA)
+        console.log(masterData);
         if (text) {
             const newData = masterData.filter((item) => {
-                const itemData = item.name ? item.name.toLocaleLowerCase() : ''
+                console.log('in master' + item.Name);
+                const itemData = item.Name ? item.Name.toLocaleLowerCase() : ''
                 const textData = text.toLocaleLowerCase();
                 return itemData.indexOf(textData) > -1;
             });
@@ -80,6 +92,7 @@ const DataRender = ({ DATA }) => {
             setSearch(text)
         }
         else {
+            console.log('in emply ');
             setFilteredData(masterData)
             setSearch(text)
         }
@@ -102,6 +115,7 @@ const DataRender = ({ DATA }) => {
     };
 
     return (
+
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
@@ -111,7 +125,7 @@ const DataRender = ({ DATA }) => {
                     //underlineColorAndroid='trasparent'
                     onChangeText={(text) => searchFilter(text)}
                     mode='outlined'
-                    
+
 
                 />
             </View>
@@ -123,6 +137,7 @@ const DataRender = ({ DATA }) => {
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
             />
+
         </SafeAreaView>
     )
 }
