@@ -25,6 +25,7 @@ import LoginScreen from "./screens/LoginScreen";
 import LoadingScreen from "./LoadingScreen";
 import NoInternetScreen from "./NoInternetScreen";
 import PullDownScreen from "./PullDownScreen";
+import BiodataScreen from "./BiodataScreen";
 
 
 
@@ -54,15 +55,16 @@ const CustomDrawer = () => {
 const Drawer = createDrawerNavigator();
 
 function App() {
-  const [isLogin, setIsLogin] = React.useState(false);
+  const [isLogin, setIsLogin] = React.useState(true);
 
   return (
     <PaperProvider>
       {isLogin ? (
         // <LoginScreen />
-        // <LoadingScreen />
-        <NoInternetScreen /> 
+        // <LoadingScreen /> 
+        // <NoInternetScreen />  
         // <PullDownScreen />
+        <BiodataScreen />
       ) : (
         <NavigationContainer>
           <CustomDrawer />
