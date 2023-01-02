@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 
@@ -20,10 +20,10 @@ const PullDownScreen = () => {
                     width: 300,
                     height: 300,                    
                 }}
-                speed={0.35}                
+                speed={.35}                
                 source={require('./assets/lf30_editor_w7jvz7ef.json')}            
             />
-
+            <Text style={{ fontSize: 20, fontWeight: '400' }} >Pull Down to Update</Text>
         </View>
     );
 }

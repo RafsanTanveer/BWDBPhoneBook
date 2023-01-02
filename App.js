@@ -23,6 +23,10 @@ import AD from "./screens/admin/AD";
 import Director from "./screens/admin/Director";
 import LoginScreen from "./screens/LoginScreen";
 import LoadingScreen from "./LoadingScreen";
+import NoInternetScreen from "./NoInternetScreen";
+import PullDownScreen from "./PullDownScreen";
+
+
 
 const CustomDrawer = () => {
   return (
@@ -50,13 +54,15 @@ const CustomDrawer = () => {
 const Drawer = createDrawerNavigator();
 
 function App() {
-  const [isLogin, setIsLogin] = React.useState(true);
+  const [isLogin, setIsLogin] = React.useState(false);
 
   return (
     <PaperProvider>
       {isLogin ? (
-        // <LoginScreen /> 
-        <LoadingScreen />
+        // <LoginScreen />
+        // <LoadingScreen />
+        <NoInternetScreen /> 
+        // <PullDownScreen />
       ) : (
         <NavigationContainer>
           <CustomDrawer />

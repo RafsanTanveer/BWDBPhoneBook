@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 
@@ -23,7 +23,7 @@ const  LoadingScreen=()=> {
                 speed={1.5}                
                  source={require('./assets/98890-data-transfer.json')}
             />
-            
+            <Text style={{ fontSize: 20, fontWeight: '400' }} >Downloading...</Text>
         </View>
     );
 }

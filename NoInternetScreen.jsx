@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
+
 
 
 
@@ -17,12 +18,13 @@ const NoInternetScreen = () => {
                 autoPlay
                 ref={animation}
                 style={{
-                    width: 300,
-                    height: 300,                  
-                }}                
+                    width: 150,
+                    height: 150,                  
+                }}       
+                speed={1.5} 
                 source={require('./assets/38624-no-network.json')}           
             />
-
+            <Text style={{fontSize:20, fontWeight:'400'}} >No Internet Connection</Text>
         </View>
     );
 }
