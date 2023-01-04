@@ -19,7 +19,7 @@ const DrawerContent = (props) => {
         <SafeAreaView style={{ flex: 1, backgroundColor: '#D9D4E5' }}>
             <View style={{ backgroundColor: "#B2A8CF", height: 200, flexDirection: 'row', padding: 15 }}>
                 <View style={{ flex: 2 }}>
-                    <Image style={{ width: width * .25, height: width * .25, borderRadius: width * .2 }} source={require('D:/ReactNative/nav-dr/assets/person_photo_placeholder.jpg')} ></Image>
+                    <Image style={{ width: width * .25, height: width * .25, borderRadius: width * .2 }} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
                 </View>
                 <View style={{ flex: 1.75 }}>
                     <Text style={{}}>Nalllllllllllllllllllllllllllllllllllllllllllllllkkkme</Text>

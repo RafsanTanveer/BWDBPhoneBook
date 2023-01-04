@@ -11,57 +11,10 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
 
 
 
-    <View style={{
-        flexDirection: 'row', paddingLeft: 10, paddingRight: 10, height: height / 7
-    }}>
-
-        <View style={{ justifyContent: 'center', alignContent: 'center', }}>
-            <Image style={styles.logo} source={{
-                uri: item.image
-            }} />
-        </View>
-        <View style={{
-            flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
-            borderBottomWidth: StyleSheet.hairlineWidth,
-        }}>
-
-            <Text style={{ height: height * (1 / 33), fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
-            <Text style={{ height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{item.designation} </Text>
-            <Text style={{ height: height * (1 / 22), fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
-            {/* <Text style={{ backgroundColor: 'lime', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.designation} </Text> */}
-
-
-            <View style={{ flexDirection: "row-reverse", }}>
-
-                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.personalContact}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
-                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.personalContact} </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.officeContact}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
-                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.officeContact} </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.personalContact}`))}
-                    style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
-                    <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
-                </TouchableOpacity>
-
-            </View>
-        </View>
-
-    </View>
-
-
-
-);
-
-
-
-const DataRender = ({ DATA }) => {
+const DataRender = ({ DATA, designation }) => {
 
     const [masterData, setMasterData] = useState(DATA)
     const [filteredData, setFilteredData] = useState(DATA)
@@ -70,8 +23,9 @@ const DataRender = ({ DATA }) => {
 
 
     const searchFilter = (text) => {
+        //setMasterData(DATA)
         if (text) {
-            const newData = masterData.filter((item) => {
+            const newData = DATA.filter((item) => {
                 const itemData = item.name ? item.name.toLocaleLowerCase() : ''
                 const textData = text.toLocaleLowerCase();
                 return itemData.indexOf(textData) > -1;
@@ -80,26 +34,88 @@ const DataRender = ({ DATA }) => {
             setSearch(text)
         }
         else {
-            setFilteredData(masterData)
+            setFilteredData(DATA)
             setSearch(text)
         }
 
     }
 
 
-    const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId ? 'white' : 'black';
+    const Item = ({ item }) => (
 
-        return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
-            />
-        );
-    };
+
+
+        <View style={{
+            flexDirection: 'row', paddingLeft: 10, paddingRight: 10,
+        }}>
+
+            <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
+            </View>
+            <View style={{
+                flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
+                borderBottomWidth: StyleSheet.hairlineWidth,
+            }}>
+                <View style={{ flex: 1, }}>
+                    <View style={{ flex: 1, }}>
+                        <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+                    </View>
+                    <View style={{ flex: 1, }}>
+                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
+                    </View>
+                    <View style={{ flex: 1, }}>
+
+                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
+                    </View>                 
+                                           
+                </View>
+
+                {
+                    item.email &&
+                    <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
+                    </TouchableOpacity>
+
+
+                }
+
+                <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
+
+
+                    {
+                        item.mobile &&
+                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                            <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                            <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
+                        </TouchableOpacity>
+                    }
+                    {
+                        item.pabx &&
+                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                            <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                            <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
+                        </TouchableOpacity>
+                    }
+                    {
+                        item.mobile &&
+                        <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
+                            style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
+                            <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
+                        </TouchableOpacity>
+                    }
+
+
+
+                </View>
+            </View>
+
+        </View>
+
+
+
+    );
+
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -111,17 +127,19 @@ const DataRender = ({ DATA }) => {
                     //underlineColorAndroid='trasparent'
                     onChangeText={(text) => searchFilter(text)}
                     mode='outlined'
-                    
+
 
                 />
             </View>
 
+
             <FlatList
 
-                data={filteredData}
-                renderItem={renderItem}
+                data={DATA}
+                renderItem={Item}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
+                
             />
         </SafeAreaView>
     )

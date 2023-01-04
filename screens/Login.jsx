@@ -5,6 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 
+
 const height = Dimensions.get('window').height;
 const screenHeight = Dimensions.get('screen').height;
 const width = Dimensions.get('window').width;
@@ -31,7 +32,7 @@ const Login = () => {
                 width: screenWidth * 1.009,
                 height: screenHeight,
             }}
-            source={require('D:/ReactNative/nav-dr/assets/loginBackground2.png')} >
+            source={require('../assets/loginBackground2.png')} >
 
             <View style={{ paddingTop: screenHeight * .572, width: screenWidth, alignItems: 'center', alignContent: 'center' }}>
                 <View style={{ flexDirection: 'row', paddingLeft: width * .15 }}>

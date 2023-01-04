@@ -1,5 +1,7 @@
 import "react-native-gesture-handler";
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+import { Button, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import axios from "axios";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -21,7 +23,7 @@ import PROG from "./screens/computer/PROG";
 import DD from "./screens/admin/DD";
 import AD from "./screens/admin/AD";
 import Director from "./screens/admin/Director";
-
+import BiodataScreen from "./screens/BiodataScreen";
 
 const CustomDrawer = () => {
   return (
@@ -51,6 +53,10 @@ const Drawer = createDrawerNavigator();
 function App() {
   return (
     <PaperProvider>
+      {/* <Login /> */}
+      <StatusBar animated={true} backgroundColor="#6750a4" />
+      {/* <BiodataScreen /> */}
+      {/* <Home /> */}
       <NavigationContainer>
         <CustomDrawer />
       </NavigationContainer>
