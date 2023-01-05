@@ -1,31 +1,11 @@
-import React, { useState, useEffect } from "react";
-import api from "../../api/api";
+import React from "react";
 import DataRender from "../../data/DataRender";
-import LoadingScreen from "../LoadingScreen";
 
 const CE = ({ navigation }) => {
 
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const { data: response } = await api.get("ce_civil");
-                setData(response.rows);
-            } catch (error) {
-                console.error(error.message);
-            }
-            setIsLoading(false);
-        }
-        fetchData();
-    }, []);
-
     return (
-        isLoading ?
-            <LoadingScreen /> :
-        <DataRender DATA={data} designation='Chief Engineer (Civil)' />
+       
+        <DataRender designation='Chief Engineer (Civil)' url="ce_civil" />
 
     )
 }

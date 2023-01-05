@@ -5,7 +5,7 @@ const PromotionScreen = () => {
     return (
 
 
-        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20 }} scrollEnabled={false}>
+        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20, marginTop: 5 }} scrollEnabled={false}>
             <View>
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     <View style={{ flex: 1.5, width: 50, }}>   

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Button, Linking, Platform, FlatList, Image, SafeAreaView, Dimensions, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useEffect, useState } from "react";
+import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TextInput } from "react-native-paper";
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-
+import api from '../api/api';
+import LoadingScreen from "../screens/LoadingScreen";
 
 
 const height = Dimensions.get('window').height;
@@ -12,14 +11,41 @@ const width = Dimensions.get('window').width;
 
 
 
-
-
-const DataRender = ({ DATA, designation }) => {
+const DataRender = ({ designation, url }) => {
 
     const [masterData, setMasterData] = useState(DATA)
     const [filteredData, setFilteredData] = useState(DATA)
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
+    const [refreshing, setRefreshing] = useState(true);
+
+
+    //  ******************************  fetching data ***************************************
+
+    const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [DATA, setDATA] = useState([])
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        
+        try {
+            setRefreshing(false);
+            const { data: response } = await api.get(url);
+            setDATA(response.rows);
+        } catch (error) {
+            console.error(error.message);
+        }
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+
+        fetchData();
+
+    }, []);
+
+    //  ******************************  fetching data ***************************************
 
 
     const searchFilter = (text) => {
@@ -64,24 +90,19 @@ const DataRender = ({ DATA, designation }) => {
                         <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
                     </View>
                     <View style={{ flex: 1, }}>
-
                         <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
-                    </View>                 
-                                           
+                    </View>
+
                 </View>
 
                 {
                     item.email &&
                     <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
+                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
                     </TouchableOpacity>
-
-
                 }
 
                 <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
-
-
                     {
                         item.mobile &&
                         <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
@@ -103,45 +124,43 @@ const DataRender = ({ DATA, designation }) => {
                             <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                         </TouchableOpacity>
                     }
-
-
-
                 </View>
             </View>
-
         </View>
-
-
 
     );
 
 
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        isLoading ?
+            <LoadingScreen /> :
+            <SafeAreaView style={styles.container}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
-                <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5 }}
-                    placeholder="Search"
-                    value={search}
-                    //underlineColorAndroid='trasparent'
-                    onChangeText={(text) => searchFilter(text)}
-                    mode='outlined'
+                    <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5 }}
+                        placeholder="Search"
+                        value={search}
+                        //underlineColorAndroid='trasparent'
+                        onChangeText={(text) => searchFilter(text)}
+                        mode='outlined'
 
+
+                    />
+                </View>
+                {refreshing ? <ActivityIndicator /> : null}
+                <FlatList
+
+                    data={DATA}
+                    renderItem={Item}
+                    keyExtractor={(item) => item.id}
+                    extraData={selectedId}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+                    }
 
                 />
-            </View>
-
-
-            <FlatList
-
-                data={DATA}
-                renderItem={Item}
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
-                
-            />
-        </SafeAreaView>
+            </SafeAreaView>
     )
 }
 

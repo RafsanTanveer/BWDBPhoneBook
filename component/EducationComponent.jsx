@@ -5,7 +5,7 @@ const EducationComponent = () => {
     return (
 
 
-        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 10 }}>
+        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 10, marginTop: 5 }}>
             <View>
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     <View style={{ flex: .75, width: 50,  }}>

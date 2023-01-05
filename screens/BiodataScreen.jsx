@@ -25,13 +25,20 @@ const BiodataScreen = () => {
     return (
         <View style={{ flex: 1 }}>
             <View style={{
-                alignItems: 'center', borderBottomColor: '#0080FF',
-                borderBottomWidth: 1,
+                flexDirection: 'row', borderBottomColor: '#0080FF',
+                borderBottomWidth: 1
             }}>
-                <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
-                <Text style={{ color: '#008023', fontWeight: '500', fontSize: 15, }} >Human Resource Data Management (HRDM)</Text>
-                <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, }} >BIODATA</Text>
+                <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5 }}>
+                    <Image style={{ width: 60, height: 60 }} source={require('../assets/pani-unnoyon-board-logo-C7A6FE0B4E-seeklogo.com.png')} />
+                </View>
+                <View style={{
+                    alignItems: 'center',
+                }}>
+                    <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, marginBottom: 2 }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
+                    <Text style={{ color: '#008023', fontWeight: '500', fontSize: 15, marginBottom: 2 }} >Human Resource Data Management (HRDM)</Text>
+                    <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, }} >BIODATA</Text>
 
+                </View>
             </View>
             <ScrollView >
                 <View style={{ flex: 1, marginTop: 20, marginHorizontal: 10 }}>
@@ -137,12 +144,12 @@ const BiodataScreen = () => {
                         firstQueryResult=""
                         delimiter=":"
                     />
-                    <PromotionScreen  />
+                    <PromotionScreen />
 
                     <Text style={styles.textStyle}>Experience, Transfer and Posting : </Text>
 
                     <ExperienceScreen />
-                    
+
                     <SingleColumnComponent
                         firstHeading="Training Received"
                         firstQueryResult=""
@@ -158,7 +165,7 @@ const BiodataScreen = () => {
             </ScrollView>
         </View>
     );
-} 
+}
 
 const styles = StyleSheet.create({
     animationContainer: {

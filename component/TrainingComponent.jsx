@@ -6,7 +6,7 @@ const TrainingComponent = () => {
 
 
         <ScrollView horizontal={true} style={{ flex: 1, }}>
-            <View style={{marginBottom:10}}>
+            <View style={{marginBottom:10, marginTop:5}}>
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     <View style={{ flex: .75, width: 200, }}>
                         <Text style={styles.secondTextStyle}>Training Title</Text>

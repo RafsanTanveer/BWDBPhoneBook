@@ -5,68 +5,54 @@ const ExperienceScreen = () => {
     return (
 
 
-        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20 }}>
+        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20, marginTop: 5 }}>
             <View>
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: .75, width: 50, }}>
-                        <Text style={styles.secondTextStyle}>Year</Text>
+                    <View style={{ flex: .75, width: 200, }}>
+                        <Text style={styles.secondTextStyle}>Post Name</Text>
                     </View>
-                    <View style={{ flex: 1, width: 100, }}>
-                        <Text style={styles.secondTextStyle}>Qualification</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 120, }}>
-                        <Text style={styles.secondTextStyle}>Decipline</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
-                        <Text style={styles.secondTextStyle}>Institution</Text>
+                    <View style={{ flex: 1, width: 200, }}>
+                        <Text style={styles.secondTextStyle}>Office Name</Text>
                     </View>
                     <View style={{ flex: 1, width: 80, }}>
-                        <Text style={styles.secondTextStyle}>Class/GPA</Text>
+                        <Text style={styles.secondTextStyle}>From</Text>
                     </View>
-                    <View style={{ flex: 1, width: 80 }}>
-                        <Text style={styles.secondTextStyle}>Remarks</Text>
+                    <View style={{ flex: 1, width: 80, marginLeft: 8 }}>
+                        <Text style={styles.secondTextStyle}>To</Text>
                     </View>
+                    
                 </View >
 
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: .75, width: 50, }}>
-                        <Text style={styles.queryTextStyle}>2015</Text>
+                    <View style={{ flex: .75, width: 200, }}>
+                        <Text style={styles.queryTextStyle}>Addl. Director General, Western Region</Text>
                     </View>
-                    <View style={{ flex: 1, width: 100, }}>
-                        <Text style={styles.queryTextStyle}>Graduate</Text>
+                    <View style={{ flex: 1, width: 200, }}>
+                        <Text style={styles.queryTextStyle}>Addl. Chief Engineer (Civil), Integrated Coastal Zone And
+                            Climate Change Management</Text>
                     </View>
-                    <View style={{ flex: 1, width: 120, }}>
-                        <Text style={styles.queryTextStyle}>Computer Science & Engineering</Text>
+                    <View style={{ flex: 1, width: 80, }}>
+                        <Text style={styles.queryTextStyle}>01/02/2009</Text>
                     </View>
-                    <View style={{ flex: 1, width: 200, marginLeft: 10 }}>
-                        <Text style={styles.queryTextStyle}>Khulna University Of Engineering & Technology</Text>
+                    <View style={{ flex: 1, width: 80, marginLeft: 10 }}>
+                        <Text style={styles.queryTextStyle}>27/12/2022</Text>
                     </View>
-                    <View style={{ flex: 1, width: 80, marginLeft: 5, }}>
-                        <Text style={styles.queryTextStyle}>3.13/4.00</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 80 }}>
-                        <Text style={styles.queryTextStyle}>Remarks</Text>
-                    </View>
+                    
                 </View >
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: .75, width: 50, }}>
-                        <Text style={styles.queryTextStyle}>2015</Text>
+                    <View style={{ flex: .75, width: 200, }}>
+                        <Text style={styles.queryTextStyle}>Superintending Engineer (Civil)</Text>
                     </View>
-                    <View style={{ flex: 1, width: 100, }}>
+                    <View style={{ flex: 1, width: 200, }}>
                         <Text style={styles.queryTextStyle}>Graduate</Text>
                     </View>
-                    <View style={{ flex: 1, width: 120, }}>
-                        <Text style={styles.queryTextStyle}>Computer Science & Engineering</Text>
+                    <View style={{ flex: 1, width: 80, }}>
+                        <Text style={styles.queryTextStyle}>11/11/2021</Text>
                     </View>
-                    <View style={{ flex: 1, width: 200, marginLeft: 10 }}>
-                        <Text style={styles.queryTextStyle}>Khulna University Of Engineering & Technology</Text>
+                    <View style={{ flex: 1, width: 80, marginLeft: 10 }}>
+                        <Text style={styles.queryTextStyle}>27/12/2022</Text>
                     </View>
-                    <View style={{ flex: 1, width: 80, marginLeft: 5, }}>
-                        <Text style={styles.queryTextStyle}>3.13/4.00</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 80 }}>
-                        <Text style={styles.queryTextStyle}>Remarks</Text>
-                    </View>
+                    
                 </View >
             </View>
 

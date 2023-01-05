@@ -1,31 +1,9 @@
-import React, { useState, useEffect } from "react";
-import api from "../../api/api";
+import React from "react";
 import DataRender from "../../data/DataRender";
-import LoadingScreen from "../LoadingScreen";
 
 const XEN = ({ navigation }) => {
-
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const { data: response } = await api.get("xen_civil");
-                setData(response.rows);
-            } catch (error) {
-                console.error(error.message);
-            }
-            setIsLoading(false);
-        }
-        fetchData();
-    }, []);
-
     return (
-        isLoading ?
-            <LoadingScreen /> :
-        <DataRender DATA={data} designation='Executive Engineer (Civil)' />
-
+        <DataRender designation='Executive Engineer (Civil)' url="xen_civil" />
     )
 }
 export default XEN
