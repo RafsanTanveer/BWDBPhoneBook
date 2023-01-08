@@ -5,7 +5,7 @@ const CE = ({ navigation }) => {
 
     return (
        
-        <DataRender designation='Chief Engineer (Civil)' url="ce_civil" />
+        <DataRender designation='Chief Engineer (Civil)' desig_code="003" />
 
     )
 }

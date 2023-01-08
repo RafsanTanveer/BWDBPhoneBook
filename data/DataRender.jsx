@@ -11,7 +11,7 @@ const width = Dimensions.get('window').width;
 
 
 
-const DataRender = ({ designation, url }) => {
+const DataRender = ({ designation, url, desig_code }) => {
 
     const [masterData, setMasterData] = useState(DATA)
     const [filteredData, setFilteredData] = useState(DATA)
@@ -28,10 +28,14 @@ const DataRender = ({ designation, url }) => {
 
     const fetchData = async () => {
         setIsLoading(true);
-        
+
         try {
             setRefreshing(false);
-            const { data: response } = await api.get(url);
+            const { data: response } = await api.get("desig", {
+                params: {
+                    desig: desig_code
+                }
+            });
             setDATA(response.rows);
         } catch (error) {
             console.error(error.message);

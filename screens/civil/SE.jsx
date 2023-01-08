@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const SE = ({ navigation }) => {
     return (
-        <DataRender designation='Superintendent Engineer (Civil)' url="se_civil" />
+        <DataRender designation='Superintendent Engineer (Civil)' desig_code="018" />
     )
 }
 export default SE

@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const SDE = ({ navigation }) => {
     return (
-        <DataRender  designation='Sub-divisional Engineer (Civil)' url="sde_civil" />
+        <DataRender designation='Sub-divisional Engineer (Civil)' desig_code="044" />
     )
 }
 export default SDE
