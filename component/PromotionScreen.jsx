@@ -1,14 +1,56 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react';
+import api from '../api/api';
 
-const PromotionScreen = () => {
+const PromotionScreen = ({id}) => {
+
+
+    //  ******************************  fetching data ***************************************
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [DATA, setDATA] = useState([])
+    const [refreshing, setRefreshing] = useState(true);
+
+    const [promotion, setpromotion] = useState([])
+
+
+
+
+    const fetchPersonalData = async () => {
+        setIsLoading(true);
+
+        try {
+            setRefreshing(false);
+            const { data: response } = await api.get("promotion", {
+                params: {
+                    id: id
+                }
+            });
+            setpromotion(response.rows);
+            console.log("in persoanl data " + response.rows.name);
+        } catch (error) {
+            console.error(error.message);
+        }
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+
+        fetchPersonalData();
+
+    }, []);
+
+    //  ******************************  fetching data ***************************************
+
+
     return (
 
 
-        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20, marginTop: 5 }} scrollEnabled={false}>
+        <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20, marginTop: 5 }} >
             <View>
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: 1.5, width: 50, }}>   
+                    <View style={{ flex: 1.5, width: 40, }}>   
                         <Text style={styles.secondTextStyle}></Text>   
                     </View>
                     <View style={{ flex: 1.5, width: 150, }}>
@@ -23,21 +65,25 @@ const PromotionScreen = () => {
                    
                 </View >
 
-                < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: 1.5, width: 50, }}>
-                        <Text style={styles.secondTextStyle}></Text>
-                    </View>
-                    <View style={{ flex: 1.5, width: 150, }}>
-                        <Text style={styles.queryTextStyle}>Asstt. Programmer</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 100, }}>
-                        <Text style={styles.queryTextStyle}>12/06/2019</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 120, }}>
-                        <Text style={styles.queryTextStyle}>12/06/2019</Text>
-                    </View>
-                    
-                </View >
+                {
+                    promotion.map((item) => (
+                        < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                            <View style={{ flex: 1.5, width: 40, }}>
+                                <Text style={styles.secondTextStyle}></Text>
+                            </View>
+                            <View style={{ flex: 1.5, width: 150, }}>
+                                <Text style={styles.queryTextStyle}>{item.desig}</Text>
+                            </View>
+                            <View style={{ flex: 1, width: 100, }}>
+                                <Text style={styles.queryTextStyle}>{item.joinDate}</Text>
+                            </View>
+                            <View style={{ flex: 1, width: 120, marginRight:10 }}>
+                                <Text style={styles.queryTextStyle}>{item.releaseDate}</Text>
+                            </View>
+
+                        </View >
+                    ))
+                }
                 
             </View>
 

@@ -1,12 +1,9 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react";
+import DataRender from "../../data/DataRender";
 
-const ADFAA = () => {
+const ADFAA = ({ navigation }) => {
   return (
-    <View>
-      <Text>ADFAA</Text>
-    </View>
+    <DataRender designation='Asstt. Director (Fa&A)' desig_code="053" />
   )
 }
-
 export default ADFAA

@@ -24,6 +24,14 @@ import DD from "./screens/admin/DD";
 import AD from "./screens/admin/AD";
 import Director from "./screens/admin/Director";
 import BiodataScreen from "./screens/BiodataScreen";
+import ADFAA from "./screens/faa/ADFAA";
+import DDFAA from "./screens/faa/DDFAA";
+import AdlDFAA from "./screens/faa/AdlDFAA";
+import Geologist from "./screens/geology/Geologist";
+import DirectorGeologist from "./screens/geology/DirectorGeologist";
+import DDGeology from "./screens/geology/DDGeology";
+import Controller from "./screens/faa/Controller";
+import DirectorFAA from "./screens/faa/DirectorFAA";
 
 const CustomDrawer = () => {
   return (
@@ -44,6 +52,16 @@ const CustomDrawer = () => {
       <Drawer.Screen name="Director (Admin)" component={Director} />
       <Drawer.Screen name="Deputy Director (Admin)" component={DD} />
       <Drawer.Screen name="Asst. Director (Admin)" component={AD} />
+
+      <Drawer.Screen name="Asstt. Director (Fa&A)" component={ADFAA} />
+      <Drawer.Screen name="Deputy Director (Fa&A)" component={DDFAA} />
+      <Drawer.Screen name="Addl. Director (Fa&A)" component={AdlDFAA} />
+      <Drawer.Screen name="Controller (Fa&A)" component={Controller} />
+      <Drawer.Screen name="Director (Fa&A)" component={DirectorFAA} />
+
+      <Drawer.Screen name="Geologist" component={Geologist} />
+      <Drawer.Screen name="Director (Geology)" component={DirectorGeologist} />
+      <Drawer.Screen name="Deputy Director (Geology)" component={DDGeology} />
     </Drawer.Navigator>
   );
 };

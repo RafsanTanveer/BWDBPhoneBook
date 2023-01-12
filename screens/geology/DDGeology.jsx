@@ -1,0 +1,9 @@
+import React from "react";
+import DataRender from "../../data/DataRender";
+
+const DDGeology = ({ navigation }) => {
+    return (
+        <DataRender designation='Deputy Director (Geology)' desig_code="039" />
+    )
+}
+export default DDGeology

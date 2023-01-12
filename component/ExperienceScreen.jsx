@@ -1,7 +1,48 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react';
+import api from '../api/api';
 
-const ExperienceScreen = () => {
+
+const ExperienceScreen = ({ id }) => {
+
+
+    //  ******************************  fetching data ***************************************
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [DATA, setDATA] = useState([])
+    const [refreshing, setRefreshing] = useState(true);
+    const [experience, setexperience] = useState([])
+
+
+
+
+    const fetchPersonalData = async () => {
+        setIsLoading(true);
+
+        try {
+            setRefreshing(false);
+            const { data: response } = await api.get("exp", {
+                params: {
+                    id: id
+                }
+            });
+            setexperience(response.rows);
+            console.log("in persoanl data " + response.rows.name);
+        } catch (error) {
+            console.error(error.message);
+        }
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+
+        fetchPersonalData();
+
+    }, []);
+
+
+
     return (
 
 
@@ -11,49 +52,39 @@ const ExperienceScreen = () => {
                     <View style={{ flex: .75, width: 200, }}>
                         <Text style={styles.secondTextStyle}>Post Name</Text>
                     </View>
-                    <View style={{ flex: 1, width: 200, }}>
+                    <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
                         <Text style={styles.secondTextStyle}>Office Name</Text>
                     </View>
-                    <View style={{ flex: 1, width: 80, }}>
+                    <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
                         <Text style={styles.secondTextStyle}>From</Text>
                     </View>
-                    <View style={{ flex: 1, width: 80, marginLeft: 8 }}>
+                    <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
                         <Text style={styles.secondTextStyle}>To</Text>
                     </View>
-                    
+
                 </View >
 
-                < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: .75, width: 200, }}>
-                        <Text style={styles.queryTextStyle}>Addl. Director General, Western Region</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 200, }}>
-                        <Text style={styles.queryTextStyle}>Addl. Chief Engineer (Civil), Integrated Coastal Zone And
-                            Climate Change Management</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 80, }}>
-                        <Text style={styles.queryTextStyle}>01/02/2009</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 80, marginLeft: 10 }}>
-                        <Text style={styles.queryTextStyle}>27/12/2022</Text>
-                    </View>
-                    
-                </View >
-                < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: .75, width: 200, }}>
-                        <Text style={styles.queryTextStyle}>Superintending Engineer (Civil)</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 200, }}>
-                        <Text style={styles.queryTextStyle}>Graduate</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 80, }}>
-                        <Text style={styles.queryTextStyle}>11/11/2021</Text>
-                    </View>
-                    <View style={{ flex: 1, width: 80, marginLeft: 10 }}>
-                        <Text style={styles.queryTextStyle}>27/12/2022</Text>
-                    </View>
-                    
-                </View >
+                {
+                    experience.map((item,i) => (
+
+                        < View   style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                            <View style={{ flex: .75, width: 200, }}>
+                                <Text style={styles.queryTextStyle}>{item.post ? item.post : item.desig} {item.charge == 'C' ? ',CC' : item.charge == 'A'?'Addl.':''}</Text>
+                            </View>
+                            <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
+                                <Text style={styles.queryTextStyle}>{item.office}</Text>
+                            </View>
+                            <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
+                                <Text style={styles.queryTextStyle}>{item.joinDate}</Text>
+                            </View>
+                            <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
+                                <Text style={styles.queryTextStyle}>{item.releaseDate}</Text>
+                            </View>
+                        </View >
+                    ))
+
+                }
+                
             </View>
 
         </ScrollView >

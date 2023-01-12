@@ -16,7 +16,7 @@ const DrawerContent = (props) => {
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#D9D4E5' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
             <View style={{ backgroundColor: "#B2A8CF", height: 200, flexDirection: 'row', padding: 15 }}>
                 <View style={{ flex: 2 }}>
                     <Image style={{ width: width * .25, height: width * .25, borderRadius: width * .2 }} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
@@ -27,12 +27,12 @@ const DrawerContent = (props) => {
                     <Text style={{ marginTop: 5 }}>Nannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnme</Text>
                 </View>
             </View>
-            <DrawerContentScrollView style={{ backgroundColor: "#C7C0DA" }} {...props}>
+            <DrawerContentScrollView style={{ backgroundColor: "#ffffff" }} {...props}>
                 <ExpendableDrawer />
             </DrawerContentScrollView>
 
-            <View style={{ margin: 20, backgroundColor: '#D9D4E5' }}>
-                <TouchableOpacity style={{ backgroundColor: '#D9D4E5' }} onPress={() => { }}>
+            <View style={{ margin: 20, backgroundColor: '#ffffff' }}>
+                <TouchableOpacity style={{ backgroundColor: '#ffffff' }} onPress={() => { }}>
                     <Text>Logout</Text>
                 </TouchableOpacity>
             </View>

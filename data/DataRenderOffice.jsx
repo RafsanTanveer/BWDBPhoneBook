@@ -6,12 +6,14 @@ import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 
 
+
+
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
+const person_photo_placeholder = '../assets/person_photo_placeholder.jpg'
 
 
-
-const DataRender = ({ designation, url, desig_code }) => {
+const DataRenderOffice = ({ office_code }) => {
 
     const [masterData, setMasterData] = useState(DATA)
     const [filteredData, setFilteredData] = useState(DATA)
@@ -31,9 +33,9 @@ const DataRender = ({ designation, url, desig_code }) => {
 
         try {
             setRefreshing(false);
-            const { data: response } = await api.get("desig", {
+            const { data: response } = await api.get("office", {
                 params: {
-                    desig: desig_code
+                    office: office_code
                 }
             });
             setDATA(response.rows);
@@ -71,17 +73,19 @@ const DataRender = ({ designation, url, desig_code }) => {
     }
 
 
-    const Item = ({ item,index }) => (
+    const Item = ({ item, index }) => (
 
 
 
         <View style={{
             flexDirection: 'row', paddingLeft: 10, paddingRight: 10,
         }}>
-
-            <View style={{ justifyContent: 'center', alignContent: 'center', }}>
-                <View style={{ borderRadius: 10 }}>
-                    <Text style={{ color: 'black', fontWeight:'bold' }} >{index + 1}</Text>
+            {/* <View style={{ elevation: 10,zIndex: 9, }}>
+                <Text style={{color:'black'}} >{index + 1}</Text>
+            </View> */}
+            <View style={{ justifyContent: 'center', alignContent: 'center',}}>
+                <View style={{ borderRadius:10}}>
+                    <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
                 </View>
                 {item.photo ?
                     <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
@@ -99,10 +103,10 @@ const DataRender = ({ designation, url, desig_code }) => {
                         <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
                     </View>
                     <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
+                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge=='C'?', cc':''} </Text>
                     </View>
                     <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
+                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: {item.designation} </Text>
                     </View>
 
                 </View>
@@ -161,9 +165,6 @@ const DataRender = ({ designation, url, desig_code }) => {
                     />
                 </View>
                 {refreshing ? <ActivityIndicator /> : null}
-                <View style={{alignItems:'flex-end', marginRight:5}}>
-                    <Text style={{ color: 'black', fontSize:10 }}>* not according to seniority list</Text>
-                </View>
                 <FlatList
 
                     data={DATA}
@@ -175,6 +176,8 @@ const DataRender = ({ designation, url, desig_code }) => {
                     }
 
                 />
+                
+
             </SafeAreaView>
     )
 }
@@ -209,7 +212,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: "pink",
         borderWidth: 1,
-        borderColor:'#6750a4'
+        borderColor: '#6750a4'
 
 
     },
@@ -231,4 +234,4 @@ const styles = StyleSheet.create({
 
 
 
-export default DataRender
+export default DataRenderOffice
