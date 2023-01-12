@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { Divider, List } from 'react-native-paper';
+import { Divider, List, TextInput } from 'react-native-paper';
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 
 const ExpendableDrawer = () => {
@@ -113,6 +113,7 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[5]}
                         onPress={() => handlePress(5)}
                     >
+                        
                         <List.Item onPress={() => { navigation.navigate('Director (Geology)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Geology)" />
                         <List.Item onPress={() => { navigation.navigate('Deputy Director (Geology)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Geology)" />
                         <List.Item onPress={() => { navigation.navigate('Geologist') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Geologist" />
@@ -148,6 +149,7 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[7]}
                         onPress={() => handlePress(7)}
                     >
+                        
                         <List.Item title="First item" />
                         <List.Item title="Second item" />
                     </List.Accordion>
@@ -167,8 +169,16 @@ const ExpendableDrawer = () => {
                     left={props => <List.Icon {...props} icon="meteor" />}
                     expanded={expendedList[11]}
                     onPress={() => handlePress(11)}  >
-                    <List.Item left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -10, }} title="Director General" />
-                    <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" />
+                    
+                    <TextInput style={{ height: 35, width: 260, borderRadius: 10, marginBottom: 5, marginLeft: 10 }}
+                        placeholder="Search"
+                        //value={search}
+                        //underlineColorAndroid='trasparent'
+                        onChangeText={(text) => searchFilter(text)}
+                        mode='outlined'
+
+
+                    />
 
                 </List.Accordion>
 
