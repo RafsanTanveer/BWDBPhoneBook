@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import { Divider, List, TextInput } from 'react-native-paper';
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native'
 
 const ExpendableDrawer = () => {
 
@@ -171,14 +171,14 @@ const ExpendableDrawer = () => {
                     onPress={() => handlePress(11)}  >
                     
                     <TextInput style={{ height: 35, width: 260, borderRadius: 10, marginBottom: 5, marginLeft: 10 }}
-                        placeholder="Search"
+                        placeholder=""
                         //value={search}
                         //underlineColorAndroid='trasparent'
-                        onChangeText={(text) => searchFilter(text)}
+                        //onChangeText={(text) => searchFilter(text)}
                         mode='outlined'
-
-
                     />
+
+                    <FlatList />
 
                 </List.Accordion>
 
