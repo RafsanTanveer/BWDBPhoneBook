@@ -72,7 +72,7 @@ function App() {
   return (
     <PaperProvider>
       {/* <Login /> */}
-      <StatusBar animated={true} backgroundColor="#6750a4" />
+      <StatusBar animated={true} backgroundColor="#A763A8" />
       {/* <BiodataScreen /> */}
       {/* <Home /> */}
       <NavigationContainer>

@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
 
   return (
     <>
-      <BiodataScreen />
+      {/* <BiodataScreen /> */}
     </>
 
   )

@@ -1,9 +1,12 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { TextInput } from "react-native-paper";
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
+import NetInfo from '@react-native-community/netinfo';
+import NoInternetScreen from '../screens/NoInternetScreen'
+
 
 
 const height = Dimensions.get('window').height;
@@ -18,6 +21,15 @@ const DataRender = ({ designation, url, desig_code }) => {
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
     const [refreshing, setRefreshing] = useState(true);
+    const [noInternetConnection, setnoInternetConnection] = useState()
+
+    // ********************************  Internet Connection checked *************************************
+    NetInfo.fetch().then(state => {
+        console.log('Connection type', state.type);
+        console.log('Is connected?', state.isConnected);
+        setnoInternetConnection(state.isConnected)
+    });
+    // ********************************  Internet Connection checked *************************************
 
 
     //  ******************************  fetching data ***************************************
@@ -145,6 +157,7 @@ const DataRender = ({ designation, url, desig_code }) => {
 
 
     return (
+        !noInternetConnection ? <NoInternetScreen /> :
         isLoading ?
             <LoadingScreen /> :
             <SafeAreaView style={styles.container}>

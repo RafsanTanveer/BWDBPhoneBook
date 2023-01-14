@@ -1,7 +1,9 @@
 import * as React from "react";
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import { Divider, List, TextInput } from 'react-native-paper';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+
+
 
 const ExpendableDrawer = () => {
 
@@ -10,9 +12,27 @@ const ExpendableDrawer = () => {
 
     const handlePress = (no) => {
         const arr = []
-        for (let i = 0; i < 9; i++) {
-            if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
-            else arr[i] = false;
+
+        if (no == 0) {
+            expendedList[0] ? arr[0] = false : arr[0] = true;
+            for (let i = 1; i < 12; i++) {
+
+                arr[i] = false;
+            }
+        }
+        else if (no == 11) {
+            expendedList[11] ? arr[11] = false : arr[11] = true;
+            for (let i = 0; i < 11; i++) {
+
+                arr[i] = false;
+            }
+        }
+        else {
+            arr[11] = true
+            for (let i = 0; i < 11; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else arr[i] = false;
+            }
         }
         setexpendedList(arr);
     }
@@ -22,19 +42,14 @@ const ExpendableDrawer = () => {
         <>
             
 
-            {/******************************************* designation wise **************************************/}
-
-
-            <List.Section title="" style={{ backgroundColor: "white" }}>
-
-               
+            <List.Section title="" >
 
                 <List.Accordion
                     style={styles.accordingStyle}
-                    title="Designation wise"
+                    title="Designations"
                     left={props => <List.Icon {...props} icon="meteor" />}
-                    expanded={expendedList[10]}
-                    onPress={() => handlePress(10)} >
+                    expanded={expendedList[11]}
+                    onPress={() => handlePress(11)}  >
 
                     <List.Accordion
                         style={styles.accordingStyle}
@@ -54,7 +69,7 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[1]}
                         onPress={() => handlePress(1)} >
 
-                        <List.Item onPress={() => { navigation.navigate('Director (Admin)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Admin)" />
+                        <List.Item onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(Adc  Min)' }) }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Admin)" />
                         <List.Item onPress={() => { navigation.navigate('Deputy Director (Admin)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Admin)" />
                         <List.Item onPress={() => { navigation.navigate('Asst. Director (Admin)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Asst. Director (Admin)" />
 
@@ -92,18 +107,25 @@ const ExpendableDrawer = () => {
 
                     <List.Accordion
                         style={styles.accordingStyle}
+                        title="Economic"
+                        left={props => <List.Icon {...props} icon="meteor" />}
+                        expanded={expendedList[10]}
+                        onPress={() => handlePress(10)} >
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Deputy Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Assistant Director" />
+
+                    </List.Accordion>
+
+                    <List.Accordion
+                        style={styles.accordingStyle}
                         title="FA&A"
                         left={props => <List.Icon {...props} icon="meteor" />}
                         expanded={expendedList[4]}
                         onPress={() => handlePress(4)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Controller (Fa&A)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Controller (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Director (Fa&A)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Addl. Director (Fa&A)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Director (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Fa&A)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Asstt. Director (Fa&A)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Asstt. Director (Fa&A)" />
-
-                        
+                        <List.Item title="First item" />
+                        <List.Item title="Second item" />
                     </List.Accordion>
 
                     <List.Accordion
@@ -113,11 +135,8 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[5]}
                         onPress={() => handlePress(5)}
                     >
-                        
-                        <List.Item onPress={() => { navigation.navigate('Director (Geology)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Geology)" />
-                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Geology)') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Geology)" />
-                        <List.Item onPress={() => { navigation.navigate('Geologist') }} left={props => <List.Icon {...props} icon="meteor" />} style={{ marginLeft: 20, marginTop: -16, }} title="Geologist" />
-
+                        <List.Item title="First item" />
+                        <List.Item title="Second item" />
                     </List.Accordion>
 
                     <List.Accordion
@@ -138,65 +157,60 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[7]}
                         onPress={() => handlePress(7)}
                     >
-                        <List.Item title="First item" />
-                        <List.Item title="Second item" />
-                    </List.Accordion>
 
+                        <TouchableOpacity onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(AdMin)' }) }} style={{ height: 20 }}>
+                            <Text>Office Text</Text>
+                        </TouchableOpacity>
+
+                    </List.Accordion>
                     <List.Accordion
                         style={styles.accordingStyle}
-                        title="Water Management"
+                        title="Water"
                         left={props => <List.Icon {...props} icon="meteor" />}
-                        expanded={expendedList[7]}
-                        onPress={() => handlePress(7)}
+                        expanded={expendedList[9]}
+                        onPress={() => handlePress(9)}
                     >
-                        
-                        <List.Item title="First item" />
-                        <List.Item title="Second item" />
+
+                        <TouchableOpacity onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(AdMin)' }) }} style={{ height: 20 }}>
+                            <Text>Office Text</Text>
+                        </TouchableOpacity>
+
                     </List.Accordion>
 
+
                 </List.Accordion>
-            </List.Section>
-            <Divider />
-
-            {/******************************************* designation wise **************************************/}
-
-
-            {/******************************************* office wise **************************************/}
-            <List.Section >
                 <List.Accordion
                     style={styles.accordingStyle}
-                    title="Offices"
+                    title="Office"
                     left={props => <List.Icon {...props} icon="meteor" />}
-                    expanded={expendedList[11]}
-                    onPress={() => handlePress(11)}  >
+                    expanded={expendedList[0]}
+                    onPress={() => handlePress(0)} >
                     
-                    <TextInput style={{ height: 35, width: 260, borderRadius: 10, marginBottom: 5, marginLeft: 10 }}
-                        placeholder=""
-                        //value={search}
-                        //underlineColorAndroid='trasparent'
-                        //onChangeText={(text) => searchFilter(text)}
-                        mode='outlined'
-                    />
+                    <ScrollView>
+                        <List.Item style={{  marginTop: -10 }} title="Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Deputy Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Assistant Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Deputy Director" />
+                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Assistant Director" />
+                    </ScrollView>
 
-                    <FlatList />
+                    
 
                 </List.Accordion>
 
             </List.Section>
-
-            {/******************************************* office wise **************************************/}
-
-           
         </>
     );
 };
 
 
+
 const styles = StyleSheet.create({
     accordingStyle: {
         marginVertical: -8,
-        backgroundColor: "white" 
-    }, 
+        backgroundColor: "white"
+    },
 })
 
 export default ExpendableDrawer;
