@@ -73,13 +73,13 @@ const Drawer = createDrawerNavigator();
 function App() {
   return (
     <PaperProvider>
-      {/* <Login /> */}
-      <StatusBar animated={true} backgroundColor="#6750a4" />
+      <Login />
+      {/* <StatusBar animated={true} backgroundColor="#6750a4" /> */}
       {/* <BiodataScreen /> */}
       {/* <Home /> */}
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <CustomDrawer />
-      </NavigationContainer>
+      </NavigationContainer> */}
     </PaperProvider>
   );
 }

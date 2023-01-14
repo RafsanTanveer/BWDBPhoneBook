@@ -6,6 +6,7 @@ import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 import NetInfo from '@react-native-community/netinfo';
 import NoInternetScreen from '../screens/NoInternetScreen'
+import NoDataFoundScreen from '../screens/NoDataFoundScreen';
 
 
 
@@ -158,6 +159,7 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     return (
         !noInternetConnection ? <NoInternetScreen /> :
+           // DATA.length==0?<NoDataFoundScreen />:
         isLoading ?
             <LoadingScreen /> :
             <SafeAreaView style={styles.container}>

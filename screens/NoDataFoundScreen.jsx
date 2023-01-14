@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 
 
-const LoadingScreen = () => {
+
+const NoDataFoundScreen = () => {
     const animation = useRef(null);
     useEffect(() => {
         // You can control the ref programmatically, rather than using autoPlay
@@ -17,13 +18,13 @@ const LoadingScreen = () => {
                 autoPlay
                 ref={animation}
                 style={{
-                    width: 250,
-                    height: 250,
+                    width: 200,
+                    height: 200,
                 }}
-                speed={3.5}
-                source={require('../assets/lottie/98890-data-transfer.json')}
+                speed={1.5}
+                source={require('../assets/lottie/107420-no-data-loader.json')}
             />
-            <Text style={{ fontSize: 15, fontWeight: '400' }} >Downloading...</Text>
+            <Text style={{ fontSize: 20, fontWeight: '400' }} >No Data Found</Text>
         </View>
     );
 }
@@ -41,4 +42,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default LoadingScreen
+export default NoDataFoundScreen
