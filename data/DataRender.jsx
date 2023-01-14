@@ -84,7 +84,7 @@ const DataRender = ({ designation, url, desig_code }) => {
     }
 
 
-    const Item = ({ item,index }) => (
+    const Item = ({ item, index }) => (
 
 
 
@@ -94,7 +94,7 @@ const DataRender = ({ designation, url, desig_code }) => {
 
             <View style={{ justifyContent: 'center', alignContent: 'center', }}>
                 <View style={{ borderRadius: 10 }}>
-                    <Text style={{ color: 'black', fontWeight:'bold' }} >{index + 1}</Text>
+                    <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
                 </View>
                 {item.photo ?
                     <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
@@ -159,38 +159,39 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     return (
         !noInternetConnection ? <NoInternetScreen /> :
-           // DATA.length==0?<NoDataFoundScreen />:
-        isLoading ?
-            <LoadingScreen /> :
-            <SafeAreaView style={styles.container}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
-                    <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5 }}
-                        placeholder="Search"
-                        value={search}
-                        //underlineColorAndroid='trasparent'
-                        onChangeText={(text) => searchFilter(text)}
-                        mode='outlined'
+            isLoading ?
+                <LoadingScreen /> :
+                //DATA.length == 0 ? <NoDataFoundScreen /> :
+                <SafeAreaView style={styles.container}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
+                        <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5 }}
+                            placeholder="Search"
+                            value={search}
+                            //underlineColorAndroid='trasparent'
+                            onChangeText={(text) => searchFilter(text)}
+                            mode='outlined'
+
+
+                        />
+                    </View>
+                    {refreshing ? <ActivityIndicator /> : null}
+                    <View style={{ alignItems: 'flex-end', marginRight: 5 }}>
+                        <Text style={{ color: 'black', fontSize: 10 }}>* not according to seniority list</Text>
+                    </View>
+                    <FlatList
+
+                        data={DATA}
+                        renderItem={Item}
+                        keyExtractor={(item) => item.id}
+                        extraData={selectedId}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+                        }
 
                     />
-                </View>
-                {refreshing ? <ActivityIndicator /> : null}
-                <View style={{alignItems:'flex-end', marginRight:5}}>
-                    <Text style={{ color: 'black', fontSize:10 }}>* not according to seniority list</Text>
-                </View>
-                <FlatList
-
-                    data={DATA}
-                    renderItem={Item}
-                    keyExtractor={(item) => item.id}
-                    extraData={selectedId}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-                    }
-
-                />
-            </SafeAreaView>
+                </SafeAreaView>
     )
 }
 
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: "pink",
         borderWidth: 1,
-        borderColor:'#6750a4'
+        borderColor: '#6750a4'
 
 
     },

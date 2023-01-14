@@ -5,6 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { AuthContext } from '../authentication/AuthContext';
 
 const paniBhaban = '../assets/paniBhaban.png'
 const botom = '../assets/botom.png'
@@ -14,7 +15,7 @@ const botom_2 = '../assets/botom_2.png'
 const botom_3 = '../assets/botom_3.png'
 const botom_4 = '../assets/botom_4.png'
 
-const AuthContext = createContext();
+// const AuthContext = createContext();
 
 
 const height = Dimensions.get('window').height;
@@ -26,12 +27,15 @@ const screenWidth = Dimensions.get('screen').width;
 
 const Login = () => {
 
-    // const { signIn } = React.useContext(AuthContext);
+    // 
     // const navigation = useNavigation();
 
-    const [id, setId] = useState("920219001")
+    const [pmisId, setpmisId] = useState("920219001")
 
-    const handleSubmit = () => {
+    const { id, setId } = useContext(AuthContext);
+
+    const handleSubmit = ({pid}) => {
+        setId(pmisId)
         ToastAndroid.showWithGravity(id,
             ToastAndroid.SHORT,
             ToastAndroid.CENTER)
@@ -70,12 +74,15 @@ const Login = () => {
                     <Text style={{ fontWeight: '900', fontSize: height * .04 }}>Phone Directory</Text>
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</Text>
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</Text>
-                    <TextInput selectionColor={'purple'} onChangeText={setId}
+                    <TextInput selectionColor={'purple'} onChangeText={(txt) => setpmisId(txt)}
                         style={{ marginTop: 10, borderWidth: 1, borderColor: 'purple', height: height / 20, width: "70%", borderRadius: 10, marginBottom: 5 }} placeholder='   BWDB PMIS ID '>
                     </TextInput>
-                    <TouchableOpacity onPress={() => signIn({ id })}
+                    <TouchableOpacity onPress={() => (
+                        setId(pmisId)
+                        //handleSubmit(pmisId)
+                    )}
                         style={{ height: height / 20, width: "70%", borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF0000' }}>
-                        <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color:'white'}}>Signin</Text>
+                        <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>
                     </TouchableOpacity>
 
 

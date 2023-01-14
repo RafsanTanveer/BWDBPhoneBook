@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 import { NavigationContainer } from "@react-navigation/native";
@@ -34,7 +34,13 @@ import Controller from "./screens/faa/Controller";
 import DirectorFAA from "./screens/faa/DirectorFAA";
 import OfficeScreen from "./screens/OfficeScreen";
 
+import * as SecureStore from "expo-secure-store";
+import { AuthContext, AuthProvider } from "./authentication/AuthContext";
+
+
+
 const CustomDrawer = () => {
+  
   return (
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={Home} />
@@ -71,16 +77,22 @@ const CustomDrawer = () => {
 const Drawer = createDrawerNavigator();
 
 function App() {
+
+  
+  
+  
   return (
-    <PaperProvider>
-      <Login />
-      {/* <StatusBar animated={true} backgroundColor="#6750a4" /> */}
-      {/* <BiodataScreen /> */}
-      {/* <Home /> */}
-      {/* <NavigationContainer>
+    <AuthProvider >
+      <PaperProvider>
+        {/* <Login /> */}
+        <StatusBar animated={true} backgroundColor="#6750a4" />
+        {/* <BiodataScreen /> */}
+        {/* <Home /> */}
+        <NavigationContainer>
         <CustomDrawer />
-      </NavigationContainer> */}
-    </PaperProvider>
+      </NavigationContainer>
+      </PaperProvider>
+    </AuthProvider>
   );
 }
 
