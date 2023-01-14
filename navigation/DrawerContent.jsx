@@ -17,7 +17,7 @@ const DrawerContent = (props) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-            <View style={{ backgroundColor: "#BF90C1", height: 200, flexDirection: 'row', padding: 15 }}>
+            <View style={{ backgroundColor: "#B2A8CF", height: 200, flexDirection: 'row', padding: 15 }}>
                 <View style={{ flex: 2 }}>
                     <Image style={{ width: width * .25, height: width * .25, borderRadius: width * .2 }} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
                 </View>

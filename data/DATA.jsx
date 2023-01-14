@@ -131,6 +131,42 @@ export const DATA_AE = [
         personalContact: '01795045357',
         officeContact: '30309'
     },
+    {
+        id: '920m1209001',
+        name: 'Rafsan Zani Rabbi',
+        designation: 'Assistant Programmer',
+        image: 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg',
+        office: 'Directorate of Human Resource Development',
+        personalContact: '01795045357',
+        officeContact: '30309'
+    },
+    {
+        id: '9202099w001',
+        name: 'Rafsan Zani Rabbi',
+        designation: 'Assistant Programmer',
+        image: 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg',
+        office: 'Directorate of Human Resource Development',
+        personalContact: '01795045357',
+        officeContact: '30309'
+    },
+    {
+        id: '92020rt99001',
+        name: 'Rafsan Rahim Rabbi',
+        designation: 'Assistant Programmer',
+        image: 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg',
+        office: 'Directorate of Human Resource Development',
+        personalContact: '01795045357',
+        officeContact: '30309'
+    },
+    {
+        id: '9202099tyu001',
+        name: 'Rafsan Zani Rabbi',
+        designation: 'Assistant Programmer',
+        image: 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg',
+        office: 'Directorate of Human Resource Development',
+        personalContact: '01795045357',
+        officeContact: '30309'
+    },
 ];
 
 

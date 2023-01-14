@@ -32,6 +32,7 @@ import DirectorGeologist from "./screens/geology/DirectorGeologist";
 import DDGeology from "./screens/geology/DDGeology";
 import Controller from "./screens/faa/Controller";
 import DirectorFAA from "./screens/faa/DirectorFAA";
+import OfficeScreen from "./screens/OfficeScreen";
 
 const CustomDrawer = () => {
   return (
@@ -62,6 +63,7 @@ const CustomDrawer = () => {
       <Drawer.Screen name="Geologist" component={Geologist} />
       <Drawer.Screen name="Director (Geology)" component={DirectorGeologist} />
       <Drawer.Screen name="Deputy Director (Geology)" component={DDGeology} />
+      <Drawer.Screen name="OfficeScreen" component={OfficeScreen} />
     </Drawer.Navigator>
   );
 };
@@ -72,7 +74,7 @@ function App() {
   return (
     <PaperProvider>
       {/* <Login /> */}
-      <StatusBar animated={true} backgroundColor="#A763A8" />
+      <StatusBar animated={true} backgroundColor="#6750a4" />
       {/* <BiodataScreen /> */}
       {/* <Home /> */}
       <NavigationContainer>

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { Divider, List, TextInput } from 'react-native-paper';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { Divider, List, } from 'react-native-paper';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, TextInput } from 'react-native'
+import  { DATA_AE } from '../data/DATA'
 
 
 
@@ -40,12 +41,12 @@ const ExpendableDrawer = () => {
 
     return (
         <>
-            
 
-            <List.Section title="" >
+
+            <List.Section title="" style={styles.sectionStyle}>
 
                 <List.Accordion
-                    style={styles.accordingStyle}
+                    style={styles.sectionStyle}
                     title="Designations"
                     left={props => <List.Icon {...props} icon="meteor" />}
                     expanded={expendedList[11]}
@@ -179,25 +180,51 @@ const ExpendableDrawer = () => {
 
 
                 </List.Accordion>
-                <List.Accordion
-                    style={styles.accordingStyle}
-                    title="Office"
-                    left={props => <List.Icon {...props} icon="meteor" />}
-                    expanded={expendedList[0]}
-                    onPress={() => handlePress(0)} >
-                    
-                    <ScrollView>
-                        <List.Item style={{  marginTop: -10 }} title="Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Deputy Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Assistant Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Deputy Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Assistant Director" />
-                    </ScrollView>
+                
+                    <List.Accordion
+                        style={styles.accordingStyleOffice}
+                        title="Office"
+                        left={props => <List.Icon {...props} icon="meteor" />}
+                        expanded={expendedList[0]}
+                        onPress={() => handlePress(0)} >
+                        
 
-                    
 
-                </List.Accordion>
+                        <TextInput
+                            //style={{  borderRadius: 5, borderWidth: 1, width: 270, height: 30 }}
+                            placeholder="Search Office"
+                            //value={search}
+                            //underlineColorAndroid='trasparent'
+
+                            textAlign={'left'}
+                            //onChangeText={(text) => searchFilter(text)}
+                            mode='outlined'
+
+
+                        />
+
+                    <ScrollView style={{ height: 400, }}>
+                        {
+                            DATA_AE.map((item, index) => ( 
+                                <TouchableOpacity key={index} onPress={() => { navigation.navigate('OfficeScreen', { officeId: '415', title: 'Human Resource Developement Directorate' }) }}>
+                                    <View style={{ marginRight: 5 }}>
+                                        <Text style={{ fontSize: 15, fontWeight: '500' }}>{ index+1}. { item.office}</Text>
+                                        <Divider />
+                                    </View>
+                                </TouchableOpacity>
+
+                            ))
+                        }
+                        
+                        
+
+
+                        </ScrollView>
+
+
+
+                    </List.Accordion>
+                
 
             </List.Section>
         </>
@@ -207,7 +234,16 @@ const ExpendableDrawer = () => {
 
 
 const styles = StyleSheet.create({
+    sectionStyle: {
+        marginVertical: -5,
+        backgroundColor: "white"
+    },
     accordingStyle: {
+        marginVertical: -8,
+        marginHorizontal: 10,
+        backgroundColor: "white"
+    },
+    accordingStyleOffice: {
         marginVertical: -8,
         backgroundColor: "white"
     },
