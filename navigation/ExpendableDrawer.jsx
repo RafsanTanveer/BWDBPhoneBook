@@ -390,6 +390,10 @@ const styles = StyleSheet.create({
         marginVertical: 0,
         backgroundColor: "white"
     },
+    listItem: {
+        marginLeft:17,
+        marginTop: -10
+    }
 })
 
 export default ExpendableDrawer;
