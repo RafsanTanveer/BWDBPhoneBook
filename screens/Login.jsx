@@ -11,7 +11,7 @@ const width = Dimensions.get('window').width;
 const screenWidth = Dimensions.get('screen').width;
 const Login = () => {
     const [pmisId, setpmisId] = useState("920219001")
-   
+
     const handleSubmit = ({ pid }) => {
         setId(pmisId)
         ToastAndroid.showWithGravity(id,
@@ -36,7 +36,7 @@ const Login = () => {
                         position: 'absolute',
                         width: screenHeight * 0.12,
                         height: screenHeight * 0.12,
-                        marginLeft: screenWidth * .72,
+                        marginLeft: screenWidth * .70,
                         marginTop: screenHeight * .42,
                     }}
                     source={require(bwdbLogo)}
@@ -60,12 +60,10 @@ const Login = () => {
                             borderRadius: 10,
                             marginBottom: 5,
                             fontWeight: '700',
-                        }} placeholder='BWDB PMIS ID '>
+                        }}
+                        placeholder='BWDB PMIS ID '>
                     </TextInput>
-                    <TouchableOpacity onPress={() => (
-                        setId(pmisId)
-                        //handleSubmit(pmisId)
-                    )}
+                    <TouchableOpacity 
                         style={{ height: height / 20, width: "70%", borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF0000' }}>
                         <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>
                     </TouchableOpacity>
