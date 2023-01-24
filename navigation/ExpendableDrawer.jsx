@@ -9,6 +9,10 @@ import OfficeList from '../data/OfficeList';
 //****************************************** icons ********************************************** */
 
 
+
+
+//*******************************************icons ********************************************** */
+
 const bwdbLogo = '../assets/bwdLogo.png'
 const rightArrow = '../assets/icons/right.png'
 const engLogo = '../assets/icons8-architect-48.png'
@@ -27,6 +31,15 @@ const office = '../assets/icons/office.png'
 
 //*******************************************icons ********************************************** */
 
+
+const CustomLogo = ({logo}) => {
+    return (
+        <Image
+            source={require(engLogo)}
+            style={{ width: 30, height: 30, }}
+        />
+    )
+}
 
 const ExpendableDrawer = () => {
 
@@ -540,8 +553,8 @@ const ExpendableDrawer = () => {
                     
 
 
-                    </List.Accordion>
-                
+                </List.Accordion>
+
 
             </List.Section>
         </>
@@ -561,6 +574,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white"
     },
     accordingStyleOffice: {
+        marginVertical: 0,
         marginVertical: 0,
         backgroundColor: "white"
     },
