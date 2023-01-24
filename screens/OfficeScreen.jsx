@@ -1,6 +1,8 @@
 import React from "react";
+import { Text, View } from "react-native";
+
 import DataRenderOffice from "../data/DataRenderOffice";
-import { Text } from "react-native";
+
 
 const OfficeScreen = ({ route, navigation }) => {
 
@@ -10,12 +12,18 @@ const OfficeScreen = ({ route, navigation }) => {
         navigation.setOptions({
             title: value === '' ? 'No title' : value,
         });
-    }, [navigation, value]);
+    }, [route.params.title]);
+
 
     return (
         <>
-            <Text>{route.params.officeId}</Text>
-            <DataRenderOffice designation='Director (Admin)' desig_code="012" />
+            <View style={{  
+                alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15,
+                backgroundColor:  '#C1B8DC'  //'#6750a4'
+            }}>
+                <Text style={{ color: '#000', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily:'serif' }}>{route.params.officeName}</Text>
+            </View>
+            < DataRenderOffice designation='Assistant Engineer (Civil)' office_code={route.params.officeId} navigation={navigation} />
 
         </>
 

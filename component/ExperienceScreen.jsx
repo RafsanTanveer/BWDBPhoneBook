@@ -65,9 +65,9 @@ const ExperienceScreen = ({ id }) => {
                 </View >
 
                 {
-                    experience.map((item,i) => (
+                    experience.map((item,index) => (
 
-                        < View   style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        < View key={index}  style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             <View style={{ flex: .75, width: 200, }}>
                                 <Text style={styles.queryTextStyle}>{item.post ? item.post : item.desig} {item.charge == 'C' ? ',CC' : item.charge == 'A'?'Addl.':''}</Text>
                             </View>

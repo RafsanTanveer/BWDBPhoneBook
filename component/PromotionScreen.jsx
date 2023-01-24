@@ -66,8 +66,8 @@ const PromotionScreen = ({id}) => {
                 </View >
 
                 {
-                    promotion.map((item) => (
-                        < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    promotion.map((item,index) => (
+                        < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             <View style={{ flex: 1.5, width: 40, }}>
                                 <Text style={styles.secondTextStyle}></Text>
                             </View>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text, View, Image, ScrollView, FlatList } from 'react-native';
 import LottieView from 'lottie-react-native';
 import RowComponent from '../component/RowComponent';
@@ -10,14 +10,16 @@ import PromotionScreen from '../component/PromotionScreen';
 import ExperienceScreen from '../component/ExperienceScreen';
 import TrainingComponent from '../component/TrainingComponent';
 import api from '../api/api';
+import { AuthContext } from '../context/AuthContext';
 
 
 
 
 
-const BiodataScreen = () => {
+const BiodataScreen = ({ id }) => {
     const animation = useRef(null);
 
+    const { photo, setphoto, desig, setDesig, office, setOffice, name, setName } = useContext(AuthContext);
 
 
     //  ******************************  fetching data ***************************************
@@ -36,11 +38,11 @@ const BiodataScreen = () => {
             setRefreshing(false);
             const { data: response } = await api.get("biodata", {
                 params: {
-                    id: '631231006'
+                    id: id
                 }
             });
             setpersonalData(response.rows);
-            console.log("in persoanl data " + response.rows.name);
+
         } catch (error) {
             console.error(error.message);
         }
@@ -59,9 +61,16 @@ const BiodataScreen = () => {
     return (
 
         <>
+
             {
                 personalData.map((item) => (
-                    <View style={{ flex: 1 }} key={item.id}>
+
+                    <View style={{ flex: 1 }} key={item.id + Math.floor((Math.random() * 100) + 1)}>
+                        {
+                            setName(item.name)
+                           
+                        }{setphoto(item.photo)}
+                       
                         <View style={{
                             flexDirection: 'row', borderBottomColor: '#0080FF',
                             borderBottomWidth: 1
@@ -92,7 +101,12 @@ const BiodataScreen = () => {
                                         <RowComponent headingText='Home District' queryText={item.homeDist} />
                                     </View>
                                     <View >
-                                        <Image style={{ height: 100, width: 90 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
+                                        {
+                                            item.photo ?
+                                                <Image style={{ height: 100, width: 90 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
+                                                <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                                        }
+
 
                                     </View>
                                 </View>
@@ -107,35 +121,49 @@ const BiodataScreen = () => {
                                         )}
                                     delimiter=":"
                                 />
-                                <DoubleColumnComponent
+                                <SingleColumnComponent
                                     firstHeading="Date of Birth"
                                     firstQueryResult={item.bdate}
-                                    secondHeading="Gender"
-                                    secondQueryResult={item.gender == "M" ? 'Male' : 'Female'}
+                                    delimiter=":"
                                 />
-                                <DoubleColumnComponent
+                                <SingleColumnComponent
+                                    firstHeading="Gender"
+                                    firstQueryResult={item.gender == "M" ? 'Male' : 'Female'}
+                                    delimiter=":"
+                                />
+                              
+                                <SingleColumnComponent
                                     firstHeading="Marital Status"
                                     firstQueryResult={item.gender == "U" ? 'Unmarried' : 'Married'}
-                                    secondHeading="Employee Status"
-                                    secondQueryResult="Promoted"
+                                    delimiter=":"
                                 />
-
-                                <View style={{ flexDirection: 'row' }}>
+                                <SingleColumnComponent
+                                    firstHeading="Employee Status"
+                                    firstQueryResult="Promoted"
+                                    delimiter=":"
+                                />
+                                <SingleColumnComponent
+                                    firstHeading="Permanent Address"
+                                    firstQueryResult=""
+                                    delimiter=":"
+                                />
+                               
+                                {/* <View style={{ flexDirection: 'row' }}>
                                     <View style={{ flex: 1.5 }}>
                                         <Text style={styles.textStyle}>Permanent Address</Text>
                                     </View>
                                     <View style={{ flex: 2.5 }}>
                                         <Text style={styles.textStyle}>:</Text>
                                     </View>
-                                </View>
+                                </View> */}
 
-                                <AddressComponent
+                                {/* <AddressComponent
                                     firstHeading="Permanent Address"
                                     firstDelimiter=":"
                                     address=""
                                     delimiter=""
                                     addressQueryResult=""
-                                />
+                                /> */}
 
                                 <SingleColumnComponent
                                     firstHeading="Joined BWDB as"
@@ -179,7 +207,7 @@ const BiodataScreen = () => {
                                     delimiter=":"
                                 />
 
-                                <EducationComponent  id={item.id} />
+                                <EducationComponent id={item.id} />
                                 <SingleColumnComponent
                                     firstHeading="Appointment and Promotions"
                                     firstQueryResult=""

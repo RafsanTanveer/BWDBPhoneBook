@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "../api/api";
 import DataRender from "../data/DataRender";
 import { View, StyleSheet, ToastAndroid, Button, StatusBar, Text } from "react-native";
 import * as SQLite from 'expo-sqlite'
 import { DatabaseConnection } from "../data/DbConnection";
 import BiodataScreen from "./BiodataScreen";
+import { AuthContext } from "../context/AuthContext";
 
 const db = DatabaseConnection.getConnection();
-
 const Home = ({ navigation }) => {
 
-  let [flatListItems, setFlatListItems] = useState([]);
 
-  
+  const { userInfo, splashLoading, name, isLogged } = useContext(AuthContext);
+
 
   return (
     <>
-      {/* <BiodataScreen /> */}
+      {
+        isLogged &&
+        <BiodataScreen id={userInfo.rows[0].id} />
+      }
     </>
 
   )

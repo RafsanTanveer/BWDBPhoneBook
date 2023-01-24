@@ -1,10 +1,11 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,ToastAndroid } from "react-native";
 import { TextInput } from "react-native-paper";
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
-
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import NoDataFoundScreen from '../screens/NoDataFoundScreen';
 
 
 
@@ -13,10 +14,10 @@ const width = Dimensions.get('window').width;
 const person_photo_placeholder = '../assets/person_photo_placeholder.jpg'
 
 
-const DataRenderOffice = ({ office_code }) => {
+const DataRenderOffice = ({ office_code, navigation }) => {
 
     const [masterData, setMasterData] = useState(DATA)
-    const [filteredData, setFilteredData] = useState(DATA)
+    const [filteredData, setFilteredData] = useState()
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
     const [refreshing, setRefreshing] = useState(true);
@@ -27,6 +28,8 @@ const DataRenderOffice = ({ office_code }) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [DATA, setDATA] = useState([])
+
+    // ToastAndroid.show('in datarenderoffice screen ' + office_code, ToastAndroid.SHORT);
 
     const fetchData = async () => {
         setIsLoading(true);
@@ -46,10 +49,18 @@ const DataRenderOffice = ({ office_code }) => {
     }
 
     useEffect(() => {
-
         fetchData();
+        
 
-    }, []);
+    }, [office_code]);
+
+
+    useEffect(() => {
+
+        setFilteredData(DATA);  // for updating filterdata at first 
+
+    }, [DATA]);
+
 
     //  ******************************  fetching data ***************************************
 
@@ -102,9 +113,13 @@ const DataRenderOffice = ({ office_code }) => {
                     <View style={{ flex: 1, }}>
                         <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
                     </View>
-                    <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge=='C'?', cc':''} </Text>
-                    </View>
+                    {
+                        item.post ?
+                            <View style={{ flex: 1, }}>
+                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge == 'C' ? ', cc' : ''} </Text>
+                            </View>:''
+                    }
+                    
                     <View style={{ flex: 1, }}>
                         <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: {item.designation} </Text>
                     </View>
@@ -151,10 +166,11 @@ const DataRenderOffice = ({ office_code }) => {
     return (
         isLoading ?
             <LoadingScreen /> :
+            DATA.length == 0 ? <NoDataFoundScreen /> :
             <SafeAreaView style={styles.container}>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
-                    <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5 }}
+                    <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5,  }}
                         placeholder="Search"
                         value={search}
                         //underlineColorAndroid='trasparent'
@@ -167,10 +183,10 @@ const DataRenderOffice = ({ office_code }) => {
                 {refreshing ? <ActivityIndicator /> : null}
                 <FlatList
 
-                    data={DATA}
+                        data={filteredData}
                     renderItem={Item}
                     keyExtractor={(item) => item.id}
-                    extraData={selectedId}
+                    extraData={selectedId} 
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
                     }

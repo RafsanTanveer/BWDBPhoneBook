@@ -71,8 +71,8 @@ const EducationComponent = ({ id }) => {
                 </View >
 
                 {
-                    edu.map((item) => (
-                        < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    edu.map((item, index) => (
+                        < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             <View style={{ flex: .75, width: 50, }}>
                                 <Text style={styles.queryTextStyle}>{item.passingYear}</Text>
                             </View>

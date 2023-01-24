@@ -64,6 +64,13 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     //  ******************************  fetching data ***************************************
 
+    useEffect(() => {
+
+        setFilteredData(DATA);  // for updating filterdata at first 
+
+    }, [DATA]);
+
+   
 
     const searchFilter = (text) => {
         //setMasterData(DATA)
@@ -182,7 +189,7 @@ const DataRender = ({ designation, url, desig_code }) => {
                     </View>
                     <FlatList
 
-                        data={DATA}
+                        data={ filteredData}
                         renderItem={Item}
                         keyExtractor={(item) => item.id}
                         extraData={selectedId}
