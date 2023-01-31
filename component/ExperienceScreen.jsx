@@ -1,12 +1,15 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import api from '../api/api';
+import { AuthContext } from '../context/AuthContext';
 
 
 const ExperienceScreen = ({ id }) => {
 
 
     //  ******************************  fetching data ***************************************
+
+    const { setpresentDesig, setpresentOffice, setpresentPost,  setpresentCharge } = useContext(AuthContext);
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +31,11 @@ const ExperienceScreen = ({ id }) => {
                 }
             });
             setexperience(response.rows);
-            console.log("in persoanl data " + response.rows.name);
+            setpresentOffice(response.rows[0].office)
+            setpresentDesig(response.rows[0].desig)
+            setpresentPost(response.rows[0].post);
+            setpresentCharge(response.rows[0].charge)
+
         } catch (error) {
             console.error(error.message);
         }
@@ -65,11 +72,11 @@ const ExperienceScreen = ({ id }) => {
                 </View >
 
                 {
-                    experience.map((item,index) => (
+                    experience.map((item, index) => (
 
-                        < View key={index}  style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             <View style={{ flex: .75, width: 200, }}>
-                                <Text style={styles.queryTextStyle}>{item.post ? item.post : item.desig} {item.charge == 'C' ? ',CC' : item.charge == 'A'?'Addl.':''}</Text>
+                                <Text style={styles.queryTextStyle}>{item.post ? item.post : item.desig} {item.charge == 'C' ? ',CC' : item.charge == 'A' ? 'Addl.' : ''}</Text>
                             </View>
                             <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
                                 <Text style={styles.queryTextStyle}>{item.office}</Text>
@@ -84,7 +91,7 @@ const ExperienceScreen = ({ id }) => {
                     ))
 
                 }
-                
+
             </View>
 
         </ScrollView >

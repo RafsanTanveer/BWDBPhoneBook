@@ -28,6 +28,7 @@ import DDGeology from "../screens/geology/DDGeology";
 import DirectorGeologist from "../screens/geology/DirectorGeologist";
 import Geologist from "../screens/geology/Geologist";
 import OfficeScreen from "../screens/OfficeScreen";
+import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from "../context/AuthContext";
 import LoginScreen from "../screens/LoginScreen";
 import Login from "../screens/Login";
@@ -36,13 +37,33 @@ import ADLand from '../screens/Land/ADLand'
 import DDLand from '../screens/Land/DDLand'
 import DirectorLand from '../screens/Land/DirectorLand'
 
+import AEME from '../screens/me/AEME'
+import ACEME from '../screens/me/ACEME'
+import SDEME from '../screens/me/SDEME'
+import SEME from '../screens/me/SEME'
+import XENME from '../screens/me/XENME'
+import CEME from '../screens/me/CEME'
 
+import DG from '../screens/dgadg/DG'
+import ADG from '../screens/dgadg/ADG'
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = () => {
+    const { currentTheme } = useContext(ThemeContext);
+
     return (
-        <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+        <Drawer.Navigator
+            screenOptions={{
+                headerShown: true,
+                headerStyle:
+                {
+                    backgroundColor:'white'
+                    // backgroundColor: `${currentTheme}`,
+                },
+            }}
+            
+            drawerContent={(props) => <DrawerContent {...props} />}>
 
             <Drawer.Screen name="Home" component={Home} />
             <Drawer.Screen name="Chief Engineer (Civil)" component={CE} />
@@ -77,6 +98,21 @@ const CustomDrawer = () => {
             <Drawer.Screen name="Director Land" component={DirectorLand} />
             <Drawer.Screen name="Deputy Director (Land)" component={DDLand} />
 
+            <Drawer.Screen name="Assistant Engineer (M/E)" component={AEME} />
+            <Drawer.Screen name="Sub-divisional Engineer (M/E)" component={SDEME} />
+            <Drawer.Screen name="Executive Engineer (M/E)" component={XENME} />
+            <Drawer.Screen name="Superintendent Engineer (M/E)" component={SEME} />
+            <Drawer.Screen name="Addl. Chief Engineer (M/E)" component={ACEME} />
+            <Drawer.Screen name="Chief Engineer (M/E)" component={CEME} />
+
+
+            <Drawer.Screen name="Director General" component={DG} />
+            <Drawer.Screen name="Addl. Director General" component={ADG} />
+
+
+
+
+
         </Drawer.Navigator>
     );
 };
@@ -85,7 +121,8 @@ const CustomDrawer = () => {
 const CustomNavigator = () => {
 
     const {  isLogged } = useContext(AuthContext);
-    const [loggedInd, setloggedInd] = useState()
+    const { currentTheme } = useContext(ThemeContext);
+
     
     return (
         <>
@@ -93,7 +130,7 @@ const CustomNavigator = () => {
             <NavigationContainer>
                 {isLogged ?
                     <>
-                        <StatusBar animated={true} backgroundColor="#6750a4" />
+                        <StatusBar animated={true} backgroundColor={currentTheme} />
                         <CustomDrawer />
                     </>
                     :

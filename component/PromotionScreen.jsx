@@ -75,10 +75,10 @@ const PromotionScreen = ({id}) => {
                                 <Text style={styles.queryTextStyle}>{item.desig}</Text>
                             </View>
                             <View style={{ flex: 1, width: 100, }}>
-                                <Text style={styles.queryTextStyle}>{item.joinDate}</Text>
+                                <Text style={styles.queryTextStyle}>{item.postingDate}</Text>
                             </View>
                             <View style={{ flex: 1, width: 120, marginRight:10 }}>
-                                <Text style={styles.queryTextStyle}>{item.releaseDate}</Text>
+                                <Text style={styles.queryTextStyle}>{item.joinDate}</Text>
                             </View>
 
                         </View >

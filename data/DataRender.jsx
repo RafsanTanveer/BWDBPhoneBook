@@ -1,5 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { TextInput } from "react-native-paper";
 import api from '../api/api';
@@ -7,7 +7,10 @@ import LoadingScreen from "../screens/LoadingScreen";
 import NetInfo from '@react-native-community/netinfo';
 import NoInternetScreen from '../screens/NoInternetScreen'
 import NoDataFoundScreen from '../screens/NoDataFoundScreen';
-
+import { AuthContext } from '../context/AuthContext';
+import BiodataScreen from '../screens/BiodataScreen';
+import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from '../context/ThemeContext';
 
 
 const height = Dimensions.get('window').height;
@@ -17,17 +20,26 @@ const width = Dimensions.get('window').width;
 
 const DataRender = ({ designation, url, desig_code }) => {
 
+    const navigation = useNavigation();
+
+
     const [masterData, setMasterData] = useState(DATA)
     const [filteredData, setFilteredData] = useState(DATA)
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
     const [refreshing, setRefreshing] = useState(true);
     const [noInternetConnection, setnoInternetConnection] = useState()
+    const [seniorityText, setseniorityText] = useState()
+
+    const { presentOfficeCode } = useContext(AuthContext);
+    const { currentTheme } = useContext(ThemeContext);
+
+
 
     // ********************************  Internet Connection checked *************************************
     NetInfo.fetch().then(state => {
-        console.log('Connection type', state.type);
-        console.log('Is connected?', state.isConnected);
+        // console.log('Connection type', state.type);
+        // console.log('Is connected?', state.isConnected);
         setnoInternetConnection(state.isConnected)
     });
     // ********************************  Internet Connection checked *************************************
@@ -41,10 +53,12 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     const fetchData = async () => {
         setIsLoading(true);
-
+        let desigUrl = desig_code === '001' ? "dg" : desig_code === '992' ? "adg" : "desig"
+        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority list"
+        setseniorityText(snrTxt)
         try {
             setRefreshing(false);
-            const { data: response } = await api.get("desig", {
+            const { data: response } = await api.get(desigUrl, {
                 params: {
                     desig: desig_code
                 }
@@ -70,7 +84,7 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     }, [DATA]);
 
-   
+
 
     const searchFilter = (text) => {
         //setMasterData(DATA)
@@ -116,6 +130,13 @@ const DataRender = ({ designation, url, desig_code }) => {
             }}>
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
+                        {
+                            presentOfficeCode === 30 ?
+                                <TouchableOpacity onPress={() => { navigation.navigate('Asst. Director (Admin)') }}>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif' }}>{item.id}</Text>
+                                </TouchableOpacity>
+                                : null
+                        }
                         <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
                     </View>
                     <View style={{ flex: 1, }}>
@@ -137,14 +158,32 @@ const DataRender = ({ designation, url, desig_code }) => {
                 <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
                     {
                         item.mobile &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
+                            style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                backgroundColor: `${currentTheme}`,
+                                borderRadius: height * .005,
+                                marginHorizontal: 5,
+                                paddingVertical: 1,
+                                paddingHorizontal: 10
+                            }}>
                             <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                             <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
                         </TouchableOpacity>
                     }
                     {
                         item.pabx &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }}
+                            style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                backgroundColor: `${currentTheme}`,
+                                borderRadius: height * .005,
+                                marginHorizontal: 5,
+                                paddingVertical: 1,
+                                paddingHorizontal: 10
+                            }}>
                             <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                             <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
                         </TouchableOpacity>
@@ -152,7 +191,15 @@ const DataRender = ({ designation, url, desig_code }) => {
                     {
                         item.mobile &&
                         <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
-                            style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
+                            style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                backgroundColor: `${currentTheme}`,
+                                borderRadius: height * .005,
+                                marginHorizontal: 5,
+                                paddingVertical: 1,
+                                paddingHorizontal: 12
+                            }}>
                             <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                         </TouchableOpacity>
                     }
@@ -185,11 +232,11 @@ const DataRender = ({ designation, url, desig_code }) => {
                     </View>
                     {refreshing ? <ActivityIndicator /> : null}
                     <View style={{ alignItems: 'flex-end', marginRight: 5 }}>
-                        <Text style={{ color: 'black', fontSize: 10 }}>* not according to seniority list</Text>
+                        <Text style={{ color: 'black', fontSize: 10 }}>{seniorityText}</Text>
                     </View>
                     <FlatList
 
-                        data={ filteredData}
+                        data={filteredData}
                         renderItem={Item}
                         keyExtractor={(item) => item.id}
                         extraData={selectedId}
@@ -249,7 +296,17 @@ const styles = StyleSheet.create({
         color: "white",
         alignContent: 'center',
         justifyContent: 'center'
+    },
+    phnButtonStyle: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        backgroundColor: "#6750a4",
+        borderRadius: height * .005,
+        marginHorizontal: 5,
+        paddingVertical: 1,
+        paddingHorizontal: 10
     }
+
 });
 
 

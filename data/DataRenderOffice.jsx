@@ -1,12 +1,13 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,ToastAndroid } from "react-native";
+import React, { useEffect, useState, useContext } from "react";
+import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { TextInput } from "react-native-paper";
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import NoDataFoundScreen from '../screens/NoDataFoundScreen';
-
+import { AuthContext } from '../context/AuthContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 
 const height = Dimensions.get('window').height;
@@ -15,6 +16,11 @@ const person_photo_placeholder = '../assets/person_photo_placeholder.jpg'
 
 
 const DataRenderOffice = ({ office_code, navigation }) => {
+
+    const { presentOfficeCode } = useContext(AuthContext);
+    const { currentTheme } = useContext(ThemeContext);
+
+
 
     const [masterData, setMasterData] = useState(DATA)
     const [filteredData, setFilteredData] = useState()
@@ -50,7 +56,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
 
     useEffect(() => {
         fetchData();
-        
+
 
     }, [office_code]);
 
@@ -94,8 +100,8 @@ const DataRenderOffice = ({ office_code, navigation }) => {
             {/* <View style={{ elevation: 10,zIndex: 9, }}>
                 <Text style={{color:'black'}} >{index + 1}</Text>
             </View> */}
-            <View style={{ justifyContent: 'center', alignContent: 'center',}}>
-                <View style={{ borderRadius:10}}>
+            <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                <View style={{ borderRadius: 10 }}>
                     <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
                 </View>
                 {item.photo ?
@@ -111,15 +117,21 @@ const DataRenderOffice = ({ office_code, navigation }) => {
             }}>
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+                        
+                        {
+                            presentOfficeCode === 30 ? <Text style={{ fontSize: height * .017, fontFamily: 'serif' }}>{item.id}</Text> : null
+                        }
+
+
+                        <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name}  </Text>
                     </View>
                     {
                         item.post ?
                             <View style={{ flex: 1, }}>
                                 <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge == 'C' ? ', cc' : ''} </Text>
-                            </View>:''
+                            </View> : ''
                     }
-                    
+
                     <View style={{ flex: 1, }}>
                         <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: {item.designation} </Text>
                     </View>
@@ -136,14 +148,14 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                 <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
                     {
                         item.mobile &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
                             <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                             <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
                         </TouchableOpacity>
                     }
                     {
                         item.pabx &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
                             <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                             <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
                         </TouchableOpacity>
@@ -151,7 +163,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                     {
                         item.mobile &&
                         <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
-                            style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: '#6750a4', borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
+                                style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
                             <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                         </TouchableOpacity>
                     }
@@ -167,34 +179,34 @@ const DataRenderOffice = ({ office_code, navigation }) => {
         isLoading ?
             <LoadingScreen /> :
             DATA.length == 0 ? <NoDataFoundScreen /> :
-            <SafeAreaView style={styles.container}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <SafeAreaView style={styles.container}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
-                    <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5,  }}
-                        placeholder="Search"
-                        value={search}
-                        //underlineColorAndroid='trasparent'
-                        onChangeText={(text) => searchFilter(text)}
-                        mode='outlined'
+                        <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5, }}
+                            placeholder="Search"
+                            value={search}
+                            //underlineColorAndroid='trasparent'
+                            onChangeText={(text) => searchFilter(text)}
+                            mode='outlined'
 
 
-                    />
-                </View>
-                {refreshing ? <ActivityIndicator /> : null}
-                <FlatList
+                        />
+                    </View>
+                    {refreshing ? <ActivityIndicator /> : null}
+                    <FlatList
 
                         data={filteredData}
-                    renderItem={Item}
-                    keyExtractor={(item) => item.id}
-                    extraData={selectedId} 
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-                    }
+                        renderItem={Item}
+                        keyExtractor={(item) => item.id}
+                        extraData={selectedId}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+                        }
 
-                />
-                
+                    />
 
-            </SafeAreaView>
+
+                </SafeAreaView>
     )
 }
 

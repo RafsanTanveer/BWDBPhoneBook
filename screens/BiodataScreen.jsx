@@ -19,9 +19,9 @@ import { AuthContext } from '../context/AuthContext';
 const BiodataScreen = ({ id }) => {
     const animation = useRef(null);
 
-    const { photo, setphoto, desig, setDesig, office, setOffice, name, setName } = useContext(AuthContext);
+    const {  setofficeAddres, setphoto,  setpresentOfficeCode,   setName, presentOffice,presentPost } = useContext(AuthContext);
 
-
+    
     //  ******************************  fetching data ***************************************
 
     const [personalData, setpersonalData] = useState([])
@@ -42,7 +42,15 @@ const BiodataScreen = ({ id }) => {
                 }
             });
             setpersonalData(response.rows);
+            
+            
+            setName(response.rows[0].name)
 
+            setphoto(response.rows[0].photo)
+            setofficeAddres(response.rows[0].officeAddress)
+            setpresentOfficeCode(response.rows[0].offceCode)
+            console.log(response.rows[0].offceCode);
+           
         } catch (error) {
             console.error(error.message);
         }
@@ -56,6 +64,8 @@ const BiodataScreen = ({ id }) => {
     }, []);
 
     //  ******************************  fetching data ***************************************
+console.log('in biodata');
+    
 
 
     return (
@@ -66,10 +76,7 @@ const BiodataScreen = ({ id }) => {
                 personalData.map((item) => (
 
                     <View style={{ flex: 1 }} key={item.id + Math.floor((Math.random() * 100) + 1)}>
-                        {
-                            setName(item.name)
-                           
-                        }{setphoto(item.photo)}
+                       
                        
                         <View style={{
                             flexDirection: 'row', borderBottomColor: '#0080FF',
@@ -139,7 +146,7 @@ const BiodataScreen = ({ id }) => {
                                 />
                                 <SingleColumnComponent
                                     firstHeading="Employee Status"
-                                    firstQueryResult="Promoted"
+                                    firstQueryResult=""
                                     delimiter=":"
                                 />
                                 <SingleColumnComponent
@@ -188,17 +195,20 @@ const BiodataScreen = ({ id }) => {
                                 />
 
 
-                                <SingleColumnComponent firstHeading="Present Post" firstQueryResult="Director (Admin)" delimiter=":" />
+                                <SingleColumnComponent
+                                    firstHeading="Present Post"
+                                    firstQueryResult={presentPost}
+                                    delimiter=":" />
 
                                 <SingleColumnComponent
                                     firstHeading="Office Name"
-                                    firstQueryResult="Directorate Of Security And Intelligence (196000)"
+                                    firstQueryResult={presentOffice}
                                     delimiter=":"
                                 />
 
                                 <SingleColumnComponent
                                     firstHeading="Office Address"
-                                    firstQueryResult="Pani Bhaban, Level-Ground, 72 Green Road, Dhaka."
+                                    firstQueryResult={item.officeAddress}
                                     delimiter=":"
                                 />
                                 <SingleColumnComponent

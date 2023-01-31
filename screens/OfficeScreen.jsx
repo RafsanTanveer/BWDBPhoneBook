@@ -1,12 +1,14 @@
-import React from "react";
 import { Text, View } from "react-native";
+import React, { useContext, useState } from "react";
 
 import DataRenderOffice from "../data/DataRenderOffice";
+import { ThemeContext } from "../context/ThemeContext";
 
 
 const OfficeScreen = ({ route, navigation }) => {
 
     const [value, onChangeText] = React.useState(route.params.title);
+    const { currentTheme } = useContext(ThemeContext);
 
     React.useEffect(() => {
         navigation.setOptions({

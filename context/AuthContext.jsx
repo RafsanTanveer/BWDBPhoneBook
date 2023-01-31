@@ -13,8 +13,14 @@ export const AuthProvider = ({ children }) => {
     const [name, setName] = useState()
     const [isLogged, setisLogged] = useState(false)
     const [photo, setphoto] = useState()
-    const [desig, setDesig] = useState()
-    const [office, setOffice] = useState()
+    const [presentDesig, setpresentDesig] = useState()
+    const [presentOffice, setpresentOffice] = useState()
+    const [presentPost, setpresentPost] = useState()
+    const [presentCharge, setpresentCharge] = useState()
+    const [officeAddres, setofficeAddres] = useState()
+    const [presentOfficeCode, setpresentOfficeCode] = useState()
+
+
 
 
     const register = (name, email, password) => {
@@ -50,31 +56,30 @@ export const AuthProvider = ({ children }) => {
             })
             .then(res => {
                 const userData = res.data;
-               
-                
 
-                console.log('Length  ------------- '+userData.rows.length);
+
+
+                console.log('Length  ------------- ' + userData.rows.length);
                 if (userData.rows.length === 0) {
                     ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
                     setisLogged(false)
                     setUserInfo([])
                     console.log(userData.rows)
                 }
-                else if (  userData.rows[0].status === 'I') {
+                else if (userData.rows[0].status === 'I') {
                     console.log(userData.rows);
                     ToastAndroid.show('INACTIVE', ToastAndroid.LONG,);
                     setisLogged(false)
                     setUserInfo([])
-                   
-                 }
-                else
-                {
+
+                }
+                else {
                     console.log(userData.rows)
                     setUserInfo(userData);
                     setisLogged(true)
                 }
 
-                 AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+                AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
                 setIsLoading(false);
             })
             .catch(e => {
@@ -84,28 +89,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        
+
         setisLogged(false)
         setUserInfo([])
+        setpresentOfficeCode(0)
         AsyncStorage.removeItem('userInfo');
-        // api
-        //     .post(
-        //         `${BASE_URL}/logout`,
-        //         {},
-        //         {
-        //             headers: { Authorization: `Bearer ${userInfo.access_token}` },
-        //         },
-        //     )
-        //     .then(res => {
-        //         console.log(res.data);
-        //         AsyncStorage.removeItem('userInfo');
-        //         setUserInfo({});
-        //         setIsLoading(false);
-        //     })
-        //     .catch(e => {
-        //         console.log(`logout error ${e}`);
-        //         setIsLoading(false);
-        //     });
+        
     };
 
     const isLoggedIn = async () => {
@@ -144,8 +133,12 @@ export const AuthProvider = ({ children }) => {
                     isLogged,
                     name, setName,
                     photo, setphoto,
-                    desig, setDesig,
-                    office, setOffice
+                    presentDesig, setpresentDesig,
+                    presentOffice, setpresentOffice,
+                    presentPost, setpresentPost,
+                    presentCharge, setpresentCharge,
+                    officeAddres, setofficeAddres,
+                    presentOfficeCode, setpresentOfficeCode
                 }}>
                 {children}
             </AuthContext.Provider>

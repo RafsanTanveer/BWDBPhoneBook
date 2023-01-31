@@ -30,23 +30,22 @@ const TrainingComponent = () => {
 
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     <View style={{ flex: .75, width: 200, }}>
-                        <Text style={styles.queryTextStyle}>Water Res. Planning & Services Managemen</Text>
+                        <Text style={styles.queryTextStyle}></Text>
                     </View>
                     <View style={{ flex: 1, width: 150, }}>
-                        <Text style={styles.queryTextStyle}>Dpp, Tpp, Report Writing Course Related</Text>
+                        <Text style={styles.queryTextStyle}></Text>
                     </View>
                     <View style={{ flex: 1, width: 150, }}>
-                        <Text style={styles.queryTextStyle}>Irrigation Extension Training Centre
-</Text>
+                        <Text style={styles.queryTextStyle}></Text>
                     </View>
                     <View style={{ flex: 1, width: 100, marginLeft: 10 }}>
-                        <Text style={styles.queryTextStyle}>Bangladesh</Text>
+                        <Text style={styles.queryTextStyle}></Text>
                     </View>
                     <View style={{ flex: 1, width: 50, marginLeft: 5, }}>
-                        <Text style={styles.queryTextStyle}>1200</Text>
+                        <Text style={styles.queryTextStyle}></Text>
                     </View>
                     <View style={{ flex: 1, width: 50 }}>
-                        <Text style={styles.queryTextStyle}>100</Text>
+                        <Text style={styles.queryTextStyle}></Text>
                     </View>
                 </View >
                 

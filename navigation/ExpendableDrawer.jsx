@@ -9,10 +9,6 @@ import OfficeList from '../data/OfficeList';
 //****************************************** icons ********************************************** */
 
 
-
-
-//*******************************************icons ********************************************** */
-
 const bwdbLogo = '../assets/bwdLogo.png'
 const rightArrow = '../assets/icons/right.png'
 const engLogo = '../assets/icons8-architect-48.png'
@@ -31,15 +27,6 @@ const office = '../assets/icons/office.png'
 
 //*******************************************icons ********************************************** */
 
-
-const CustomLogo = ({logo}) => {
-    return (
-        <Image
-            source={require(engLogo)}
-            style={{ width: 30, height: 30, }}
-        />
-    )
-}
 
 const ExpendableDrawer = () => {
 
@@ -83,7 +70,7 @@ const ExpendableDrawer = () => {
         if (no == 0) {
             expendedList[0] ? arr[0] = false : arr[0] = true;
             for (let i = 1; i <= 17; i++) {
-               
+
                 arr[i] = false;
             }
         }
@@ -91,10 +78,10 @@ const ExpendableDrawer = () => {
             expendedList[11] ? arr[11] = false : arr[11] = true;
             for (let i = 0; i <= 17; i++) {
                 if (i != 11)
-                arr[i] = false;
+                    arr[i] = false;
             }
         }
-        else if(no>0 && no<=10){
+        else if (no > 0 && no <= 10) {
             arr[0] = true
             for (let i = 1; i <= 17; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
@@ -105,7 +92,7 @@ const ExpendableDrawer = () => {
             arr[11] = true
             for (let i = 0; i <= 17; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
-                else if(i!=11) arr[i] = false;
+                else if (i != 11) arr[i] = false;
             }
         }
         setexpendedList(arr);
@@ -141,12 +128,12 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[8]}
                         onPress={() => handlePress(8)}  >
-                        <List.Item left={props => <List.Icon {...props} icon={() => (
+                        <List.Item onPress={() => { navigation.navigate('Director General') }} left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
                                 style={styles.iconStyle}
                             />
-                        )} />} style={{ marginLeft: 20, marginTop: -10, }} title="Director General" />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director General" />
                         <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" />
 
                     </List.Accordion>
@@ -163,13 +150,13 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[1]}
                         onPress={() => handlePress(1)} >
 
-                        <List.Item onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(Adc  Min)' }) }} left={props => <List.Icon {...props} icon={() => (
+                        <List.Item onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'Director (Admin)' }) }} left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
                                 style={styles.iconStyle}
                             />
                         )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Admin)" />
-                        <List.Item  onPress={() => { navigation.navigate('Deputy Director (Admin)') }} left={props => <List.Icon {...props} icon={() => (
+                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Admin)') }} left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
                                 style={styles.iconStyle}
@@ -285,9 +272,7 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[10]}
                         onPress={() => handlePress(10)} >
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Deputy Director" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Assistant Director" />
+                        {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Director" /> */}
 
                     </List.Accordion>
 
@@ -303,7 +288,7 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[4]}
                         onPress={() => handlePress(4)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Director (Geology)') }} left={props => <List.Icon {...props} icon={() => (
+                        <List.Item onPress={() => { navigation.navigate('Controller (Fa&A)') }} left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
                                 style={styles.iconStyle}
@@ -365,7 +350,7 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Geologist" />
-                        
+
                     </List.Accordion>
 
                     <List.Accordion
@@ -413,9 +398,42 @@ const ExpendableDrawer = () => {
                         onPress={() => handlePress(7)}
                     >
 
-                        <TouchableOpacity onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(AdMin)' }) }} style={{ height: 20 }}>
-                            <Text>Office Text</Text>
-                        </TouchableOpacity>
+                        <List.Item onPress={() => { navigation.navigate('Chief Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Chief Engineer (M/E)" />
+                        <List.Item onPress={() => { navigation.navigate('Addl. Chief Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Chief Engineer (M/E)" />
+                        <List.Item onPress={() => { navigation.navigate('Superintendent Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Superintendent Engineer (M/E)" />
+                        <List.Item onPress={() => { navigation.navigate('Executive Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Executive Engineer (M/E)" />
+                        <List.Item onPress={() => { navigation.navigate('Sub-divisional Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Sub-divisional Engineer (M/E)" />
+                        <List.Item onPress={() => { navigation.navigate('Assistant Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Engineer (M/E)" />
 
                     </List.Accordion>
                     <List.Accordion
@@ -431,30 +449,30 @@ const ExpendableDrawer = () => {
                         onPress={() => handlePress(9)}
                     >
 
-                        <TouchableOpacity onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(AdMin)' }) }} style={{ height: 20 }}>
+                        {/* <TouchableOpacity onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'AD(AdMin)' }) }} style={{ height: 20 }}>
                             <Text>Office Text</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </List.Accordion>
 
 
                 </List.Accordion>
-                
-                    <List.Accordion
-                        style={styles.accordingStyleOffice}
-                        title="Office"
+
+                <List.Accordion
+                    style={styles.accordingStyleOffice}
+                    title="Office"
                     left={props => <List.Icon {...props} icon={() => (
                         <Image
                             source={require(office)}
                             style={styles.iconStyle}
                         />
                     )} />}
-                        expanded={expendedList[11]}
-                        onPress={() => handlePress(11)} >
-                        
+                    expanded={expendedList[11]}
+                    onPress={() => handlePress(11)} >
 
 
-                        
+
+
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="DIRECTOR GENERAL"
@@ -466,8 +484,8 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[12]}
                         onPress={() => handlePress(12)}  >
-                        
-                        <OfficeList lcode ='01'/>
+
+                        <OfficeList lcode='01' />
 
                     </List.Accordion>
                     <List.Accordion
@@ -478,10 +496,10 @@ const ExpendableDrawer = () => {
                                 source={require(rightArrow)}
                                 style={styles.iconStyle}
                             />
-                        )}/>}
+                        )} />}
                         expanded={expendedList[13]}
                         onPress={() => handlePress(13)}  >
-                        
+
                         <OfficeList lcode='02' />
 
 
@@ -497,7 +515,7 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[14]}
                         onPress={() => handlePress(14)}  >
-                       
+
                         <OfficeList lcode='03' />
 
                     </List.Accordion>
@@ -512,10 +530,10 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[15]}
                         onPress={() => handlePress(15)}  >
-                       
+
                         <OfficeList lcode='04' />
 
-                        
+
                     </List.Accordion>
                     <List.Accordion
                         style={styles.accordingStyle}
@@ -528,10 +546,10 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[16]}
                         onPress={() => handlePress(16)}  >
-                       
+
                         <OfficeList lcode='05' />
 
-                        
+
                     </List.Accordion>
                     <List.Accordion
                         style={styles.accordingStyle}
@@ -544,13 +562,13 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[17]}
                         onPress={() => handlePress(17)}  >
-                        
+
                         <OfficeList lcode='06' />
                         {/* <ADGWEST  /> */}
 
 
                     </List.Accordion>
-                    
+
 
 
                 </List.Accordion>
@@ -569,12 +587,11 @@ const styles = StyleSheet.create({
         backgroundColor: "white"
     },
     accordingStyle: {
-        marginVertical: -6 ,
+        marginVertical: -6,
         marginHorizontal: 10,
         backgroundColor: "white"
     },
     accordingStyleOffice: {
-        marginVertical: 0,
         marginVertical: 0,
         backgroundColor: "white"
     },
@@ -586,7 +603,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
-   
+
 })
 
 export default ExpendableDrawer;
