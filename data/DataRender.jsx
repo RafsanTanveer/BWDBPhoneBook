@@ -254,7 +254,7 @@ const DataRender = ({ designation, url, desig_code }) => {
                                 alignSelf: 'flex-end',
                                 position: 'absolute',
                                 marginTop: 9.5,
-                                paddingRight: 11,
+                                paddingRight: 12,
                                 
 
                             }}
