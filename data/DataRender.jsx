@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState, useContext } from "react";
-import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
-import { TextInput } from "react-native-paper";
+import { Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+// import { TextInput } from "react-native-paper";
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 import NetInfo from '@react-native-community/netinfo';
@@ -12,6 +12,7 @@ import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
 
+// import second from '../assets/close.png'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -54,7 +55,7 @@ const DataRender = ({ designation, url, desig_code }) => {
     const fetchData = async () => {
         setIsLoading(true);
         let desigUrl = desig_code === '001' ? "dg" : desig_code === '992' ? "adg" : "desig"
-        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority list"
+        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
         setseniorityText(snrTxt)
         try {
             setRefreshing(false);
@@ -218,9 +219,23 @@ const DataRender = ({ designation, url, desig_code }) => {
                 <LoadingScreen /> :
                 //DATA.length == 0 ? <NoDataFoundScreen /> :
                 <SafeAreaView style={styles.container}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center'
+                    }}>
 
-                        <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5 }}
+                        <TextInput
+                            selectionColor={'black'}       // for changing curcsor color 
+                            style={{
+                                height: height / 20,
+                                width: "98%",
+                                borderRadius: 5,
+                                marginBottom: 5,
+                                borderColor: '#6750a4',
+                                borderWidth: 2,
+                                paddingLeft: 15,
+                                
+                            }}
                             placeholder="Search"
                             value={search}
                             //underlineColorAndroid='trasparent'
@@ -229,10 +244,34 @@ const DataRender = ({ designation, url, desig_code }) => {
 
 
                         />
+
                     </View>
+                    {search ?
+                        <TouchableOpacity
+                            style={{
+                                alignContent: 'center',
+                                justifyContent: 'center',
+                                alignSelf: 'flex-end',
+                                position: 'absolute',
+                                marginTop: 9.5,
+                                paddingRight: 11,
+                                
+
+                            }}
+                            onPress={() => searchFilter("")}
+                        >
+                            <Image
+                                style={{
+                                    height: 22,
+                                    width: 22,
+                                }}
+                                source={require("../assets/close.png")}
+                            />
+                        </TouchableOpacity> : ""
+                    }
                     {refreshing ? <ActivityIndicator /> : null}
                     <View style={{ alignItems: 'flex-end', marginRight: 5 }}>
-                        <Text style={{ color: 'black', fontSize: 10 }}>{seniorityText}</Text>
+                        <Text style={{ color: 'black', fontSize: 12 }}>{seniorityText}</Text>
                     </View>
                     <FlatList
 
@@ -305,7 +344,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         paddingVertical: 1,
         paddingHorizontal: 10
-    }
+    },
+    closeButton: {
+        height: 20,
+        width: 20,
+    },
+    closeButtonParent: {
+        // justifyContent: 'flex-end',
+        // alignItems: "center",
+        // marginRight: 5,
+        // zIndex: 100,
+        // position: 'absolute'
+    },
 
 });
 

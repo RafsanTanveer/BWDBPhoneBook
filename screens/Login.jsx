@@ -55,9 +55,9 @@ const Login = () => {
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</Text>
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</Text>
                     <TextInput
-                        maxLength={9}
-                        keyboardType={"decimal-pad"}
-                        selectionColor={'purple'}
+                        maxLength={9}                  // set maximum string length to 9
+                        keyboardType={"decimal-pad"}   // set keyboard type 
+                        selectionColor={'black'}       // for changing curcsor color 
                         onChangeText={(txt) => setpmisId(txt)}
                         style={{
                             paddingLeft: 15,
