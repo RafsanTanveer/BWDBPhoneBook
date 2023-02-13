@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState, useContext } from "react";
-import { Dimensions, FlatList, Image, Linking, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
-import { TextInput } from "react-native-paper";
+import { Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+// import { TextInput } from "react-native-paper";
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -36,7 +36,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     const [DATA, setDATA] = useState([])
 
     // ToastAndroid.show('in datarenderoffice screen ' + office_code, ToastAndroid.SHORT);
-
+    console.log('in office data render ' + presentOfficeCode)
     const fetchData = async () => {
         setIsLoading(true);
 
@@ -118,17 +118,24 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
                         
-                        {
-                            presentOfficeCode === 30 ? <Text style={{ fontSize: height * .017, fontFamily: 'serif' }}>{item.id}</Text> : null
+                        {                            
+                            presentOfficeCode === 30 ?
+                                <TouchableOpacity onPress={() => {
+                                    //navigation.navigate('OfficeScreen', { officeId: item.officeId, officeName: item.officeName, title: 'Employee List' })
+                                }}>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif' }}>{item.id}</Text>
+                                </TouchableOpacity>
+                                : null
                         }
 
+                        
 
                         <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name}  </Text>
                     </View>
                     {
                         item.post ?
                             <View style={{ flex: 1, }}>
-                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge == 'C' ? ', cc' : ''} </Text>
+                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge == 'C' ? ', cc' : item.charge == 'A' ? ', Addl.' : ''} </Text>
                             </View> : ''
                     }
 
@@ -180,9 +187,20 @@ const DataRenderOffice = ({ office_code, navigation }) => {
             <LoadingScreen /> :
             DATA.length == 0 ? <NoDataFoundScreen /> :
                 <SafeAreaView style={styles.container}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop:5 }}>
 
-                        <TextInput style={{ height: height / 20, width: "98%", borderRadius: 10, marginBottom: 5, }}
+                        <TextInput
+                            selectionColor={'black'}       // for changing curcsor color 
+                            style={{
+                                height: height / 20,
+                                width: "98%",
+                                borderRadius: 5,
+                                marginBottom: 5,
+                                borderColor: '#6750a4',
+                                borderWidth: 2,
+                                paddingLeft: 15,
+
+                            }}
                             placeholder="Search"
                             value={search}
                             //underlineColorAndroid='trasparent'
@@ -192,6 +210,29 @@ const DataRenderOffice = ({ office_code, navigation }) => {
 
                         />
                     </View>
+                    {search ?
+                        <TouchableOpacity
+                            style={{
+                                alignContent: 'center',
+                                justifyContent: 'center',
+                                alignSelf: 'flex-end',
+                                position: 'absolute',
+                                marginTop: 13.5,
+                                paddingRight: 12,
+
+
+                            }}
+                            onPress={() => searchFilter("")}
+                        >
+                            <Image
+                                style={{
+                                    height: 22,
+                                    width: 22,
+                                }}
+                                source={require("../assets/close.png")}
+                            />
+                        </TouchableOpacity> : ""
+                    }
                     {refreshing ? <ActivityIndicator /> : null}
                     <FlatList
 

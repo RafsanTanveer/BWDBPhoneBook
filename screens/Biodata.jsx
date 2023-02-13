@@ -7,7 +7,7 @@ import AddressComponent from '../component/AddressComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
 import EducationComponent from '../component/EducationComponent';
 import PromotionScreen from '../component/PromotionScreen';
-import ExperienceScreen from '../component/ExperienceScreen';
+import ExperienceScreenGeneral from '../component/ExperienceScreenGeneral';
 import TrainingComponent from '../component/TrainingComponent';
 import api from '../api/api';
 import { AuthContext } from '../context/AuthContext';
@@ -16,12 +16,12 @@ import { AuthContext } from '../context/AuthContext';
 
 
 
-const BiodataScreen = ({ id, navigation }) => {
+const Biodata = ({ id, navigation, route }) => {
     const animation = useRef(null);
 
-    const {  setofficeAddres, setphoto,  setpresentOfficeCode,   setName, presentOffice,presentPost } = useContext(AuthContext);
+    // const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost } = useContext(AuthContext);
 
-    
+
     //  ******************************  fetching data ***************************************
 
     const [personalData, setpersonalData] = useState([])
@@ -29,28 +29,28 @@ const BiodataScreen = ({ id, navigation }) => {
     const [DATA, setDATA] = useState([])
     const [refreshing, setRefreshing] = useState(true);
 
-
+    console.log('in biodata -------- : ' + route.params.id)
 
     const fetchPersonalData = async () => {
         setIsLoading(true);
-
+        setpersonalData([]);
         try {
             setRefreshing(false);
             const { data: response } = await api.get("biodata", {
                 params: {
-                    id: id
+                    id: route.params.id
                 }
             });
             setpersonalData(response.rows);
-            
-            
-            setName(response.rows[0].name)
 
-            setphoto(response.rows[0].photo)
-            setofficeAddres(response.rows[0].officeAddress)
-            setpresentOfficeCode(response.rows[0].offceCode)
-            console.log(response.rows[0].offceCode);
-           
+
+            // setName(response.rows[0].name)
+
+            // setphoto(response.rows[0].photo)
+            // setofficeAddres(response.rows[0].officeAddress)
+            // setpresentOfficeCode(response.rows[0].offceCode)
+            // console.log(response.rows[0].offceCode);
+
         } catch (error) {
             console.error(error.message);
         }
@@ -61,11 +61,11 @@ const BiodataScreen = ({ id, navigation }) => {
 
         fetchPersonalData();
 
-    }, []);
+    }, [route.params.id]);
 
     //  ******************************  fetching data ***************************************
-console.log('in biodata');
     
+
 
 
     return (
@@ -76,8 +76,8 @@ console.log('in biodata');
                 personalData.map((item) => (
 
                     <View style={{ flex: 1 }} key={item.id + Math.floor((Math.random() * 100) + 1)}>
-                       
-                       
+
+
                         <View style={{
                             flexDirection: 'row', borderBottomColor: '#0080FF',
                             borderBottomWidth: 1
@@ -138,7 +138,7 @@ console.log('in biodata');
                                     firstQueryResult={item.gender == "M" ? 'Male' : 'Female'}
                                     delimiter=":"
                                 />
-                              
+
                                 <SingleColumnComponent
                                     firstHeading="Marital Status"
                                     firstQueryResult={item.gender == "U" ? 'Unmarried' : 'Married'}
@@ -146,41 +146,41 @@ console.log('in biodata');
                                 />
                                 <SingleColumnComponent
                                     firstHeading="Employee Status"
-                                    firstQueryResult={item.regularDate == null ? "Probation" :"Regular"}
+                                    firstQueryResult={item.regularDate == null ? "Probation" : "Regular"}
                                     delimiter=":"
                                 />
                                 <SingleColumnComponent
                                     firstHeading="Permanent Address"
-                                    firstQueryResult={item.homeAddress} 
+                                    firstQueryResult={item.homeAddress}
                                     delimiter=":"
                                 />
                                 <SingleColumnComponent
                                     firstHeading=""
-                                    firstQueryResult={"District : "+item.homeDist}
+                                    firstQueryResult={"District : " + item.homeDist}
                                     delimiter=""
                                 />
                                 <SingleColumnComponent
                                     firstHeading=""
-                                    firstQueryResult={"Upazila : " } 
+                                    firstQueryResult={"Upazila : "}
                                     delimiter=""
                                 />
                                 <SingleColumnComponent
                                     firstHeading=""
-                                    firstQueryResult={"Village : " + item.village} 
+                                    firstQueryResult={"Village : " + item.village}
                                     delimiter=""
                                 />
                                 <SingleColumnComponent
                                     firstHeading=""
-                                    firstQueryResult={"Post Code : " + item.postalCode} 
+                                    firstQueryResult={"Post Code : " + item.postalCode}
                                     delimiter=""
                                 />
-                               
+
                                 <SingleColumnComponent
                                     firstHeading=""
                                     firstQueryResult=""
                                     delimiter=""
                                 />
-                                
+
 
                                 <SingleColumnComponent
                                     firstHeading="Joined BWDB as"
@@ -207,12 +207,12 @@ console.log('in biodata');
 
                                 <SingleColumnComponent
                                     firstHeading="Present Post"
-                                    firstQueryResult={presentPost}
+                                    firstQueryResult=""//{presentPost}
                                     delimiter=":" />
 
                                 <SingleColumnComponent
                                     firstHeading="Office Name"
-                                    firstQueryResult={presentOffice}
+                                    firstQueryResult=""//{presentOffice}
                                     delimiter=":"
                                 />
 
@@ -256,7 +256,7 @@ console.log('in biodata');
 
                                 <Text style={styles.textStyle}>Experience, Transfer and Posting : </Text>
 
-                                <ExperienceScreen id={item.id} />
+                                <ExperienceScreenGeneral id={item.id} />
 
                                 <SingleColumnComponent
                                     firstHeading="Training Received"
@@ -318,4 +318,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default BiodataScreen
+export default Biodata

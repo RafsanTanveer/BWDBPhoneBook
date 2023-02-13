@@ -133,8 +133,10 @@ const DataRender = ({ designation, url, desig_code }) => {
                     <View style={{ flex: 1, }}>
                         {
                             presentOfficeCode === 30 ?
-                                <TouchableOpacity onPress={() => { navigation.navigate('Asst. Director (Admin)') }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif' }}>{item.id}</Text>
+                                <TouchableOpacity onPress={() => {
+                                    navigation.navigate('Biodata', { id: item.id })
+                                }}>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>{item.id}</Text>
                                 </TouchableOpacity>
                                 : null
                         }

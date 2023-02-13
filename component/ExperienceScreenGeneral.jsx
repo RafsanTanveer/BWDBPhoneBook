@@ -4,12 +4,12 @@ import api from '../api/api';
 import { AuthContext } from '../context/AuthContext';
 
 
-const ExperienceScreen = ({ id }) => {
+const ExperienceScreenGeneral = ({ id }) => {
 
 
     //  ******************************  fetching data ***************************************
 
-    const { setpresentDesig, setpresentOffice, setpresentPost,  setpresentCharge } = useContext(AuthContext);
+    const { setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge } = useContext(AuthContext);
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ const ExperienceScreen = ({ id }) => {
 
     const fetchPersonalData = async () => {
         setIsLoading(true);
-
+        setexperience([])
         try {
             setRefreshing(false);
             const { data: response } = await api.get("exp", {
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ExperienceScreen
+export default ExperienceScreenGeneral

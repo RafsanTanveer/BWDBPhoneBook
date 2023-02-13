@@ -51,7 +51,7 @@ const Login = () => {
                     source={require(bwdbLogo)}
                 />
                 <View style={{ marginTop: screenHeight * .6, alignItems: 'center', }}>
-                    <Text style={{ fontWeight: '900', fontSize: height * .04 }}>Phone Directory</Text>
+                    <Text style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory</Text>
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</Text>
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</Text>
                     <TextInput

@@ -46,6 +46,9 @@ import CEME from '../screens/me/CEME'
 
 import DG from '../screens/dgadg/DG'
 import ADG from '../screens/dgadg/ADG'
+import BiodataScreen from "../screens/BiodataScreen";
+import Biodata from "../screens/Biodata";
+
 
 const Drawer = createDrawerNavigator();
 
@@ -108,6 +111,10 @@ const CustomDrawer = () => {
 
             <Drawer.Screen name="Director General" component={DG} />
             <Drawer.Screen name="Addl. Director General" component={ADG} />
+
+            <Drawer.Screen name="BiodataScreen" component={BiodataScreen} />
+            <Drawer.Screen name="Biodata" component={Biodata} />
+
 
 
 
