@@ -314,7 +314,7 @@ const DataRender = ({ designation, url, desig_code }) => {
                         <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Checkbox
                                 style={{ height: 18, width: 18 }}
-                                value={isChecked}
+                                value={!isChecked}
                                 
                                 color={isChecked ? '#6750a4' : undefined}
                             />
