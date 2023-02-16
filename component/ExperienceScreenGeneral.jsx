@@ -9,7 +9,8 @@ const ExperienceScreenGeneral = ({ id }) => {
 
     //  ******************************  fetching data ***************************************
 
-    const { setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge } = useContext(AuthContext);
+    const { generalPresentOffice, setgeneralPresentOffice, generalPresentPost, setgeneralPresentPost } = useContext(AuthContext);
+
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +24,8 @@ const ExperienceScreenGeneral = ({ id }) => {
     const fetchPersonalData = async () => {
         setIsLoading(true);
         setexperience([])
+        setgeneralPresentOffice('')
+        setgeneralPresentPost('')
         try {
             setRefreshing(false);
             const { data: response } = await api.get("exp", {
@@ -32,9 +35,9 @@ const ExperienceScreenGeneral = ({ id }) => {
             });
             setexperience(response.rows);
 
-            // setpresentOffice(response.rows[0].office)
+            // setgeneralPresentOffice(response.rows[0].office)
             // setpresentDesig(response.rows[0].desig)
-            // setpresentPost(response.rows[0].post);
+            // setgeneralPresentPost(response.rows[0].post);
             // setpresentCharge(response.rows[0].charge)
 
         } catch (error) {

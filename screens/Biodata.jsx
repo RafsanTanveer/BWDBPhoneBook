@@ -19,7 +19,7 @@ import { AuthContext } from '../context/AuthContext';
 const Biodata = ({ id, navigation, route }) => {
     const animation = useRef(null);
 
-    // const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost } = useContext(AuthContext);
+    // const { generalPresentOffice, setgeneralPresentOffice, generalPresentPost, setgeneralPresentPost } = useContext(AuthContext);
 
 
     //  ******************************  fetching data ***************************************
@@ -64,7 +64,7 @@ const Biodata = ({ id, navigation, route }) => {
     }, [route.params.id]);
 
     //  ******************************  fetching data ***************************************
-    
+
 
 
 
@@ -164,22 +164,33 @@ const Biodata = ({ id, navigation, route }) => {
                                     firstQueryResult={"Upazila : "}
                                     delimiter=""
                                 />
-                                <SingleColumnComponent
-                                    firstHeading=""
-                                    firstQueryResult={"Village : " + item.village}
-                                    delimiter=""
-                                />
-                                <SingleColumnComponent
-                                    firstHeading=""
-                                    firstQueryResult={"Post Code : " + item.postalCode}
-                                    delimiter=""
-                                />
+                                {
+                                    item.village ?
+                                        <SingleColumnComponent
+                                            firstHeading=""
+                                            firstQueryResult={"Village : " + item.village}
+                                            delimiter=""
+                                        />
+                                        : ""
+                                }
 
-                                <SingleColumnComponent
+
+                                {
+
+                                    item.postalCode ?
+                                        <SingleColumnComponent
+                                            firstHeading=""
+                                            firstQueryResult={"Post Code : " + item.postalCode}
+                                            delimiter=""
+                                        />
+                                        : ""
+
+                                }
+                                {/* <SingleColumnComponent
                                     firstHeading=""
                                     firstQueryResult=""
                                     delimiter=""
-                                />
+                                /> */}
 
 
                                 <SingleColumnComponent
@@ -203,16 +214,21 @@ const Biodata = ({ id, navigation, route }) => {
                                     firstQueryResult={item.regularDate}
                                     delimiter=":"
                                 />
+                                <SingleColumnComponent
+                                    firstHeading="PRL Date"
+                                    firstQueryResult={item.retireDate}
+                                    delimiter=":"
+                                />
 
-
+                                {/* {console.log("generalPresentPost  --- " + generalPresentPost)} */}
                                 <SingleColumnComponent
                                     firstHeading="Present Post"
-                                    firstQueryResult=""//{presentPost}
+                                    firstQueryResult="" //{generalPresentPost}
                                     delimiter=":" />
 
                                 <SingleColumnComponent
                                     firstHeading="Office Name"
-                                    firstQueryResult=""//{presentOffice}
+                                    firstQueryResult=""//{generalPresentOffice}
                                     delimiter=":"
                                 />
 
@@ -265,7 +281,12 @@ const Biodata = ({ id, navigation, route }) => {
                                 />
 
                                 <TrainingComponent id={item.id} />
-
+                                
+                                <SingleColumnComponent
+                                    firstHeading=""
+                                    firstQueryResult=""
+                                    delimiter=""
+                                />
 
 
 

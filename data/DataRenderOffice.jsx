@@ -118,12 +118,12 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
                         
-                        {                            
+                        {
                             presentOfficeCode === 30 ?
                                 <TouchableOpacity onPress={() => {
-                                    //navigation.navigate('OfficeScreen', { officeId: item.officeId, officeName: item.officeName, title: 'Employee List' })
+                                    navigation.navigate('Biodata', { id: item.id })
                                 }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif' }}>{item.id}</Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>{item.id}</Text>
                                 </TouchableOpacity>
                                 : null
                         }

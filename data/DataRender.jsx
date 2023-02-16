@@ -11,7 +11,7 @@ import { AuthContext } from '../context/AuthContext';
 import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
-
+import Checkbox from 'expo-checkbox';
 // import second from '../assets/close.png'
 
 const height = Dimensions.get('window').height;
@@ -24,7 +24,7 @@ const DataRender = ({ designation, url, desig_code }) => {
     const navigation = useNavigation();
 
 
-    const [masterData, setMasterData] = useState(DATA)
+    const [masterData, setMasterData] = useState([])
     const [filteredData, setFilteredData] = useState(DATA)
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
@@ -34,6 +34,10 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     const { presentOfficeCode } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
+
+    const [isChecked, setChecked] = useState();
+
+
 
 
 
@@ -65,6 +69,11 @@ const DataRender = ({ designation, url, desig_code }) => {
                 }
             });
             setDATA(response.rows);
+            setMasterData(response.rows);
+
+            setChecked(false)
+
+
         } catch (error) {
             console.error(error.message);
         }
@@ -84,6 +93,34 @@ const DataRender = ({ designation, url, desig_code }) => {
         setFilteredData(DATA);  // for updating filterdata at first 
 
     }, [DATA]);
+
+
+    // useEffect(() => {
+
+    //     seniorityUpdate();  // for updating filterdata at first 
+
+    // }, [isChecked]);
+
+
+    const seniorityUpdate = () => {
+
+        console.log("----------------");
+
+        console.log("Before : isChecked: " + isChecked);
+
+
+
+        isChecked ? setChecked(false) : setChecked(true)
+
+        console.log("After: isChecked: " + isChecked);
+
+        isChecked ? setFilteredData(DATA.sort((a, b) => { return a.seniority - b.seniority })) :
+            setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
+
+
+    }
+
+
 
 
 
@@ -136,7 +173,8 @@ const DataRender = ({ designation, url, desig_code }) => {
                                 <TouchableOpacity onPress={() => {
                                     navigation.navigate('Biodata', { id: item.id })
                                 }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>{item.id}</Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
                                 </TouchableOpacity>
                                 : null
                         }
@@ -236,7 +274,7 @@ const DataRender = ({ designation, url, desig_code }) => {
                                 borderColor: '#6750a4',
                                 borderWidth: 2,
                                 paddingLeft: 15,
-                                
+
                             }}
                             placeholder="Search"
                             value={search}
@@ -257,7 +295,7 @@ const DataRender = ({ designation, url, desig_code }) => {
                                 position: 'absolute',
                                 marginTop: 9.5,
                                 paddingRight: 12,
-                                
+
 
                             }}
                             onPress={() => searchFilter("")}
@@ -272,8 +310,23 @@ const DataRender = ({ designation, url, desig_code }) => {
                         </TouchableOpacity> : ""
                     }
                     {refreshing ? <ActivityIndicator /> : null}
-                    <View style={{ alignItems: 'flex-end', marginRight: 5 }}>
-                        <Text style={{ color: 'black', fontSize: 12 }}>{seniorityText}</Text>
+                    <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Checkbox
+                                style={{ height: 18, width: 18 }}
+                                value={isChecked}
+                                
+                                color={isChecked ? '#6750a4' : undefined}
+                            />
+
+                            <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+
+                        </TouchableOpacity>
+
+                        {/* {
+                            !isChecked ?
+                                <Text style={{ color: 'black', fontSize: 12 }}>{seniorityText}</Text> : ""
+                        } */}
                     </View>
                     <FlatList
 

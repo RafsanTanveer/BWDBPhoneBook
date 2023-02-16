@@ -203,6 +203,11 @@ console.log('in biodata');
                                     firstQueryResult={item.regularDate}
                                     delimiter=":"
                                 />
+                                <SingleColumnComponent
+                                    firstHeading="PRL Date"
+                                    firstQueryResult={item.retireDate}
+                                    delimiter=":"
+                                />
 
 
                                 <SingleColumnComponent
@@ -267,6 +272,11 @@ console.log('in biodata');
                                 <TrainingComponent id={item.id} />
 
 
+                                <SingleColumnComponent
+                                    firstHeading=""
+                                    firstQueryResult=""
+                                    delimiter=""
+                                />
 
 
                             </View>

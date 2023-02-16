@@ -20,6 +20,10 @@ export const AuthProvider = ({ children }) => {
     const [officeAddres, setofficeAddres] = useState()
     const [presentOfficeCode, setpresentOfficeCode] = useState()
 
+    ////////////////////////// General ////////////////////////
+    const [generalPresentOffice, setgeneralPresentOffice] = useState()
+    const [generalPresentPost, setgeneralPresentPost] = useState()
+
 
 
 
@@ -138,7 +142,9 @@ export const AuthProvider = ({ children }) => {
                     presentPost, setpresentPost,
                     presentCharge, setpresentCharge,
                     officeAddres, setofficeAddres,
-                    presentOfficeCode, setpresentOfficeCode
+                    presentOfficeCode, setpresentOfficeCode,
+                    generalPresentOffice, setgeneralPresentOffice,
+                    generalPresentPost, setgeneralPresentPost
                 }}>
                 {children}
             </AuthContext.Provider>

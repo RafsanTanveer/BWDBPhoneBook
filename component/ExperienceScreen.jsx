@@ -32,10 +32,10 @@ const ExperienceScreen = ({ id }) => {
             });
             setexperience(response.rows);
 
-            // setpresentOffice(response.rows[0].office)
-            // setpresentDesig(response.rows[0].desig)
-            // setpresentPost(response.rows[0].post);
-            // setpresentCharge(response.rows[0].charge)
+            setpresentOffice(response.rows[0].office)
+            setpresentDesig(response.rows[0].desig)
+            setpresentPost(response.rows[0].post);
+            setpresentCharge(response.rows[0].charge)
 
         } catch (error) {
             console.error(error.message);
