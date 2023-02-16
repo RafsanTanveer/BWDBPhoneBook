@@ -293,8 +293,8 @@ const DataRender = ({ designation, url, desig_code }) => {
                                 justifyContent: 'center',
                                 alignSelf: 'flex-end',
                                 position: 'absolute',
-                                marginTop: 9.5,
-                                paddingRight: 12,
+                                marginTop: height * .01,
+                                paddingRight: width * .025,
 
 
                             }}
@@ -302,8 +302,8 @@ const DataRender = ({ designation, url, desig_code }) => {
                         >
                             <Image
                                 style={{
-                                    height: 22,
-                                    width: 22,
+                                     height: height*.03,
+                                    width: height * .03,
                                 }}
                                 source={require("../assets/close.png")}
                             />
