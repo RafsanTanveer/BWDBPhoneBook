@@ -102,12 +102,12 @@ const DataRender = ({ designation, url, desig_code }) => {
     }, [DATA]);
 
 
-    const seniorityUpdate = () => {     
+    const seniorityUpdate = () => {
 
 
         !isChecked ? setChecked(true) : setChecked(false)
 
-      
+
 
         !isChecked ? setFilteredData(DATA.sort((a, b) => { return a.seniority - b.seniority })) :
             setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
@@ -163,7 +163,7 @@ const DataRender = ({ designation, url, desig_code }) => {
                         {/* {console.log('isAdmin : '+isAdmin)} */}
                         {
                             // presentOfficeCode === 30 ?
-                                isAdmin?
+                            isAdmin ?
                                 <TouchableOpacity onPress={() => {
                                     navigation.navigate('Biodata', { id: item.id })
                                 }}>
@@ -307,20 +307,26 @@ const DataRender = ({ designation, url, desig_code }) => {
                         </TouchableOpacity> : ""
                     }
                     {refreshing ? <ActivityIndicator /> : null}
-                    <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Checkbox
-                                style={{ height: 18, width: 18 }}
-                                value={isChecked}
-                                
-                                color={isChecked ? '#6750a4' : undefined}
-                            />
+
+
+                    {
+                        notDgOrAdg ?
+                            <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isChecked}
+
+                                        color={isChecked ? '#6750a4' : undefined}
+                                    />
 
                                     <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
 
                                 </TouchableOpacity>
 
-                            </View> 
+                            </View> : ""}
+
+
                     {
                         !search ?
                             <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} : {DATA.length}</Text>
