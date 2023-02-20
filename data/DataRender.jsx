@@ -320,7 +320,7 @@ const DataRender = ({ designation, url, desig_code }) => {
 
                                 </TouchableOpacity>
 
-                            </View> : ""}
+                            </View> 
                     {
                         !search ?
                             <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} : {DATA.length}</Text>
