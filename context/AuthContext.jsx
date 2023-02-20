@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
     const [generalPresentOffice, setgeneralPresentOffice] = useState()
     const [generalPresentPost, setgeneralPresentPost] = useState()
 
+    const [isAdmin, setisAdmin] = useState()
+
 
 
 
@@ -41,7 +43,7 @@ export const AuthProvider = ({ children }) => {
                 setUserInfo(userInfo);
                 AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
                 setIsLoading(false);
-                console.log(userInfo);
+                // console.log(userInfo);
             })
             .catch(e => {
                 console.log(`register error ${e}`);
@@ -63,22 +65,22 @@ export const AuthProvider = ({ children }) => {
 
 
 
-                console.log('Length  ------------- ' + userData.rows.length);
+                // console.log('Length  ------------- ' + userData.rows.length);
                 if (userData.rows.length === 0) {
                     ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
                     setisLogged(false)
                     setUserInfo([])
-                    console.log(userData.rows)
+                    // console.log(userData.rows)
                 }
                 else if (userData.rows[0].status === 'I') {
-                    console.log(userData.rows);
+                    // console.log(userData.rows);
                     ToastAndroid.show('INACTIVE', ToastAndroid.LONG,);
                     setisLogged(false)
                     setUserInfo([])
 
                 }
                 else {
-                    console.log(userData.rows)
+                    // console.log(userData.rows)
                     setUserInfo(userData);
                     setisLogged(true)
                 }
@@ -97,6 +99,7 @@ export const AuthProvider = ({ children }) => {
         setisLogged(false)
         setUserInfo([])
         setpresentOfficeCode(0)
+        setisAdmin(false)
         AsyncStorage.removeItem('userInfo');
         
     };
@@ -144,7 +147,8 @@ export const AuthProvider = ({ children }) => {
                     officeAddres, setofficeAddres,
                     presentOfficeCode, setpresentOfficeCode,
                     generalPresentOffice, setgeneralPresentOffice,
-                    generalPresentPost, setgeneralPresentPost
+                    generalPresentPost, setgeneralPresentPost,
+                    isAdmin, setisAdmin
                 }}>
                 {children}
             </AuthContext.Provider>

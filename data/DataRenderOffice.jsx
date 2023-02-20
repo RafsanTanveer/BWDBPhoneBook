@@ -36,7 +36,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     const [DATA, setDATA] = useState([])
 
     // ToastAndroid.show('in datarenderoffice screen ' + office_code, ToastAndroid.SHORT);
-    console.log('in office data render ' + presentOfficeCode)
+    // console.log('in office data render ' + presentOfficeCode)
     const fetchData = async () => {
         setIsLoading(true);
 
@@ -217,8 +217,8 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                                 justifyContent: 'center',
                                 alignSelf: 'flex-end',
                                 position: 'absolute',
-                                marginTop: 13.5,
-                                paddingRight: 12,
+                                marginTop: height * .015,
+                                paddingRight: width * .025,
 
 
                             }}
@@ -226,13 +226,15 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                         >
                             <Image
                                 style={{
-                                    height: 22,
-                                    width: 22,
+                                    height: height * .03,
+                                    width: height * .03,
                                 }}
                                 source={require("../assets/close.png")}
                             />
                         </TouchableOpacity> : ""
                     }
+                    {!search ? <Text style={{ marginBottom: 2, marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total Employee : {DATA.length}</Text> : ""}
+
                     {refreshing ? <ActivityIndicator /> : null}
                     <FlatList
 

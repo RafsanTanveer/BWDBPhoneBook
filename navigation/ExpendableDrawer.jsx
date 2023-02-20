@@ -134,7 +134,15 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director General" />
-                        <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" />
+
+                        <List.Item onPress={() => { navigation.navigate('Addl. Director General') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Director General" />
+
+                       
 
                     </List.Accordion>
 

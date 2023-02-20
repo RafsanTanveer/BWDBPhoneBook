@@ -29,7 +29,7 @@ const Biodata = ({ id, navigation, route }) => {
     const [DATA, setDATA] = useState([])
     const [refreshing, setRefreshing] = useState(true);
 
-    console.log('in biodata -------- : ' + route.params.id)
+    // console.log('in biodata -------- : ' + route.params.id)
 
     const fetchPersonalData = async () => {
         setIsLoading(true);

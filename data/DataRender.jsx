@@ -33,9 +33,12 @@ const DataRender = ({ designation, url, desig_code }) => {
     const [seniorityText, setseniorityText] = useState()
 
     const { presentOfficeCode } = useContext(AuthContext);
+    const { isAdmin } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 
     const [isChecked, setChecked] = useState();
+
+    const [notDgOrAdg, setnotDgOrAdg] = useState(false)
 
 
 
@@ -58,9 +61,13 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     const fetchData = async () => {
         setIsLoading(true);
-        let desigUrl = desig_code === '001' ? "dg" : desig_code === '992' ? "adg" : "desig"
+        // console.log('desig_code: ' + desig_code);
+        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true)
+        let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
         let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
         setseniorityText(snrTxt)
+
+
         try {
             setRefreshing(false);
             const { data: response } = await api.get(desigUrl, {
@@ -95,37 +102,22 @@ const DataRender = ({ designation, url, desig_code }) => {
     }, [DATA]);
 
 
-    // useEffect(() => {
-
-    //     seniorityUpdate();  // for updating filterdata at first 
-
-    // }, [isChecked]);
+    const seniorityUpdate = () => {     
 
 
-    const seniorityUpdate = () => {
+        !isChecked ? setChecked(true) : setChecked(false)
 
-        console.log("----------------");
+      
 
-        console.log("Before : isChecked: " + isChecked);
-
-
-
-        isChecked ? setChecked(false) : setChecked(true)
-
-        console.log("After: isChecked: " + isChecked);
-
-        isChecked ? setFilteredData(DATA.sort((a, b) => { return a.seniority - b.seniority })) :
+        !isChecked ? setFilteredData(DATA.sort((a, b) => { return a.seniority - b.seniority })) :
             setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
 
 
     }
 
 
-
-
-
     const searchFilter = (text) => {
-        //setMasterData(DATA)
+
         if (text) {
             const newData = DATA.filter((item) => {
                 const itemData = item.name ? item.name.toLocaleLowerCase() : ''
@@ -168,13 +160,18 @@ const DataRender = ({ designation, url, desig_code }) => {
             }}>
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
+                        {/* {console.log('isAdmin : '+isAdmin)} */}
                         {
-                            presentOfficeCode === 30 ?
+                            // presentOfficeCode === 30 ?
+                                isAdmin?
                                 <TouchableOpacity onPress={() => {
                                     navigation.navigate('Biodata', { id: item.id })
                                 }}>
                                     <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
+                                    {
+                                        notDgOrAdg ?
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text> : ""
+                                    }
                                 </TouchableOpacity>
                                 : null
                         }
@@ -293,8 +290,8 @@ const DataRender = ({ designation, url, desig_code }) => {
                                 justifyContent: 'center',
                                 alignSelf: 'flex-end',
                                 position: 'absolute',
-                                marginTop: 9.5,
-                                paddingRight: 12,
+                                marginTop: height * .01,
+                                paddingRight: width * .025,
 
 
                             }}
@@ -302,38 +299,46 @@ const DataRender = ({ designation, url, desig_code }) => {
                         >
                             <Image
                                 style={{
-                                    height: 22,
-                                    width: 22,
+                                    height: height * .03,
+                                    width: height * .03,
                                 }}
                                 source={require("../assets/close.png")}
                             />
                         </TouchableOpacity> : ""
                     }
                     {refreshing ? <ActivityIndicator /> : null}
-                    <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Checkbox
-                                style={{ height: 18, width: 18 }}
-                                value={isChecked}
-                                
-                                color={isChecked ? '#6750a4' : undefined}
-                            />
+                    
+                    {
+                        
+                        notDgOrAdg ?
+                            <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 10, marginBottom: 5, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isChecked}
 
-                            <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+                                        color={isChecked ? '#6750a4' : '#6750a4'}
+                                    />
 
-                        </TouchableOpacity>
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
 
-                        {/* {
-                            !isChecked ?
-                                <Text style={{ color: 'black', fontSize: 12 }}>{seniorityText}</Text> : ""
-                        } */}
-                    </View>
+                                </TouchableOpacity>
+
+                            </View> : ""}
+                    {
+                        !search ?
+                            <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} : {DATA.length}</Text>
+                            : ""
+                    }
+
+
                     <FlatList
 
                         data={filteredData}
                         renderItem={Item}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id + Math.random()}
                         extraData={selectedId}
+                        initialNumToRender={5}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
                         }
@@ -400,17 +405,7 @@ const styles = StyleSheet.create({
         paddingVertical: 1,
         paddingHorizontal: 10
     },
-    closeButton: {
-        height: 20,
-        width: 20,
-    },
-    closeButtonParent: {
-        // justifyContent: 'flex-end',
-        // alignItems: "center",
-        // marginRight: 5,
-        // zIndex: 100,
-        // position: 'absolute'
-    },
+
 
 });
 

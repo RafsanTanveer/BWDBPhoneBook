@@ -19,7 +19,7 @@ import { AuthContext } from '../context/AuthContext';
 const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
 
-    const {  setofficeAddres, setphoto,  setpresentOfficeCode,   setName, presentOffice,presentPost } = useContext(AuthContext);
+    const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost, setisAdmin, presentOfficeCode } = useContext(AuthContext);
 
     
     //  ******************************  fetching data ***************************************
@@ -49,7 +49,9 @@ const BiodataScreen = ({ id, navigation }) => {
             setphoto(response.rows[0].photo)
             setofficeAddres(response.rows[0].officeAddress)
             setpresentOfficeCode(response.rows[0].offceCode)
-            console.log(response.rows[0].offceCode);
+            response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
+
+            // console.log(response.rows[0].offceCode);
            
         } catch (error) {
             console.error(error.message);
@@ -64,7 +66,7 @@ const BiodataScreen = ({ id, navigation }) => {
     }, []);
 
     //  ******************************  fetching data ***************************************
-console.log('in biodata');
+// console.log('in biodata');
     
 
 

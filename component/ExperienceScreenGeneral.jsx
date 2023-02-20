@@ -14,7 +14,7 @@ const ExperienceScreenGeneral = ({ id }) => {
 
 
     const [isLoading, setIsLoading] = useState(false);
-    const [DATA, setDATA] = useState([])
+    
     const [refreshing, setRefreshing] = useState(true);
     const [experience, setexperience] = useState([])
 
@@ -33,12 +33,7 @@ const ExperienceScreenGeneral = ({ id }) => {
                     id: id
                 }
             });
-            setexperience(response.rows);
-
-            // setgeneralPresentOffice(response.rows[0].office)
-            // setpresentDesig(response.rows[0].desig)
-            // setgeneralPresentPost(response.rows[0].post);
-            // setpresentCharge(response.rows[0].charge)
+            setexperience(response.rows);           
 
         } catch (error) {
             console.error(error.message);

@@ -29,7 +29,7 @@ const EducationComponent = ({ id }) => {
                 }
             });
             setEdu(response.rows);
-            console.log("in persoanl data " + response.rows.name);
+            // console.log("in persoanl data " + response.rows.name);
         } catch (error) {
             console.error(error.message);
         }
@@ -86,7 +86,7 @@ const EducationComponent = ({ id }) => {
                                 <Text style={styles.queryTextStyle}>{item.institute}</Text>
                             </View>
                             <View style={{ flex: 1, width: 100, marginLeft: 5, alignItems:'center' }}>
-                                <Text style={styles.queryTextStyle}>{item.marks ? item.marks : item.result}</Text>
+                                <Text style={styles.queryTextStyle}>{item.marks ? item.marks.toString().trim().slice(0, 4) : item.result}</Text>
                             </View>
                             <View style={{ flex: 1, width: 80 }}>
                                 <Text style={styles.queryTextStyle}>{item.remarks}</Text>

@@ -28,7 +28,7 @@ const PromotionScreen = ({id}) => {
                 }
             });
             setpromotion(response.rows);
-            console.log("in persoanl data " + response.rows.name);
+            // console.log("in persoanl data " + response.rows.name);
         } catch (error) {
             console.error(error.message);
         }
