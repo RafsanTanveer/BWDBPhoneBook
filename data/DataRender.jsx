@@ -299,26 +299,22 @@ const DataRender = ({ designation, url, desig_code }) => {
                         >
                             <Image
                                 style={{
-                                    height: height * .03,
-                                    width: height * .03,
+                                    height: 22,
+                                    width: 22,
                                 }}
                                 source={require("../assets/close.png")}
                             />
                         </TouchableOpacity> : ""
                     }
                     {refreshing ? <ActivityIndicator /> : null}
-                    
-                    {
-                        
-                        notDgOrAdg ?
-                            <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 10, marginBottom: 5, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Checkbox
-                                        style={{ height: 18, width: 18 }}
-                                        value={isChecked}
-
-                                        color={isChecked ? '#6750a4' : '#6750a4'}
-                                    />
+                    <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Checkbox
+                                style={{ height: 18, width: 18 }}
+                                value={isChecked}
+                                
+                                color={isChecked ? '#6750a4' : undefined}
+                            />
 
                                     <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
 
