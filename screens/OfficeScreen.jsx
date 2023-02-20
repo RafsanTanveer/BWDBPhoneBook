@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity, Linking } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 
 import DataRenderOffice from "../data/DataRenderOffice";
@@ -68,15 +68,19 @@ const OfficeScreen = ({ route, navigation }) => {
 
                         {
                             item.email1 ?
-                                <Text style={{ paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif', color: '#0744A9' }}>{item.email1}</Text>
+                                <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email1}`) }}  >
+                                    <Text style={{ paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif', color: '#0744A9' }}>{item.email1} </Text>
+                                </TouchableOpacity>
                                 : ""
                         }
 
                        
                         {
                             item.email2 ?
-                                <Text style={{ paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif', color: '#0744A9' }}>{item.email2}</Text>
-                                :""
+                                <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email1}`) }}  >
+                                    <Text style={{ paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif', color: '#0744A9' }}>{item.email2} </Text>
+                                </TouchableOpacity>
+                                : ""
                         }
                         
                     </View>
