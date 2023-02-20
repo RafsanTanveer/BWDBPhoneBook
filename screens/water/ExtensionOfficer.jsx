@@ -1,0 +1,10 @@
+import React from "react";
+import DataRender from "../../data/DataRender";
+
+
+const ExtensionOfficer = ({ navigation }) => {
+    return (
+        <DataRender designation='Addl. Chief Engineer (M/E)' desig_code="042" />
+    )
+}
+export default ExtensionOfficer
