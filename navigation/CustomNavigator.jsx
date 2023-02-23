@@ -49,6 +49,32 @@ import ADG from '../screens/dgadg/ADG'
 import BiodataScreen from "../screens/BiodataScreen";
 import Biodata from "../screens/Biodata";
 
+import ACAgriculture from '../screens/water/ACAgriculture'
+import ACEnvironmentForest from '../screens/water/ACEnvironmentForest'
+import ACFishery from '../screens/water/ACFishery'
+import ACSociology from '../screens/water/ACSociology'
+import AssttExtOfficer from '../screens/water/AssttExtOfficer'
+import ChiefWaterManagement from '../screens/water/ChiefWaterManagement'
+import DCAgriculture from '../screens/water/DCAgriculture'
+import ACSoil from '../screens/water/ACSoil'
+import DCExtensionOfficer from '../screens/water/DCExtensionOfficer'
+import DCFishery from '../screens/water/DCFishery'
+import DCSociology from '../screens/water/DCSociology'
+import DCSoil from '../screens/water/DCSoil'
+import ExtensionOfficer from '../screens/water/ExtensionOfficer'
+import PrincipalExtensionOfficer from '../screens/water/PrincipalExtensionOfficer'
+import ROAgri from '../screens/water/ROAgri'
+import ROEF from '../screens/water/ROEF'
+import ROFishery from '../screens/water/ROFishery'
+import ROSociology from '../screens/water/ROSociology'
+import ROSoil from '../screens/water/ROSoil'
+
+import JointChief from '../screens/economic/JointChief'
+import AssistantChiefEconomics from '../screens/economic/AssistantChiefEconomics'
+import DeputyChiefEconomics from '../screens/economic/DeputyChiefEconomics'
+import DirectorEconomicEvaluation from '../screens/economic/DirectorEconomicEvaluation'
+import ResearchOfficerEconomics from '../screens/economic/ResearchOfficerEconomics'
+
 
 const Drawer = createDrawerNavigator();
 
@@ -61,12 +87,16 @@ const CustomDrawer = () => {
                 headerShown: true,
                 headerStyle:
                 {
-                    backgroundColor:'white'
+                    backgroundColor: 'white'
                     // backgroundColor: `${currentTheme}`,
                 },
             }}
-            
+
             drawerContent={(props) => <DrawerContent {...props} />}>
+
+
+
+
 
             <Drawer.Screen name="Home" component={Home} />
             <Drawer.Screen name="Chief Engineer (Civil)" component={CE} />
@@ -116,6 +146,42 @@ const CustomDrawer = () => {
             <Drawer.Screen name="Biodata" component={Biodata} />
 
 
+            <Drawer.Screen name="Assistant Chief, Agriculture" component={ACAgriculture} />
+            <Drawer.Screen name="Assistant Chief, Environment & Forest" component={ACEnvironmentForest} />
+            <Drawer.Screen name="Assistant Chief, Fishery" component={ACFishery} />
+            <Drawer.Screen name="Assistant Chief, Sociology" component={ACSociology} />
+            <Drawer.Screen name="Assistant Chief, Soil" component={ ACSoil} />
+            <Drawer.Screen name="Asstt. Extension Officer" component={AssttExtOfficer} />
+            <Drawer.Screen name="Chief Water Management" component={ ChiefWaterManagement} />
+            <Drawer.Screen name="Deputy Chief, Agriculture" component={DCAgriculture } />
+            <Drawer.Screen name="Deputy Chief Extension Officer" component={DCExtensionOfficer } />
+            <Drawer.Screen name="Deputy Chief, Fishery" component={ DCFishery} />
+            <Drawer.Screen name="Deputy Chief, Sociology" component={ DCSociology} />
+            <Drawer.Screen name="Deputy Chief, Soil" component={ DCSoil} />
+            <Drawer.Screen name="Extension Officer" component={ExtensionOfficer } />
+            <Drawer.Screen name="Principal Extension Officer" component={ PrincipalExtensionOfficer} />
+            <Drawer.Screen name="Research Officer, Agri" component={ ROAgri} />
+            <Drawer.Screen name="Research Officer, E&F" component={ROEF } />
+            <Drawer.Screen name="Research Officer, Fishery" component={ROFishery } />
+            <Drawer.Screen name="Research Officer, Sociology" component={ROSociology } />
+            <Drawer.Screen name="Research Officer, Soil" component={ROSoil} />
+            
+
+            <Drawer.Screen name="Joint Chief" component={JointChief } />
+            <Drawer.Screen name="Assistant Chief, Economics" component={AssistantChiefEconomics } />
+            <Drawer.Screen name="Deputy Chief, Economics" component={DeputyChiefEconomics} />
+            <Drawer.Screen name="Director (Economic Evaluation)" component={DirectorEconomicEvaluation} />
+            <Drawer.Screen name="Research Officer, Economics" component={ResearchOfficerEconomics} />
+
+            
+
+
+
+
+
+
+
+
 
 
 
@@ -127,10 +193,10 @@ const CustomDrawer = () => {
 
 const CustomNavigator = () => {
 
-    const {  isLogged } = useContext(AuthContext);
+    const { isLogged } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 
-    
+
     return (
         <>
             {/* <Login /> */}

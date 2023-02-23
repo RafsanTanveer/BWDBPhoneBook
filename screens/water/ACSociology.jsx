@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const ACSociology = ({ navigation }) => {
     return (
-        <DataRender designation='Addl. Chief Engineer (M/E)' desig_code="032" />
+        <DataRender designation='Assistant Chief, Sociology' desig_code="032" />
     )
 }
 export default ACSociology

@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const DCFishery = ({ navigation }) => {
     return (
-        <DataRender designation='Addl. Chief Engineer (M/E)' desig_code="023" />
+        <DataRender designation='Deputy Chief, Fishery' desig_code="023" />
     )
 }
 export default DCFishery

@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const DCExtensionOfficer = ({ navigation }) => {
     return (
-        <DataRender designation='Addl. Chief Engineer (M/E)' desig_code="026" />
+        <DataRender designation='Deputy Chief Extension Officer' desig_code="026" />
     )
 }
 export default DCExtensionOfficer
