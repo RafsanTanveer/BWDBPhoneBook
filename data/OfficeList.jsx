@@ -114,7 +114,13 @@ const OfficeList = ({ lcode }) => {
 
                         filteredData.map((item, index) => (
                             <TouchableOpacity key={item.officeId}
-                                onPress={() => { navigation.navigate('OfficeScreen', { officeId: item.officeId, officeName: item.officeName, title: 'Employee List' }) }}
+                                onPress={() => {
+                                    navigation.navigate('OfficeScreen', {
+                                        officeId: item.officeId,
+                                        officeName: item.officeName,
+                                        title: 'Employee List'
+                                    })
+                                }}
                             >
                                 <View style={{
                                     width: '98%',

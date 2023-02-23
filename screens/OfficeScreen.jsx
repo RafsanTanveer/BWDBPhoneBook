@@ -43,11 +43,11 @@ const OfficeScreen = ({ route, navigation }) => {
     }, [route.params.officeId]);
 
 
-    // React.useEffect(() => {
-    //     navigation.setOptions({
-    //         title: value === '' ? 'No title' : value,
-    //     });
-    // }, [route.params.title]);
+    React.useEffect(() => {
+        navigation.setOptions({
+            title: value === '' ? 'No title' : value,
+        });
+    }, [route.params.title]);
 
 
     return (

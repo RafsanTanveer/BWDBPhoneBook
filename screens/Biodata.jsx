@@ -44,13 +44,6 @@ const Biodata = ({ id, navigation, route }) => {
             setpersonalData(response.rows);
 
 
-            // setName(response.rows[0].name)
-
-            // setphoto(response.rows[0].photo)
-            // setofficeAddres(response.rows[0].officeAddress)
-            // setpresentOfficeCode(response.rows[0].offceCode)
-            // console.log(response.rows[0].offceCode);
-
         } catch (error) {
             console.error(error.message);
         }
