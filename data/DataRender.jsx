@@ -1,7 +1,8 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState, useContext } from "react";
 import { Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
-// import { TextInput } from "react-native-paper";
+import { FlashList } from "@shopify/flash-list";
+
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 import NetInfo from '@react-native-community/netinfo';
@@ -12,7 +13,7 @@ import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
-// import second from '../assets/close.png'
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -20,6 +21,25 @@ const width = Dimensions.get('window').width;
 
 
 const DataRender = ({ designation, url, desig_code }) => {
+
+
+    //////////////////////////////////////////////
+
+    const [dataProvider, setDataProvider] = useState(null);
+
+    const createNewDataProvider = () => {
+        return new DataProvider((r1, r2) => r1 !== r2);
+    };
+
+    const _layoutProvider = new LayoutProvider(
+        index => 0,
+        (type, dim) => {
+            dim.width = width / 1;
+            dim.height = width / 1;
+        },
+    );
+
+    /////////////////////////////////////////////
 
     const navigation = useNavigation();
 
@@ -77,7 +97,7 @@ const DataRender = ({ designation, url, desig_code }) => {
             });
             setDATA(response.rows);
             setMasterData(response.rows);
-
+            setDataProvider(createNewDataProvider().cloneWithRows(response.rows));
             setChecked(false)
 
 
@@ -340,12 +360,28 @@ const DataRender = ({ designation, url, desig_code }) => {
                         renderItem={Item}
                         keyExtractor={(item) => item.id + Math.random()}
                         extraData={selectedId}
-                        initialNumToRender={5}
+                        // estimatedItemSize={200}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
                         }
 
                     />
+
+                    <View style={{ width: '100%', height: height }}>
+                    <RecyclerListView
+                        style={{flex:1}}
+                        layoutProvider={_layoutProvider}
+                        dataProvider={dataProvider}
+                        rowRenderer={Item}
+                        snapToAlignment={'start'}
+                        disableIntervalMomentum={true}
+                        showsVerticalScrollIndicator={false}
+                        forceNonDeterministicRendering
+                        showsHorizontalScrollIndicator={false}
+                        canChangeSize
+                        maxToRenderPerBatch={500}
+                    />
+                    </View>
                 </SafeAreaView>
     )
 }
