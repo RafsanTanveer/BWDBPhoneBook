@@ -23,7 +23,8 @@ const civil = '../assets/icons/civil.png'
 const economic = '../assets/icons/economic.png'
 const me = '../assets/icons/me.png'
 const water = '../assets/icons/water.png'
-const office = '../assets/icons/office.png'
+const office = '../assets/icons/office.png'  
+const medical = '../assets/icons/medical.png'  
 
 //*******************************************icons ********************************************** */
 
@@ -69,30 +70,30 @@ const ExpendableDrawer = () => {
 
         if (no == 0) {
             expendedList[0] ? arr[0] = false : arr[0] = true;
-            for (let i = 1; i <= 17; i++) {
+            for (let i = 1; i <= 18; i++) {
 
                 arr[i] = false;
             }
         }
-        else if (no == 11) {
-            expendedList[11] ? arr[11] = false : arr[11] = true;
-            for (let i = 0; i <= 17; i++) {
-                if (i != 11)
+        else if (no == 12) {
+            expendedList[12] ? arr[12] = false : arr[12] = true;
+            for (let i = 0; i <= 18; i++) {
+                if (i != 12)
                     arr[i] = false;
             }
         }
-        else if (no > 0 && no <= 10) {
+        else if (no > 0 && no <= 11) {
             arr[0] = true
-            for (let i = 1; i <= 17; i++) {
+            for (let i = 1; i <= 18; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else arr[i] = false;
             }
         }
-        else if (no > 11 && no <= 17) {
+        else if (no > 12 && no <= 18) {
             arr[11] = true
-            for (let i = 0; i <= 17; i++) {
+            for (let i = 0; i <= 18; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
-                else if (i != 11) arr[i] = false;
+                else if (i != 12) arr[i] = false;
             }
         }
         setexpendedList(arr);
@@ -633,6 +634,38 @@ const ExpendableDrawer = () => {
                     </List.Accordion>
 
 
+                    <List.Accordion
+                        style={styles.accordingStyle}
+                        title="Medical"
+                        left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(medical)}
+                                style={styles.iconStyle}
+                            />
+                        )} />}
+                        expanded={expendedList[11]}
+                        onPress={() => handlePress(11)}
+                    >
+
+                        <List.Item onPress={() => { navigation.navigate('Chief Medical Officer') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Chief Medical Officer" />
+
+                        <List.Item onPress={() => { navigation.navigate('Medical Officer') }} left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Medical Officer" />
+
+                       
+
+                    </List.Accordion>
+
+
                 </List.Accordion>
 
                 <List.Accordion
@@ -644,8 +677,8 @@ const ExpendableDrawer = () => {
                             style={styles.iconStyle}
                         />
                     )} />}
-                    expanded={expendedList[11]}
-                    onPress={() => handlePress(11)} >
+                    expanded={expendedList[12]}
+                    onPress={() => handlePress(12)} >
 
 
 
@@ -659,8 +692,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[12]}
-                        onPress={() => handlePress(12)}  >
+                        expanded={expendedList[13]}
+                        onPress={() => handlePress(13)}  >
 
                         <OfficeList lcode='01' />
 
@@ -674,8 +707,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[13]}
-                        onPress={() => handlePress(13)}  >
+                        expanded={expendedList[14]}
+                        onPress={() => handlePress(14)}  >
 
                         <OfficeList lcode='02' />
 
@@ -690,8 +723,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[14]}
-                        onPress={() => handlePress(14)}  >
+                        expanded={expendedList[15]}
+                        onPress={() => handlePress(15)}  >
 
                         <OfficeList lcode='03' />
 
@@ -705,8 +738,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[15]}
-                        onPress={() => handlePress(15)}  >
+                        expanded={expendedList[16]}
+                        onPress={() => handlePress(16)}  >
 
                         <OfficeList lcode='04' />
 
@@ -721,8 +754,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[16]}
-                        onPress={() => handlePress(16)}  >
+                        expanded={expendedList[17]}
+                        onPress={() => handlePress(17)}  >
 
                         <OfficeList lcode='05' />
 
@@ -737,8 +770,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[17]}
-                        onPress={() => handlePress(17)}  >
+                        expanded={expendedList[18]}
+                        onPress={() => handlePress(18)}  >
 
                         <OfficeList lcode='06' />
                         {/* <ADGWEST  /> */}

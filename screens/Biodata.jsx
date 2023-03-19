@@ -78,7 +78,7 @@ const Biodata = ({ id, navigation, route }) => {
 
 
                             <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5 }}>
-                                <Image style={{ width: 60, height: 60 }} source={require('../assets/pani-unnoyon-board-logo-C7A6FE0B4E-seeklogo.com.png')} />
+                                <Image style={{ width: 60, height: 60 }} source={require('../assets/bwdLogo.png')} />
                             </View>
                             <View style={{
                                 alignItems: 'center',

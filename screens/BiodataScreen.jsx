@@ -49,8 +49,8 @@ const BiodataScreen = ({ id, navigation }) => {
             setphoto(response.rows[0].photo)
             setofficeAddres(response.rows[0].officeAddress)
             setpresentOfficeCode(response.rows[0].offceCode)
-            response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
-
+            // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
+            setisAdmin(true)
             // console.log(response.rows[0].offceCode);
            
         } catch (error) {
@@ -87,7 +87,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
                             <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5 }}>
-                                <Image style={{ width: 60, height: 60 }} source={require('../assets/pani-unnoyon-board-logo-C7A6FE0B4E-seeklogo.com.png')} />
+                                <Image style={{ width: 60, height: 60 }} source={require('../assets/bwdLogo.png')} />
                             </View>
                             <View style={{
                                 alignItems: 'center',
@@ -105,6 +105,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     <View style={{ flex: 1 }}>
                                         <RowComponent headingText='Employee ID' queryText={item.id} />
                                         <RowComponent headingText='Employee Name' queryText={item.name} />
+                                        <RowComponent headingText='Employee Name (Bangla)' queryText={item.namebn} />
                                         <RowComponent headingText="Father's Name" queryText={item.f_name} />
                                         <RowComponent headingText="Mother's Name" queryText={item.m_name} />
                                         <RowComponent headingText='Home District' queryText={item.homeDist} />
@@ -205,9 +206,22 @@ const BiodataScreen = ({ id, navigation }) => {
                                     firstQueryResult={item.regularDate}
                                     delimiter=":"
                                 />
+
                                 <SingleColumnComponent
                                     firstHeading="PRL Date"
                                     firstQueryResult={item.retireDate}
+                                    delimiter=":"
+                                />
+
+                                <SingleColumnComponent
+                                    firstHeading="GPF File No"
+                                    firstQueryResult={item.gpf}
+                                    delimiter=":"
+                                />
+
+                                <SingleColumnComponent
+                                    firstHeading="Accounts File No "
+                                    firstQueryResult={item.accountsid}
                                     delimiter=":"
                                 />
 

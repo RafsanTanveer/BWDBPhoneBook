@@ -5,7 +5,7 @@ const CE = ({ navigation }) => {
 
     return (
        
-        <DataRender designation='Chief Engineer (Civil)' desig_code="003" />
+        <DataRender designation='Chief Engineer (Civil)' desig_code="003" tablename='CE' />
 
     )
 }

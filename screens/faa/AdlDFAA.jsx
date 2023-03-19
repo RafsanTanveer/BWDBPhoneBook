@@ -3,7 +3,7 @@ import DataRender from "../../data/DataRender";
 
 const AdlDFAA = ({ navigation }) => {
     return (
-        <DataRender designation='Addl. Director (Fa&A)' desig_code="025" />
+        <DataRender designation='Addl. Director (Fa&A)' desig_code="025" tablename='AdlDFAA' />
     )
 }
 export default AdlDFAA

@@ -1,9 +1,9 @@
 import React from "react";
 import DataRender from "../../data/DataRender";
 
-const AP = ({ navigation }) => {
+const JointChief = ({ navigation }) => {
     return (
-        <DataRender designation='Joint Chief' desig_code="011" />
+        <DataRender designation='Joint Chief' desig_code="011" tablename='JointChief' />
     )
 }
-export default AP
+export default JointChief

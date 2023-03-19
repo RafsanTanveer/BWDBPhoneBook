@@ -12,7 +12,7 @@ const Director = ({ route, navigation }) => {
     }, [navigation, value]);
 
     return (
-        <DataRender  designation='Director (Admin)' desig_code="012" />
+        <DataRender  designation='Director (Admin)' desig_code="012" tablename='diradmin'/>
 
     )
 }

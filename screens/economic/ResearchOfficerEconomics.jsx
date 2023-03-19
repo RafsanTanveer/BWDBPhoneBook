@@ -1,9 +1,9 @@
 import React from "react";
 import DataRender from "../../data/DataRender";
 
-const AP = ({ navigation }) => {
+const ResearchOfficerEconomics = ({ navigation }) => {
     return (
-        <DataRender designation='Research Officer, Economics' desig_code="048" />
+        <DataRender designation='Research Officer, Economics' desig_code="048" tablename='RechOffEcon' />
     )
 }
-export default AP
+export default ResearchOfficerEconomics

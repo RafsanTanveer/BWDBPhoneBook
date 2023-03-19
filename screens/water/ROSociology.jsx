@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const ROSociology = ({ navigation }) => {
     return (
-        <DataRender designation='Research Officer, Sociology' desig_code="050" />
+        <DataRender designation='Research Officer, Sociology' desig_code="050" tablename='ROSociology' />
     )
 }
 export default ROSociology

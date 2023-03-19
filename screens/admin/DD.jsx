@@ -5,7 +5,7 @@ const DD = ({ navigation }) => {
 
 
     return (
-        <DataRender  designation='Deputy Director (Admin)' desig_code="038" />
+        <DataRender designation='Deputy Director (Admin)' desig_code="038" tablename='ddadmin' />
 
     )
 }

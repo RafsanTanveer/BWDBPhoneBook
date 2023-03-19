@@ -3,7 +3,7 @@ import DataRender from "../../data/DataRender";
 
 const ACE = ({ navigation }) => {   
     return (       
-        <DataRender designation='Addl. Chief Engineer (Civil)' desig_code="004" />
+        <DataRender designation='Addl. Chief Engineer (Civil)' desig_code="004" tablename='ACE' />
     )
 }
 export default ACE

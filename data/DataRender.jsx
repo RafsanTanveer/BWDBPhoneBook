@@ -15,31 +15,79 @@ import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
+import * as SQLite from 'expo-sqlite'
+
+
+
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 
+function useForceUpdate() {
+    const [value, setValue] = useState(0);
+    return [() => setValue(value + 1), value];
+}
 
-const DataRender = ({ designation, url, desig_code }) => {
+
+function openDatabase() {
+    if (Platform.OS === "web") {
+        return {
+            transaction: () => {
+                return {
+                    executeSql: () => { },
+                };
+            },
+        };
+    }
+
+    const db = SQLite.openDatabase("db.db");
+    return db;
+}
+
+const db = openDatabase();
 
 
-    //////////////////////////////////////////////
 
-    const [dataProvider, setDataProvider] = useState(null);
 
-    const createNewDataProvider = () => {
-        return new DataProvider((r1, r2) => r1 !== r2);
-    };
 
-    const _layoutProvider = new LayoutProvider(
-        index => 0,
-        (type, dim) => {
-            dim.width = width / 1;
-            dim.height = width / 1;
-        },
-    );
+const DataRender = ({ designation, url, desig_code, tablename }) => {
 
-    /////////////////////////////////////////////
+
+    //////////////////////////sqlite////////////////////////////////////
+
+    const [text, setText] = useState(null);
+    const [forceUpdate, forceUpdateId] = useForceUpdate();
+    const [items, setItems] = useState(null);
+
+
+    const createTable = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+
+                `CREATE TABLE ${tablename} (
+                          id          TEXT,
+                          name        TEXT,
+                          designation TEXT,
+                          seniority   TEXT,
+                          office      TEXT,
+                          mobile      TEXT,
+                          pabx        TEXT,
+                          email       TEXT,
+                          photo       BLOB);`
+            );
+        });
+    }
+
+    const dropTable = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `DROP TABLE IF EXISTS ${tablename}`
+            );
+        });
+    }
+
+
+   
 
     const navigation = useNavigation();
 
@@ -78,6 +126,7 @@ const DataRender = ({ designation, url, desig_code }) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [DATA, setDATA] = useState([])
+    const [ifTableExists, setifTableExists] = useState(0)
 
     const fetchData = async () => {
         setIsLoading(true);
@@ -88,6 +137,18 @@ const DataRender = ({ designation, url, desig_code }) => {
         setseniorityText(snrTxt)
 
 
+        // SELECT name FROM sqlite_master WHERE type = 'table' AND name = '{table_name}';
+        
+        db.transaction((tx) => {                       
+            tx.executeSql(
+                `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ${tablename};`,
+                [],
+                (_, { rows: { _array } }) => console.log(_array.length) //setifTableExists(_array)
+            );
+        });
+
+        console.log(ifTableExists);
+
         try {
             setRefreshing(false);
             const { data: response } = await api.get(desigUrl, {
@@ -95,9 +156,43 @@ const DataRender = ({ designation, url, desig_code }) => {
                     desig: desig_code
                 }
             });
-            setDATA(response.rows);
-            setMasterData(response.rows);
-            setDataProvider(createNewDataProvider().cloneWithRows(response.rows));
+            // setDATA(response.rows);
+            // setMasterData(response.rows);
+
+
+
+
+
+            response.rows.map((it) => (
+
+                db.transaction(
+                    (tx) => {
+                        // tx.executeSql(`DELETE FROM ${tablename}`, []);
+
+                        dropTable();
+                        createTable();
+                        tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo]);
+
+                    },
+                    null,
+                    forceUpdate
+                )
+
+            ))
+
+
+            db.transaction((tx) => {
+                // tx.executeSql(`select * from ${tablename}`, [], (_, { rows }) =>
+                //     console.log(JSON.stringify(rows))
+                // );
+                setDATA([])
+                tx.executeSql(
+                    `select * from ${tablename};`,
+                    [],
+                    (_, { rows: { _array } }) => setDATA(_array)
+                );
+            });
+
             setChecked(false)
 
 
@@ -157,11 +252,15 @@ const DataRender = ({ designation, url, desig_code }) => {
 
     const Item = ({ item, index }) => (
 
-
+        
 
         <View style={{
             flexDirection: 'row', paddingLeft: 10, paddingRight: 10,
         }}>
+            {
+                // items.map((it => (<Text>it</Text>)))
+                // console.log("items length "+items.length)
+            }
 
             <View style={{ justifyContent: 'center', alignContent: 'center', }}>
                 <View style={{ borderRadius: 10 }}>
@@ -348,7 +447,7 @@ const DataRender = ({ designation, url, desig_code }) => {
 
 
                     {
-                        !search ?
+                        !search && DATA?
                             <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} : {DATA.length}</Text>
                             : ""
                     }
@@ -360,28 +459,14 @@ const DataRender = ({ designation, url, desig_code }) => {
                         renderItem={Item}
                         keyExtractor={(item) => item.id + Math.random()}
                         extraData={selectedId}
-                        // estimatedItemSize={200}
+                        //  estimatedItemSize={8}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
                         }
 
                     />
 
-                    <View style={{ width: '100%', height: height }}>
-                    <RecyclerListView
-                        style={{flex:1}}
-                        layoutProvider={_layoutProvider}
-                        dataProvider={dataProvider}
-                        rowRenderer={Item}
-                        snapToAlignment={'start'}
-                        disableIntervalMomentum={true}
-                        showsVerticalScrollIndicator={false}
-                        forceNonDeterministicRendering
-                        showsHorizontalScrollIndicator={false}
-                        canChangeSize
-                        maxToRenderPerBatch={500}
-                    />
-                    </View>
+
                 </SafeAreaView>
     )
 }

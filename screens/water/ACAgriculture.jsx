@@ -4,7 +4,7 @@ import DataRender from "../../data/DataRender";
 
 const ACAgriculture = ({ navigation }) => {
     return (
-        <DataRender designation='Assistant Chief, Agriculture' desig_code="033" />
+        <DataRender designation='Assistant Chief, Agriculture' desig_code="033" tablename='ACAgri' />
     )
 }
 export default ACAgriculture

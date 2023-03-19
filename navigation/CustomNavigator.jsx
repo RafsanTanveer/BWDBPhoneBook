@@ -75,6 +75,10 @@ import DeputyChiefEconomics from '../screens/economic/DeputyChiefEconomics'
 import DirectorEconomicEvaluation from '../screens/economic/DirectorEconomicEvaluation'
 import ResearchOfficerEconomics from '../screens/economic/ResearchOfficerEconomics'
 
+import ChiefMedicalOfficer from '../screens/medical/ChiefMedicalOfficer'
+import MedicalOfficer from '../screens/medical/MedicalOfficer'
+
+import SplashScreen from '../screens/SplashScreen'
 
 const Drawer = createDrawerNavigator();
 
@@ -173,16 +177,8 @@ const CustomDrawer = () => {
             <Drawer.Screen name="Director (Economic Evaluation)" component={DirectorEconomicEvaluation} />
             <Drawer.Screen name="Research Officer, Economics" component={ResearchOfficerEconomics} />
 
-            
-
-
-
-
-
-
-
-
-
+            <Drawer.Screen name="Chief Medical Officer" component={ChiefMedicalOfficer} />
+            <Drawer.Screen name="Medical Officer" component={MedicalOfficer} />
 
 
 
@@ -193,7 +189,7 @@ const CustomDrawer = () => {
 
 const CustomNavigator = () => {
 
-    const { isLogged } = useContext(AuthContext);
+    const { isLogged, isLoading } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 
 
