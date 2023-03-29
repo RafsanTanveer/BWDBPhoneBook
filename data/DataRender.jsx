@@ -58,13 +58,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [text, setText] = useState(null);
     const [forceUpdate, forceUpdateId] = useForceUpdate();
     const [items, setItems] = useState(null);
+    const [ifTableExists, setifTableExists] = useState(0)
 
-
-    const createTable = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-
-                `CREATE TABLE ${tablename} (
+    const createTableQueryString = `CREATE TABLE IF NOT EXISTS ${tablename} (
                           id          TEXT,
                           name        TEXT,
                           designation TEXT,
@@ -73,21 +69,18 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                           mobile      TEXT,
                           pabx        TEXT,
                           email       TEXT,
-                          photo       BLOB);`
-            );
-        });
-    }
+                          photo       BLOB);`;
 
-    const dropTable = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                `DROP TABLE IF EXISTS ${tablename}`
-            );
-        });
-    }
+    const dropTableQueryString = `DROP TABLE IF EXISTS ${tablename}`
+
+    const checkIfTableExistsQueryString = `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ${tablename};`
 
 
-   
+
+
+
+    ////////////////////////////////sqlite//////////////////////////////////////////////////////////////////////
+
 
     const navigation = useNavigation();
 
@@ -126,7 +119,74 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [DATA, setDATA] = useState([])
-    const [ifTableExists, setifTableExists] = useState(0)
+
+
+    const fetchDataFromDb = async () => {
+
+        console.log('in fetchDataFromDb');
+        setIsLoading(true);
+        // console.log('desig_code: ' + desig_code);
+        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true)
+        let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
+        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
+        setseniorityText(snrTxt)
+
+        try {
+            setRefreshing(false);
+
+            db.transaction((tx) => {
+                // Check if the 'mytable' table exists in the database
+                tx.executeSql(
+                    `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?;`,
+                    [tablename],
+                    async (txObj, result) => {
+                        if (result.rows.length > 0) {
+                            // Table exists, read data from it
+                            tx.executeSql(
+                                `select * from ${tablename};`,
+                                [],
+                                (_, resultSet) => {
+                                    const rows = resultSet.rows._array;
+                                    setDATA(rows);
+                                }
+                            );
+                        } else {
+                            // Table does not exist, fetch data from API and create table
+                            
+
+                            tx.executeSql(
+                                `CREATE TABLE IF NOT EXISTS ${tablename} (
+                                 id          TEXT,
+                                 name        TEXT,
+                                 designation TEXT,
+                                 seniority   TEXT,
+                                 office      TEXT,
+                                 mobile      TEXT,
+                                 pabx        TEXT,
+                                 email       TEXT,
+                                 photo       BLOB);`
+                            );
+
+                            const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
+                            setDATA(response.rows);
+
+                            response.rows.map((it) => (
+
+
+                                tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo])
+
+                            ))
+                        }
+                    }
+                );
+                setChecked(false)
+
+            });
+        } catch (error) {
+            console.error(error);
+        }
+        setIsLoading(false);
+    };
 
     const fetchData = async () => {
         setIsLoading(true);
@@ -135,63 +195,100 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
         let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
         setseniorityText(snrTxt)
+        var res = 0;
 
 
-        // SELECT name FROM sqlite_master WHERE type = 'table' AND name = '{table_name}';
-        
-        db.transaction((tx) => {                       
-            tx.executeSql(
-                `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ${tablename};`,
-                [],
-                (_, { rows: { _array } }) => console.log(_array.length) //setifTableExists(_array)
-            );
-        });
 
-        console.log(ifTableExists);
 
         try {
             setRefreshing(false);
-            const { data: response } = await api.get(desigUrl, {
-                params: {
-                    desig: desig_code
-                }
-            });
-            // setDATA(response.rows);
-            // setMasterData(response.rows);
 
-
-
-
-
-            response.rows.map((it) => (
-
-                db.transaction(
-                    (tx) => {
-                        // tx.executeSql(`DELETE FROM ${tablename}`, []);
-
-                        dropTable();
-                        createTable();
-                        tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo]);
-
-                    },
-                    null,
-                    forceUpdate
-                )
-
-            ))
 
 
             db.transaction((tx) => {
-                // tx.executeSql(`select * from ${tablename}`, [], (_, { rows }) =>
-                //     console.log(JSON.stringify(rows))
-                // );
-                setDATA([])
+
                 tx.executeSql(
-                    `select * from ${tablename};`,
+                    // checkIfTableExistsQueryString,
+                    `SELECT name FROM sqlite_master WHERE type = 'table' ;`,
                     [],
-                    (_, { rows: { _array } }) => setDATA(_array)
+                    (_, { rows: { _array } }) => { console.log("Total table = " + _array.length); console.log(_array); }
                 );
             });
+
+
+            db.transaction((tx) => {
+
+
+                tx.executeSql(
+                    // checkIfTableExistsQueryString,
+                    `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?;`,
+                    [tablename],
+                    (_, { rows: { _array } }) => {
+                        console.log(tablename);
+                        console.log(_array);
+                        res = _array.length;
+                        console.log("result = " + res);
+                        if (res === 1) {
+                            console.log("Table exist  res =" + res)
+                            setDATA([])
+                            tx.executeSql(
+                                `select * from ${tablename};`,
+                                [],
+                                (_, { rows: { _array } }) => setDATA(_array)
+                            );
+                        }
+
+                    }
+                );
+
+
+
+            });
+
+
+            if (res === 0) {
+                console.log("Table not existres = " + res)
+
+                const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
+
+                db.transaction(
+                    (tx) => {
+                        tx.executeSql(`CREATE TABLE IF NOT EXISTS ${tablename} (
+                          id          TEXT,
+                          name        TEXT,
+                          designation TEXT,
+                          seniority   TEXT,
+                          office      TEXT,
+                          mobile      TEXT,
+                          pabx        TEXT,
+                          email       TEXT,
+                          photo       BLOB);`, []);
+
+                    },
+                    (_, error) => { console.log("db error creating tables"); console.log(error); },
+                    (_, success) => { console.log(tablename + "Table not exist success in res=0"); }
+                )
+
+                response.rows.map((it) => (
+
+
+                    db.transaction(
+                        (tx) => {
+
+                            tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo]);
+
+                        },
+                        null,
+                        forceUpdate
+                    )
+
+                ))
+
+
+
+
+                setDATA(response.rows);
+            }
 
             setChecked(false)
 
@@ -202,9 +299,77 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setIsLoading(false);
     }
 
+
+
+    const refreshData = async () => {
+        
+        try {
+            setRefreshing(false);
+            setIsLoading(true);
+
+            setDATA([])
+
+            deleteAllData();        
+            
+            fetchDataAndInsert()       
+
+            setIsLoading(false);
+            setChecked(false)
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+
+    const deleteAllData = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `DELETE FROM ${tablename};`,
+                [],
+                (tx, result) => {
+                    console.log('Data deleted');
+                },
+                (tx, error) => {
+                    console.log('Error deleting data:', error);
+                }
+            );
+        });
+    };
+
+
+    // Function to read data from API and insert into table
+    const fetchDataAndInsert = async () => {
+
+        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true)
+        let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
+        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
+        setseniorityText(snrTxt)
+
+
+        try {
+            const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
+            setDATA(response.rows);
+            const responseData = response;
+
+            db.transaction((tx) => {
+                
+                responseData.rows.map((it) => (
+
+
+                    tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo])
+
+                ))
+            });
+        } catch (error) {
+            console.log('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
 
-        fetchData();
+        // fetchData();
+        fetchDataFromDb();
 
     }, []);
 
@@ -252,7 +417,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const Item = ({ item, index }) => (
 
-        
+
 
         <View style={{
             flexDirection: 'row', paddingLeft: 10, paddingRight: 10,
@@ -315,7 +480,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
                     {
                         item.mobile &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
+                        <TouchableOpacity onLongPress={() => console.warn('STARTED LONG PRESS')} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
                             style={{
                                 alignItems: 'center',
                                 flexDirection: 'row',
@@ -347,7 +512,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                     {
                         item.mobile &&
-                        <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
+                        <TouchableOpacity  onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
                             style={{
                                 alignItems: 'center',
                                 flexDirection: 'row',
@@ -447,7 +612,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                     {
-                        !search && DATA?
+                        !search && DATA ?
                             <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} : {DATA.length}</Text>
                             : ""
                     }
@@ -461,7 +626,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         extraData={selectedId}
                         //  estimatedItemSize={8}
                         refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                         }
 
                     />
