@@ -1,6 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState, useContext } from "react";
-import { Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import { Modal, Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
 import api from '../api/api';
@@ -15,6 +15,8 @@ import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
+import SearchableDropdown from 'react-native-searchable-dropdown';
+
 import * as SQLite from 'expo-sqlite'
 
 
@@ -28,6 +30,20 @@ function useForceUpdate() {
     return [() => setValue(value + 1), value];
 }
 
+const distrctItems = [
+    //name ky is must.It is to show the text in front
+    { id: 1, name: 'angellist' },
+    { id: 2, name: 'codepen' },
+    { id: 3, name: 'envelope' },
+    { id: 4, name: 'etsy' },
+    { id: 5, name: 'facebook' },
+    { id: 6, name: 'foursquare' },
+    { id: 7, name: 'github-alt' },
+    { id: 8, name: 'github' },
+    { id: 9, name: 'gitlab' },
+    { id: 10, name: 'instagram' },
+];
+
 
 function openDatabase() {
     if (Platform.OS === "web") {
@@ -40,7 +56,7 @@ function openDatabase() {
         };
     }
 
-    const db = SQLite.openDatabase("db.db");
+    const db = SQLite.openDatabase("test6.db");
     return db;
 }
 
@@ -52,28 +68,10 @@ const db = openDatabase();
 
 const DataRender = ({ designation, url, desig_code, tablename }) => {
 
+    // console.log(designation,  desig_code, tablename); 
 
     //////////////////////////sqlite////////////////////////////////////
 
-    const [text, setText] = useState(null);
-    const [forceUpdate, forceUpdateId] = useForceUpdate();
-    const [items, setItems] = useState(null);
-    const [ifTableExists, setifTableExists] = useState(0)
-
-    const createTableQueryString = `CREATE TABLE IF NOT EXISTS ${tablename} (
-                          id          TEXT,
-                          name        TEXT,
-                          designation TEXT,
-                          seniority   TEXT,
-                          office      TEXT,
-                          mobile      TEXT,
-                          pabx        TEXT,
-                          email       TEXT,
-                          photo       BLOB);`;
-
-    const dropTableQueryString = `DROP TABLE IF EXISTS ${tablename}`
-
-    const checkIfTableExistsQueryString = `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ${tablename};`
 
 
 
@@ -98,6 +96,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const { currentTheme } = useContext(ThemeContext);
 
     const [isChecked, setChecked] = useState();
+    const [isrtDateChecked, setisrtDateChecked] = useState();
 
     const [notDgOrAdg, setnotDgOrAdg] = useState(false)
 
@@ -122,199 +121,105 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     const fetchDataFromDb = async () => {
-
         console.log('in fetchDataFromDb');
         setIsLoading(true);
-        // console.log('desig_code: ' + desig_code);
-        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true)
-        let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
-        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
-        setseniorityText(snrTxt)
+
+        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true);
+        const desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig";
+        const snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority";
+        setseniorityText(snrTxt);
 
         try {
             setRefreshing(false);
 
-            db.transaction((tx) => {
-                // Check if the 'mytable' table exists in the database
-                tx.executeSql(
-                    `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?;`,
-                    [tablename],
-                    async (txObj, result) => {
-                        if (result.rows.length > 0) {
-                            // Table exists, read data from it
-                            tx.executeSql(
-                                `select * from ${tablename};`,
-                                [],
-                                (_, resultSet) => {
-                                    const rows = resultSet.rows._array;
-                                    setDATA(rows);
-                                }
-                            );
-                        } else {
-                            // Table does not exist, fetch data from API and create table
-                            
-
-                            tx.executeSql(
-                                `CREATE TABLE IF NOT EXISTS ${tablename} (
-                                 id          TEXT,
-                                 name        TEXT,
-                                 designation TEXT,
-                                 seniority   TEXT,
-                                 office      TEXT,
-                                 mobile      TEXT,
-                                 pabx        TEXT,
-                                 email       TEXT,
-                                 photo       BLOB);`
-                            );
-
-                            const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
-                            setDATA(response.rows);
-
-                            response.rows.map((it) => (
-
-
-                                tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo])
-
-                            ))
-                        }
-                    }
-                );
-                setChecked(false)
-
+            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
+                        resolve([tableExistsResult, null]);
+                    });
+                });
             });
+
+            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
+            console.log('Total table = ', tableNames.length);
+            console.log('Table names:', tableNames);
+
+            const tableExists = tableNames.includes(tablename);
+            if (tableExists) {
+                console.log(tablename, ' table exists');
+
+                const { rows } = await new Promise((resolve, reject) => {
+                    db.transaction((tx) => {
+                        tx.executeSql(`SELECT * FROM ${tablename};`, [], (_, result) => {
+                            resolve(result);
+                        });
+                    });
+                });
+
+                const data = rows._array;
+                setDATA(data);
+                console.log(data.length);
+            } else {
+                console.log(tablename, ' table does not exist');
+
+                const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
+                const data = response.rows;
+                setDATA(data);
+
+                await new Promise((resolve, reject) => {
+                    db.transaction((tx) => {
+                        tx.executeSql(
+                            `CREATE TABLE IF NOT EXISTS ${tablename} (
+              id          TEXT,
+              name        TEXT,
+              designation TEXT,
+              seniority   TEXT,
+              office      TEXT,
+              mobile      TEXT,
+              pabx        TEXT,
+              email       TEXT,
+              retiredate  TEXT,
+              photo       BLOB
+            );`
+                        );
+
+                        data.forEach((it) => {
+                            tx.executeSql(
+                                `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
+                            );
+                        });
+                    }, null, resolve);
+                });
+
+
+
+            }
         } catch (error) {
             console.error(error);
         }
         setIsLoading(false);
-    };
-
-    const fetchData = async () => {
-        setIsLoading(true);
-        // console.log('desig_code: ' + desig_code);
-        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true)
-        let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
-        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
-        setseniorityText(snrTxt)
-        var res = 0;
-
-
-
-
-        try {
-            setRefreshing(false);
-
-
-
-            db.transaction((tx) => {
-
-                tx.executeSql(
-                    // checkIfTableExistsQueryString,
-                    `SELECT name FROM sqlite_master WHERE type = 'table' ;`,
-                    [],
-                    (_, { rows: { _array } }) => { console.log("Total table = " + _array.length); console.log(_array); }
-                );
-            });
-
-
-            db.transaction((tx) => {
-
-
-                tx.executeSql(
-                    // checkIfTableExistsQueryString,
-                    `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?;`,
-                    [tablename],
-                    (_, { rows: { _array } }) => {
-                        console.log(tablename);
-                        console.log(_array);
-                        res = _array.length;
-                        console.log("result = " + res);
-                        if (res === 1) {
-                            console.log("Table exist  res =" + res)
-                            setDATA([])
-                            tx.executeSql(
-                                `select * from ${tablename};`,
-                                [],
-                                (_, { rows: { _array } }) => setDATA(_array)
-                            );
-                        }
-
-                    }
-                );
-
-
-
-            });
-
-
-            if (res === 0) {
-                console.log("Table not existres = " + res)
-
-                const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
-
-                db.transaction(
-                    (tx) => {
-                        tx.executeSql(`CREATE TABLE IF NOT EXISTS ${tablename} (
-                          id          TEXT,
-                          name        TEXT,
-                          designation TEXT,
-                          seniority   TEXT,
-                          office      TEXT,
-                          mobile      TEXT,
-                          pabx        TEXT,
-                          email       TEXT,
-                          photo       BLOB);`, []);
-
-                    },
-                    (_, error) => { console.log("db error creating tables"); console.log(error); },
-                    (_, success) => { console.log(tablename + "Table not exist success in res=0"); }
-                )
-
-                response.rows.map((it) => (
-
-
-                    db.transaction(
-                        (tx) => {
-
-                            tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo]);
-
-                        },
-                        null,
-                        forceUpdate
-                    )
-
-                ))
-
-
-
-
-                setDATA(response.rows);
-            }
-
-            setChecked(false)
-
-
-        } catch (error) {
-            console.error(error.message);
-        }
-        setIsLoading(false);
     }
+ 
 
 
 
     const refreshData = async () => {
-        
+
         try {
             setRefreshing(false);
             setIsLoading(true);
 
             setDATA([])
 
-            deleteAllData();        
-            
-            fetchDataAndInsert()       
+            deleteAllData();
+
+            fetchDataAndInsert()
 
             setIsLoading(false);
             setChecked(false)
+            setisrtDateChecked(false)
 
         } catch (error) {
             console.error(error.message);
@@ -340,38 +245,61 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     // Function to read data from API and insert into table
     const fetchDataAndInsert = async () => {
+        console.log('in refresh');
+        setIsLoading(true);
 
-        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true)
-        let desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig"
-        let snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority"
-        setseniorityText(snrTxt)
-
+        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true);
+        const desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig";
+        const snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority";
+        setseniorityText(snrTxt);
 
         try {
-            const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
-            setDATA(response.rows);
-            const responseData = response;
+            setRefreshing(false);
 
-            db.transaction((tx) => {
-                
-                responseData.rows.map((it) => (
+          
+           
+
+                const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
+                const data = response.rows;
+                setDATA(data);
+
+                await new Promise((resolve, reject) => {
+                    db.transaction((tx) => {
+                       
+
+                        data.forEach((it) => {
+                            tx.executeSql(
+                                `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
+                            );
+                        });
+                    }, null, resolve);
+                });
 
 
-                    tx.executeSql(`insert into ${tablename} (id, name,designation,seniority,office,mobile,pabx,email,photo) values (?,?,?,?,?,?,?,?,?)`, [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.photo])
 
-                ))
-            });
+            
         } catch (error) {
-            console.log('Error fetching data:', error);
+            console.error(error);
         }
-    };
+        setIsLoading(false);
+    }
+ 
+
+
+
+
 
     useEffect(() => {
 
         // fetchData();
         fetchDataFromDb();
+        setisrtDateChecked(false)
+        setChecked(false)
 
-    }, []);
+
+    }, [desig_code]);
 
     //  ******************************  fetching data ***************************************
 
@@ -381,15 +309,32 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }, [DATA]);
 
+    
+    
+
 
     const seniorityUpdate = () => {
 
+        setisrtDateChecked(false)
 
         !isChecked ? setChecked(true) : setChecked(false)
 
 
 
         !isChecked ? setFilteredData(DATA.sort((a, b) => { return a.seniority - b.seniority })) :
+            setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
+
+
+    }
+
+    const retirementDateUpdate = () => {
+
+        setChecked(false)
+        !isrtDateChecked ? setisrtDateChecked(true) : setisrtDateChecked(false)
+        // isrtDateChecked, setisrtDateChecked   .toString().trim().slice(0, 10)
+
+
+        !isrtDateChecked ? setFilteredData(DATA.sort((a, b) => { return new Date( a.retiredate.toString().trim().slice(0, 10)) -new Date( b.retiredate.toString().trim().slice(0, 10)) })) :
             setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
 
 
@@ -431,10 +376,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 <View style={{ borderRadius: 10 }}>
                     <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
                 </View>
-                {item.photo ?
-                    <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
-                    :
-                    <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                {
+                    item.photo ?
+                        <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
+                        :
+                        <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
 
                 }
             </View>
@@ -454,7 +400,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
                                     {
                                         notDgOrAdg ?
-                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text> : ""
+                                            <View style={{ justifyContent: 'space-between' }}>
+                                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
+                                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.retiredate.toString().trim().slice(0, 10)}</Text>
+                                            </View>
+                                            : ""
                                     }
                                 </TouchableOpacity>
                                 : null
@@ -512,7 +462,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                     {
                         item.mobile &&
-                        <TouchableOpacity  onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
+                        <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
                             style={{
                                 alignItems: 'center',
                                 flexDirection: 'row',
@@ -595,18 +545,40 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                     {
                         notDgOrAdg ?
-                            <View style={{ alignItems: 'flex-end', marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Checkbox
-                                        style={{ height: 18, width: 18 }}
-                                        value={isChecked}
 
-                                        color={isChecked ? '#6750a4' : undefined}
-                                    />
+                            <View style={{
 
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+                                marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
+                                flexDirection: 'row',
 
-                                </TouchableOpacity>
+                            }}>
+                                <View style={{ flexDirection: 'column' }}>
+                                    <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Checkbox
+                                            style={{ height: 18, width: 18 }}
+                                            value={isChecked}
+
+                                            color={isChecked ? '#6750a4' : undefined}
+                                        />
+
+                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => retirementDateUpdate()}
+                                        style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                        <Checkbox
+                                            style={{ height: 18, width: 18 }}
+                                            value={isrtDateChecked}
+
+                                            color={isrtDateChecked ? '#6750a4' : undefined}
+                                        />
+
+                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
+
+                                    </TouchableOpacity>
+                                </View>
+
 
                             </View> : ""}
 

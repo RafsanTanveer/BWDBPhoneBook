@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { List } from 'react-native-paper';
 import api from '../api/api';
 import OfficeList from '../data/OfficeList';
@@ -23,8 +23,8 @@ const civil = '../assets/icons/civil.png'
 const economic = '../assets/icons/economic.png'
 const me = '../assets/icons/me.png'
 const water = '../assets/icons/water.png'
-const office = '../assets/icons/office.png'  
-const medical = '../assets/icons/medical.png'  
+const office = '../assets/icons/office.png'
+const medical = '../assets/icons/medical.png'
 
 //*******************************************icons ********************************************** */
 
@@ -39,20 +39,40 @@ const ExpendableDrawer = () => {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [DATA, setDATA] = useState([])
+    const [desigList, setdesigList] = useState([])
     const [refreshing, setRefreshing] = useState(true)
     const [offices, setoffices] = useState()
+
+    const [dgAdgDesig, setdgAdgDesig] = useState([])
+    const [adminDesig, setadminDesig] = useState([])
+    const [civilDesig, setcivilDesig] = useState([])
+    const [computerDesig, setcomputerDesig] = useState([])
+    const [economicDesig, seteconomicDesig] = useState([])
+    const [financeDesig, setfinanceDesig] = useState([])
+    const [landDesig, setlandDesig] = useState([])
+    const [geologyDesig, setgeologyDesig] = useState([])
+    const [waterDesig, setwaterDesig] = useState([])
+    const [mechDesig, setmechDesig] = useState([])
+
+
 
     const fetchData = async () => {
         setIsLoading(true);
 
+        console.log('in expendable fetch');
+
         try {
             setRefreshing(false);
-            const { data: response } = await api.get("officelist");
-            setoffices(response.rows);
+            const { data: response } = await api.get("desiglist");
+            setdesigList(response.rows);
+            console.log(response.rows.length);
+
+
         } catch (error) {
             console.error(error.message);
         }
+
+
         setIsLoading(false);
     }
 
@@ -61,6 +81,23 @@ const ExpendableDrawer = () => {
         fetchData();
 
     }, []);
+
+    useEffect(() => {
+
+        setdgAdgDesig(desigList.filter((it) => (it.cadre === '00')))
+        setcivilDesig(desigList.filter((it) => (it.cadre === '01')))
+        setmechDesig(desigList.filter((it) => (it.cadre === '02')))
+        setadminDesig(desigList.filter((it) => (it.cadre === '03')))
+        setfinanceDesig(desigList.filter((it) => (it.cadre === '04')))
+        setwaterDesig(desigList.filter((it) => (it.cadre === '05')))
+        setlandDesig(desigList.filter((it) => (it.cadre === '06')))
+        setgeologyDesig(desigList.filter((it) => (it.cadre === '07')))
+        seteconomicDesig(desigList.filter((it) => (it.cadre === '08')))
+        setcomputerDesig(desigList.filter((it) => (it.cadre === '09')))
+
+    }, [desigList]);
+
+
 
     //  ******************************  fetching data ***************************************
 
@@ -100,6 +137,7 @@ const ExpendableDrawer = () => {
     }
 
 
+
     return (
         <>
 
@@ -129,21 +167,27 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[8]}
                         onPress={() => handlePress(8)}  >
-                        <List.Item onPress={() => { navigation.navigate('Director General') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director General" />
+                        {
+                            dgAdgDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
-                        <List.Item onPress={() => { navigation.navigate('Addl. Director General') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Director General" />
 
-                       
 
                     </List.Accordion>
 
@@ -159,24 +203,25 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[1]}
                         onPress={() => handlePress(1)} >
 
-                        <List.Item onPress={() => { navigation.navigate('Director (Admin)', { officeId: '4015', title: 'Director (Admin)' }) }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Admin)" />
-                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Admin)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Admin)" />
-                        <List.Item onPress={() => { navigation.navigate('Asst. Director (Admin)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Asst. Director (Admin)" />
+                        {
+                            adminDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
                     </List.Accordion>
 
@@ -192,42 +237,28 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[2]}
                         onPress={() => handlePress(2)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Chief Engineer (Civil)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Chief Engineer (Civil)" />
-                        <List.Item onPress={() => { navigation.navigate('Addl. Chief Engineer (Civil)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Chief Engineer (Civil)" />
-                        <List.Item onPress={() => { navigation.navigate('Superintendent Engineer (Civil)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Superintendent Engineer (Civil)" />
-                        <List.Item onPress={() => { navigation.navigate('Executive Engineer (Civil)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Executive Engineer (Civil)" />
-                        <List.Item onPress={() => { navigation.navigate('Sub-divisional Engineer (Civil)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Sub-divisional Engineer (Civil)" />
-                        <List.Item onPress={() => { navigation.navigate('Assistant Engineer (Civil)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Engineer (Civil)" />
+
+                        {
+                            civilDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
+
+
                     </List.Accordion>
                     <List.Accordion
                         style={styles.accordingStyle}
@@ -241,31 +272,29 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[3]}
                         onPress={() => handlePress(3)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Senior System Analyst') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Senior System Analyst" />
-                        <List.Item onPress={() => { navigation.navigate('System Analyst') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="System Analyst" />
 
-                        <List.Item onPress={() => { navigation.navigate('Programmer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Programmer" />
-                        <List.Item onPress={() => { navigation.navigate('Assistant Programmer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Programmer" />
+
+                        {
+                            computerDesig.map((it) => (
+
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+
+                            ))
+                        }
 
 
                     </List.Accordion>
@@ -281,45 +310,28 @@ const ExpendableDrawer = () => {
                         )} />}
                         expanded={expendedList[10]}
                         onPress={() => handlePress(10)} >
-                        
-                        <List.Item onPress={() => { navigation.navigate('Joint Chief') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Joint Chief" />
 
-                        <List.Item onPress={() => { navigation.navigate('Director (Economic Evaluation)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Economic Evaluation)" />
+                        {
+                            economicDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
-                        <List.Item onPress={() => { navigation.navigate('Deputy Chief, Economics') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Chief, Economics" />
 
-
-                        <List.Item onPress={() => { navigation.navigate('Assistant Chief, Economics') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Chief, Economics" />
-
-                       
-                        <List.Item onPress={() => { navigation.navigate('Research Officer, Economics') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Research Officer, Economics" />
-
-                       
 
                     </List.Accordion>
 
@@ -335,36 +347,25 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[4]}
                         onPress={() => handlePress(4)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Controller (Fa&A)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Controller (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Director (Fa&A)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Addl. Director (Fa&A)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Director (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Fa&A)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Fa&A)" />
-                        <List.Item onPress={() => { navigation.navigate('Asstt. Director (Fa&A)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Asstt. Director (Fa&A)" />
+                        {
+                            financeDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
                     </List.Accordion>
 
                     <List.Accordion
@@ -379,24 +380,25 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[5]}
                         onPress={() => handlePress(5)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Director (Geology)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director (Geology)" />
-                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Geology)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Geology)" />
-                        <List.Item onPress={() => { navigation.navigate('Geologist') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Geologist" />
+                        {
+                            geologyDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
                     </List.Accordion>
 
@@ -412,24 +414,25 @@ const ExpendableDrawer = () => {
                         expanded={expendedList[6]}
                         onPress={() => handlePress(6)}
                     >
-                        <List.Item onPress={() => { navigation.navigate('Director Land') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Director Land" />
-                        <List.Item onPress={() => { navigation.navigate('Deputy Director (Land)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Director (Land)" />
-                        <List.Item onPress={() => { navigation.navigate('Asstt. Director (Land)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Asstt. Director (Land)" />
+                        {
+                            landDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
                     </List.Accordion>
 
                     <List.Accordion
@@ -445,42 +448,25 @@ const ExpendableDrawer = () => {
                         onPress={() => handlePress(7)}
                     >
 
-                        <List.Item onPress={() => { navigation.navigate('Chief Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Chief Engineer (M/E)" />
-                        <List.Item onPress={() => { navigation.navigate('Addl. Chief Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Addl. Chief Engineer (M/E)" />
-                        <List.Item onPress={() => { navigation.navigate('Superintendent Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Superintendent Engineer (M/E)" />
-                        <List.Item onPress={() => { navigation.navigate('Executive Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Executive Engineer (M/E)" />
-                        <List.Item onPress={() => { navigation.navigate('Sub-divisional Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Sub-divisional Engineer (M/E)" />
-                        <List.Item onPress={() => { navigation.navigate('Assistant Engineer (M/E)') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Engineer (M/E)" />
+                        {
+                            mechDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
                     </List.Accordion>
                     <List.Accordion
@@ -496,140 +482,25 @@ const ExpendableDrawer = () => {
                         onPress={() => handlePress(9)}
                     >
 
-                        <List.Item onPress={() => { navigation.navigate('Chief Water Management') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Chief Water Management" />
-
-                        <List.Item onPress={() => { navigation.navigate('Principal Extension Officer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Principal Extension Officer" />
-
-                        <List.Item onPress={() => { navigation.navigate('Deputy Chief, Agriculture') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Chief, Agriculture" />
-
-                        <List.Item onPress={() => { navigation.navigate('Deputy Chief, Soil') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Chief, Soil" />
-
-                        <List.Item onPress={() => { navigation.navigate('Deputy Chief, Fishery') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Chief, Fishery" />
-
-                        <List.Item onPress={() => { navigation.navigate('Deputy Chief, Sociology') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Chief, Sociology" />
-
-                        <List.Item onPress={() => { navigation.navigate('Deputy Chief Extension Officer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Deputy Chief Extension Officer" />
-
-                        <List.Item onPress={() => { navigation.navigate('Assistant Chief, Fishery') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Chief, Fishery" />
-
-                        <List.Item onPress={() => { navigation.navigate('Assistant Chief, Sociology') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Chief, Sociology" />
-
-                        <List.Item onPress={() => { navigation.navigate('Assistant Chief, Agriculture') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Chief, Agriculture" />
-
-                        <List.Item onPress={() => { navigation.navigate('Assistant Chief, Environment & Forest') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Chief, Environment & Forest" />
-
-                        <List.Item onPress={() => { navigation.navigate('Assistant Chief, Soil') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Assistant Chief, Soil" />
-
-                        <List.Item onPress={() => { navigation.navigate('Extension Officer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Extension Officer" />
-
-
-                        <List.Item onPress={() => { navigation.navigate('Research Officer, E&F') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Research Officer, E&F" />
-
-                        <List.Item onPress={() => { navigation.navigate('Research Officer, Agri') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Research Officer, Agri" />
-
-                        <List.Item onPress={() => { navigation.navigate('Research Officer, Fishery') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Research Officer, Fishery" />
-
-                        <List.Item onPress={() => { navigation.navigate('Research Officer, Sociology') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Research Officer, Sociology" />
-
-                       
-                        <List.Item onPress={() => { navigation.navigate('Research Officer, Soil') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Research Officer, Soil" />
-
-                        <List.Item onPress={() => { navigation.navigate('Asstt. Extension Officer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Asstt. Extension Officer" />
+                        {
+                            waterDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
                     </List.Accordion>
 
@@ -661,7 +532,7 @@ const ExpendableDrawer = () => {
                             />
                         )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Medical Officer" />
 
-                       
+
 
                     </List.Accordion>
 
