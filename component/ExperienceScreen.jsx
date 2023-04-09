@@ -20,7 +20,7 @@ const ExperienceScreen = ({ id }) => {
 
 
 
-    const fetchPersonalData = async () => {
+    const fetchExpData = async () => {
         setIsLoading(true);
 
         try {
@@ -45,7 +45,7 @@ const ExperienceScreen = ({ id }) => {
 
     useEffect(() => {
 
-        fetchPersonalData();
+        fetchExpData();
 
     }, []);
 

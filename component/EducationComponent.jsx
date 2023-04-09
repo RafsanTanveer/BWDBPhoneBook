@@ -18,7 +18,7 @@ const EducationComponent = ({ id }) => {
 
 
 
-    const fetchPersonalData = async () => {
+    const fetchEduData = async () => {
         setIsLoading(true);
 
         try {
@@ -38,7 +38,7 @@ const EducationComponent = ({ id }) => {
 
     useEffect(() => {
 
-        fetchPersonalData();
+        fetchEduData();
 
     }, []);
 

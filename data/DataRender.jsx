@@ -44,6 +44,10 @@ const distrctItems = [
     { id: 10, name: 'instagram' },
 ];
 
+const up = 0
+const sublength = 100
+const ITEM_HEIGHT=200
+
 
 function openDatabase() {
     if (Platform.OS === "web") {
@@ -56,11 +60,12 @@ function openDatabase() {
         };
     }
 
-    const db = SQLite.openDatabase("test6.db");
+    const db = SQLite.openDatabase(`tsucccv${up}${sublength}.db`);
     return db;
 }
 
 const db = openDatabase();
+
 
 
 
@@ -183,13 +188,76 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             );`
                         );
 
-                        data.forEach((it) => {
-                            tx.executeSql(
-                                `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
+
+                        if (tablename === 'SUBDIVENGCIV') {
+                            for (let i = up; i <= sublength; i++) {
+                                 if(i!==74)
+                                tx.executeSql(
+                                    `INSERT INTO ${tablename} (
+                                        id, 
+                                        name, 
+                                        designation,
+                                        seniority, 
+                                        office, 
+                                        mobile, 
+                                        pabx, 
+                                        email, 
+                                        retiredate, 
+                                        photo)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                                [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
-                            );
-                        });
+                                    [
+                                        data[i].id,
+                                        data[i].name,
+                                        data[i].designation,
+                                        data[i].seniority,
+                                        data[i].office,
+                                        data[i].mobile,
+                                        data[i].pabx,
+                                        data[i].email,
+                                        data[i].retiredate,
+                                        data[i].photo
+                                    ]
+                                    );
+                                 else
+                                     tx.executeSql(
+                                         `INSERT INTO ${tablename} (
+                                            id, 
+                                            name, 
+                                            designation, 
+                                            seniority, 
+                                            office, 
+                                            mobile, 
+                                            pabx, 
+                                            email, 
+                                            retiredate, 
+                                            photo)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                         [data[i].id,
+                                         data[i].name,
+                                         data[i].designation,
+                                         data[i].seniority,
+                                         data[i].office,
+                                         data[i].mobile,
+                                         data[i].pabx,
+                                         data[i].email,
+                                         data[i].retiredate,
+                                         ""
+                                         ]
+                                     );
+                            }
+
+                        } else {
+                            data.forEach((it) => {
+                                tx.executeSql(
+                                    `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                    [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
+                                );
+                            });
+                        }
+
+
+
                     }, null, resolve);
                 });
 
@@ -201,7 +269,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         }
         setIsLoading(false);
     }
- 
+
 
 
 
@@ -256,36 +324,36 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         try {
             setRefreshing(false);
 
-          
-           
 
-                const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
-                const data = response.rows;
-                setDATA(data);
 
-                await new Promise((resolve, reject) => {
-                    db.transaction((tx) => {
-                       
 
-                        data.forEach((it) => {
-                            tx.executeSql(
-                                `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
+            const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
+            const data = response.rows;
+            setDATA(data);
+
+            await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+
+
+                    data.forEach((it) => {
+                        tx.executeSql(
+                            `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                                [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
-                            );
-                        });
-                    }, null, resolve);
-                });
+                            [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
+                        );
+                    });
+                }, null, resolve);
+            });
 
 
 
-            
+
         } catch (error) {
             console.error(error);
         }
         setIsLoading(false);
     }
- 
+
 
 
 
@@ -309,8 +377,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }, [DATA]);
 
-    
-    
+
+
 
 
     const seniorityUpdate = () => {
@@ -334,7 +402,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // isrtDateChecked, setisrtDateChecked   .toString().trim().slice(0, 10)
 
 
-        !isrtDateChecked ? setFilteredData(DATA.sort((a, b) => { return new Date( a.retiredate.toString().trim().slice(0, 10)) -new Date( b.retiredate.toString().trim().slice(0, 10)) })) :
+        !isrtDateChecked ? setFilteredData(DATA.sort((a, b) => { return new Date(a.retiredate.toString().trim().slice(0, 10)) - new Date(b.retiredate.toString().trim().slice(0, 10)) })) :
             setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
 
 
@@ -600,6 +668,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                         }
+
+                        // getItemLayout={(data, index) => (
+                        //     { length: filteredData.length, offset: filteredData.length * index, index }
+                        // )}
 
                     />
 

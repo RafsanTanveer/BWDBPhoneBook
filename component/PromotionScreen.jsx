@@ -17,7 +17,7 @@ const PromotionScreen = ({id}) => {
 
 
 
-    const fetchPersonalData = async () => {
+    const fetchPromotionData = async () => {
         setIsLoading(true);
 
         try {
@@ -37,7 +37,7 @@ const PromotionScreen = ({id}) => {
 
     useEffect(() => {
 
-        fetchPersonalData();
+        fetchPromotionData();
 
     }, []);
 

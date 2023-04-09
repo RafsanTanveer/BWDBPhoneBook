@@ -38,15 +38,17 @@ const DesignationScreen = ({ route, navigation }) => {
                 <Text style={{ color: '#000', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
                 
             </View>
+           
 
             <DataRender
                 designation={route.params.designation}
                 desig_code={route.params.desig_code} 
+                // desig_code={route.params.tablename === 'CHENGCIV' ? 44 : route.params.desig_code}  
                 tablename={route.params.tablename}
             />
 
-            {/* < DataRenderOffice designation='Assistant Engineer (Civil)' office_code={route.params.officeId} navigation={navigation} /> */}
-
+            {/*SUBDIVENGCIV < DataRenderOffice designation='Assistant Engineer (Civil)' office_code={route.params.officeId} navigation={navigation} /> */}
+            {/* desig_code={route.params.tablename === 'SUBDIVENGCIV' ? 52 : route.params.desig_code}  */}
 
 
         </>

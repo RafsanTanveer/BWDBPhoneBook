@@ -53,6 +53,7 @@ const ExpendableDrawer = () => {
     const [geologyDesig, setgeologyDesig] = useState([])
     const [waterDesig, setwaterDesig] = useState([])
     const [mechDesig, setmechDesig] = useState([])
+    const [medicalDesig, setmedicalDesig] = useState([])
 
 
 
@@ -93,7 +94,8 @@ const ExpendableDrawer = () => {
         setlandDesig(desigList.filter((it) => (it.cadre === '06')))
         setgeologyDesig(desigList.filter((it) => (it.cadre === '07')))
         seteconomicDesig(desigList.filter((it) => (it.cadre === '08')))
-        setcomputerDesig(desigList.filter((it) => (it.cadre === '09')))
+        setcomputerDesig(desigList.filter((it) => (it.cadre === '09'))) 
+        setmedicalDesig(desigList.filter((it) => (it.cadre === '10'))) 
 
     }, [desigList]);
 
@@ -127,7 +129,7 @@ const ExpendableDrawer = () => {
             }
         }
         else if (no > 12 && no <= 18) {
-            arr[11] = true
+            arr[12] = true
             for (let i = 0; i <= 18; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else if (i != 12) arr[i] = false;
@@ -165,8 +167,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[8]}
-                        onPress={() => handlePress(8)}  >
+                        expanded={expendedList[1]}
+                        onPress={() => handlePress(1)}  >
                         {
                             dgAdgDesig.map((it) => (
                                 <List.Item key={it.desig}
@@ -200,8 +202,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[1]}
-                        onPress={() => handlePress(1)} >
+                        expanded={expendedList[2]}
+                        onPress={() => handlePress(2)} >
 
                         {
                             adminDesig.map((it) => (
@@ -234,8 +236,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[2]}
-                        onPress={() => handlePress(2)}
+                        expanded={expendedList[3]}
+                        onPress={() => handlePress(3)}
                     >
 
                         {
@@ -269,8 +271,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[3]}
-                        onPress={() => handlePress(3)}
+                        expanded={expendedList[4]}
+                        onPress={() => handlePress(4)}
                     >
 
 
@@ -308,8 +310,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[10]}
-                        onPress={() => handlePress(10)} >
+                        expanded={expendedList[5]}
+                        onPress={() => handlePress(5)} >
 
                         {
                             economicDesig.map((it) => (
@@ -344,8 +346,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[4]}
-                        onPress={() => handlePress(4)}
+                        expanded={expendedList[6]}
+                        onPress={() => handlePress(6)}
                     >
                         {
                             financeDesig.map((it) => (
@@ -377,8 +379,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[5]}
-                        onPress={() => handlePress(5)}
+                        expanded={expendedList[7]}
+                        onPress={() => handlePress(7)}
                     >
                         {
                             geologyDesig.map((it) => (
@@ -411,8 +413,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[6]}
-                        onPress={() => handlePress(6)}
+                        expanded={expendedList[8]}
+                        onPress={() => handlePress(8)}
                     >
                         {
                             landDesig.map((it) => (
@@ -444,8 +446,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[7]}
-                        onPress={() => handlePress(7)}
+                        expanded={expendedList[9]}
+                        onPress={() => handlePress(9)}
                     >
 
                         {
@@ -478,8 +480,8 @@ const ExpendableDrawer = () => {
                                 style={styles.iconStyle}
                             />
                         )} />}
-                        expanded={expendedList[9]}
-                        onPress={() => handlePress(9)}
+                        expanded={expendedList[10]}
+                        onPress={() => handlePress(10)}
                     >
 
                         {
@@ -518,19 +520,25 @@ const ExpendableDrawer = () => {
                         onPress={() => handlePress(11)}
                     >
 
-                        <List.Item onPress={() => { navigation.navigate('Chief Medical Officer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Chief Medical Officer" />
-
-                        <List.Item onPress={() => { navigation.navigate('Medical Officer') }} left={props => <List.Icon {...props} icon={() => (
-                            <Image
-                                source={require(rightArrow)}
-                                style={styles.iconStyle}
-                            />
-                        )} />} style={{ marginLeft: 20, marginTop: -16, }} title="Medical Officer" />
+                        {
+                            medicalDesig.map((it) => (
+                                <List.Item key={it.desig}
+                                    onPress={() => {
+                                        navigation.navigate('DesignationScreen', {
+                                            designation: it.designame,
+                                            desig_code: it.desig,
+                                            title: 'Employee List',
+                                            tablename: it.tablename
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                            ))
+                        }
 
 
 
