@@ -6,7 +6,7 @@ import SingleColumnComponent from '../component/SingleColumnComponent';
 import { AuthContext } from '../context/AuthContext';
 import SplashScreen from '../screens/SplashScreen'
 import LoadingScreen from '../screens/LoadingScreen'
-
+import db from '../database/database'
 
 
 
@@ -28,6 +28,301 @@ const BiodataScreen = ({ id, navigation }) => {
     const [experience, setexperience] = useState([])
     const [training, settraining] = useState([])
 
+    const insertDataIntoStateVariableFromDatabase = async () => {
+
+
+
+    }
+
+    const fetchDataAndInsertintoDatabase = async () => {
+        //biodata
+        const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
+        setpersonalData(personalresponse.rows);
+
+
+        setName(personalresponse.rows[0].name)
+
+        setphoto(personalresponse.rows[0].photo)
+        setofficeAddres(personalresponse.rows[0].officeAddress)
+        setpresentOfficeCode(personalresponse.rows[0].offceCode)
+        // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
+        setisAdmin(true)
+        // console.log(response.rows[0].offceCode);
+
+
+        //promotion
+        const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
+        setpromotion(promotionresponse.rows);
+
+
+
+
+        //edu
+        const { data: eduresponse } = await api.get("edu", { params: { id: id } });
+        setEdu(eduresponse.rows);
+
+        //exp
+        const { data: expresponse } = await api.get("exp", { params: { id: id } });
+        setexperience(expresponse.rows);
+
+        setpresentOffice(expresponse.rows[0].office)
+        setpresentDesig(expresponse.rows[0].desig)
+        setpresentPost(expresponse.rows[0].post);
+        setpresentCharge(expresponse.rows[0].charge)
+
+        //training
+        const { data: trainingresponse } = await api.get("training", { params: { id: id } });
+        settraining(trainingresponse.rows);
+
+
+
+        await new Promise((resolve, reject) => {
+            db.transaction((tx) => {
+
+                tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS promotion (
+                                id             TEXT,
+                                desig          TEXT,
+                                joinDate       TEXT,
+                                postingDate
+                                                 );`
+                );
+
+
+
+                promotionresponse.rows.forEach((it) => {
+                    tx.executeSql(
+                        `INSERT INTO promotion (
+                                    id,
+                                    desig,
+                                    joinDate,
+                                    postingDate)
+               VALUES (  ?, ?, ?, ?);`,
+                        [
+                            it.id,
+                            it.desig,
+                            it.joinDate,
+                            it.postingDate
+                        ]
+                    );
+                });
+
+
+                tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS experience (
+                                id              TEXT,
+                                office          TEXT,
+                                post            TEXT,
+                                charge          TEXT,
+                                desig           TEXT,
+                                joinDate        TEXT,
+                                releaseDate     TEXT
+                                                 );`
+                );
+
+
+                expresponse.rows.forEach((it) => {
+                    tx.executeSql(
+                        `INSERT INTO experience (
+                                    id,
+                                    office,
+                                    post,
+                                    charge,
+                                    desig,
+                                    joinDate,
+                                    releaseDate)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?);`,
+                        [
+                            it.id,
+                            it.office,
+                            it.post,
+                            it.charge,
+                            it.desig,
+                            it.joinDate,
+                            it.releaseDate
+                        ]
+                    );
+                });
+
+
+                tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS training (
+                                id              TEXT,
+                                title           TEXT,
+                                subject         TEXT,
+                                institute       TEXT,
+                                country         TEXT,
+                                year            TEXT,
+                                startDate       TEXT,
+                                days            TEXT
+                                                 );`
+                );
+
+                trainingresponse.rows.forEach((it) => {
+                    tx.executeSql(
+                        `INSERT INTO training (
+                                    id,
+                                    title,
+                                    subject,
+                                    institute,
+                                    country,
+                                    year,
+                                    startDate,
+                                    days)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?);`,
+                        [
+                            id,
+                            it.title,
+                            it.subject,
+                            it.institute,
+                            it.country,
+                            it.year,
+                            it.startDate,
+                            it.days
+                        ]
+                    );
+                });
+
+                tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS education (
+                              id                TEXT,
+                              passingYear       TEXT,
+                              qualification     TEXT,
+                              discipline        TEXT,
+                              institute         TEXT,
+                              marks             TEXT,
+                              result            TEXT,
+                              scale             TEXT,
+                              remarks           TEXT
+                                                 );`
+                );
+
+                eduresponse.rows.forEach((it) => {
+                    tx.executeSql(
+                        `INSERT INTO education (
+                                    id,
+                                    passingYear,
+                                    qualification,
+                                    discipline,
+                                    institute,
+                                    marks,
+                                    result,
+                                    scale,
+                                    remarks)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?,?);`,
+                        [
+                            it.id,
+                            it.passingYear,
+                            it.qualification,
+                            it.discipline,
+                            it.institute,
+                            it.marks,
+                            it.result,
+                            it.scale,
+                            it.remarks
+                        ]
+                    );
+                });
+
+                tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS biodata (
+                                id              TEXT,
+                                name            TEXT,
+                                namebn          TEXT,
+                                f_name          TEXT,
+                                m_name          TEXT,
+                                bdate           TEXT,
+                                mstatus         TEXT,
+                                gender          TEXT,
+                                religion        TEXT,
+                                gpf             TEXT,
+                                accountsid      TEXT,
+                                retireDate      TEXT,
+                                homeDist        TEXT,
+                                homeAddress     TEXT,
+                                postalCode      TEXT,
+                                upazila         TEXT,
+                                village         TEXT,
+                                cadre           TEXT,
+                                accfile         TEXT,
+                                joinDesig       TEXT,
+                                joinDate        TEXT,
+                                regularDate     TEXT,
+                                officeAddress   TEXT,
+                                offceCode       TEXT,
+                                photo           BLOB
+                                                 );`
+                );
+
+
+                personalresponse.rows.forEach((it) => {
+                    tx.executeSql(
+                        `INSERT INTO biodata (
+                                   id,
+                                   name,
+                                   namebn,
+                                   f_name,
+                                   m_name,
+                                   bdate,
+                                   mstatus,
+                                   gender,
+                                   religion,
+                                   gpf,
+                                   accountsid,
+                                   retireDate,
+                                   homeDist,
+                                   homeAddress,
+                                   postalCode,
+                                   upazila,
+                                   village,
+                                   cadre,
+                                   accfile,
+                                   joinDesig,
+                                   joinDate,
+                                   regularDate,
+                                   officeAddress,
+                                   offceCode,
+                                   photo)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?);`,
+                        [
+                            it.id,
+                            it.name,
+                            it.namebn,
+                            it.f_name,
+                            it.m_name,
+                            it.bdate,
+                            it.mstatus,
+                            it.gender,
+                            it.religion,
+                            it.gpf,
+                            it.accountsid,
+                            it.retireDate,
+                            it.homeDist,
+                            it.homeAddress,
+                            it.postalCode,
+                            it.upazila,
+                            it.village,
+                            it.cadre,
+                            it.accfile,
+                            it.joinDesig,
+                            it.joinDate,
+                            it.regularDate,
+                            it.officeAddress,
+                            it.offceCode,
+                            it.photo
+                        ]
+                    );
+                });
+
+
+
+
+
+            }, null, resolve);
+        });
+
+
+    }
 
 
     const fetchPersonalData = async () => {
@@ -35,53 +330,367 @@ const BiodataScreen = ({ id, navigation }) => {
 
         try {
             setRefreshing(false);
-            const { data: response } = await api.get("biodata", { params: { id: id } });
-            setpersonalData(response.rows);
 
 
-            setName(response.rows[0].name)
 
-            setphoto(response.rows[0].photo)
-            setofficeAddres(response.rows[0].officeAddress)
-            setpresentOfficeCode(response.rows[0].offceCode)
-            // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
-            setisAdmin(true)
-            // console.log(response.rows[0].offceCode);
+            //////////////////////////////////
+
+            /////// check if table exists or not
+
+            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
+                        resolve([tableExistsResult, null]);
+                    });
+                });
+            });
+
+            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
+            console.log('Total table = ', tableNames.length);
+            console.log('Table names:', tableNames);
+
+            const tableExists = tableNames.includes('biodata');
 
 
-            const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
-            setpromotion(promotionresponse.rows);
+            if (tableExists) {
+                console.log('biodata', ' table exists............................................................................');
 
-            const { data: eduresponse } = await api.get("edu", { params: { id: id } });
-            setEdu(eduresponse.rows);
+                /////// check if id exists or not
 
-            const { data: expresponse } = await api.get("exp", { params: { id: id } });
-            setexperience(expresponse.rows);
+                const [idExistsResult, dataResult] = await new Promise((resolve, reject) => {
+                    db.transaction((tx) => {
+                        tx.executeSql("SELECT id FROM biodata;", [], (_, tableExistsResult) => {
+                            resolve([tableExistsResult, null]);
+                        });
+                    });
+                });
 
-            setpresentOffice(expresponse.rows[0].office)
-            setpresentDesig(expresponse.rows[0].desig)
-            setpresentPost(expresponse.rows[0].post);
-            setpresentCharge(expresponse.rows[0].charge)
+                const exsistingIDs = idExistsResult.rows._array.map((table) => table.id);
+                console.log('Total table = ', exsistingIDs.length);
+                console.log('exsistingIDs:**************', exsistingIDs);
 
-            const { data: trainingresponse } = await api.get("training", { params: { id: id } });
-            settraining(trainingresponse.rows);
+                const isIdExist = exsistingIDs.includes(id);
+
+                if (isIdExist) {
+                    console.log(id, 'exists');
+
+                    await new Promise((resolve, reject) => {
+                        var isIdExist = true;
+                        db.transaction((tx) => {
+
+                            tx.executeSql(
+                                `SELECT * FROM training where id = ${id}`,
+                                [],
+                                (_, result) => {
+                                    const tempTraining = result.rows._array
+                                    settraining(tempTraining);
+                                },
+                                (_, error) => {
+                                    console.log(error);
+                                }
+                            );
+
+                            tx.executeSql(
+                                `SELECT * FROM biodata where id = ${id}`,
+                                [],
+                                (_, result) => {
+                                    console.log('biodata .................................');
+                                    const tempBiodata = result.rows._array
+                                    setpersonalData(tempBiodata);
+                                    console.log(tempBiodata[0].id);
+
+
+                                    setName(tempBiodata[0].name)
+
+                                    setphoto(tempBiodata[0].photo)
+                                    setofficeAddres(tempBiodata[0].officeAddress)
+                                    setpresentOfficeCode(tempBiodata[0].offceCode)
+                                    // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
+                                    setisAdmin(true)
+
+                                },
+                                (_, error) => {
+                                    console.log(error);
+                                }
+                            );
+
+                            tx.executeSql(
+                                `SELECT * FROM promotion where id = ${id}`,
+                                [],
+                                (_, result) => {
+                                    const tempPromotion = result.rows._array
+                                    setpromotion(tempPromotion);
+                                },
+                                (_, error) => {
+                                    console.log(error);
+                                }
+                            );
+
+                            tx.executeSql(
+                                `SELECT * FROM experience where id = ${id}`,
+                                [],
+                                (_, result) => {
+                                    const tempExperience = result.rows._array
+                                    setexperience(tempExperience);
+                                },
+                                (_, error) => {
+                                    console.log(error);
+                                }
+                            );
+
+                            tx.executeSql(
+                                `SELECT * FROM education where id = ${id}`,
+                                [],
+                                (_, result) => {
+                                    const tempEducation = result.rows._array
+                                    setEdu(tempEducation);
+                                },
+                                (_, error) => {
+                                    console.log(error);
+                                }
+                            );
+
+                        }, null, resolve);
+                    });
+
+
+                } else {
+                    console.log(id, 'does not exist');
+
+                    //biodata
+                    const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
+                    setpersonalData(personalresponse.rows);
+
+
+                    setName(personalresponse.rows[0].name)
+
+                    setphoto(personalresponse.rows[0].photo)
+                    setofficeAddres(personalresponse.rows[0].officeAddress)
+                    setpresentOfficeCode(personalresponse.rows[0].offceCode)
+                    // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
+                    setisAdmin(true)
+                    // console.log(response.rows[0].offceCode);
+
+
+                    //promotion
+                    const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
+                    setpromotion(promotionresponse.rows);
+
+
+
+
+                    //edu
+                    const { data: eduresponse } = await api.get("edu", { params: { id: id } });
+                    setEdu(eduresponse.rows);
+
+                    //exp
+                    const { data: expresponse } = await api.get("exp", { params: { id: id } });
+                    setexperience(expresponse.rows);
+
+                    setpresentOffice(expresponse.rows[0].office)
+                    setpresentDesig(expresponse.rows[0].desig)
+                    setpresentPost(expresponse.rows[0].post);
+                    setpresentCharge(expresponse.rows[0].charge)
+
+                    //training
+                    const { data: trainingresponse } = await api.get("training", { params: { id: id } });
+                    settraining(trainingresponse.rows);
+
+                    await new Promise((resolve, reject) => {
+
+
+                        db.transaction((tx) => {
+
+                            promotionresponse.rows.forEach((it) => {
+                                tx.executeSql(
+                                    `INSERT INTO promotion (
+                                    id,
+                                    desig,
+                                    joinDate,
+                                    postingDate)
+               VALUES (  ?, ?, ?, ?);`,
+                                    [
+                                        it.id,
+                                        it.desig,
+                                        it.joinDate,
+                                        it.postingDate
+                                    ]
+                                );
+                            });
+                            expresponse.rows.forEach((it) => {
+                                tx.executeSql(
+                                    `INSERT INTO experience (
+                                    id,
+                                    office,
+                                    post,
+                                    charge,
+                                    desig,
+                                    joinDate,
+                                    releaseDate)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?);`,
+                                    [
+                                        it.id,
+                                        it.office,
+                                        it.post,
+                                        it.charge,
+                                        it.desig,
+                                        it.joinDate,
+                                        it.releaseDate
+                                    ]
+                                );
+                            });
+                            trainingresponse.rows.forEach((it) => {
+                                tx.executeSql(
+                                    `INSERT INTO training (
+                                    id,
+                                    title,
+                                    subject,
+                                    institute,
+                                    country,
+                                    year,
+                                    startDate,
+                                    days)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?);`,
+                                    [
+                                        id,
+                                        it.title,
+                                        it.subject,
+                                        it.institute,
+                                        it.country,
+                                        it.year,
+                                        it.startDate,
+                                        it.days
+                                    ]
+                                );
+                            });
+                            eduresponse.rows.forEach((it) => {
+                                tx.executeSql(
+                                    `INSERT INTO education (
+                                    id,
+                                    passingYear,
+                                    qualification,
+                                    discipline,
+                                    institute,
+                                    marks,
+                                    result,
+                                    scale,
+                                    remarks)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?,?);`,
+                                    [
+                                        it.id,
+                                        it.passingYear,
+                                        it.qualification,
+                                        it.discipline,
+                                        it.institute,
+                                        it.marks,
+                                        it.result,
+                                        it.scale,
+                                        it.remarks
+                                    ]
+                                );
+                            });
+                            personalresponse.rows.forEach((it) => {
+                                tx.executeSql(
+                                    `INSERT INTO biodata (
+                                   id,
+                                   name,
+                                   namebn,
+                                   f_name,
+                                   m_name,
+                                   bdate,
+                                   mstatus,
+                                   gender,
+                                   religion,
+                                   gpf,
+                                   accountsid,
+                                   retireDate,
+                                   homeDist,
+                                   homeAddress,
+                                   postalCode,
+                                   upazila,
+                                   village,
+                                   cadre,
+                                   accfile,
+                                   joinDesig,
+                                   joinDate,
+                                   regularDate,
+                                   officeAddress,
+                                   offceCode,
+                                   photo)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?);`,
+                                    [
+                                        it.id,
+                                        it.name,
+                                        it.namebn,
+                                        it.f_name,
+                                        it.m_name,
+                                        it.bdate,
+                                        it.mstatus,
+                                        it.gender,
+                                        it.religion,
+                                        it.gpf,
+                                        it.accountsid,
+                                        it.retireDate,
+                                        it.homeDist,
+                                        it.homeAddress,
+                                        it.postalCode,
+                                        it.upazila,
+                                        it.village,
+                                        it.cadre,
+                                        it.accfile,
+                                        it.joinDesig,
+                                        it.joinDate,
+                                        it.regularDate,
+                                        it.officeAddress,
+                                        it.offceCode,
+                                        it.photo
+                                    ]
+                                );
+                            });
+
+
+
+                        }, null, resolve);
+                    });
+
+
+
+                }
+
+
+
+
+
+            } else {
+                console.log('biodata', 'not table exists............................................................................');
+
+
+                fetchDataAndInsertintoDatabase()
+
+
+            }
+
+
 
 
 
         } catch (error) {
             console.error(error.message);
         }
+
+
+
         setIsLoading(false);
     }
 
 
-   
+
 
     useEffect(() => {
         // setIsLoading(true);
 
         fetchPersonalData();
-      
+
 
 
     }, []);

@@ -13,7 +13,6 @@ function App() {
     <AuthProvider>
       <ThemeProvider>
         <PaperProvider>
-          {/* <StatusBar animated={true} backgroundColor="#6750a4" />   */}
           <CustomNavigator />
         </PaperProvider>
       </ThemeProvider>

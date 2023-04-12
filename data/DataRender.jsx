@@ -19,52 +19,19 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 
 import * as SQLite from 'expo-sqlite'
 
+import db from '../database/database'
 
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 
-function useForceUpdate() {
-    const [value, setValue] = useState(0);
-    return [() => setValue(value + 1), value];
-}
 
-const distrctItems = [
-    //name ky is must.It is to show the text in front
-    { id: 1, name: 'angellist' },
-    { id: 2, name: 'codepen' },
-    { id: 3, name: 'envelope' },
-    { id: 4, name: 'etsy' },
-    { id: 5, name: 'facebook' },
-    { id: 6, name: 'foursquare' },
-    { id: 7, name: 'github-alt' },
-    { id: 8, name: 'github' },
-    { id: 9, name: 'gitlab' },
-    { id: 10, name: 'instagram' },
-];
+
 
 const up = 0
 const sublength = 100
 const ITEM_HEIGHT=200
-
-
-function openDatabase() {
-    if (Platform.OS === "web") {
-        return {
-            transaction: () => {
-                return {
-                    executeSql: () => { },
-                };
-            },
-        };
-    }
-
-    const db = SQLite.openDatabase(`tsucccv${up}${sublength}.db`);
-    return db;
-}
-
-const db = openDatabase();
 
 
 
@@ -175,17 +142,17 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     db.transaction((tx) => {
                         tx.executeSql(
                             `CREATE TABLE IF NOT EXISTS ${tablename} (
-              id          TEXT,
-              name        TEXT,
-              designation TEXT,
-              seniority   TEXT,
-              office      TEXT,
-              mobile      TEXT,
-              pabx        TEXT,
-              email       TEXT,
-              retiredate  TEXT,
-              photo       BLOB
-            );`
+                                id          TEXT,
+                                name        TEXT,
+                                designation TEXT,
+                                seniority   TEXT,
+                                office      TEXT,
+                                mobile      TEXT,
+                                pabx        TEXT,
+                                email       TEXT,
+                                retiredate  TEXT,
+                                photo       BLOB
+                                                 );`
                         );
 
 

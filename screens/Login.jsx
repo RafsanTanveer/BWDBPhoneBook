@@ -28,7 +28,8 @@ const Login = () => {
             ToastAndroid.CENTER)
     }
     return (
-        <View style={{ flex: 1, height: screenHeight, backgroundColor: 'white', flexDirection: 'column-reverse' }}>
+        //  this view works as a keyboard avoiding view
+        <View style={{ flex: 1, height: screenHeight, backgroundColor: 'white', flexDirection: 'column-reverse' }}>  
             <View style={{ height: screenHeight, }}>
                 <Image
                     style={{

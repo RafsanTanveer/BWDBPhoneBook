@@ -6,6 +6,7 @@ import * as SQLite from 'expo-sqlite'
 import { DatabaseConnection } from "../data/DbConnection";
 import BiodataScreen from "./BiodataScreen";
 import { AuthContext } from "../context/AuthContext";
+import LoadingScreen from '../screens/LoadingScreen'
 
 const db = DatabaseConnection.getConnection();
 const Home = ({ navigation }) => {

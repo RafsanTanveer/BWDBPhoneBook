@@ -9,7 +9,8 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [splashLoading, setSplashLoading] = useState(false);
+   
+    const [isSplashLoading, setSplashLoading] = useState(false);
     const [name, setName] = useState()
     const [isLogged, setisLogged] = useState(false)
     const [photo, setphoto] = useState()
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = (id, password) => {
         setIsLoading(true);
-
+console.log('in loing');
         api
             .get("userinfo", {
                 params: {
@@ -100,6 +101,13 @@ export const AuthProvider = ({ children }) => {
         setUserInfo([])
         setpresentOfficeCode(0)
         setisAdmin(false)
+
+        setName()
+
+        setphoto()
+        setofficeAddres()
+        setpresentOfficeCode()
+
         AsyncStorage.removeItem('userInfo');
         
     };
@@ -132,7 +140,7 @@ export const AuthProvider = ({ children }) => {
                 value={{
                     isLoading,
                     userInfo,
-                    splashLoading,
+                    isSplashLoading, setSplashLoading,
                     register,
                     login,
                     logout,

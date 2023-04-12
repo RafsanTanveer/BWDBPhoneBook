@@ -52,7 +52,7 @@ const CustomNavigator = () => {
         <>
             {/* <Login /> */}
             <NavigationContainer>
-                {isLogged ?
+                {isLogged  ?
                     <>
                         <StatusBar animated={true} backgroundColor={currentTheme} />
                         <CustomDrawer />

@@ -63,10 +63,13 @@ const ExpendableDrawer = () => {
         console.log('in expendable fetch');
 
         try {
+            console.log('in expendable fetch  try...........');
+
             setRefreshing(false);
             const { data: response } = await api.get("desiglist");
             setdesigList(response.rows);
             console.log(response.rows.length);
+            console.log('in expendable fetch  try end ...........');
 
 
         } catch (error) {
