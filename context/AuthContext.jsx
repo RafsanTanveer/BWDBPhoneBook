@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 import api from '../api/api';
-
+import db from '../database/database'
 
 export const AuthContext = createContext();
 
@@ -52,16 +52,32 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
-    const login = (id, password) => {
+    const login =async (id, password) => {
         setIsLoading(true);
-console.log('in loing');
+
+
+        // const [tableExistsResult, dataResult] =  new Promise((resolve, reject) => {
+        //     db.transaction((tx) => {
+        //         tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
+        //             resolve([tableExistsResult, null]);
+        //         });
+        //     });
+        // });
+
+        // const tableNames = tableExistsResult.rows._array.map((table) => table.name);
+        // console.log('Total table ++++++++++++++++++++++++++++++++++++++++= ', tableNames.length);
+        // console.log('Table names:+++++++++++++++++++++++++++++++++++++++++', tableNames);
+
+        // const tableExists = tableNames.includes('employee');
+
+        console.log('in loing');
         api
             .get("userinfo", {
                 params: {
                     id: id
                 }
             })
-            .then(res => {
+            .then(async(res) => {
                 const userData = res.data;
 
 
@@ -84,9 +100,17 @@ console.log('in loing');
                     // console.log(userData.rows)
                     setUserInfo(userData);
                     setisLogged(true)
+
+
                 }
 
-                AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+                
+
+                await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
+
+                
+               
+
                 setIsLoading(false);
             })
             .catch(e => {
@@ -118,9 +142,10 @@ console.log('in loing');
 
             let userInfo = await AsyncStorage.getItem('userInfo');
             userInfo = JSON.parse(userInfo);
-
+            console.log('userinfo ',userInfo);
             if (userInfo) {
                 setUserInfo(userInfo);
+                setisLogged(true)
             }
 
             setSplashLoading(false);
@@ -139,13 +164,13 @@ console.log('in loing');
             <AuthContext.Provider
                 value={{
                     isLoading,
-                    userInfo,
+                    userInfo, setUserInfo,
                     isSplashLoading, setSplashLoading,
                     register,
                     login,
                     logout,
                     name,
-                    isLogged,
+                    isLogged, setisLogged,
                     name, setName,
                     photo, setphoto,
                     presentDesig, setpresentDesig,

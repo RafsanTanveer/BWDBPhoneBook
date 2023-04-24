@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
+import db from '../database/database'
+
 
 const paniBhaban = '../assets/paniBhaban.png'
 const botom = '../assets/botom.png'
@@ -19,7 +21,7 @@ const screenWidth = Dimensions.get('screen').width;
 
 const Login = () => {
     const [pmisId, setpmisId] = useState()
-    const { isLoading, login } = useContext(AuthContext);
+    const { isLoading, login, setUserInfo, setisLogged } = useContext(AuthContext);
 
     const handleSubmit = ({ pid }) => {
         setId(pmisId)
@@ -29,7 +31,7 @@ const Login = () => {
     }
     return (
         //  this view works as a keyboard avoiding view
-        <View style={{ flex: 1, height: screenHeight, backgroundColor: 'white', flexDirection: 'column-reverse' }}>  
+        <View style={{ flex: 1, height: screenHeight, backgroundColor: 'white', flexDirection: 'column-reverse' }}>
             <View style={{ height: screenHeight, }}>
                 <Image
                     style={{
@@ -75,7 +77,9 @@ const Login = () => {
                     </TextInput>
                     <TouchableOpacity
                         style={{ height: height / 20, width: "70%", borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF0000' }}
-                        onPress={() => {
+                        onPress={ () => {
+
+                           
                             login(pmisId, "rafsan t");
                         }}
                     >

@@ -5,6 +5,9 @@ import { List } from 'react-native-paper';
 import api from '../api/api';
 import OfficeList from '../data/OfficeList';
 
+import db from '../database/database'
+
+
 
 //****************************************** icons ********************************************** */
 
@@ -66,10 +69,94 @@ const ExpendableDrawer = () => {
             console.log('in expendable fetch  try...........');
 
             setRefreshing(false);
-            const { data: response } = await api.get("desiglist");
-            setdesigList(response.rows);
-            console.log(response.rows.length);
-            console.log('in expendable fetch  try end ...........');
+        
+
+
+            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
+                        resolve([tableExistsResult, null]);
+                    });
+                });
+            });
+
+            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
+            console.log('Total table = ', tableNames.length);
+            console.log('Table names:', tableNames);
+
+            const tableExists = tableNames.includes('designation');
+
+            if (tableExists) {
+                await new Promise((resolve, reject) => {
+                    console.log('desig table  exists [][][][][][][][][][][][][]');
+
+                    db.transaction((tx) => {
+
+
+                        tx.executeSql(
+                            `SELECT * FROM designation`,
+                            [],
+                            (_, result) => {
+                                const desig = result.rows._array
+                                setdesigList(desig);
+                            },
+                            (_, error) => {
+                                console.log(error);
+                            }
+                        );
+
+
+                    }, null, resolve);
+
+                });
+            } else {
+
+                console.log('desig table not exists [][][][][][][][][][][][][]');
+
+                const { data: response } = await api.get("desiglist");
+                setdesigList(response.rows);
+                console.log(response.rows.length);
+
+                await new Promise((resolve, reject) => {
+                    db.transaction((tx) => {
+
+
+                        tx.executeSql(
+                            `CREATE TABLE IF NOT EXISTS designation (
+                                cadre       TEXT,
+                                paygrade    TEXT,
+                                desig       TEXT,
+                                designame   TEXT,
+                                tablename   TEXT
+                                                 );`
+                        );
+
+
+                        response.rows.forEach((it) => {
+                            tx.executeSql(
+                                `INSERT INTO designation (
+                                    cadre,
+                                    paygrade,
+                                    desig,
+                                    designame,
+                                    tablename)
+               VALUES (  ?, ?, ?, ?,?);`,
+                                [
+                                    it.cadre,
+                                    it.paygrade,
+                                    it.desig,
+                                    it.designame,
+                                    it.tablename
+                                ]
+                            );
+                        });
+
+
+                    }, null, resolve);
+
+                });
+            }
+
 
 
         } catch (error) {
@@ -97,8 +184,8 @@ const ExpendableDrawer = () => {
         setlandDesig(desigList.filter((it) => (it.cadre === '06')))
         setgeologyDesig(desigList.filter((it) => (it.cadre === '07')))
         seteconomicDesig(desigList.filter((it) => (it.cadre === '08')))
-        setcomputerDesig(desigList.filter((it) => (it.cadre === '09'))) 
-        setmedicalDesig(desigList.filter((it) => (it.cadre === '10'))) 
+        setcomputerDesig(desigList.filter((it) => (it.cadre === '09')))
+        setmedicalDesig(desigList.filter((it) => (it.cadre === '10')))
 
     }, [desigList]);
 

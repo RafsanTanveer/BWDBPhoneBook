@@ -15,6 +15,8 @@ import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
+import * as Contacts from 'expo-contacts'
+
 import SearchableDropdown from 'react-native-searchable-dropdown';
 
 import * as SQLite from 'expo-sqlite'
@@ -344,7 +346,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }, [DATA]);
 
+    useEffect(() => {
+        (async () => {
+            const { status } = await Contacts.requestPermissionsAsync();
+            if (status === 'granted') {
+                const { data } = await Contacts.getContactsAsync({
+                    fields: [Contacts.Fields.Emails],
+                });
 
+                if (data.length > 0) {
+                    const contact = data[0];
+                    // console.log(contact);
+                }
+            }
+        })();
+    }, []);
 
 
 
@@ -463,6 +479,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
 
                 <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
+                    
                     {
                         item.mobile &&
                         <TouchableOpacity onLongPress={() => console.warn('STARTED LONG PRESS')} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
@@ -473,7 +490,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 borderRadius: height * .005,
                                 marginHorizontal: 5,
                                 paddingVertical: 1,
-                                paddingHorizontal: 10
+                                paddingHorizontal: 5
                             }}>
                             <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                             <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
@@ -509,6 +526,57 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
                             <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                         </TouchableOpacity>
+                    }
+                    {
+                        // item.mobile &&
+                        // <TouchableOpacity onLongPress={() => console.warn('STARTED LONG PRESS')}
+                            
+                        //         onPress={async () => {
+                        //             const contact = {
+                        //                 [Contacts.Fields.FirstName]: "Test",
+                        //                 [Contacts.Fields.LastName]: "McTest",
+                        //                 [Contacts.Fields.PhoneNumbers]: [
+                        //                     {
+                        //                         number: "(123) 456-7890",
+                        //                         isPrimary: true,
+                        //                         digits: "1234567890",
+                        //                         countryCode: "PA",
+                        //                         id: "1",
+                        //                         label: "mobile",
+                        //                     },
+                        //                 ],
+                        //                 [Contacts.Fields.Emails]: [
+                        //                     {
+                        //                         email: "test@gmail.com",
+                        //                         isPrimary: true,
+                        //                         id: "2",
+                        //                         label: "mobile",
+                        //                     },
+                        //                 ],
+                        //             };
+
+                        //             await Contacts.addContactAsync(contact)
+                        //                 .then((contactId) => {
+                        //                     alert("Se creó exitosamente");
+                        //                 })
+                        //                 .catch((err) => {
+                        //                     alert(err);
+                        //                     console.log(err);
+                        //                 });
+                        //         }}
+                                
+                        //     style={{
+                        //         alignItems: 'center',
+                        //         flexDirection: 'row',
+                        //         backgroundColor: `${currentTheme}`,
+                        //         borderRadius: height * .005,
+                        //         marginHorizontal: 5,
+                        //         paddingVertical: 1,
+                        //         paddingHorizontal: 5
+                        //     }}>
+                        //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" /> */}
+                        //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>ADD</Text>
+                        // </TouchableOpacity>
                     }
                 </View>
             </View>

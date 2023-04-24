@@ -84,7 +84,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 id             TEXT,
                                 desig          TEXT,
                                 joinDate       TEXT,
-                                postingDate
+                                postingDate    TEXT
                                                  );`
                 );
 
