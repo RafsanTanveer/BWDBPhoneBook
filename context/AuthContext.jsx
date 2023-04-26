@@ -9,7 +9,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-   
+
     const [isSplashLoading, setSplashLoading] = useState(false);
     const [name, setName] = useState()
     const [isLogged, setisLogged] = useState(false)
@@ -104,12 +104,12 @@ export const AuthProvider = ({ children }) => {
 
                 }
 
-                
+
 
                 await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
 
-                
-               
+
+
 
                 setIsLoading(false);
             })
@@ -131,9 +131,11 @@ export const AuthProvider = ({ children }) => {
         setphoto()
         setofficeAddres()
         setpresentOfficeCode()
+        setpresentPost()
+        setpresentOffice()
 
         AsyncStorage.removeItem('userInfo');
-        
+
     };
 
     const isLoggedIn = async () => {
@@ -151,7 +153,7 @@ export const AuthProvider = ({ children }) => {
             setSplashLoading(false);
         } catch (e) {
             setSplashLoading(false);
-            console.log(`is logged in error ${e}`);
+            console.log(`is logged in errorrr ${e}`);
         }
     };
 

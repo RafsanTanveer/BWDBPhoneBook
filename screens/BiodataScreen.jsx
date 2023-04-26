@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator } from 'react-native';
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -8,7 +8,18 @@ import SplashScreen from '../screens/SplashScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import db from '../database/database'
 
+const officeLevel = [
+    "Board",
+    "Region",
+    "Zone/Equivalent",
+    "Circle/Directorate",
+    "Division",
+    "Sub Division",
+    "Section", "",
+    "Project",
+    "Others"
 
+]
 
 const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
@@ -28,11 +39,83 @@ const BiodataScreen = ({ id, navigation }) => {
     const [experience, setexperience] = useState([])
     const [training, settraining] = useState([])
 
-    const insertDataIntoStateVariableFromDatabase = async () => {
-
-
+    const updateBiodata = () => {
+        console.log('updateBiodata ==================================================');
+        setpersonalData([])
+        setpromotion([])
+        setEdu([])
+        setexperience([])
+        settraining([])
+        deleteAllData([])
+        fetchPersonalData()
 
     }
+    const deleteAllData = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `DELETE FROM biodata where id=${id};`,
+                [],
+                (tx, result) => {
+                    console.log('Data deleted');
+                },
+                (tx, error) => {
+                    console.log('Error deleting data:', error);
+                }
+            );
+
+            tx.executeSql(
+                `DELETE FROM education where id=${id};`,
+                [],
+                (tx, result) => {
+                    console.log('Data deleted');
+                },
+                (tx, error) => {
+                    console.log('Error deleting data:', error);
+                }
+            );
+
+            tx.executeSql(
+                `DELETE FROM training where id=${id};`,
+                [],
+                (tx, result) => {
+                    console.log('Data deleted');
+                },
+                (tx, error) => {
+                    console.log('Error deleting data:', error);
+                }
+            );
+
+            tx.executeSql(
+                `DELETE FROM experience where id=${id};`,
+                [],
+                (tx, result) => {
+                    console.log('Data deleted');
+                },
+                (tx, error) => {
+                    console.log('Error deleting data:', error);
+                }
+            );
+
+            tx.executeSql(
+                `DELETE FROM promotion where id=${id};`,
+                [],
+                (tx, result) => {
+                    console.log('Data deleted');
+                },
+                (tx, error) => {
+                    console.log('Error deleting data:', error);
+                }
+            );
+
+
+
+
+
+
+
+        });
+    };
+
 
     const fetchDataAndInsertintoDatabase = async () => {
         //biodata
@@ -250,6 +333,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                 regularDate     TEXT,
                                 officeAddress   TEXT,
                                 offceCode       TEXT,
+                                officeLevel     TEXT,
+                                officeLevel1    TEXT,
+                                officeLevel2    TEXT,
                                 photo           BLOB
                                                  );`
                 );
@@ -282,8 +368,11 @@ const BiodataScreen = ({ id, navigation }) => {
                                    regularDate,
                                    officeAddress,
                                    offceCode,
+                                   officeLevel,
+                                   officeLevel1,
+                                   officeLevel2,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?);`,
                         [
                             it.id,
                             it.name,
@@ -309,6 +398,9 @@ const BiodataScreen = ({ id, navigation }) => {
                             it.regularDate,
                             it.officeAddress,
                             it.offceCode,
+                            it.officeLevel,
+                            it.officeLevel1,
+                            it.officeLevel2,
                             it.photo
                         ]
                     );
@@ -432,6 +524,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                 (_, result) => {
                                     const tempExperience = result.rows._array
                                     setexperience(tempExperience);
+
+                                    setpresentOffice(tempExperience[0].office)
+                                    setpresentDesig(tempExperience[0].desig)
+                                    setpresentPost(tempExperience[0].post);
+                                    setpresentCharge(tempExperience[0].charge)
+
+
                                 },
                                 (_, error) => {
                                     console.log(error);
@@ -732,7 +831,13 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                 </View>
                             </View>
-                            <ScrollView >
+                            {refreshing ? <ActivityIndicator /> : null}
+
+                            <ScrollView
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={updateBiodata} />
+                                }
+                            >
                                 <View style={{ flex: 1, marginTop: 20, marginHorizontal: 10 }}>
 
                                     <View style={{ marginTop: 7, flexDirection: 'row', marginBottom: 0 }}>
@@ -778,12 +883,12 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                     <SingleColumnComponent
                                         firstHeading="Marital Status"
-                                        firstQueryResult={item.gender == "U" ? 'Unmarried' : 'Married'}
+                                        firstQueryResult={item.mstatus === "U" ? 'Unmarried' : 'Married'}
                                         delimiter=":"
                                     />
                                     <SingleColumnComponent
                                         firstHeading="Employee Status"
-                                        firstQueryResult={item.regularDate == null ? "Probation" : "Regular"}
+                                        firstQueryResult={item.regularDate === null ? "Probation" : "Regular"}
                                         delimiter=":"
                                     />
                                     <SingleColumnComponent
@@ -846,18 +951,26 @@ const BiodataScreen = ({ id, navigation }) => {
                                         firstQueryResult={item.retireDate}
                                         delimiter=":"
                                     />
+                                    {
+                                        item.gpf ?
+                                            <SingleColumnComponent
+                                                firstHeading="GPF File No"
+                                                firstQueryResult={item.gpf}
+                                                delimiter=":"
+                                            /> : ''
+                                    }
 
-                                    <SingleColumnComponent
-                                        firstHeading="GPF File No"
-                                        firstQueryResult={item.gpf}
-                                        delimiter=":"
-                                    />
+                                    {
+                                        item.accountsid ?
+                                            <SingleColumnComponent
+                                                firstHeading="Accounts File No "
+                                                firstQueryResult={item.accountsid}
+                                                delimiter=":"
+                                            /> : ''
+                                    }
 
-                                    <SingleColumnComponent
-                                        firstHeading="Accounts File No "
-                                        firstQueryResult={item.accountsid}
-                                        delimiter=":"
-                                    />
+
+
 
 
                                     <SingleColumnComponent
@@ -876,16 +989,34 @@ const BiodataScreen = ({ id, navigation }) => {
                                         firstQueryResult={item.officeAddress}
                                         delimiter=":"
                                     />
-                                    <SingleColumnComponent
-                                        firstHeading="Zone/Equivalent"
-                                        firstQueryResult=""
-                                        delimiter=":"
-                                    />
-                                    <SingleColumnComponent
-                                        firstHeading="Circle/Directorate"
-                                        firstQueryResult=""
-                                        delimiter=":"
-                                    />
+
+
+
+                                    {item.officeLevel == 2 ?
+                                        <>
+                                            <SingleColumnComponent
+                                                firstHeading={officeLevel[item.officeLevel - 1]}
+                                                firstQueryResult={item.officeLevel1}
+                                                delimiter=":"
+                                            />
+
+                                        </> : ''
+                                    }
+
+                                    {item.officeLevel >= 3 ?
+                                        <>
+                                            <SingleColumnComponent
+                                                firstHeading={officeLevel[item.officeLevel - 1]}
+                                                firstQueryResult={item.officeLevel1}
+                                                delimiter=":"
+                                            />
+                                            <SingleColumnComponent
+                                                firstHeading={officeLevel[item.officeLevel - 2]}
+                                                firstQueryResult={item.officeLevel2}
+                                                delimiter=":"
+                                            />
+                                        </> : ''
+                                    }
 
 
                                     <SingleColumnComponent
@@ -1121,8 +1252,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
                                 </View>
-                            </ScrollView>
-                        </View>
+                            </ScrollView >
+                        </View >
                     ))
             }
 
