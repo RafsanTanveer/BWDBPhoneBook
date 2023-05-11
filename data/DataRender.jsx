@@ -345,7 +345,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             });
 
             const distData = rows._array;
-            // setDistrictFromDB(distData);
+            setDistrictFromDB(distData);
+            distData.map((item, index) => (console.log(index+1+' - '+item.officeDistrict + ' - ' + item.count)))
             // console.log(distData.length);
             // console.log(distData);
 
@@ -484,6 +485,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // controller.reset()
         setDistrictValue() // for reseting dropdown picker
         // fetchDistrictFromDb()
+        fetchDistrictFromDb()
 
     }, [desig_code]);
 
