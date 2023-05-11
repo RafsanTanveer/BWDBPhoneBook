@@ -18,22 +18,22 @@ const OfficeScreen = ({ route, navigation }) => {
 
 
     const fetchOfficeEmail = async () => {
-       
-        
+
+
         try {
-           
+
             const { data: response } = await api.get("officeEmail", {
                 params: {
                     officeId: route.params.officeId
                 }
             });
             setoffceEmails(response.rows);
-           
+
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
-       
+
     }
 
     useEffect(() => {
@@ -54,35 +54,38 @@ const OfficeScreen = ({ route, navigation }) => {
         <>
             <View style={{
                 alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15,
-                backgroundColor: '#C1B8DC'  //'#6750a4'
+                backgroundColor: `${currentTheme}`,
+                borderBottomLeftRadius: 15,
+                borderBottomRightRadius: 15,
+
             }}>
-                <Text style={{ color: '#000', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.officeName} {presentOfficeCode === 30 ? ", " +route.params.officeId : null}</Text>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.officeName} {presentOfficeCode === 30 ? ", " + route.params.officeId : null}</Text>
                 {offceEmails.map((item, index) => (
-                    <View style={{ paddingTop: 5,  }} key={index}>
-                       
+                    <View style={{ paddingTop: 5, }} key={index}>
+
                         {
                             item.address ?
-                                <Text style={{ fontSize: 14, fontWeight: '600', textAlign: 'center', }}> {item.address}</Text>
+                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center', }}> {item.address}</Text>
                                 : ""
                         }
 
                         {
                             item.email1 ?
                                 <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email1}`) }}  >
-                                    <Text style={{ paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif', color: '#0744A9' }}>{item.email1} </Text>
+                                    <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif',  }}>{item.email1} </Text>
                                 </TouchableOpacity>
                                 : ""
                         }
 
-                       
+
                         {
                             item.email2 ?
                                 <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email1}`) }}  >
-                                    <Text style={{ paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif', color: '#0744A9' }}>{item.email2} </Text>
+                                    <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif',  }}>{item.email2} </Text>
                                 </TouchableOpacity>
                                 : ""
                         }
-                        
+
                     </View>
                 ))}
             </View>

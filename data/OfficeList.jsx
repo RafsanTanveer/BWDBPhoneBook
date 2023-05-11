@@ -1,9 +1,9 @@
 import { View, Text, TextInput, ScrollView, FlatList, ToastAndroid, StyleSheet, TouchableOpacity } from 'react-native'
 import api from '../api/api';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from '../screens/LoadingScreen';
-
+import {ThemeContext} from '../context/ThemeContext'
 
 
 
@@ -24,6 +24,9 @@ const OfficeList = ({ lcode }) => {
     const [filteredData, setFilteredData] = useState(DATA)
     const [search, setSearch] = useState('')
 
+    const { currentTheme } = useContext(ThemeContext);
+
+
     const fetchData = async () => {
         setIsLoading(true);
 
@@ -36,7 +39,7 @@ const OfficeList = ({ lcode }) => {
             });
             setDATA(response.rows);
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
         setIsLoading(false);
     }
@@ -53,7 +56,7 @@ const OfficeList = ({ lcode }) => {
 
     useEffect(() => {
 
-        setFilteredData(DATA);  // for updating filterdata at first 
+        setFilteredData(DATA);  // for updating filterdata at first
 
     }, [DATA]);
 
@@ -96,7 +99,7 @@ const OfficeList = ({ lcode }) => {
             <LoadingScreen /> :
             <View style={{ marginLeft: 10 }} >
                 <TextInput
-                    style={{ borderRadius: 5, borderWidth: 1, width: '98%', height: 30, paddingLeft:10 }}
+                    style={{ borderRadius: 5, borderWidth: 1, width: '98%', height: 30, paddingLeft: 10 }}
                     placeholder="Search Office"
                     value={search}
                     //underlineColorAndroid='trasparent'
@@ -125,7 +128,7 @@ const OfficeList = ({ lcode }) => {
                                 <View style={{
                                     width: '98%',
                                     flexDirection: 'row', paddingVertical: 5, marginBottom: 2, alignItems: 'center',
-                                    backgroundColor: '#F1EFF8', borderRadius: 5
+                                    backgroundColor: `${currentTheme}10`, borderRadius: 5
                                 }}>
                                     <View style={{ flex: 1.5 }}>
                                         <Text style={{ textAlign: 'center' }}>{index + 1}.</Text>

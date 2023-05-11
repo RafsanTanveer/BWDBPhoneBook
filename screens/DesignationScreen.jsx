@@ -17,9 +17,9 @@ const DesignationScreen = ({ route, navigation }) => {
     const [offceEmails, setoffceEmails] = useState([])
 
 
-    
 
-   
+
+
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -30,20 +30,24 @@ const DesignationScreen = ({ route, navigation }) => {
 
     return (
         <>
+
             <View style={{
                 alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15, marginBottom:5,
-                backgroundColor: '#C1B8DC'  //'#6750a4'
+                backgroundColor: `${currentTheme}`,//'#C1B8DC',  //'#6750a4'
+                borderBottomLeftRadius: 15,
+                borderBottomRightRadius: 15,
+
             }}>
-                
-                <Text style={{ color: '#000', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
-                
+
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
+
             </View>
-           
+
 
             <DataRender
                 designation={route.params.designation}
-                desig_code={route.params.desig_code} 
-                // desig_code={route.params.tablename === 'CHENGCIV' ? 44 : route.params.desig_code}  
+                desig_code={route.params.desig_code}
+                // desig_code={route.params.tablename === 'CHENGCIV' ? 44 : route.params.desig_code}
                 tablename={route.params.tablename}
             />
 

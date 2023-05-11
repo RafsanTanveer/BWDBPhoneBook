@@ -44,15 +44,15 @@ export const AuthProvider = ({ children }) => {
                 setUserInfo(userInfo);
                 AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
                 setIsLoading(false);
-                // console.log(userInfo);
+                // __DEV__ && console.log(userInfo);
             })
             .catch(e => {
-                console.log(`register error ${e}`);
+                __DEV__ && console.log(`register error ${e}`);
                 setIsLoading(false);
             });
     };
 
-    const login =async (id, password) => {
+    const login = async (id, password) => {
         setIsLoading(true);
 
 
@@ -65,39 +65,39 @@ export const AuthProvider = ({ children }) => {
         // });
 
         // const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-        // console.log('Total table ++++++++++++++++++++++++++++++++++++++++= ', tableNames.length);
-        // console.log('Table names:+++++++++++++++++++++++++++++++++++++++++', tableNames);
+        // __DEV__ && console.log('Total table ++++++++++++++++++++++++++++++++++++++++= ', tableNames.length);
+        // __DEV__ && console.log('Table names:+++++++++++++++++++++++++++++++++++++++++', tableNames);
 
         // const tableExists = tableNames.includes('employee');
 
-        console.log('in loing');
+        __DEV__ && console.log('in loing');
         api
             .get("userinfo", {
                 params: {
                     id: id
                 }
             })
-            .then(async(res) => {
+            .then(async (res) => {
                 const userData = res.data;
 
 
 
-                // console.log('Length  ------------- ' + userData.rows.length);
+                // __DEV__ && console.log('Length  ------------- ' + userData.rows.length);
                 if (userData.rows.length === 0) {
                     ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
                     setisLogged(false)
                     setUserInfo([])
-                    // console.log(userData.rows)
+                    // __DEV__ && console.log(userData.rows)
                 }
                 else if (userData.rows[0].status === 'I') {
-                    // console.log(userData.rows);
+                    // __DEV__ && console.log(userData.rows);
                     ToastAndroid.show('INACTIVE', ToastAndroid.LONG,);
                     setisLogged(false)
                     setUserInfo([])
 
                 }
                 else {
-                    // console.log(userData.rows)
+                    // __DEV__ && console.log(userData.rows)
                     setUserInfo(userData);
                     setisLogged(true)
 
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }) => {
                 setIsLoading(false);
             })
             .catch(e => {
-                console.log(`login error ${e}`);
+                __DEV__ && console.log(`login error ${e}`);
                 setIsLoading(false);
             });
     };
@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
 
         setisLogged(false)
         setUserInfo([])
-        setpresentOfficeCode(0)
+    
         setisAdmin(false)
 
         setName()
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }) => {
 
             let userInfo = await AsyncStorage.getItem('userInfo');
             userInfo = JSON.parse(userInfo);
-            console.log('userinfo ',userInfo);
+            __DEV__ && console.log('userinfo ', userInfo);
             if (userInfo) {
                 setUserInfo(userInfo);
                 setisLogged(true)
@@ -153,7 +153,7 @@ export const AuthProvider = ({ children }) => {
             setSplashLoading(false);
         } catch (e) {
             setSplashLoading(false);
-            console.log(`is logged in errorrr ${e}`);
+            __DEV__ && console.log(`is logged in errorrr ${e}`);
         }
     };
 

@@ -29,7 +29,7 @@ const Biodata = ({ id, navigation, route }) => {
     const [DATA, setDATA] = useState([])
     const [refreshing, setRefreshing] = useState(true);
 
-    // console.log('in biodata -------- : ' + route.params.id)
+    // __DEV__ && console.log('in biodata -------- : ' + route.params.id)
 
     const fetchPersonalData = async () => {
         setIsLoading(true);
@@ -45,7 +45,7 @@ const Biodata = ({ id, navigation, route }) => {
 
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
         setIsLoading(false);
     }
@@ -213,7 +213,7 @@ const Biodata = ({ id, navigation, route }) => {
                                     delimiter=":"
                                 />
 
-                                {/* {console.log("generalPresentPost  --- " + generalPresentPost)} */}
+                                {/* {__DEV__ && console.log("generalPresentPost  --- " + generalPresentPost)} */}
                                 <SingleColumnComponent
                                     firstHeading="Present Post"
                                     firstQueryResult="" //{generalPresentPost}
@@ -274,7 +274,7 @@ const Biodata = ({ id, navigation, route }) => {
                                 />
 
                                 <TrainingComponent id={item.id} />
-                                
+
                                 <SingleColumnComponent
                                     firstHeading=""
                                     firstQueryResult=""

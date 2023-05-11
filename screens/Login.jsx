@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Dimensions, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
 
@@ -32,6 +32,7 @@ const Login = () => {
     return (
         //  this view works as a keyboard avoiding view
         <View style={{ flex: 1, height: screenHeight, backgroundColor: 'white', flexDirection: 'column-reverse' }}>
+            <StatusBar hidden />
             <View style={{ height: screenHeight, }}>
                 <Image
                     style={{
@@ -59,8 +60,8 @@ const Login = () => {
                     <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</Text>
                     <TextInput
                         maxLength={9}                  // set maximum string length to 9
-                        keyboardType={"decimal-pad"}   // set keyboard type 
-                        selectionColor={'black'}       // for changing curcsor color 
+                        keyboardType={"decimal-pad"}   // set keyboard type
+                        selectionColor={'black'}       // for changing curcsor color
                         onChangeText={(txt) => setpmisId(txt)}
                         style={{
                             paddingLeft: 15,
@@ -79,7 +80,7 @@ const Login = () => {
                         style={{ height: height / 20, width: "70%", borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF0000' }}
                         onPress={ () => {
 
-                           
+
                             login(pmisId, "rafsan t");
                         }}
                     >

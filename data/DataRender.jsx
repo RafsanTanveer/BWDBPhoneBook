@@ -1,6 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState, useContext } from "react";
-import { Modal, Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import React, { useEffect, useState, useContext, useCallback } from "react";
+import { Modal, Dimensions, FlatList, Image, Linking, TextInput, Pressable, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
 import api from '../api/api';
@@ -14,7 +14,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-
+import DropDownPicker from "react-native-dropdown-picker";
+import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
 
 import SearchableDropdown from 'react-native-searchable-dropdown';
@@ -31,27 +32,10 @@ const width = Dimensions.get('window').width;
 
 
 
-const up = 0
-const sublength = 100
-const ITEM_HEIGHT=200
-
-
-
 
 
 
 const DataRender = ({ designation, url, desig_code, tablename }) => {
-
-    // console.log(designation,  desig_code, tablename); 
-
-    //////////////////////////sqlite////////////////////////////////////
-
-
-
-
-
-
-    ////////////////////////////////sqlite//////////////////////////////////////////////////////////////////////
 
 
     const navigation = useNavigation();
@@ -72,16 +56,152 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isChecked, setChecked] = useState();
     const [isrtDateChecked, setisrtDateChecked] = useState();
 
+    const [modalVisible, setModalVisible] = useState(false);
+
     const [notDgOrAdg, setnotDgOrAdg] = useState(false)
+    const [distValue, setdistValue] = useState(0);
+    const [distName, setdistName] = useState();
+
+    const [districtValue, setDistrictValue] = useState(null);
+    const [district, setDistrict] = useState([
+        { label: "ALL DISTRICT", value: "0" },
+        { label: "BAGERHAT", value: "1" },
+        { label: "BANDARBAN", value: "2" },
+        { label: "BARGUNA", value: "3" },
+        // { label: "BAMNA", value: "3" },
+        { label: "BARISHAL", value: "4" },
+        { label: "BHOLA", value: "5" },
+        { label: "BOGURA", value: "6" },
+        { label: "BRAHMANBARIA", value: "7" },
+        { label: "CHANDPUR", value: "8" },
+        { label: "CHAPAI NAWABGAN", value: "9" },
+        { label: "CHATTOGRAM", value: "10" },
+        // { label: "CHITTAGONG", value: "10" },
+        { label: "CHUADANGA", value: "11" },
+        { label: "CUMILLA", value: "12" },
+        { label: "COX'S BAZAR", value: "13" },
+        // { label: "COX'SBAZAR", value: "13" },
+        { label: "DHAKA", value: "14" },
+        { label: "DINAJPUR", value: "15" },
+        { label: "FARIDPUR", value: "16" },
+        { label: "FENI", value: "17" },
+        { label: "GAIBANDHA", value: "18" },
+        { label: "GAZIPUR", value: "19" },
+        { label: "GOPALGANJ", value: "20" },
+        { label: "HABIGANJ", value: "21" },
+        { label: "JAMALPUR", value: "22" },
+        { label: "JASHORE", value: "23" },
+        { label: "JHALOKATHI", value: "24" },
+        { label: "JHENAIDAH", value: "25" },
+        { label: "JOYPURHAT", value: "26" },
+        { label: "KHAGRACHHARI", value: "27" },
+        { label: "KHULNA", value: "28" },
+        { label: "KISHOREGANJ", value: "29" },
+        { label: "KURIGRAM", value: "30" },
+        { label: "KUSHTIA", value: "31" },
+        // { label: "LAKSHMIPUR", value: "32" },
+        { label: "LAXMIPUR", value: "32" },
+        { label: "LALMONIRHAT", value: "33" },
+        { label: "MADARIPUR", value: "34" },
+        { label: "MAGURA", value: "35" },
+        { label: "MANIKGANJ", value: "36" },
+        { label: "MEHERPUR", value: "37" },
+        { label: "MOULVIBAZAR", value: "38" },
+        { label: "MUNSHIGANJ", value: "39" },
+        { label: "MYMENSINGH", value: "40" },
+        { label: "NAOGAON", value: "41" },
+        { label: "NARAIL", value: "42" },
+        { label: "NARAYANGANJ", value: "43" },
+        { label: "NARSINGDI", value: "44" },
+        { label: "NATORE", value: "45" },
+        // { label: "CHAPAI NAWABGANJ", value: "9" },
+        // { label: "CHAPAINAWABGANJ", value: "9" },
+        { label: "NETROKONA", value: "46" },
+        { label: "NILPHAMARI", value: "47" },
+        { label: "NOAKHALI", value: "48" },
+        { label: "PABNA", value: "49" },
+        { label: "PANCHAGARH", value: "50" },
+        { label: "PATUAKHALI", value: "51" },
+        { label: "PEROJPUR", value: "52" },
+        { label: "RAJBARI", value: "53" },
+        { label: "RAJSHAHI", value: "54" },
+        { label: "RANGAMATI", value: "55" },
+        { label: "RANGPUR", value: "56" },
+        { label: "SATKHIRA", value: "57" },
+        { label: "SERAJGANJ", value: "58" },
+        { label: "SHARIATPUR", value: "59" },
+        { label: "SHERPUR", value: "60" },
+        { label: "SUNAMGANJ", value: "61" },
+        { label: "SYLHET", value: "62" },
+        { label: "TANGAIL", value: "63" },
+        { label: "THAKURGAON", value: "64" },
+        { label: "65 PANI BHABAN", value: "65" },
+
+    ]);
+
+    // const onGenderOpen = useCallback(() => {
+    //     // setCompanyOpen(false);
+    // }, []);
+
+    // const onGenderOpen = useCallback(() => {
+    //     // setCompanyOpen(false);
+    // }, []);
+
+    const onGenderOpen = () => { }
+
+    useEffect(() => {
+        sortByDistrict()
+    }, [distValue]);
+
+    const sortByDistrict = () => {
+
+        setisrtDateChecked(false)
+        setChecked(false)
 
 
 
+        if (distValue != 0 && distValue != 65) {
+
+            distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
+            distValue && setdistName("in " + district[distValue].label)
+            const newData = DATA.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData)
+            // console.log('newData.length', newData.length, 'DATA', DATA.length);
+
+        }
+        else if (distValue == 65) {
+
+            distValue && setdistName("in " + district[distValue].label)
+            const newData = DATA.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
+
+
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData)
+
+
+        }
+        else {
+            setFilteredData(DATA)
+            setdistName("")
+        }
+
+
+
+
+    }
 
 
     // ********************************  Internet Connection checked *************************************
     NetInfo.fetch().then(state => {
-        // console.log('Connection type', state.type);
-        // console.log('Is connected?', state.isConnected);
+        // __DEV__ && console.log('Connection type', state.type);
+        // __DEV__ && console.log('Is connected?', state.isConnected);
         setnoInternetConnection(state.isConnected)
     });
     // ********************************  Internet Connection checked *************************************
@@ -92,10 +212,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [DATA, setDATA] = useState([])
-
+    const [districtFromDB, setDistrictFromDB] = useState([]);
+    const { handleSubmit, control } = useForm();
+    const [districtOpen, setDistrictOpen] = useState(false);
 
     const fetchDataFromDb = async () => {
-        console.log('in fetchDataFromDb');
+        __DEV__ && console.log('in fetchDataFromDb');
         setIsLoading(true);
 
         desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true);
@@ -115,12 +237,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             });
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            console.log('Total table = ', tableNames.length);
-            console.log('Table names:', tableNames);
+            __DEV__ && console.log('Total table = ', tableNames.length);
+            __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes(tablename);
             if (tableExists) {
-                console.log(tablename, ' table exists');
+                __DEV__ && console.log(tablename, ' table exists');
 
                 const { rows } = await new Promise((resolve, reject) => {
                     db.transaction((tx) => {
@@ -132,9 +254,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
                 setDATA(data);
-                console.log(data.length);
+                __DEV__ && console.log(data.length);
             } else {
-                console.log(tablename, ' table does not exist');
+                __DEV__ && console.log(tablename, ' table does not exist');
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
@@ -147,8 +269,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 id          TEXT,
                                 name        TEXT,
                                 designation TEXT,
-                                seniority   TEXT,
+                                seniority   INTEGER,
                                 office      TEXT,
+                                officeAddress  TEXT,
+                                officeDistrict  TEXT,
                                 mobile      TEXT,
                                 pabx        TEXT,
                                 email       TEXT,
@@ -158,72 +282,39 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         );
 
 
-                        if (tablename === 'SUBDIVENGCIV') {
-                            for (let i = up; i <= sublength; i++) {
-                                 if(i!==74)
-                                tx.executeSql(
-                                    `INSERT INTO ${tablename} (
-                                        id, 
-                                        name, 
-                                        designation,
-                                        seniority, 
-                                        office, 
-                                        mobile, 
-                                        pabx, 
-                                        email, 
-                                        retiredate, 
-                                        photo)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                                    [
-                                        data[i].id,
-                                        data[i].name,
-                                        data[i].designation,
-                                        data[i].seniority,
-                                        data[i].office,
-                                        data[i].mobile,
-                                        data[i].pabx,
-                                        data[i].email,
-                                        data[i].retiredate,
-                                        data[i].photo
-                                    ]
-                                    );
-                                 else
-                                     tx.executeSql(
-                                         `INSERT INTO ${tablename} (
-                                            id, 
-                                            name, 
-                                            designation, 
-                                            seniority, 
-                                            office, 
-                                            mobile, 
-                                            pabx, 
-                                            email, 
-                                            retiredate, 
-                                            photo)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                                         [data[i].id,
-                                         data[i].name,
-                                         data[i].designation,
-                                         data[i].seniority,
-                                         data[i].office,
-                                         data[i].mobile,
-                                         data[i].pabx,
-                                         data[i].email,
-                                         data[i].retiredate,
-                                         ""
-                                         ]
-                                     );
-                            }
 
-                        } else {
-                            data.forEach((it) => {
-                                tx.executeSql(
-                                    `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                                    [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
-                                );
-                            });
-                        }
+                        data.forEach((it) => {
+                            tx.executeSql(
+                                `INSERT INTO ${tablename} (
+                                      id,
+                                      name,
+                                      designation,
+                                      seniority,
+                                      office,
+                                      officeAddress,
+                                      officeDistrict,
+                                      mobile,
+                                      pabx,
+                                      email,
+                                      retiredate,
+                                      photo)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                [
+                                    it.id,
+                                    it.name,
+                                    it.designation,
+                                    it.seniority,
+                                    it.office,
+                                    it.officeAddress,
+                                    it.officeDistrict,
+                                    it.mobile,
+                                    it.pabx,
+                                    it.email,
+                                    it.retiredate,
+                                    it.photo]
+                            );
+                        });
+
 
 
 
@@ -234,19 +325,47 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             }
         } catch (error) {
-            console.error(error);
+            __DEV__ && console.error(error);
         }
         setIsLoading(false);
     }
 
 
+    const fetchDistrictFromDb = async () => {
+
+
+        try {
+
+            const { rows } = await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+                    tx.executeSql(`SELECT count(*) "count", officeDistrict FROM ${tablename} group by officeDistrict;`, [], (_, result) => {
+                        resolve(result);
+                    });
+                });
+            });
+
+            const distData = rows._array;
+            // setDistrictFromDB(distData);
+            // console.log(distData.length);
+            // console.log(distData);
+
+        } catch (error) {
+            __DEV__ && console.error(error);
+        }
+        setIsLoading(false);
+    }
 
 
     const refreshData = async () => {
 
         try {
+
+            console.log(districtFromDB.length);
+            districtFromDB.map((item, index) => console.log(index+1,' ',item.officeDistrict,' = ',item.count))
+
             setRefreshing(false);
             setIsLoading(true);
+            setSearch()
 
             setDATA([])
 
@@ -257,9 +376,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             setIsLoading(false);
             setChecked(false)
             setisrtDateChecked(false)
+            setdistName('')
+            setDistrictValue()
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
     }
 
@@ -270,10 +391,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 `DELETE FROM ${tablename};`,
                 [],
                 (tx, result) => {
-                    console.log('Data deleted');
+                    __DEV__ && console.log('Data deleted');
                 },
                 (tx, error) => {
-                    console.log('Error deleting data:', error);
+                    __DEV__ && console.log('Error deleting data:', error);
                 }
             );
         });
@@ -282,7 +403,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     // Function to read data from API and insert into table
     const fetchDataAndInsert = async () => {
-        console.log('in refresh');
+        __DEV__ && console.log('in refresh');
         setIsLoading(true);
 
         desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true);
@@ -306,9 +427,33 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                     data.forEach((it) => {
                         tx.executeSql(
-                            `INSERT INTO ${tablename} (id, name, designation, seniority, office, mobile, pabx, email, retiredate, photo)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                            [it.id, it.name, it.designation, it.seniority, it.office, it.mobile, it.pabx, it.email, it.retiredate, it.photo]
+                            `INSERT INTO ${tablename} (
+                                id,
+                                name,
+                                designation,
+                                seniority,
+                                office,
+                                officeAddress,
+                                officeDistrict,
+                                mobile,
+                                pabx,
+                                email,
+                                retiredate,
+                                photo)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                            [
+                                it.id,
+                                it.name,
+                                it.designation,
+                                it.seniority,
+                                it.office,
+                                it.officeAddress,
+                                it.officeDistrict,
+                                it.mobile,
+                                it.pabx,
+                                it.email,
+                                it.retiredate,
+                                it.photo]
                         );
                     });
                 }, null, resolve);
@@ -318,7 +463,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
         } catch (error) {
-            console.error(error);
+            __DEV__ && console.error(error);
         }
         setIsLoading(false);
     }
@@ -334,7 +479,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         fetchDataFromDb();
         setisrtDateChecked(false)
         setChecked(false)
-
+        setSearch()
+        setdistName('')
+        // controller.reset()
+        setDistrictValue() // for reseting dropdown picker
+        // fetchDistrictFromDb()
 
     }, [desig_code]);
 
@@ -342,7 +491,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     useEffect(() => {
 
-        setFilteredData(DATA);  // for updating filterdata at first 
+        setFilteredData(DATA);  // for updating filterdata at first
 
     }, [DATA]);
 
@@ -356,7 +505,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 if (data.length > 0) {
                     const contact = data[0];
-                    // console.log(contact);
+                    // __DEV__ && console.log(contact);
                 }
             }
         })();
@@ -372,8 +521,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-        !isChecked ? setFilteredData(DATA.sort((a, b) => { return a.seniority - b.seniority })) :
-            setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
+        !isChecked ? setFilteredData(filteredData.sort((a, b) => { return a.seniority - b.seniority })) :
+            setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
 
 
     }
@@ -385,8 +534,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // isrtDateChecked, setisrtDateChecked   .toString().trim().slice(0, 10)
 
 
-        !isrtDateChecked ? setFilteredData(DATA.sort((a, b) => { return new Date(a.retiredate.toString().trim().slice(0, 10)) - new Date(b.retiredate.toString().trim().slice(0, 10)) })) :
-            setFilteredData(DATA.sort((a, b) => { return a.name > b.name }))
+        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate.toString().trim().slice(0, 10)) - new Date(b.retiredate.toString().trim().slice(0, 10)) })) :
+            setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
 
 
     }
@@ -406,10 +555,37 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         else {
             setFilteredData(DATA)
             setSearch(text)
+            setdistName('')
+            setDistrictValue()
         }
 
     }
 
+    const ModalViewForEditNumber = ({ viewModal, name }) => (
+
+        <View style={styles.centeredView}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={viewModal}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>{name}</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styles.textStyle}>Hide Modal</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+
+        </View>
+    )
 
     const Item = ({ item, index }) => (
 
@@ -420,13 +596,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         }}>
             {
                 // items.map((it => (<Text>it</Text>)))
-                // console.log("items length "+items.length)
+                // __DEV__ && console.log("items length "+items.length)
             }
 
             <View style={{ justifyContent: 'center', alignContent: 'center', }}>
                 <View style={{ borderRadius: 10 }}>
                     <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
                 </View>
+
+
                 {
                     item.photo ?
                         <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
@@ -441,7 +619,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             }}>
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
-                        {/* {console.log('isAdmin : '+isAdmin)} */}
+                        {/* {__DEV__ && console.log('isAdmin : '+isAdmin)} */}
                         {
                             // presentOfficeCode === 30 ?
                             isAdmin ?
@@ -454,6 +632,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             <View style={{ justifyContent: 'space-between' }}>
                                                 <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
                                                 <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.retiredate.toString().trim().slice(0, 10)}</Text>
+                                                {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+
                                             </View>
                                             : ""
                                     }
@@ -479,10 +659,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
 
                 <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
-                    
+
                     {
                         item.mobile &&
-                        <TouchableOpacity onLongPress={() => console.warn('STARTED LONG PRESS')} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
+                        <TouchableOpacity
+                            onLongPress={() => (
+                                <>
+
+                                    < ModalViewForEditNumber viewModal={true} name={item.mobile} />
+                                </>
+                            )} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
                             style={{
                                 alignItems: 'center',
                                 flexDirection: 'row',
@@ -529,8 +715,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                     {
                         // item.mobile &&
-                        // <TouchableOpacity onLongPress={() => console.warn('STARTED LONG PRESS')}
-                            
+                        // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
+
                         //         onPress={async () => {
                         //             const contact = {
                         //                 [Contacts.Fields.FirstName]: "Test",
@@ -561,10 +747,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         //                 })
                         //                 .catch((err) => {
                         //                     alert(err);
-                        //                     console.log(err);
+                        //                     __DEV__ && console.log(err);
                         //                 });
                         //         }}
-                                
+
                         //     style={{
                         //         alignItems: 'center',
                         //         flexDirection: 'row',
@@ -595,19 +781,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 <SafeAreaView style={styles.container}>
                     <View style={{
                         flexDirection: 'row',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        // backgroundColor: `${currentTheme}`
                     }}>
 
                         <TextInput
-                            selectionColor={'black'}       // for changing curcsor color 
+                            selectionColor={'black'}       // for changing curcsor color
                             style={{
                                 height: height / 20,
                                 width: "98%",
                                 borderRadius: 5,
                                 marginBottom: 5,
-                                borderColor: '#6750a4',
+                                borderColor: `${currentTheme}`,//'#6750a4',
                                 borderWidth: 2,
                                 paddingLeft: 15,
+                                backgroundColor: 'white'
 
                             }}
                             placeholder="Search"
@@ -632,7 +820,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                             }}
-                            onPress={() => searchFilter("")}
+                            onPress={() => (
+                                searchFilter("")
+                                , setDistrictValue(),
+                                setdistName("")
+                            )}
                         >
                             <Image
                                 style={{
@@ -653,6 +845,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                 marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
                                 flexDirection: 'row',
+                                borderRadius: 10
 
                             }}>
                                 <View style={{ flexDirection: 'column' }}>
@@ -661,7 +854,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             style={{ height: 18, width: 18 }}
                                             value={isChecked}
 
-                                            color={isChecked ? '#6750a4' : undefined}
+                                            color={isChecked ? `${currentTheme}` : undefined}
                                         />
 
                                         <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
@@ -674,21 +867,53 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             style={{ height: 18, width: 18 }}
                                             value={isrtDateChecked}
 
-                                            color={isrtDateChecked ? '#6750a4' : undefined}
+                                            color={isrtDateChecked ? `${currentTheme}` : undefined}
                                         />
 
                                         <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
 
                                     </TouchableOpacity>
                                 </View>
+                                <Controller
+                                    name="gender"
+                                    defaultValue=""
+                                    control={control}
+                                    render={({ field: { onChange, value } }) => (
+                                        <View style={styles.dropdownGender}>
+                                            <DropDownPicker
 
+
+                                                style={styles.dropdown}
+                                                open={districtOpen}
+                                                value={districtValue} //genderValue
+                                                items={district}
+                                                setOpen={setDistrictOpen}
+                                                setValue={setDistrictValue}
+                                                setItems={setDistrict}
+                                                placeholder="Select Office Location"
+                                                placeholderStyle={styles.placeholderStyles}
+                                                onOpen={onGenderOpen}
+                                                controller={instance => controller = instance}
+                                                // searchable={true}
+                                                // searchPlaceholder="Search Location "
+                                                // onChangeValue={onChange} setdistValue
+
+                                                // onChangeValue={(value) => sortByDistrict(value)}
+                                                onChangeValue={(value) => setdistValue(value)}
+                                                zIndex={3000}
+                                                zIndexInverse={1000}
+
+                                            />
+                                        </View>
+                                    )}
+                                />
 
                             </View> : ""}
 
 
                     {
                         !search && DATA ?
-                            <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} : {DATA.length}</Text>
+                            <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} {distName}: {filteredData.length}</Text>
                             : ""
                     }
 
@@ -704,9 +929,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                         }
 
-                        // getItemLayout={(data, index) => (
-                        //     { length: filteredData.length, offset: filteredData.length * index, index }
-                        // )}
+                    // getItemLayout={(data, index) => (
+                    //     { length: filteredData.length, offset: filteredData.length * index, index }
+                    // )}
 
                     />
 
@@ -772,7 +997,99 @@ const styles = StyleSheet.create({
         paddingVertical: 1,
         paddingHorizontal: 10
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
 
+    input: {
+        borderStyle: "solid",
+        borderColor: "#B7B7B7",
+        borderRadius: 7,
+        borderWidth: 1,
+        fontSize: 15,
+        height: 50,
+        marginHorizontal: 10,
+        paddingStart: 10,
+        marginBottom: 15,
+    },
+    label: {
+        marginBottom: 7,
+        marginStart: 10,
+    },
+    placeholderStyles: {
+        color: "grey",
+    },
+    dropdownGender: {
+        marginHorizontal: 10,
+        width: "44%",
+
+    },
+    dropdownCompany: {
+        marginHorizontal: 10,
+        marginBottom: 15,
+    },
+    dropdown: {
+        borderColor: "#B7B7B7",
+        height: 50,
+
+    },
+    getStarted: {
+        backgroundColor: "#5188E3",
+        color: "white",
+        textAlign: "center",
+        marginHorizontal: 60,
+        paddingVertical: 15,
+        borderRadius: 50,
+        marginTop: 20,
+    },
+    logIn: {
+        flex: 1,
+        justifyContent: "flex-end",
+        marginBottom: 10,
+    },
+    links: {
+        textAlign: "center",
+        textDecorationLine: "underline",
+        color: "#758580",
+    },
 
 });
 

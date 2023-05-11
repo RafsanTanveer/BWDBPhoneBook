@@ -36,7 +36,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     const [DATA, setDATA] = useState([])
 
     // ToastAndroid.show('in datarenderoffice screen ' + office_code, ToastAndroid.SHORT);
-    // console.log('in office data render ' + presentOfficeCode)
+    // __DEV__ && console.log('in office data render ' + presentOfficeCode)
     const fetchData = async () => {
         setIsLoading(true);
 
@@ -49,7 +49,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
             });
             setDATA(response.rows);
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
         setIsLoading(false);
     }
@@ -63,7 +63,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
 
     useEffect(() => {
 
-        setFilteredData(DATA);  // for updating filterdata at first 
+        setFilteredData(DATA);  // for updating filterdata at first
 
     }, [DATA]);
 
@@ -117,7 +117,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
             }}>
                 <View style={{ flex: 1, }}>
                     <View style={{ flex: 1, }}>
-                        
+
                         {
                             presentOfficeCode === 30 ?
                                 <TouchableOpacity onPress={() => {
@@ -128,7 +128,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                                 : null
                         }
 
-                        
+
 
                         <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name}  </Text>
                     </View>
@@ -170,7 +170,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                     {
                         item.mobile &&
                         <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
-                                style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
+                            style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
                             <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                         </TouchableOpacity>
                     }
@@ -187,16 +187,16 @@ const DataRenderOffice = ({ office_code, navigation }) => {
             <LoadingScreen /> :
             DATA.length == 0 ? <NoDataFoundScreen /> :
                 <SafeAreaView style={styles.container}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop:5 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
 
                         <TextInput
-                            selectionColor={'black'}       // for changing curcsor color 
+                            selectionColor={'black'}       // for changing curcsor color
                             style={{
                                 height: height / 20,
                                 width: "98%",
                                 borderRadius: 5,
                                 marginBottom: 5,
-                                borderColor: '#6750a4',
+                                borderColor: `${currentTheme}`,
                                 borderWidth: 2,
                                 paddingLeft: 15,
 

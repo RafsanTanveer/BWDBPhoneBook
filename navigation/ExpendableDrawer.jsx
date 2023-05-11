@@ -63,13 +63,13 @@ const ExpendableDrawer = () => {
     const fetchData = async () => {
         setIsLoading(true);
 
-        console.log('in expendable fetch');
+        __DEV__ && console.log('in expendable fetch');
 
         try {
-            console.log('in expendable fetch  try...........');
+            __DEV__ && console.log('in expendable fetch  try...........');
 
             setRefreshing(false);
-        
+
 
 
             const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
@@ -81,14 +81,14 @@ const ExpendableDrawer = () => {
             });
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            console.log('Total table = ', tableNames.length);
-            console.log('Table names:', tableNames);
+            __DEV__ && console.log('Total table = ', tableNames.length);
+            __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes('designation');
 
             if (tableExists) {
                 await new Promise((resolve, reject) => {
-                    console.log('desig table  exists [][][][][][][][][][][][][]');
+                    __DEV__ && console.log('desig table  exists [][][][][][][][][][][][][]');
 
                     db.transaction((tx) => {
 
@@ -101,7 +101,7 @@ const ExpendableDrawer = () => {
                                 setdesigList(desig);
                             },
                             (_, error) => {
-                                console.log(error);
+                                __DEV__ && console.log(error);
                             }
                         );
 
@@ -111,11 +111,11 @@ const ExpendableDrawer = () => {
                 });
             } else {
 
-                console.log('desig table not exists [][][][][][][][][][][][][]');
+                __DEV__ && console.log('desig table not exists [][][][][][][][][][][][][]');
 
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
-                console.log(response.rows.length);
+                __DEV__ && console.log(response.rows.length);
 
                 await new Promise((resolve, reject) => {
                     db.transaction((tx) => {
@@ -160,7 +160,7 @@ const ExpendableDrawer = () => {
 
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
 
 

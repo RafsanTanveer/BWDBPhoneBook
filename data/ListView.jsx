@@ -29,7 +29,7 @@ import React, {
     useRef,
     useState,
     useEffect,
-    useCallback,useContext
+    useCallback, useContext
 } from 'react';
 import { ScrollView, Button, Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 
@@ -77,7 +77,7 @@ const ListView = memo(({ designation, url, desig_code }) => {
     const load = useCallback(
         async (data, more = false) => {
             try {
-               
+
 
                 const { data: response } = await api.get("desig", {
                     params: {
@@ -87,9 +87,9 @@ const ListView = memo(({ designation, url, desig_code }) => {
 
                 setData(response.rows);
             } catch (e) {
-                console.log(e);
+                __DEV__ && console.log(e);
             }
-           
+
         },
         [loaded]
     );
@@ -102,7 +102,7 @@ const ListView = memo(({ designation, url, desig_code }) => {
     }, [load]);
 
     const loadMore = () => {
-        console.log('end');
+        __DEV__ && console.log('end');
         load();
     };
 
@@ -110,7 +110,7 @@ const ListView = memo(({ designation, url, desig_code }) => {
         load();
     };
 
-  
+
 
     // if (!loaded && isLoading)
     if (false)
@@ -164,14 +164,14 @@ const layoutMaker = () =>
     new LayoutProvider(
         (index) => {
             return ViewTypes.FULL;
-           
+
         }
         ,
         (type, dim) => {
             dim.width = width;
             dim.height = 250;
 
-           
+
         }
     );
 

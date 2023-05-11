@@ -14,7 +14,7 @@ const ExperienceScreenGeneral = ({ id }) => {
 
 
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const [refreshing, setRefreshing] = useState(true);
     const [experience, setexperience] = useState([])
 
@@ -33,10 +33,10 @@ const ExperienceScreenGeneral = ({ id }) => {
                     id: id
                 }
             });
-            setexperience(response.rows);           
+            setexperience(response.rows);
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
         setIsLoading(false);
     }

@@ -33,7 +33,7 @@ const TrainingComponent = ({ id }) => {
             settraining(response.rows);
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
         setIsLoading(false);
     }

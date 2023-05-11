@@ -40,7 +40,7 @@ const BiodataScreen = ({ id, navigation }) => {
     const [training, settraining] = useState([])
 
     const updateBiodata = () => {
-        console.log('updateBiodata ==================================================');
+        __DEV__ && console.log('updateBiodata ++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
         setpersonalData([])
         setpromotion([])
         setEdu([])
@@ -56,10 +56,10 @@ const BiodataScreen = ({ id, navigation }) => {
                 `DELETE FROM biodata where id=${id};`,
                 [],
                 (tx, result) => {
-                    console.log('Data deleted');
+                    __DEV__ && console.log('Data deleted');
                 },
                 (tx, error) => {
-                    console.log('Error deleting data:', error);
+                    __DEV__ && console.log('Error deleting data:', error);
                 }
             );
 
@@ -67,10 +67,10 @@ const BiodataScreen = ({ id, navigation }) => {
                 `DELETE FROM education where id=${id};`,
                 [],
                 (tx, result) => {
-                    console.log('Data deleted');
+                    __DEV__ && console.log('Data deleted');
                 },
                 (tx, error) => {
-                    console.log('Error deleting data:', error);
+                    __DEV__ && console.log('Error deleting data:', error);
                 }
             );
 
@@ -78,10 +78,10 @@ const BiodataScreen = ({ id, navigation }) => {
                 `DELETE FROM training where id=${id};`,
                 [],
                 (tx, result) => {
-                    console.log('Data deleted');
+                    __DEV__ && console.log('Data deleted');
                 },
                 (tx, error) => {
-                    console.log('Error deleting data:', error);
+                    __DEV__ && console.log('Error deleting data:', error);
                 }
             );
 
@@ -89,10 +89,10 @@ const BiodataScreen = ({ id, navigation }) => {
                 `DELETE FROM experience where id=${id};`,
                 [],
                 (tx, result) => {
-                    console.log('Data deleted');
+                    __DEV__ && console.log('Data deleted');
                 },
                 (tx, error) => {
-                    console.log('Error deleting data:', error);
+                    __DEV__ && console.log('Error deleting data:', error);
                 }
             );
 
@@ -100,10 +100,10 @@ const BiodataScreen = ({ id, navigation }) => {
                 `DELETE FROM promotion where id=${id};`,
                 [],
                 (tx, result) => {
-                    console.log('Data deleted');
+                    __DEV__ && console.log('Data deleted');
                 },
                 (tx, error) => {
-                    console.log('Error deleting data:', error);
+                    __DEV__ && console.log('Error deleting data:', error);
                 }
             );
 
@@ -130,7 +130,7 @@ const BiodataScreen = ({ id, navigation }) => {
         setpresentOfficeCode(personalresponse.rows[0].offceCode)
         // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
         setisAdmin(true)
-        // console.log(response.rows[0].offceCode);
+        // __DEV__ && console.log(response.rows[0].offceCode);
 
 
         //promotion
@@ -438,14 +438,14 @@ const BiodataScreen = ({ id, navigation }) => {
             });
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            console.log('Total table = ', tableNames.length);
-            console.log('Table names:', tableNames);
+            __DEV__ && console.log('Total table = ', tableNames.length);
+            __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes('biodata');
 
 
             if (tableExists) {
-                console.log('biodata', ' table exists............................................................................');
+                __DEV__ && console.log('biodata', ' table exists............................................................................');
 
                 /////// check if id exists or not
 
@@ -458,13 +458,13 @@ const BiodataScreen = ({ id, navigation }) => {
                 });
 
                 const exsistingIDs = idExistsResult.rows._array.map((table) => table.id);
-                console.log('Total table = ', exsistingIDs.length);
-                console.log('exsistingIDs:**************', exsistingIDs);
+                __DEV__ && console.log('Total table = ', exsistingIDs.length);
+                __DEV__ && console.log('exsistingIDs:**************', exsistingIDs);
 
                 const isIdExist = exsistingIDs.includes(id);
 
                 if (isIdExist) {
-                    console.log(id, 'exists');
+                    __DEV__ && console.log(id, 'exists');
 
                     await new Promise((resolve, reject) => {
                         var isIdExist = true;
@@ -478,7 +478,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     settraining(tempTraining);
                                 },
                                 (_, error) => {
-                                    console.log(error);
+                                    __DEV__ && console.log(error);
                                 }
                             );
 
@@ -486,10 +486,10 @@ const BiodataScreen = ({ id, navigation }) => {
                                 `SELECT * FROM biodata where id = ${id}`,
                                 [],
                                 (_, result) => {
-                                    console.log('biodata .................................');
+                                    __DEV__ && console.log('biodata .................................');
                                     const tempBiodata = result.rows._array
                                     setpersonalData(tempBiodata);
-                                    console.log(tempBiodata[0].id);
+                                    __DEV__ && console.log(tempBiodata[0].id);
 
 
                                     setName(tempBiodata[0].name)
@@ -497,12 +497,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setphoto(tempBiodata[0].photo)
                                     setofficeAddres(tempBiodata[0].officeAddress)
                                     setpresentOfficeCode(tempBiodata[0].offceCode)
-                                    // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
+                                    //   tempBiodata.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
                                     setisAdmin(true)
 
                                 },
                                 (_, error) => {
-                                    console.log(error);
+                                    __DEV__ && console.log(error);
                                 }
                             );
 
@@ -514,7 +514,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setpromotion(tempPromotion);
                                 },
                                 (_, error) => {
-                                    console.log(error);
+                                    __DEV__ && console.log(error);
                                 }
                             );
 
@@ -533,7 +533,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                 },
                                 (_, error) => {
-                                    console.log(error);
+                                    __DEV__ && console.log(error);
                                 }
                             );
 
@@ -545,7 +545,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setEdu(tempEducation);
                                 },
                                 (_, error) => {
-                                    console.log(error);
+                                    __DEV__ && console.log(error);
                                 }
                             );
 
@@ -554,7 +554,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
                 } else {
-                    console.log(id, 'does not exist');
+                    __DEV__ && console.log(id, 'does not exist');
 
                     //biodata
                     const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
@@ -568,7 +568,7 @@ const BiodataScreen = ({ id, navigation }) => {
                     setpresentOfficeCode(personalresponse.rows[0].offceCode)
                     // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
                     setisAdmin(true)
-                    // console.log(response.rows[0].offceCode);
+                    // __DEV__ && console.log(response.rows[0].offceCode);
 
 
                     //promotion
@@ -761,7 +761,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
             } else {
-                console.log('biodata', 'not table exists............................................................................');
+                __DEV__ && console.log('biodata', 'not table exists............................................................................');
 
 
                 fetchDataAndInsertintoDatabase()
@@ -774,7 +774,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
 
 
@@ -795,7 +795,7 @@ const BiodataScreen = ({ id, navigation }) => {
     }, []);
 
     //  ******************************  fetching data ***************************************
-    // console.log('in biodata');
+    // __DEV__ && console.log('in biodata');
 
 
 

@@ -17,13 +17,13 @@ const LoadingScreen = () => {
                 autoPlay
                 ref={animation}
                 style={{
-                    width: 250,
-                    height: 250,
+                    width: 200,
+                    height: 200,
                 }}
-                speed={3.5}
-                source={require('../assets/lottie/98890-data-transfer.json')}
+                speed={1.5}
+                source={require('../assets/lottie/loading.json')}
             />
-            <Text style={{ fontSize: 15, fontWeight: '400' }} >Downloading...</Text>
+            <Text style={{ fontSize: 15, fontWeight: '400' }} ></Text>
         </View>
     );
 }

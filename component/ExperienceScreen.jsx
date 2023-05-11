@@ -9,7 +9,7 @@ const ExperienceScreen = ({ id }) => {
 
     //  ******************************  fetching data ***************************************
 
-    const { setpresentDesig, setpresentOffice, setpresentPost,  setpresentCharge } = useContext(AuthContext);
+    const { setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge } = useContext(AuthContext);
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ const ExperienceScreen = ({ id }) => {
             setpresentCharge(response.rows[0].charge)
 
         } catch (error) {
-            console.error(error.message);
+            __DEV__ && console.error(error.message);
         }
         setIsLoading(false);
     }

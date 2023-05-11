@@ -25,7 +25,13 @@ const DrawerContent = (props) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-            <View style={{ backgroundColor: `${currentTheme}50` ,height: 200, flexDirection: 'row', paddingVertical: 15, paddingHorizontal:5 }}>
+            <View style={{
+                backgroundColor: `${currentTheme}95`, //backgroundColor: `${currentTheme}50`,  for opacity
+                height: 200,
+                flexDirection: 'row',
+                paddingVertical: 15,
+                paddingHorizontal: 5
+            }}>
                 <View style={{ flex: 2, height: width * .25, width: width * .25,  paddingTop:5 }}>
                     <Image style={{ height: width * .22, width: width * .22, borderRadius:70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
                 </View>
