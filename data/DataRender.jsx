@@ -17,8 +17,9 @@ import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview
 import DropDownPicker from "react-native-dropdown-picker";
 import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
-
+import  ItemComponent  from '../component/ItemComponent'
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import { Picker } from '@react-native-picker/picker';
 
 import * as SQLite from 'expo-sqlite'
 
@@ -29,7 +30,11 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 
+let selectedPId = []
 
+let tempDist = [{ level: 'ALL DISTRICT', vlaue: 0 }]
+let tempValue = []
+let tempLevel = []
 
 
 
@@ -40,6 +45,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const navigation = useNavigation();
 
+    const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [DATA, setDATA] = useState([])
+    const [districtFromDB, setDistrictFromDB] = useState([]);
+    const { handleSubmit, control } = useForm();
+    const [districtOpen, setDistrictOpen] = useState(false);
+
+    const [selectedItems, setSelectedItems] = useState([]);
 
     const [masterData, setMasterData] = useState([])
     const [filteredData, setFilteredData] = useState(DATA)
@@ -59,85 +72,19 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [notDgOrAdg, setnotDgOrAdg] = useState(false)
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([]);
+
+
     const [distValue, setdistValue] = useState(0);
     const [distName, setdistName] = useState();
 
-    const [districtValue, setDistrictValue] = useState(null);
-    const [district, setDistrict] = useState([
-        { label: "ALL DISTRICT", value: "0" },
-        { label: "BAGERHAT", value: "1" },
-        { label: "BANDARBAN", value: "2" },
-        { label: "BARGUNA", value: "3" },
-        // { label: "BAMNA", value: "3" },
-        { label: "BARISHAL", value: "4" },
-        { label: "BHOLA", value: "5" },
-        { label: "BOGURA", value: "6" },
-        { label: "BRAHMANBARIA", value: "7" },
-        { label: "CHANDPUR", value: "8" },
-        { label: "CHAPAI NAWABGAN", value: "9" },
-        { label: "CHATTOGRAM", value: "10" },
-        // { label: "CHITTAGONG", value: "10" },
-        { label: "CHUADANGA", value: "11" },
-        { label: "CUMILLA", value: "12" },
-        { label: "COX'S BAZAR", value: "13" },
-        // { label: "COX'SBAZAR", value: "13" },
-        { label: "DHAKA", value: "14" },
-        { label: "DINAJPUR", value: "15" },
-        { label: "FARIDPUR", value: "16" },
-        { label: "FENI", value: "17" },
-        { label: "GAIBANDHA", value: "18" },
-        { label: "GAZIPUR", value: "19" },
-        { label: "GOPALGANJ", value: "20" },
-        { label: "HABIGANJ", value: "21" },
-        { label: "JAMALPUR", value: "22" },
-        { label: "JASHORE", value: "23" },
-        { label: "JHALOKATHI", value: "24" },
-        { label: "JHENAIDAH", value: "25" },
-        { label: "JOYPURHAT", value: "26" },
-        { label: "KHAGRACHHARI", value: "27" },
-        { label: "KHULNA", value: "28" },
-        { label: "KISHOREGANJ", value: "29" },
-        { label: "KURIGRAM", value: "30" },
-        { label: "KUSHTIA", value: "31" },
-        // { label: "LAKSHMIPUR", value: "32" },
-        { label: "LAXMIPUR", value: "32" },
-        { label: "LALMONIRHAT", value: "33" },
-        { label: "MADARIPUR", value: "34" },
-        { label: "MAGURA", value: "35" },
-        { label: "MANIKGANJ", value: "36" },
-        { label: "MEHERPUR", value: "37" },
-        { label: "MOULVIBAZAR", value: "38" },
-        { label: "MUNSHIGANJ", value: "39" },
-        { label: "MYMENSINGH", value: "40" },
-        { label: "NAOGAON", value: "41" },
-        { label: "NARAIL", value: "42" },
-        { label: "NARAYANGANJ", value: "43" },
-        { label: "NARSINGDI", value: "44" },
-        { label: "NATORE", value: "45" },
-        // { label: "CHAPAI NAWABGANJ", value: "9" },
-        // { label: "CHAPAINAWABGANJ", value: "9" },
-        { label: "NETROKONA", value: "46" },
-        { label: "NILPHAMARI", value: "47" },
-        { label: "NOAKHALI", value: "48" },
-        { label: "PABNA", value: "49" },
-        { label: "PANCHAGARH", value: "50" },
-        { label: "PATUAKHALI", value: "51" },
-        { label: "PEROJPUR", value: "52" },
-        { label: "RAJBARI", value: "53" },
-        { label: "RAJSHAHI", value: "54" },
-        { label: "RANGAMATI", value: "55" },
-        { label: "RANGPUR", value: "56" },
-        { label: "SATKHIRA", value: "57" },
-        { label: "SERAJGANJ", value: "58" },
-        { label: "SHARIATPUR", value: "59" },
-        { label: "SHERPUR", value: "60" },
-        { label: "SUNAMGANJ", value: "61" },
-        { label: "SYLHET", value: "62" },
-        { label: "TANGAIL", value: "63" },
-        { label: "THAKURGAON", value: "64" },
-        { label: "65 PANI BHABAN", value: "65" },
+    const [distForDropDown, setDistForDropDown] = useState();
 
-    ]);
+    const [districtValue, setDistrictValue] = useState(null);
+    const [district, setDistrict] = useState([]);
 
     // const onGenderOpen = useCallback(() => {
     //     // setCompanyOpen(false);
@@ -151,7 +98,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     useEffect(() => {
         sortByDistrict()
-    }, [distValue]);
+    }, [district]);
 
     const sortByDistrict = () => {
 
@@ -160,37 +107,38 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-        if (distValue != 0 && distValue != 65) {
 
-            distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
-            distValue && setdistName("in " + district[distValue].label)
-            const newData = DATA.filter((item) => {
-                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
-                const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-                return itemData.indexOf(textData) > -1;
-            });
-            setFilteredData(newData)
-            // console.log('newData.length', newData.length, 'DATA', DATA.length);
+        // if (distValue != 0 && distValue != 65) {
 
-        }
-        else if (distValue == 65) {
+        //     distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
+        //     distValue && setdistName("in " + district[distValue].label)
+        //     const newData = DATA.filter((item) => {
+        //         const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
+        //         return itemData.indexOf(textData) > -1;
+        //     });
+        //     setFilteredData(newData)
+        //     // console.log('newData.length', newData.length, 'DATA', DATA.length);
 
-            distValue && setdistName("in " + district[distValue].label)
-            const newData = DATA.filter((item) => {
-                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
-                const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
+        // }
+        // else if (distValue == 65) {
 
-
-                return itemData.indexOf(textData) > -1;
-            });
-            setFilteredData(newData)
+        //     distValue && setdistName("in " + district[distValue].label)
+        //     const newData = DATA.filter((item) => {
+        //         const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
 
 
-        }
-        else {
-            setFilteredData(DATA)
-            setdistName("")
-        }
+        //         return itemData.indexOf(textData) > -1;
+        //     });
+        //     setFilteredData(newData)
+
+
+        // }
+        // else {
+        //     setFilteredData(DATA)
+        //     setdistName("")
+        // }
 
 
 
@@ -209,12 +157,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     //  ******************************  fetching data ***************************************
 
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [DATA, setDATA] = useState([])
-    const [districtFromDB, setDistrictFromDB] = useState([]);
-    const { handleSubmit, control } = useForm();
-    const [districtOpen, setDistrictOpen] = useState(false);
+
 
     const fetchDataFromDb = async () => {
         __DEV__ && console.log('in fetchDataFromDb');
@@ -227,6 +170,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         try {
             setRefreshing(false);
+
+            // check if table exits or not
 
             const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
                 db.transaction((tx) => {
@@ -254,13 +199,83 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
                 setDATA(data);
+
+
+                /////////////////////// district calculation //////////////////////////
+
+
+                const distMap = {};
+                data.forEach(item => {
+                    if (distMap[item.officeDistrict]) {
+                        distMap[item.officeDistrict]++;
+                    } else {
+                        distMap[item.officeDistrict] = 1;
+                    }
+                });
+
+
+                var sortedKeys = Object.keys(distMap).sort();
+
+                tempDist = [...tempDist, { level: "All DISTRICT", vlaue: 0 }]
+
+                sortedKeys.map(item =>
+                    // console.log(item, ' - ', distMap[item])
+                    tempDist = [...tempDist, { level: item + ' ' + distMap[item], vlaue: distMap[item] }],
+                    // tempLevel = [...tempLevel, {item}],
+                    //tempValue=[...tempValue,{item}]
+                )
+
+                tempDist = [...tempDist, { level: "PANI BHABAN", vlaue: 65 }]
+
+                // setDistForDropDown(tempDist)
+                // setDistrict(tempDist)
+
+
+
+                /////////////////////// district calculation //////////////////////////
+
+
                 __DEV__ && console.log(data.length);
+
             } else {
                 __DEV__ && console.log(tablename, ' table does not exist');
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
                 setDATA(data);
+
+
+                /////////////////////// district calculation //////////////////////////
+
+
+                const distMap = {};
+                data.forEach(item => {
+                    if (distMap[item.officeDistrict]) {
+                        distMap[item.officeDistrict]++;
+                    } else {
+                        distMap[item.officeDistrict] = 1;
+                    }
+                });
+
+
+                var sortedKeys = Object.keys(distMap).sort();
+
+                tempDist = [...tempDist, { level: "All DISTRICT", vlaue: 0 }]
+
+                sortedKeys.map(item =>
+                    // console.log(item, ' - ', distMap[item])
+                    tempDist = [...tempDist, { level: item + ' ' + distMap[item], vlaue: distMap[item] }]
+                )
+
+                tempDist = [...tempDist, { level: "PANI BHABAN", vlaue: 65 }]
+
+                // setDistForDropDown(tempDist)
+                // setDistrict(tempDist)
+
+
+
+                /////////////////////// district calculation //////////////////////////
+
 
                 await new Promise((resolve, reject) => {
                     db.transaction((tx) => {
@@ -346,7 +361,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             const distData = rows._array;
             setDistrictFromDB(distData);
-            distData.map((item, index) => (console.log(index+1+' - '+item.officeDistrict + ' - ' + item.count)))
             // console.log(distData.length);
             // console.log(distData);
 
@@ -362,7 +376,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         try {
 
             console.log(districtFromDB.length);
-            districtFromDB.map((item, index) => console.log(index+1,' ',item.officeDistrict,' = ',item.count))
+            districtFromDB.map((item, index) => console.log(index + 1, ' ', item.officeDistrict, ' = ', item.count))
 
             setRefreshing(false);
             setIsLoading(true);
@@ -482,10 +496,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
         setSearch()
         setdistName('')
+        tempDist = []
         // controller.reset()
-        setDistrictValue() // for reseting dropdown picker
+        // setDistrictValue() // for reseting dropdown picker
         // fetchDistrictFromDb()
-        fetchDistrictFromDb()
+        setItems(tempDist)
 
     }, [desig_code]);
 
@@ -589,188 +604,24 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         </View>
     )
 
-    const Item = ({ item, index }) => (
+
+    const onSelect = (id) => {
+
+        const ifIdExitsInSelectedPID = selectedPId.includes(id);
+        if (ifIdExitsInSelectedPID)
+            console.log(id);
+        selectedPId.push(id)
+        // currentSelectedItems.push(id)
+        setSelectedItems([...selectedItems, id])
+        console.log(selectedItems);
+
+
+        console.log(ifIdExitsInSelectedPID);
+
+    }
 
 
 
-        <View style={{
-            flexDirection: 'row', paddingLeft: 10, paddingRight: 10,
-        }}>
-            {
-                // items.map((it => (<Text>it</Text>)))
-                // __DEV__ && console.log("items length "+items.length)
-            }
-
-            <View style={{ justifyContent: 'center', alignContent: 'center', }}>
-                <View style={{ borderRadius: 10 }}>
-                    <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
-                </View>
-
-
-                {
-                    item.photo ?
-                        <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
-                        :
-                        <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
-
-                }
-            </View>
-            <View style={{
-                flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
-                borderBottomWidth: StyleSheet.hairlineWidth,
-            }}>
-                <View style={{ flex: 1, }}>
-                    <View style={{ flex: 1, }}>
-                        {/* {__DEV__ && console.log('isAdmin : '+isAdmin)} */}
-                        {
-                            // presentOfficeCode === 30 ?
-                            isAdmin ?
-                                <TouchableOpacity onPress={() => {
-                                    navigation.navigate('Biodata', { id: item.id })
-                                }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
-                                    {
-                                        notDgOrAdg ?
-                                            <View style={{ justifyContent: 'space-between' }}>
-                                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
-                                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.retiredate.toString().trim().slice(0, 10)}</Text>
-                                                {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
-
-                                            </View>
-                                            : ""
-                                    }
-                                </TouchableOpacity>
-                                : null
-                        }
-                        <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
-                    </View>
-                    <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
-                    </View>
-                    <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
-                    </View>
-
-                </View>
-
-                {
-                    item.email &&
-                    <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
-                    </TouchableOpacity>
-                }
-
-                <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
-
-                    {
-                        item.mobile &&
-                        <TouchableOpacity
-                            onLongPress={() => (
-                                <>
-
-                                    < ModalViewForEditNumber viewModal={true} name={item.mobile} />
-                                </>
-                            )} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
-                            style={{
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                backgroundColor: `${currentTheme}`,
-                                borderRadius: height * .005,
-                                marginHorizontal: 5,
-                                paddingVertical: 1,
-                                paddingHorizontal: 5
-                            }}>
-                            <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                            <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
-                        </TouchableOpacity>
-                    }
-                    {
-                        item.pabx &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }}
-                            style={{
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                backgroundColor: `${currentTheme}`,
-                                borderRadius: height * .005,
-                                marginHorizontal: 5,
-                                paddingVertical: 1,
-                                paddingHorizontal: 10
-                            }}>
-                            <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                            <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
-                        </TouchableOpacity>
-                    }
-                    {
-                        item.mobile &&
-                        <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
-                            style={{
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                backgroundColor: `${currentTheme}`,
-                                borderRadius: height * .005,
-                                marginHorizontal: 5,
-                                paddingVertical: 1,
-                                paddingHorizontal: 12
-                            }}>
-                            <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
-                        </TouchableOpacity>
-                    }
-                    {
-                        // item.mobile &&
-                        // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
-
-                        //         onPress={async () => {
-                        //             const contact = {
-                        //                 [Contacts.Fields.FirstName]: "Test",
-                        //                 [Contacts.Fields.LastName]: "McTest",
-                        //                 [Contacts.Fields.PhoneNumbers]: [
-                        //                     {
-                        //                         number: "(123) 456-7890",
-                        //                         isPrimary: true,
-                        //                         digits: "1234567890",
-                        //                         countryCode: "PA",
-                        //                         id: "1",
-                        //                         label: "mobile",
-                        //                     },
-                        //                 ],
-                        //                 [Contacts.Fields.Emails]: [
-                        //                     {
-                        //                         email: "test@gmail.com",
-                        //                         isPrimary: true,
-                        //                         id: "2",
-                        //                         label: "mobile",
-                        //                     },
-                        //                 ],
-                        //             };
-
-                        //             await Contacts.addContactAsync(contact)
-                        //                 .then((contactId) => {
-                        //                     alert("Se creó exitosamente");
-                        //                 })
-                        //                 .catch((err) => {
-                        //                     alert(err);
-                        //                     __DEV__ && console.log(err);
-                        //                 });
-                        //         }}
-
-                        //     style={{
-                        //         alignItems: 'center',
-                        //         flexDirection: 'row',
-                        //         backgroundColor: `${currentTheme}`,
-                        //         borderRadius: height * .005,
-                        //         marginHorizontal: 5,
-                        //         paddingVertical: 1,
-                        //         paddingHorizontal: 5
-                        //     }}>
-                        //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" /> */}
-                        //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>ADD</Text>
-                        // </TouchableOpacity>
-                    }
-                </View>
-            </View>
-        </View>
-
-    );
 
 
 
@@ -847,7 +698,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                 marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
                                 flexDirection: 'row',
-                                borderRadius: 10
+                                borderRadius: 10,
+                                justifyContent: 'space-between'
 
                             }}>
                                 <View style={{ flexDirection: 'column' }}>
@@ -876,39 +728,35 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                     </TouchableOpacity>
                                 </View>
-                                <Controller
-                                    name="gender"
-                                    defaultValue=""
-                                    control={control}
-                                    render={({ field: { onChange, value } }) => (
-                                        <View style={styles.dropdownGender}>
-                                            <DropDownPicker
+                                <View >
+                                    <Picker
+                                        style={{
+                                            color: 'grey',
+                                            borderWidth: 5,
+                                            width: width * .5,
+                                            height: height * .05
+                                        }}
+
+                                        selectedValue={district}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            setDistrict(itemValue)
+                                            
+                                        }>
 
 
-                                                style={styles.dropdown}
-                                                open={districtOpen}
-                                                value={districtValue} //genderValue
-                                                items={district}
-                                                setOpen={setDistrictOpen}
-                                                setValue={setDistrictValue}
-                                                setItems={setDistrict}
-                                                placeholder="Select Office Location"
-                                                placeholderStyle={styles.placeholderStyles}
-                                                onOpen={onGenderOpen}
-                                                controller={instance => controller = instance}
-                                                // searchable={true}
-                                                // searchPlaceholder="Search Location "
-                                                // onChangeValue={onChange} setdistValue
+                                        {
+                                            //tempDist = [...tempDist, { level: "PANI BHABAN", vlaue: 65 }]
+                                            tempDist.map((item, index) => (
 
-                                                // onChangeValue={(value) => sortByDistrict(value)}
-                                                onChangeValue={(value) => setdistValue(value)}
-                                                zIndex={3000}
-                                                zIndexInverse={1000}
+                                                <Picker.Item key={index + 1} label={item.level} value={index} />
+                                            ))
 
-                                            />
-                                        </View>
-                                    )}
-                                />
+                                        }
+
+
+
+                                    </Picker>
+                                </View>
 
                             </View> : ""}
 
@@ -923,7 +771,17 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     <FlatList
 
                         data={filteredData}
-                        renderItem={Item}
+                        // renderItem={ItemComponent}
+                        renderItem={({ item,index }) => (
+                            <ItemComponent
+                                item={item}
+                                index={index}
+                                isAdmin={isAdmin}
+                                notDgOrAdg={notDgOrAdg}
+                                currentTheme={currentTheme}
+                            />
+                        )}
+                        // renderItem={Item}
                         keyExtractor={(item) => item.id + Math.random()}
                         extraData={selectedId}
                         //  estimatedItemSize={8}

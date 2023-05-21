@@ -1,115 +1,72 @@
-Search "[0-9|০-৯]{9,12}" (51 hits in 1 file of 1 searched)
-  new 3 (51 hits)
-	Line 5: আইডি নম্বর- ৮৫১১৩০০০১।
-	Line 11: আইডি নম্বর- ৮৯১230003
-	Line 17: আইডি নম্বর- ১৩০624001
-	Line 25: আইডি নম্বর- ৬৬0101021
-	Line 31: আইডি নম্বর- ৬৪১১১০০০১
-	Line 37: আইডি নম্বর- ৬৭০315001
-	Line 45: আইডি নং- ৭১0211001
-	Line 51: আইডি নং- ৯৪০১০১০১০
-	Line 76: আইডি নং- 9২০৫১000১
-	Line 88: আইডি নং- ৯৪০১২৯০০১
-	Line 94: আইডি নং- 9৪০৪২5001 জনাব মোঃ মইনুল হোসেন
-	Line 96: সহকারী প্রকৌশলী (পুর) আইডি নং- 12022100১
-	Line 100: আইডি নং- 9৪০৪২000১
-	Line 106: আইডি নং- 9১০৮29001
-	Line 112: আইডি নং- 9৩০৪29001:
-	Line 118: আইডি নং- 9৪০৩১৮০০১
-	Line 124: আইডি নং- 9৪০৮১2002
-	Line 128: জনাব আরাফাত আহমেদ সহকারী প্রকৌশলী (পুর) আইডি নং- ১৫০৬০২001
-	Line 142: আইডি নং- 9২১১১2002
-	Line 148: আইডি নং-9২০৩08002
-	Line 154: আইডি নং- ৭৩০১০১০০১
-	Line 158: আইডি নং- 9৪১022002
-	Line 164: আইডি নং- 9২১১১৮002
-	Line 174: আইডি নং- 9১০৫02001
-	Line 182: আইডি নং- ৯৫১২30003
-	Line 190: আইডি নং- 9২১২31010)
-	Line 198: আইডি নং- ৯৪০৫১000১
-	Line 204: সহকারী প্রকৌশলী (পুর)/ভারপ্রাপ্ত উপ-বিভাগীয় প্রকৌশলী আইডি নং- ১৪০৮১0002
-	Line 212: আইডি নং- ৯৫১১০৮002
-	Line 218: সহকারী প্রকৌশলী (পুর)/ভারপ্রাপ্ত উপ-বিভাগীয় প্রকৌশলী আইডি নং-১৫০৮১৫002
-	Line 240: আইডি নং- 9২১০১৫008
-	Line 246: আইডি নং- 9২০৫১0001
-	Line 264: আইডি নং- 9৪০৪20001
-	Line 270: আইডি নং- 9২0221001
-	Line 282: আইডি নং- 9১০৮২৯০০১ জনাব মোঃ মহবুব আলম
-	Line 286: আইডি নং- 9৩০৪22001
-	Line 292: আইডি নং- ৯৪০৩১8001
-	Line 298: আইডি নং- 9৪০৮১2002
-	Line 304: আইডি নং- 9৫0602001
-	Line 324: আইডি নং-৯৫০২১2001
-	Line 328: আইডি নং- ৯৫০৪১৮00১
-	Line 336: আইডি নং- 9২১১২১002
-	Line 344: আইডি নং- 9৪০৮১৬০০১
-	Line 350: আইডি নং- ৯৩১১০৮০০১
-	Line 358: আইডি নং- 9৪0229001
-	Line 364: আইডি নং- 9৩০১01002
-	Line 370: আইডি নং- 9২১০১০008
-	Line 382: আইডি নং- 9৫০১০১007
-	Line 388: আইডি নং- 9৫০২00001
-	Line 394: আইডি নং-9৫১১০২০০১
-	Line 400: আইডি নং-9৫১১০৮০০১
-
-
-
-
-
-
-
-
-
-
-
-851130001,
-891230003,
-930624001,
-660101021,
-641110001,
-670315001,
-710211001,
-940101010,
-920510001,
-940129001,
-940425001,
-920221001,
-940420001,
-910829001,
-930429001,
-940318001,
-940812002,
-950602001,
-921112002,
-920308002,
-730101001,
-941022002,
-921118002,
-910502001,
-951230003,
-921231010,
-940510001,
-940810002,
-951108002,
-950815002,
-921015008,
-920510001,
-940420001,
-920221001,
-910829001,
-930422001,
-940318001,
-940812002,
-950602001,
-950212001,
-950418001,
-921121002,
-940816001,
-931108001,
-940229001,
-930101002,
-921010008,
-950101007,
-950200001,
-951102001,
-951108001,
+// { label: "ALL DISTRICT", value: "0" },
+        // { label: "BAGERHAT", value: "1" },
+        // { label: "BANDARBAN", value: "2" },
+        // { label: "BARGUNA", value: "3" },
+        // // { label: "BAMNA", value: "3" },
+        // { label: "BARISHAL", value: "4" },
+        // { label: "BHOLA", value: "5" },
+        // { label: "BOGURA", value: "6" },
+        // { label: "BRAHMANBARIA", value: "7" },
+        // { label: "CHANDPUR", value: "8" },
+        // { label: "CHAPAI NAWABGAN", value: "9" },
+        // { label: "CHATTOGRAM", value: "10" },
+        // // { label: "CHITTAGONG", value: "10" },
+        // { label: "CHUADANGA", value: "11" },
+        // { label: "CUMILLA", value: "12" },
+        // { label: "COX'S BAZAR", value: "13" },
+        // // { label: "COX'SBAZAR", value: "13" },
+        // { label: "DHAKA", value: "14" },
+        // { label: "DINAJPUR", value: "15" },
+        // { label: "FARIDPUR", value: "16" },
+        // { label: "FENI", value: "17" },
+        // { label: "GAIBANDHA", value: "18" },
+        // { label: "GAZIPUR", value: "19" },
+        // { label: "GOPALGANJ", value: "20" },
+        // { label: "HABIGANJ", value: "21" },
+        // { label: "JAMALPUR", value: "22" },
+        // { label: "JASHORE", value: "23" },
+        // { label: "JHALOKATHI", value: "24" },
+        // { label: "JHENAIDAH", value: "25" },
+        // { label: "JOYPURHAT", value: "26" },
+        // { label: "KHAGRACHHARI", value: "27" },
+        // { label: "KHULNA", value: "28" },
+        // { label: "KISHOREGANJ", value: "29" },
+        // { label: "KURIGRAM", value: "30" },
+        // { label: "KUSHTIA", value: "31" },
+        // // { label: "LAKSHMIPUR", value: "32" },
+        // { label: "LAXMIPUR", value: "32" },
+        // { label: "LALMONIRHAT", value: "33" },
+        // { label: "MADARIPUR", value: "34" },
+        // { label: "MAGURA", value: "35" },
+        // { label: "MANIKGANJ", value: "36" },
+        // { label: "MEHERPUR", value: "37" },
+        // { label: "MOULVIBAZAR", value: "38" },
+        // { label: "MUNSHIGANJ", value: "39" },
+        // { label: "MYMENSINGH", value: "40" },
+        // { label: "NAOGAON", value: "41" },
+        // { label: "NARAIL", value: "42" },
+        // { label: "NARAYANGANJ", value: "43" },
+        // { label: "NARSINGDI", value: "44" },
+        // { label: "NATORE", value: "45" },
+        // // { label: "CHAPAI NAWABGANJ", value: "9" },
+        // // { label: "CHAPAINAWABGANJ", value: "9" },
+        // { label: "NETROKONA", value: "46" },
+        // { label: "NILPHAMARI", value: "47" },
+        // { label: "NOAKHALI", value: "48" },
+        // { label: "PABNA", value: "49" },
+        // { label: "PANCHAGARH", value: "50" },
+        // { label: "PATUAKHALI", value: "51" },
+        // { label: "PEROJPUR", value: "52" },
+        // { label: "RAJBARI", value: "53" },
+        // { label: "RAJSHAHI", value: "54" },
+        // { label: "RANGAMATI", value: "55" },
+        // { label: "RANGPUR", value: "56" },
+        // { label: "SATKHIRA", value: "57" },
+        // { label: "SERAJGANJ", value: "58" },
+        // { label: "SHARIATPUR", value: "59" },
+        // { label: "SHERPUR", value: "60" },
+        // { label: "SUNAMGANJ", value: "61" },
+        // { label: "SYLHET", value: "62" },
+        // { label: "TANGAIL", value: "63" },
+        // { label: "THAKURGAON", value: "64" },
+        // { label: "65 PANI BHABAN", value: "65" },
