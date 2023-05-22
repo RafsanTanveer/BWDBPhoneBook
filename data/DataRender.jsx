@@ -17,7 +17,7 @@ import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview
 import DropDownPicker from "react-native-dropdown-picker";
 import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
-import  ItemComponent  from '../component/ItemComponent'
+import ItemComponent from '../component/ItemComponent'
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { Picker } from '@react-native-picker/picker';
 
@@ -198,7 +198,17 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 });
 
                 const data = rows._array;
-                setDATA(data);
+
+
+                const dataWithSelected = data.map(item => (
+                    item = { ...item, selected: 'false' }
+
+                ))
+
+                // console.log(dataWithSelected);
+
+
+                setDATA(dataWithSelected);
 
 
                 /////////////////////// district calculation //////////////////////////
@@ -242,7 +252,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
-                setDATA(data);
+
+                const dataWithSelected = data.map(item => (
+                    item = { ...item, selected: 'false' }
+
+                ))
+
+                // console.log(dataWithSelected);
+
+
+                setDATA(dataWithSelected);
 
 
                 /////////////////////// district calculation //////////////////////////
@@ -292,7 +311,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 pabx        TEXT,
                                 email       TEXT,
                                 retiredate  TEXT,
-                                photo       BLOB
+                                photo       BLOB,
+                                selected    TEXT
                                                  );`
                         );
 
@@ -312,8 +332,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                       pabx,
                                       email,
                                       retiredate,
-                                      photo)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                      photo,
+                                      selected)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);`,
                                 [
                                     it.id,
                                     it.name,
@@ -326,7 +347,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     it.pabx,
                                     it.email,
                                     it.retiredate,
-                                    it.photo]
+                                    it.photo,
+                                    it.selected]
                             );
                         });
 
@@ -434,7 +456,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
             const data = response.rows;
-            setDATA(data);
+
+            const dataWithSelected = data.map(item => (
+                item = { ...item, selected: 'false' }
+
+            ))
+
+            setDATA(dataWithSelected);
 
             await new Promise((resolve, reject) => {
                 db.transaction((tx) => {
@@ -454,8 +482,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 pabx,
                                 email,
                                 retiredate,
-                                photo)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                                photo,
+                                selected)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);`,
                             [
                                 it.id,
                                 it.name,
@@ -468,7 +497,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 it.pabx,
                                 it.email,
                                 it.retiredate,
-                                it.photo]
+                                it.photo,
+                                it.selected]
                         );
                     });
                 }, null, resolve);
@@ -605,23 +635,232 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     )
 
 
-    const onSelect = (id) => {
+    const onSelect = (index) => {
 
-        const ifIdExitsInSelectedPID = selectedPId.includes(id);
-        if (ifIdExitsInSelectedPID)
-            console.log(id);
-        selectedPId.push(id)
-        // currentSelectedItems.push(id)
-        setSelectedItems([...selectedItems, id])
-        console.log(selectedItems);
+        let tempFilterData = [...filteredData]
 
+        tempFilterData[index].selected === "true" ?
+            tempFilterData[index].selected = "false"
+            : tempFilterData[index].selected = "true"
 
-        console.log(ifIdExitsInSelectedPID);
+        console.log(tempFilterData);
+        setFilteredData(tempFilterData)
 
     }
 
 
 
+    const Item = ({ item, index }) => (
+
+        <TouchableOpacity onPress={() => (
+            onSelect(index)
+
+        )}>
+
+            <View style={
+                item.selected === 'true' ?
+                    {
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        backgroundColor: `${currentTheme}40`
+
+                    } :
+                    {
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        // backgroundColor:'green'
+
+                    }
+            }>
+                {
+                    // items.map((it => (<Text>it</Text>)))
+                    // __DEV__ && console.log("items length "+items.length)
+                }
+
+                <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                    <View style={{ borderRadius: 10 }}>
+                        <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
+                    </View>
+
+                    <TouchableOpacity >
+                        {
+
+                            item.photo ?
+                                <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
+                                :
+                                <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+
+                        }
+                    </TouchableOpacity>
+                </View>
+                <View style={{
+                    flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                }}>
+                    <View style={{ flex: 1, }}>
+                        <View style={{ flex: 1, }}>
+                            {/* {__DEV__ && console.log('isAdmin : '+isAdmin)} */}
+                            {
+                                // presentOfficeCode === 30 ?
+                                isAdmin ?
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <TouchableOpacity onPress={() => {
+                                            navigation.navigate('Biodata', { id: item.id })
+                                        }}>
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
+
+
+                                        </TouchableOpacity>
+                                        {/* <Checkbox
+                                            style={{ height: 18, width: 18 }}
+                                            value={isChecked}
+                                            onValueChange={() => (console.log('sdf'))}
+                                            color={isChecked ? `${currentTheme}` : undefined}
+                                        /> */}
+                                    </View>
+                                    : null
+                            }
+                            {
+                                notDgOrAdg ?
+                                    <View style={{ justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.retiredate.toString().trim().slice(0, 10)}</Text>
+                                        {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+
+                                    </View>
+                                    : ""
+                            }
+                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+                        </View>
+                        <View style={{ flex: 1, }}>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
+                        </View>
+                        <View style={{ flex: 1, }}>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
+                        </View>
+
+                    </View>
+
+                    {
+                        item.email &&
+                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
+                        </TouchableOpacity>
+                    }
+
+                    <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
+
+                        {
+                            item.mobile &&
+                            <TouchableOpacity
+                                onLongPress={() => (
+                                    <>
+
+                                        < ModalViewForEditNumber viewModal={true} name={item.mobile} />
+                                    </>
+                                )} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 5
+                                }}>
+                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
+                            </TouchableOpacity>
+                        }
+                        {
+                            item.pabx &&
+                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 10
+                                }}>
+                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
+                            </TouchableOpacity>
+                        }
+                        {
+                            item.mobile &&
+                            <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 12
+                                }}>
+                                <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
+                            </TouchableOpacity>
+                        }
+                        {
+                            // item.mobile &&
+                            // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
+
+                            //         onPress={async () => {
+                            //             const contact = {
+                            //                 [Contacts.Fields.FirstName]: "Test",
+                            //                 [Contacts.Fields.LastName]: "McTest",
+                            //                 [Contacts.Fields.PhoneNumbers]: [
+                            //                     {
+                            //                         number: "(123) 456-7890",
+                            //                         isPrimary: true,
+                            //                         digits: "1234567890",
+                            //                         countryCode: "PA",
+                            //                         id: "1",
+                            //                         label: "mobile",
+                            //                     },
+                            //                 ],
+                            //                 [Contacts.Fields.Emails]: [
+                            //                     {
+                            //                         email: "test@gmail.com",
+                            //                         isPrimary: true,
+                            //                         id: "2",
+                            //                         label: "mobile",
+                            //                     },
+                            //                 ],
+                            //             };
+
+                            //             await Contacts.addContactAsync(contact)
+                            //                 .then((contactId) => {
+                            //                     alert("Se creó exitosamente");
+                            //                 })
+                            //                 .catch((err) => {
+                            //                     alert(err);
+                            //                     __DEV__ && console.log(err);
+                            //                 });
+                            //         }}
+
+                            //     style={{
+                            //         alignItems: 'center',
+                            //         flexDirection: 'row',
+                            //         backgroundColor: `${currentTheme}`,
+                            //         borderRadius: height * .005,
+                            //         marginHorizontal: 5,
+                            //         paddingVertical: 1,
+                            //         paddingHorizontal: 5
+                            //     }}>
+                            //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" /> */}
+                            //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>ADD</Text>
+                            // </TouchableOpacity>
+                        }
+                    </View>
+                </View>
+            </View>
+        </TouchableOpacity>
+    );
 
 
 
@@ -740,7 +979,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         selectedValue={district}
                                         onValueChange={(itemValue, itemIndex) =>
                                             setDistrict(itemValue)
-                                            
+
                                         }>
 
 
@@ -772,16 +1011,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                         data={filteredData}
                         // renderItem={ItemComponent}
-                        renderItem={({ item,index }) => (
-                            <ItemComponent
-                                item={item}
-                                index={index}
-                                isAdmin={isAdmin}
-                                notDgOrAdg={notDgOrAdg}
-                                currentTheme={currentTheme}
-                            />
-                        )}
-                        // renderItem={Item}
+                        // renderItem={({ item, index }) => (
+                        //     <ItemComponent
+                        //         item={item}
+                        //         index={index}
+                        //         isAdmin={isAdmin}
+                        //         notDgOrAdg={notDgOrAdg}
+                        //         currentTheme={currentTheme}
+                        //     />
+                        // )}
+                        renderItem={Item}
                         keyExtractor={(item) => item.id + Math.random()}
                         extraData={selectedId}
                         //  estimatedItemSize={8}

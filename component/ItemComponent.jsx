@@ -1,6 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Dimensions, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState, useContext, useCallback, memo } from "react";
+import { useNavigation } from '@react-navigation/native';
 
 
 const height = Dimensions.get('window').height;
@@ -13,6 +14,7 @@ let selectedPId = []
 
 export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg, currentTheme })  {
 
+    const navigation = useNavigation();
 
 
     const [selectedItems, setSelectedItems] = useState([]);
@@ -66,7 +68,7 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
         >
 
             <View style={
-                selectedPId.includes(item.id) ?
+                item.selected === 'true' ?
                     {
                         flexDirection: 'row',
                         paddingLeft: 10,

@@ -1565,3 +1565,29 @@ export default DataRender
             </View>
         </TouchableOpacity>
     );
+
+
+
+
+
+
+
+
+
+style={
+                selectedPId.includes(item.id) ?
+                    {
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        backgroundColor: 'green'
+
+                    } :
+                    {
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        // backgroundColor:'green'
+
+                    }
+            }
