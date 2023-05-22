@@ -643,7 +643,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             tempFilterData[index].selected = "false"
             : tempFilterData[index].selected = "true"
 
-        console.log(tempFilterData);
+        
         setFilteredData(tempFilterData)
 
     }
