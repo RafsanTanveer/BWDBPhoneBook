@@ -1591,3 +1591,544 @@ style={
 
                     }
             }
+
+
+
+/////////////////////////////
+
+
+ const Item = ({ item, index }) => (
+
+        <TouchableOpacity onPress={() => (
+            onSelect(index)
+
+        )}>
+
+            <View style={
+                item.selected === 'true' ?
+                    {
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        backgroundColor: `${currentTheme}40`
+
+                    } :
+                    {
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        // backgroundColor:'green'
+
+                    }
+            }>
+                {
+                    // items.map((it => (<Text>it</Text>)))
+                    // __DEV__ && console.log("items length "+items.length)
+                }
+
+                <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                    <View style={{ borderRadius: 10 }}>
+                        <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
+                    </View>
+
+                    <TouchableOpacity >
+                        {
+
+                            item.photo ?
+                                <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
+                                :
+                                <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+
+                        }
+                    </TouchableOpacity>
+                </View>
+                <View style={{
+                    flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                }}>
+                    <View style={{ flex: 1, }}>
+                        <View style={{ flex: 1, }}>
+                            {/* {__DEV__ && console.log('isAdmin : '+isAdmin)} */}
+                            {
+                                // presentOfficeCode === 30 ?
+                                isAdmin ?
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <TouchableOpacity onPress={() => {
+                                            navigation.navigate('Biodata', { id: item.id })
+                                        }}>
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
+
+
+                                        </TouchableOpacity>
+                                        {/* <Checkbox
+                                            style={{ height: 18, width: 18 }}
+                                            value={isChecked}
+                                            onValueChange={() => (console.log('sdf'))}
+                                            color={isChecked ? `${currentTheme}` : undefined}
+                                        /> */}
+                                    </View>
+                                    : null
+                            }
+                            {
+                                notDgOrAdg ?
+                                    <View style={{ justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.retiredate.toString().trim().slice(0, 10)}</Text>
+                                        {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+
+                                    </View>
+                                    : ""
+                            }
+                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+                        </View>
+                        <View style={{ flex: 1, }}>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
+                        </View>
+                        <View style={{ flex: 1, }}>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
+                        </View>
+
+                    </View>
+
+                    {
+                        item.email &&
+                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
+                        </TouchableOpacity>
+                    }
+
+                    <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
+
+                        {
+                            item.mobile &&
+                            <TouchableOpacity
+                                onLongPress={() => (
+                                    <>
+
+                                        < ModalViewForEditNumber viewModal={true} name={item.mobile} />
+                                    </>
+                                )} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 5
+                                }}>
+                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
+                            </TouchableOpacity>
+                        }
+                        {
+                            item.pabx &&
+                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 10
+                                }}>
+                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
+                            </TouchableOpacity>
+                        }
+                        {
+                            item.mobile &&
+                            <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 12
+                                }}>
+                                <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
+                            </TouchableOpacity>
+                        }
+                        {
+                            // item.mobile &&
+                            // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
+
+                            //         onPress={async () => {
+                            //             const contact = {
+                            //                 [Contacts.Fields.FirstName]: "Test",
+                            //                 [Contacts.Fields.LastName]: "McTest",
+                            //                 [Contacts.Fields.PhoneNumbers]: [
+                            //                     {
+                            //                         number: "(123) 456-7890",
+                            //                         isPrimary: true,
+                            //                         digits: "1234567890",
+                            //                         countryCode: "PA",
+                            //                         id: "1",
+                            //                         label: "mobile",
+                            //                     },
+                            //                 ],
+                            //                 [Contacts.Fields.Emails]: [
+                            //                     {
+                            //                         email: "test@gmail.com",
+                            //                         isPrimary: true,
+                            //                         id: "2",
+                            //                         label: "mobile",
+                            //                     },
+                            //                 ],
+                            //             };
+
+                            //             await Contacts.addContactAsync(contact)
+                            //                 .then((contactId) => {
+                            //                     alert("Se creó exitosamente");
+                            //                 })
+                            //                 .catch((err) => {
+                            //                     alert(err);
+                            //                     __DEV__ && console.log(err);
+                            //                 });
+                            //         }}
+
+                            //     style={{
+                            //         alignItems: 'center',
+                            //         flexDirection: 'row',
+                            //         backgroundColor: `${currentTheme}`,
+                            //         borderRadius: height * .005,
+                            //         marginHorizontal: 5,
+                            //         paddingVertical: 1,
+                            //         paddingHorizontal: 5
+                            //     }}>
+                            //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" /> */}
+                            //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>ADD</Text>
+                            // </TouchableOpacity>
+                        }
+                    </View>
+                </View>
+            </View>
+        </TouchableOpacity>
+    );
+
+
+
+item.id
+item.name
+item.office
+item.email
+item.mobile
+item.seniority
+item.retiredate
+item.pabx
+item.photo
+
+
+id={item.id}
+name={item.name}
+office={item.office}
+email={item.email}
+mobile={item.mobile}
+seniority={item.seniority}
+retiredate={item.retiredate}
+pabx={item.pabx}
+selected={item.selected}
+photo={item.photo}
+index={index}
+
+
+
+
+./////////////////////////////Picker
+
+
+
+<View >
+                                    // <Picker
+                                    //     style={{
+                                    //         color: 'grey',
+                                    //         borderWidth: 5,
+                                    //         width: width * .5,
+                                    //         height: height * .05
+                                    //     }}
+
+                                    //     selectedValue={district}
+                                    //     onValueChange={(itemValue, itemIndex) =>
+                                    //         setDistrict(itemValue)
+
+                                    //     }>
+
+
+                                    //     {
+                                    //         //tempDist = [...tempDist, { level: "PANI BHABAN", vlaue: 65 }]
+                                    //         tempDist.map((item, index) => (
+
+                                    //             <Picker.Item key={index + 1} label={level} value={index} />
+                                    //         ))
+
+                                    //     }
+
+
+
+                                    // </Picker>
+                                </View>
+
+
+
+
+
+//////////////////////////////Item modified ./////////////////////
+
+ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, selected, photo, index }) => {
+        return (
+
+            <TouchableOpacity onPress={() => (
+                onSelect(index)
+
+            )}>
+
+                <View style={
+                    selected === 'true' ?
+                        {
+                            flexDirection: 'row',
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            backgroundColor: `${currentTheme}40`
+
+                        } :
+                        {
+                            flexDirection: 'row',
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            // backgroundColor:'green'
+
+                        }
+                }>
+                    {
+                        // items.map((it => (<Text>it</Text>)))
+                        // __DEV__ && console.log("items length "+items.length)
+                    }
+
+                    <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                        <View style={{ borderRadius: 10 }}>
+                            <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
+                        </View>
+
+                        <TouchableOpacity >
+                            {
+
+                                photo ?
+                                    <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                                    :
+                                    <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+
+                            }
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{
+                        flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}>
+                        <View style={{ flex: 1, }}>
+                            <View style={{ flex: 1, }}>
+                                {/* {__DEV__ && console.log('isAdmin : '+isAdmin)} */}
+                                {
+                                    // presentOfficeCode === 30 ?
+                                    isAdmin ?
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <TouchableOpacity onPress={() => {
+                                                navigation.navigate('Biodata', { id: id })
+                                            }}>
+                                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
+
+
+                                            </TouchableOpacity>
+                                            {/* <Checkbox
+                                            style={{ height: 18, width: 18 }}
+                                            value={isChecked}
+                                            onValueChange={() => (console.log('sdf'))}
+                                            color={isChecked ? `${currentTheme}` : undefined}
+                                        /> */}
+                                        </View>
+                                        : null
+                                }
+                                {
+                                    notDgOrAdg ?
+                                        <View style={{ justifyContent: 'space-between' }}>
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {retiredate.toString().trim().slice(0, 10)}</Text>
+                                            {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+
+                                        </View>
+                                        : ""
+                                }
+                                <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                            </View>
+                            <View style={{ flex: 1, }}>
+                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
+                            </View>
+                            <View style={{ flex: 1, }}>
+                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{office} </Text>
+                            </View>
+
+                        </View>
+
+                        {
+                            email &&
+                            <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
+                            </TouchableOpacity>
+                        }
+
+                        <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
+
+                            {
+                                mobile &&
+                                <TouchableOpacity
+                                    onLongPress={() => (
+                                        <>
+
+                                            < ModalViewForEditNumber viewModal={true} name={mobile} />
+                                        </>
+                                    )} onPress={() => { Linking.openURL(`tel:${mobile}`) }}
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}`,
+                                        borderRadius: height * .005,
+                                        marginHorizontal: 5,
+                                        paddingVertical: 1,
+                                        paddingHorizontal: 5
+                                    }}>
+                                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
+                                </TouchableOpacity>
+                            }
+                            {
+                                pabx &&
+                                <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${pabx}`) }}
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}`,
+                                        borderRadius: height * .005,
+                                        marginHorizontal: 5,
+                                        paddingVertical: 1,
+                                        paddingHorizontal: 10
+                                    }}>
+                                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
+                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{pabx} </Text>
+                                </TouchableOpacity>
+                            }
+                            {
+                                mobile &&
+                                <TouchableOpacity onPress={() => (Linking.openURL(`sms:${mobile}`))}
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}`,
+                                        borderRadius: height * .005,
+                                        marginHorizontal: 5,
+                                        paddingVertical: 1,
+                                        paddingHorizontal: 12
+                                    }}>
+                                    <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
+                                </TouchableOpacity>
+                            }
+                            {
+                                // item.mobile &&
+                                // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
+
+                                //         onPress={async () => {
+                                //             const contact = {
+                                //                 [Contacts.Fields.FirstName]: "Test",
+                                //                 [Contacts.Fields.LastName]: "McTest",
+                                //                 [Contacts.Fields.PhoneNumbers]: [
+                                //                     {
+                                //                         number: "(123) 456-7890",
+                                //                         isPrimary: true,
+                                //                         digits: "1234567890",
+                                //                         countryCode: "PA",
+                                //                         id: "1",
+                                //                         label: "mobile",
+                                //                     },
+                                //                 ],
+                                //                 [Contacts.Fields.Emails]: [
+                                //                     {
+                                //                         email: "test@gmail.com",
+                                //                         isPrimary: true,
+                                //                         id: "2",
+                                //                         label: "mobile",
+                                //                     },
+                                //                 ],
+                                //             };
+
+                                //             await Contacts.addContactAsync(contact)
+                                //                 .then((contactId) => {
+                                //                     alert("Se creó exitosamente");
+                                //                 })
+                                //                 .catch((err) => {
+                                //                     alert(err);
+                                //                     __DEV__ && console.log(err);
+                                //                 });
+                                //         }}
+
+                                //     style={{
+                                //         alignItems: 'center',
+                                //         flexDirection: 'row',
+                                //         backgroundColor: `${currentTheme}`,
+                                //         borderRadius: height * .005,
+                                //         marginHorizontal: 5,
+                                //         paddingVertical: 1,
+                                //         paddingHorizontal: 5
+                                //     }}>
+                                //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" /> */}
+                                //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>ADD</Text>
+                                // </TouchableOpacity>
+                            }
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+
+
+
+////////////////////////////////Flatlist///////////////////////////////////////
+
+<FlatList
+
+                        data={filteredData}
+                        // renderItem={ItemComponent}
+                        renderItem={({ item, index }) => (
+                            <Item
+                                id={item.id}
+                                name={item.name}
+                                office={item.office}
+                                email={item.email}
+                                mobile={item.mobile}
+                                seniority={item.seniority}
+                                retiredate={item.retiredate}
+                                pabx={item.pabx}
+                                selected={item.selected}
+                                photo={item.photo}
+                                index={index}
+                                designation={designation}
+                                isAdmin={isAdmin}
+                                notDgOrAdg={notDgOrAdg}
+                                currentTheme={currentTheme}
+                            />
+                        )}
+                        // renderItem={Item}
+                        keyExtractor={(item) => item.id + Math.random()}
+                        extraData={selectedId}
+                        //  estimatedItemSize={8}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+                        }
+
+                    // getItemLayout={(data, index) => (
+                    //     { length: filteredData.length, offset: filteredData.length * index, index }
+                    // )}
+
+                    />

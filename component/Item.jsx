@@ -1,7 +1,28 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Dimensions, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState, useContext, useCallback, memo } from "react";
+import { Modal, Dimensions, FlatList, Image, Linking, TextInput, Pressable, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import { FlashList } from "@shopify/flash-list";
+
+import api from '../api/api';
+import LoadingScreen from "../screens/LoadingScreen";
+import NetInfo from '@react-native-community/netinfo';
+import NoInternetScreen from '../screens/NoInternetScreen'
+import NoDataFoundScreen from '../screens/NoDataFoundScreen';
+import { AuthContext } from '../context/AuthContext';
+import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from '../context/ThemeContext';
+import Checkbox from 'expo-checkbox';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+
+import { useForm, Controller } from 'react-hook-form';
+import * as Contacts from 'expo-contacts'
+
+import { Picker } from '@react-native-picker/picker';
+
+import * as SQLite from 'expo-sqlite'
+
+import db from '../database/database'
 
 
 const height = Dimensions.get('window').height;
@@ -12,63 +33,49 @@ let selectedPId = []
 
 
 
-export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg, currentTheme })  {
+
+
+const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, selected, photo, index, designation, isAdmin, notDgOrAdg, currentTheme }) => {
 
     const navigation = useNavigation();
 
 
-    const [selectedItems, setSelectedItems] = useState([]);
-
-    useEffect(() => {
-        selectedPId = []
-        setSelectedItems([])
-    }, [item]);
-
+    const [isSelected, setisSelected] = useState([]);
 
     const onSelect = (id) => {
 
         const ifIdExitsInSelectedPID = selectedPId.includes(id);
-        if (ifIdExitsInSelectedPID) {
-            var tempId = [...selectedItems]
-            var index = tempId.indexOf(id)
+        console.log(id);
 
-            if (index !== -1) {
-                tempId.splice(index, 1);
-                setSelectedItems(tempId);
+        console.log(ifIdExitsInSelectedPID);
+
+        if (ifIdExitsInSelectedPID) {
+            const index = selectedPId.indexOf(id);
+            if (index > -1) { // only splice array when item is found
+                selectedPId.splice(index, 1); // 2nd parameter means remove one item only
             }
 
-            selectedPId.splice(selectedPId.indexOf(id), 1)
-
-            // console.log('selectedItems - ', selectedItems);
-            // console.log('selectedPId - ', selectedPId);
         }
         else {
             selectedPId.push(id)
-            setSelectedItems([...selectedPId])
-
-
         }
         // currentSelectedItems.push(id)
-        console.log('selectedItems - ', selectedItems);
-        console.log('selectedPId - ', selectedPId);
-
-
-        // console.log(ifIdExitsInSelectedPID);
+        setisSelected([...isSelected, id])
+        console.log(selectedPId);
 
     }
+
 
 
     return (
 
         <TouchableOpacity onPress={() => (
-            onSelect(item.id)
-        )}
+            onSelect(id)
 
-            style={{ borderRadius: 10 }}
-        >
+        )}>
 
             <View style={
-                item.selected === 'true' ?
+                selectedPId.includes(id) ?
                     {
                         flexDirection: 'row',
                         paddingLeft: 10,
@@ -97,8 +104,8 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
                     <TouchableOpacity >
                         {
 
-                            item.photo ?
-                                <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
+                            photo ?
+                                <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 :
                                 <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
 
@@ -115,12 +122,11 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
                             {
                                 // presentOfficeCode === 30 ?
                                 isAdmin ?
-
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <TouchableOpacity onPress={() => {
-                                            navigation.navigate('Biodata', { id: item.id })
+                                            navigation.navigate('Biodata', { id: id })
                                         }}>
-                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {item.id}</Text>
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
 
 
                                         </TouchableOpacity>
@@ -136,42 +142,42 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
                             {
                                 notDgOrAdg ?
                                     <View style={{ justifyContent: 'space-between' }}>
-                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {item.seniority}</Text>
-                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.retiredate.toString().trim().slice(0, 10)}</Text>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {retiredate.toString().trim().slice(0, 10)}</Text>
                                         {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
                                     </View>
                                     : ""
                             }
-                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name} </Text>
+                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
                         </View>
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{item.designation} </Text>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
                         </View>
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{item.office} </Text>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{office} </Text>
                         </View>
 
                     </View>
 
                     {
-                        item.email &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
+                        email &&
+                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
                         </TouchableOpacity>
                     }
 
                     <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
 
                         {
-                            item.mobile &&
+                            mobile &&
                             <TouchableOpacity
                                 onLongPress={() => (
                                     <>
 
-                                        < ModalViewForEditNumber viewModal={true} name={item.mobile} />
+                                        < ModalViewForEditNumber viewModal={true} name={mobile} />
                                     </>
-                                )} onPress={() => { Linking.openURL(`tel:${item.mobile}`) }}
+                                )} onPress={() => { Linking.openURL(`tel:${mobile}`) }}
                                 style={{
                                     alignItems: 'center',
                                     flexDirection: 'row',
@@ -182,12 +188,12 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
                                     paddingHorizontal: 5
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
                             </TouchableOpacity>
                         }
                         {
-                            item.pabx &&
-                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }}
+                            pabx &&
+                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${pabx}`) }}
                                 style={{
                                     alignItems: 'center',
                                     flexDirection: 'row',
@@ -198,12 +204,12 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
                                     paddingHorizontal: 10
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
-                            item.mobile &&
-                            <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
+                            mobile &&
+                            <TouchableOpacity onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',
                                     flexDirection: 'row',
@@ -273,7 +279,13 @@ export default memo(function ItemComponent  ({ item, index, isAdmin, notDgOrAdg,
         </TouchableOpacity>
     )
 }
-)
+
+
+
+
+
+
+
 
 
 const styles = StyleSheet.create({
@@ -430,7 +442,5 @@ const styles = StyleSheet.create({
 
 
 
-// export { ItemComponent };
 
-
-// export default memo(ItemComponent);
+export default memo(Item);
