@@ -17,7 +17,7 @@ const Home = ({ navigation }) => {
 
   return (
     <>
-      
+
       {
         isLogged &&
         <BiodataScreen id={userInfo.rows[0].id} />

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { Modal, Dimensions, FlatList, Image, Linking, TextInput, Pressable, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
+
 import api from '../api/api';
 import LoadingScreen from "../screens/LoadingScreen";
 import NetInfo from '@react-native-community/netinfo';
@@ -12,14 +13,16 @@ import { AuthContext } from '../context/AuthContext';
 import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
+// import { DataContext } from '../context/DataContext';
 import Checkbox from 'expo-checkbox';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import Item from '../component/Item'
-
+import { FAB } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
 
-import { Picker } from '@react-native-picker/picker';
+
+
 
 import * as SQLite from 'expo-sqlite'
 
@@ -32,7 +35,7 @@ const width = Dimensions.get('window').width;
 
 let selectedPId = []
 
-let tempDist = [{ level: 'ALL DISTRICT', vlaue: 0 }]
+let tempDist = [{ lebel: 'ALL DISTRICT', vlaue: 0 }]
 let tempValue = []
 let tempLevel = []
 
@@ -44,6 +47,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     const navigation = useNavigation();
+    // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
+
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +69,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const { presentOfficeCode } = useContext(AuthContext);
     const { isAdmin } = useContext(AuthContext);
-    const { currentTheme } = useContext(ThemeContext);
+    const { currentTheme, currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);  //currentSelectedIds, setCurrentSelectedIds
 
     const [isChecked, setChecked] = useState();
     const [isrtDateChecked, setisrtDateChecked] = useState();
@@ -226,16 +231,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 var sortedKeys = Object.keys(distMap).sort();
 
-                tempDist = [...tempDist, { level: "All DISTRICT", vlaue: 0 }]
+                tempDist = [...tempDist, { lebel: "All DISTRICT", vlaue: 0 }]
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { level: item + ' ' + distMap[item], vlaue: distMap[item] }],
+                    tempDist = [...tempDist, { lebel: item + ' ' + distMap[item], vlaue: distMap[item] }],
                     // tempLevel = [...tempLevel, {item}],
                     //tempValue=[...tempValue,{item}]
                 )
 
-                tempDist = [...tempDist, { level: "PANI BHABAN", vlaue: 65 }]
+                tempDist = [...tempDist, { lebel: "PANI BHABAN", vlaue: 65 }]
 
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
@@ -279,14 +284,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 var sortedKeys = Object.keys(distMap).sort();
 
-                tempDist = [...tempDist, { level: "All DISTRICT", vlaue: 0 }]
+                tempDist = [...tempDist, { lebel: "All DISTRICT", vlaue: 0 }]
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { level: item + ' ' + distMap[item], vlaue: distMap[item] }]
+                    tempDist = [...tempDist, { lebel: item + ' ' + distMap[item], vlaue: distMap[item] }]
                 )
 
-                tempDist = [...tempDist, { level: "PANI BHABAN", vlaue: 65 }]
+                tempDist = [...tempDist, { lebel: "PANI BHABAN", vlaue: 65 }]
 
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
@@ -531,6 +536,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // setDistrictValue() // for reseting dropdown picker
         // fetchDistrictFromDb()
         setItems(tempDist)
+        setCurrentSelectedIds([])
 
     }, [desig_code]);
 
@@ -649,16 +655,37 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }
 
 
-    const ItemFlashList = ({ id, name, office, email, mobile, seniority, retiredate, pabx, selected, photo, index, designation, isAdmin, notDgOrAdg, currentTheme }) => {
+    const bulkSMS = () => {
+
+        const mobileNoList = []
+        const emailNoList = []
+
+        currentSelectedIds.map((itemId) => (
+            filteredData.map((itemData) => {
+                if (itemId === itemData.id)
+                    mobileNoList.push(itemData.mobile)
+            })
+        ))
+
+        currentSelectedIds.map((itemId) => (
+            filteredData.map((itemData) => {
+                if (itemId === itemData.id)
+                    emailNoList.push(itemData.email)
+            })
+        ))
+
+        console.log(mobileNoList);
+        console.log(emailNoList);
 
 
-
-        return (
-
-            <Text>{id}</Text>
-        )
     }
 
+    const selectAll = () => {
+
+        const allId = filteredData.map((item) => (item.id))
+
+        currentSelectedIds.length === 0 ? setCurrentSelectedIds(allId) : setCurrentSelectedIds([])
+    }
 
 
 
@@ -675,28 +702,47 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         // backgroundColor: `${currentTheme}`
                     }}>
 
-                        <TextInput
-                            selectionColor={'black'}       // for changing curcsor color
-                            style={{
-                                height: height / 20,
-                                width: "98%",
-                                borderRadius: 5,
-                                marginBottom: 5,
-                                borderColor: `${currentTheme}`,//'#6750a4',
-                                borderWidth: 2,
-                                paddingLeft: 15,
-                                backgroundColor: 'white'
+                        <View style={{ flex: 1 }}>
+                            <TextInput
+                                selectionColor={'black'}       // for changing curcsor color
+                                style={{
+                                    height: height / 20,
+                                    width: notDgOrAdg ? "95%" : "97%",
+                                    borderRadius: 5,
+                                    marginBottom: 5,
+                                    marginLeft: 5,
+                                    borderColor: `${currentTheme}`,//'#6750a4',
+                                    borderWidth: 2,
+                                    paddingLeft: 15,
+                                    backgroundColor: 'white'
+                                }}
+                                placeholder="Search"
+                                value={search}
+                                //underlineColorAndroid='trasparent'
+                                onChangeText={(text) => searchFilter(text)}
+                                mode='outlined'
+                            />
+                        </View>
+                        {
+                            notDgOrAdg ?
+                                <TouchableOpacity
+                                    onPress={() => { selectAll() }}
+                                    style={{
+                                        flex: .045,
+                                        height: height / 20,
 
-                            }}
-                            placeholder="Search"
-                            value={search}
-                            //underlineColorAndroid='trasparent'
-                            onChangeText={(text) => searchFilter(text)}
-                            mode='outlined'
+                                        borderRadius: 5,
+                                        marginBottom: 5,
+                                        // marginLeft: 5,
+                                        marginRight: 5,
+                                        borderColor: `${currentTheme}`,//'#6750a4',
+                                        borderWidth: 2,
 
-
-                        />
-
+                                        backgroundColor: 'white'
+                                    }}>
+                                    <Ionicons style={{ }} name="call-outline" size={10} />
+                                </TouchableOpacity> : ''
+                        }
                     </View>
                     {search ?
                         <TouchableOpacity
@@ -776,6 +822,37 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             : ""
                     }
 
+
+                    {
+                        // currentSelectedIds.length != 0 ?
+                        true ?
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    marginBottom: 40,
+                                    marginRight: 30,
+                                    right: 0,
+                                    bottom: 0,
+                                    zIndex: 1000,
+                                    borderRadius: 70
+                                }}>
+
+                                <FAB style={{
+                                    backgroundColor: `${currentTheme}`
+
+                                }}
+                                    color='white'
+                                    small
+                                    visible
+                                    icon="message"
+                                    onPress={() =>
+                                        bulkSMS()
+                                        // console.log('sdf')
+                                    }
+                                />
+                            </TouchableOpacity> : ''
+                    }
+
                     <FlashList
                         data={filteredData}
                         estimatedItemSize={200}
@@ -797,6 +874,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 isAdmin={isAdmin}
                                 notDgOrAdg={notDgOrAdg}
                                 currentTheme={currentTheme}
+                                length={filteredData.length}
                             />
                         )}
 
@@ -959,6 +1037,13 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textDecorationLine: "underline",
         color: "#758580",
+    },
+    fab: {
+        position: 'absolute',
+        marginBottom: 56,
+        marginRight: 36,
+        right: 0,
+        bottom: 0,
     },
 
 });

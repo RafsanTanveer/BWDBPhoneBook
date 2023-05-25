@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-
+// import { FAB } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
 
@@ -23,6 +23,7 @@ import { Picker } from '@react-native-picker/picker';
 import * as SQLite from 'expo-sqlite'
 
 import db from '../database/database'
+// import { DataContext } from '../context/DataContext';
 
 
 const height = Dimensions.get('window').height;
@@ -35,15 +36,26 @@ let selectedPId = []
 
 
 
-const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, selected, photo, index, designation, isAdmin, notDgOrAdg, currentTheme }) => {
+const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, selected, photo, index, designation, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
     const navigation = useNavigation();
+
+    // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
+    const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
+
+
+    useEffect(() => {
+        selectedPId = []
+        setisSelected([])
+
+    }, []);
 
 
     const [isSelected, setisSelected] = useState([]);
 
     const onSelect = (id) => {
 
+        selectedPId=currentSelectedIds
         const ifIdExitsInSelectedPID = selectedPId.includes(id);
         console.log(id);
 
@@ -51,17 +63,19 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
 
         if (ifIdExitsInSelectedPID) {
             const index = selectedPId.indexOf(id);
-            if (index > -1) { // only splice array when item is found
-                selectedPId.splice(index, 1); // 2nd parameter means remove one item only
+            if (index > -1) {
+                selectedPId.splice(index, 1);
             }
 
         }
         else {
             selectedPId.push(id)
         }
-        // currentSelectedItems.push(id)
+
+        setCurrentSelectedIds(selectedPId)
+
         setisSelected([...isSelected, id])
-        console.log(selectedPId);
+        // console.log(selectedPId);
 
     }
 
@@ -75,7 +89,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
         )}>
 
             <View style={
-                selectedPId.includes(id) ?
+                currentSelectedIds.includes(id) ?
                     {
                         flexDirection: 'row',
                         paddingLeft: 10,

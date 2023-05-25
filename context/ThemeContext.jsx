@@ -12,6 +12,8 @@ export const ThemeProvider = ({ children }) => {
 
     const [currentTheme, setcurrentTheme] = useState(themes[3])
 
+    const [currentSelectedIds, setCurrentSelectedIds] = useState([])
+
     const setTheme = (themeNo) => { }
 
 
@@ -20,7 +22,8 @@ export const ThemeProvider = ({ children }) => {
         <>
             <ThemeContext.Provider
                 value={{
-                    themes, currentTheme, setcurrentTheme
+                    themes, currentTheme, setcurrentTheme,
+                    currentSelectedIds, setCurrentSelectedIds
                 }}>
                 {children}
             </ThemeContext.Provider>
