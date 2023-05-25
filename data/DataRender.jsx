@@ -1,32 +1,29 @@
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState, useContext, useCallback } from "react";
-import { Modal, Dimensions, FlatList, Image, Linking, TextInput, Pressable, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from "@shopify/flash-list";
+import React, { useContext, useEffect, useState } from "react";
+import { ActivityIndicator, RefreshControl, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
+import DropDownPicker from 'react-native-dropdown-picker'
 
-import api from '../api/api';
-import LoadingScreen from "../screens/LoadingScreen";
 import NetInfo from '@react-native-community/netinfo';
-import NoInternetScreen from '../screens/NoInternetScreen'
-import NoDataFoundScreen from '../screens/NoDataFoundScreen';
-import { AuthContext } from '../context/AuthContext';
-import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
+import api from '../api/api';
+import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
-// import { DataContext } from '../context/DataContext';
+import LoadingScreen from "../screens/LoadingScreen";
+import NoInternetScreen from '../screens/NoInternetScreen';
+
 import Checkbox from 'expo-checkbox';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import Item from '../component/Item'
+import * as Contacts from 'expo-contacts';
+import { useForm } from 'react-hook-form';
 import { FAB } from 'react-native-paper';
-import { useForm, Controller } from 'react-hook-form';
-import * as Contacts from 'expo-contacts'
+import Item from '../component/Item';
 
 
 
 
-import * as SQLite from 'expo-sqlite'
 
-import db from '../database/database'
+import db from '../database/database';
 
 
 const height = Dimensions.get('window').height;
@@ -35,7 +32,14 @@ const width = Dimensions.get('window').width;
 
 let selectedPId = []
 
-let tempDist = [{ lebel: 'ALL DISTRICT', vlaue: 0 }]
+let tempDist = []
+let tempDropVal = [
+    { label: "All DISTRICT", vlaue: 0},
+    { label: "CHATTOGRAM", vlaue: 1 },
+    { label: "DHAKA", vlaue: 2 },
+    { label: "MUNSHIGANJ", vlaue: 3 },
+    { label: "RANGAMATI", vlaue: 4 },
+    { label: "PANI BHABAN", vlaue: 5 }]
 let tempValue = []
 let tempLevel = []
 
@@ -78,17 +82,17 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const [notDgOrAdg, setnotDgOrAdg] = useState(false)
 
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
 
 
-    const [distValue, setdistValue] = useState(0);
+    const [currentDistValue, setCurrentDistValue] = useState();
     const [distName, setdistName] = useState();
 
     const [distForDropDown, setDistForDropDown] = useState();
 
-    const [districtValue, setDistrictValue] = useState(null);
+    const [districtValue, setDistrictValue] = useState();
     const [district, setDistrict] = useState([]);
 
     // const onGenderOpen = useCallback(() => {
@@ -231,16 +235,19 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 var sortedKeys = Object.keys(distMap).sort();
 
-                tempDist = [...tempDist, { lebel: "All DISTRICT", vlaue: 0 }]
+                tempDist = [...tempDist, { label: "All DISTRICT", vlaue: "All DISTRICT" }]
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { lebel: item + ' ' + distMap[item], vlaue: distMap[item] }],
+                    tempDist = [...tempDist, { label: item , vlaue: item }],
                     // tempLevel = [...tempLevel, {item}],
                     //tempValue=[...tempValue,{item}]
                 )
 
-                tempDist = [...tempDist, { lebel: "PANI BHABAN", vlaue: 65 }]
+                tempDist = [...tempDist, { label: "PANI BHABAN", vlaue: "PANI BHABAN" }]
+
+                console.log(tempDist);
+
 
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
@@ -284,14 +291,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 var sortedKeys = Object.keys(distMap).sort();
 
-                tempDist = [...tempDist, { lebel: "All DISTRICT", vlaue: 0 }]
+                tempDist = [...tempDist, { label: "All DISTRICT", vlaue: "All DISTRICT" }]
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { lebel: item + ' ' + distMap[item], vlaue: distMap[item] }]
+                    tempDist = [...tempDist, { label: item , vlaue: distMap[item] }]
                 )
 
-                tempDist = [...tempDist, { lebel: "PANI BHABAN", vlaue: 65 }]
+                tempDist = [...tempDist, { label: "PANI BHABAN", vlaue: "PANI BHABAN" }]
+
+                console.log(tempDist);
 
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
@@ -811,7 +820,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                     </TouchableOpacity>
                                 </View>
-
+                                
 
                             </View> : ""}
 
@@ -856,7 +865,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     <FlashList
                         data={filteredData}
                         estimatedItemSize={200}
-
+                        keyExtractor={(item) => item.id }
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+                        }
                         renderItem={({ item, index }) => (
                             <Item
                                 id={item.id}
@@ -876,6 +888,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 currentTheme={currentTheme}
                                 length={filteredData.length}
                             />
+
+
                         )}
 
                     />

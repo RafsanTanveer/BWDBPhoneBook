@@ -2132,3 +2132,20 @@ index={index}
                     // )}
 
                     />
+
+
+
+<View style={{width:150,marginRight:10 }}>
+                                    <DropDownPicker
+
+
+                                        items={tempDropVal}
+                                        open={isOpen}
+                                        setOpen={()=>setIsOpen(!isOpen)}
+                                        value={currentDistValue}
+                                        setValue={ setCurrentDistValue}
+                                        maxHeight={500}
+                                        placeholder="Select Location"
+
+                                    />
+                                </View>
