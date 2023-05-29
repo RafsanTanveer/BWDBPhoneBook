@@ -57,9 +57,9 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
 
         selectedPId=currentSelectedIds
         const ifIdExitsInSelectedPID = selectedPId.includes(id);
-        console.log(id);
+        // console.log(id);
 
-        console.log(ifIdExitsInSelectedPID);
+        // console.log(ifIdExitsInSelectedPID);
 
         if (ifIdExitsInSelectedPID) {
             const index = selectedPId.indexOf(id);
@@ -76,6 +76,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
 
         setisSelected([...isSelected, id])
         // console.log(selectedPId);
+        // console.log(currentSelectedIds);
 
     }
 

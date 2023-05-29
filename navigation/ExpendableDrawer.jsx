@@ -28,6 +28,8 @@ const me = '../assets/icons/me.png'
 const water = '../assets/icons/water.png'
 const office = '../assets/icons/office.png'
 const medical = '../assets/icons/medical.png'
+const selectAllActive = '../assets/icons/select-all-active.png'
+
 
 //*******************************************icons ********************************************** */
 

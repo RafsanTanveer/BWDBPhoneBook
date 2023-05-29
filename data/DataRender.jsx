@@ -34,7 +34,7 @@ let selectedPId = []
 
 let tempDist = []
 let tempDropVal = [
-    { label: "All DISTRICT", vlaue: 0},
+    { label: "All DISTRICT", vlaue: 0 },
     { label: "CHATTOGRAM", vlaue: 1 },
     { label: "DHAKA", vlaue: 2 },
     { label: "MUNSHIGANJ", vlaue: 3 },
@@ -42,6 +42,10 @@ let tempDropVal = [
     { label: "PANI BHABAN", vlaue: 5 }]
 let tempValue = []
 let tempLevel = []
+
+
+const selectAllActive = '../assets/icons/select-all-active.png'
+const selectAllInactive = '../assets/icons/select-all-inactive.png'
 
 
 
@@ -53,6 +57,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const navigation = useNavigation();
     // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
 
+    const [selectIcon, setselectIcon] = useState(selectAllInactive);
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -154,6 +159,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }
 
+    useEffect(() => {
+
+        currentSelectedIds.length === 0 ? setselectIcon(selectAllInactive) : setselectIcon(selectAllActive)
+
+    }, [currentSelectedIds]);
+
 
     // ********************************  Internet Connection checked *************************************
     NetInfo.fetch().then(state => {
@@ -239,7 +250,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { label: item , vlaue: item }],
+                    tempDist = [...tempDist, { label: item, vlaue: item }],
                     // tempLevel = [...tempLevel, {item}],
                     //tempValue=[...tempValue,{item}]
                 )
@@ -295,7 +306,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { label: item , vlaue: distMap[item] }]
+                    tempDist = [...tempDist, { label: item, vlaue: distMap[item] }]
                 )
 
                 tempDist = [...tempDist, { label: "PANI BHABAN", vlaue: "PANI BHABAN" }]
@@ -605,9 +616,26 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const searchFilter = (text) => {
 
+        let firstCharacter = text.charAt(0);
+        console.log(firstCharacter);
+        let isNameSearch = (/[a-zA-Z]/).test(firstCharacter)
+
+        let isMobileSearch = false
+        let isPabxSearch = false
+
+        if (firstCharacter === '3')
+            isPabxSearch = true
+        else
+            isMobileSearch = true
+
         if (text) {
             const newData = DATA.filter((item) => {
-                const itemData = item.name ? item.name.toLocaleLowerCase() : ''
+                let itemData
+                isMobileSearch ? itemData = item.mobile ? item.mobile.toLocaleLowerCase() : '' : ''
+                isPabxSearch ? itemData = item.pabx ? item.pabx.toLocaleLowerCase() : '' : ''
+                isNameSearch ? itemData = item.name ? item.name.toLocaleLowerCase() : '' : ''
+                if (!(isMobileSearch || isPabxSearch || isNameSearch))
+                    itemData = ''
                 const textData = text.toLocaleLowerCase();
                 return itemData.indexOf(textData) > -1;
             });
@@ -711,75 +739,92 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         // backgroundColor: `${currentTheme}`
                     }}>
 
-                        <View style={{ flex: 1 }}>
-                            <TextInput
-                                selectionColor={'black'}       // for changing curcsor color
-                                style={{
-                                    height: height / 20,
-                                    width: notDgOrAdg ? "95%" : "97%",
-                                    borderRadius: 5,
-                                    marginBottom: 5,
-                                    marginLeft: 5,
-                                    borderColor: `${currentTheme}`,//'#6750a4',
-                                    borderWidth: 2,
-                                    paddingLeft: 15,
-                                    backgroundColor: 'white'
-                                }}
-                                placeholder="Search"
-                                value={search}
-                                //underlineColorAndroid='trasparent'
-                                onChangeText={(text) => searchFilter(text)}
-                                mode='outlined'
-                            />
-                        </View>
-                        {
-                            notDgOrAdg ?
-                                <TouchableOpacity
-                                    onPress={() => { selectAll() }}
+                        <View style={{ flex: 10, flexDirection:'row' }}>
+                            <View style={{flex:1}}>
+                                <TextInput
+                                    selectionColor={'black'}       // for changing curcsor color
                                     style={{
-                                        flex: .045,
                                         height: height / 20,
-
+                                        width: "97%",
                                         borderRadius: 5,
                                         marginBottom: 5,
-                                        // marginLeft: 5,
-                                        marginRight: 5,
+                                        marginLeft: 5,
                                         borderColor: `${currentTheme}`,//'#6750a4',
                                         borderWidth: 2,
-
+                                        paddingLeft: 15,
                                         backgroundColor: 'white'
-                                    }}>
-                                    <Ionicons style={{ }} name="call-outline" size={10} />
-                                </TouchableOpacity> : ''
-                        }
-                    </View>
-                    {search ?
-                        <TouchableOpacity
-                            style={{
-                                alignContent: 'center',
-                                justifyContent: 'center',
-                                alignSelf: 'flex-end',
-                                position: 'absolute',
-                                marginTop: height * .01,
-                                paddingRight: width * .025,
+                                    }}
+                                    placeholder="Search Name or Mobile or PABX ( 3 . . )"
+                                    value={search}
+                                    //underlineColorAndroid='trasparent'
+                                    onChangeText={(text) => searchFilter(text)}
+                                    mode='outlined'
+                                />
+                            </View>
+                            {search ?
+                                <TouchableOpacity
+                                    style={{
+                                        alignContent: 'center',
+                                        justifyContent: 'center',
+                                        alignSelf: 'flex-end',
+                                        position: 'absolute',
+                                        marginTop: height * .01,
+                                        paddingRight: width * .025,
 
 
-                            }}
-                            onPress={() => (
-                                searchFilter("")
-                                , setDistrictValue(),
-                                setdistName("")
-                            )}
+                                    }}
+                                    onPress={() => (
+                                        searchFilter("")
+                                        , setDistrictValue(),
+                                        setdistName("")
+                                    )}
+                                >
+                                    <Image
+                                        style={{
+                                            height: 22,
+                                            width: 22,
+                                        }}
+                                        source={require("../assets/close.png")}
+                                    />
+                                </TouchableOpacity> : ""
+                            }
+                        </View>
+
+
+                        <TouchableOpacity style={{
+
+                            height: height / 20,
+                            flex: 1,
+                            borderRadius: 5,
+                            marginBottom: 5,
+                            // marginLeft: 5,
+                            marginRight: 5,
+                            // borderColor: `${currentTheme}`,//'#6750a4',
+                            // borderWidth: 2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+
+                        }}
+                            onPress={() => { selectAll() }}
                         >
-                            <Image
-                                style={{
-                                    height: 22,
-                                    width: 22,
-                                }}
-                                source={require("../assets/close.png")}
-                            />
-                        </TouchableOpacity> : ""
-                    }
+                            {
+                                currentSelectedIds.length === 0 ?
+                                    <Image
+                                        source={require(selectAllInactive)}
+                                        style={styles.select_all_icon}
+                                    />
+                                    :
+                                    <Image
+                                        source={require(selectAllActive)}
+                                        style={styles.select_all_icon}
+                                    />
+                            }
+
+                        </TouchableOpacity>
+                    </View>
+
+
+                    
                     {refreshing ? <ActivityIndicator /> : null}
 
 
@@ -820,7 +865,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                     </TouchableOpacity>
                                 </View>
-                                
+
 
                             </View> : ""}
 
@@ -865,7 +910,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     <FlashList
                         data={filteredData}
                         estimatedItemSize={200}
-                        keyExtractor={(item) => item.id }
+                        // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                         }
@@ -1059,6 +1104,10 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
+    select_all_icon: {
+        height: height * .055,
+        width: height * .055,
+    }
 
 });
 
