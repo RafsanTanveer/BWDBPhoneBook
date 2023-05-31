@@ -2149,3 +2149,24 @@ index={index}
 
                                     />
                                 </View>
+
+
+
+
+
+
+
+
+<FAB style={{
+                                    backgroundColor: `${currentTheme}`
+
+                                }}
+                                    color='white'
+                                    small
+                                    visible
+                                    icon="message"
+                                    onPress={() =>
+                                        bulkSMS()
+                                        // console.log('sdf')
+                                    }
+                                />

@@ -20,8 +20,8 @@ const LoadingScreen = () => {
                     width: 200,
                     height: 200,
                 }}
-                speed={1.5}
-                source={require('../assets/lottie/loading.json')}
+                speed={1.25}
+                source={require('../assets/lottie/loading-rectangle.json')}
             />
             <Text style={{ fontSize: 15, fontWeight: '400' }} ></Text>
         </View>

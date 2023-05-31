@@ -8,7 +8,10 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import NoDataFoundScreen from '../screens/NoDataFoundScreen';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
+import { FAB, Portal } from 'react-native-paper';
+import { FlashList } from "@shopify/flash-list";
 
+import FABComponent from '../component/FABComponent'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -247,6 +250,10 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                         }
 
                     />
+
+                    {/* <Portal.Host>
+                        <FABComponent />
+                    </Portal.Host> */}
 
 
                 </SafeAreaView>

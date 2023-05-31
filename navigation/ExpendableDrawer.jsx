@@ -1,13 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState, useContext } from "react";
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { List } from 'react-native-paper';
 import api from '../api/api';
 import OfficeList from '../data/OfficeList';
+import ThemeContainer from '../component/ThemeContainer'
+import { ThemeContext } from '../context/ThemeContext';
 
 import db from '../database/database'
 
-
+const height = Dimensions.get('window').height;
+const width = Dimensions.get('window').width;
 
 //****************************************** icons ********************************************** */
 
@@ -28,7 +31,7 @@ const me = '../assets/icons/me.png'
 const water = '../assets/icons/water.png'
 const office = '../assets/icons/office.png'
 const medical = '../assets/icons/medical.png'
-const selectAllActive = '../assets/icons/select-all-active.png'
+const settings = '../assets/icons/settings.png'
 
 
 //*******************************************icons ********************************************** */
@@ -39,7 +42,7 @@ const ExpendableDrawer = () => {
     const navigation = useNavigation();
     const [expendedList, setexpendedList] = React.useState([])
 
-
+    const { setcurrentTheme, themes, currentTheme } = useContext(ThemeContext);
     //  ******************************  fetching data ***************************************
 
     const [data, setData] = useState([]);
@@ -201,30 +204,44 @@ const ExpendableDrawer = () => {
 
         if (no == 0) {
             expendedList[0] ? arr[0] = false : arr[0] = true;
-            for (let i = 1; i <= 18; i++) {
+            for (let i = 1; i <= 21; i++) {
 
                 arr[i] = false;
             }
         }
         else if (no == 12) {
             expendedList[12] ? arr[12] = false : arr[12] = true;
-            for (let i = 0; i <= 18; i++) {
+            for (let i = 0; i <= 21; i++) {
                 if (i != 12)
+                    arr[i] = false;
+            }
+        }
+        else if (no == 19) {
+            expendedList[19] ? arr[19] = false : arr[19] = true;
+            for (let i = 0; i <= 21; i++) {
+                if (i != 19)
                     arr[i] = false;
             }
         }
         else if (no > 0 && no <= 11) {
             arr[0] = true
-            for (let i = 1; i <= 18; i++) {
+            for (let i = 1; i <= 21; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else arr[i] = false;
             }
         }
         else if (no > 12 && no <= 18) {
             arr[12] = true
-            for (let i = 0; i <= 18; i++) {
+            for (let i = 0; i <= 21; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else if (i != 12) arr[i] = false;
+            }
+        }
+        else if (no > 19 && no <= 21) {
+            arr[19] = true
+            for (let i = 0; i <= 21; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != 19) arr[i] = false;
             }
         }
         setexpendedList(arr);
@@ -753,6 +770,92 @@ const ExpendableDrawer = () => {
 
 
                 </List.Accordion>
+
+
+                <List.Accordion
+                    style={styles.accordingStyleOffice}
+                    title="Settings"
+                    left={props => <List.Icon {...props} icon={() => (
+                        <Image
+                            source={require(settings)}
+                            style={styles.iconStyle}
+                        />
+                    )} />}
+                    expanded={expendedList[19]}
+                    onPress={() => handlePress(19)} >
+
+
+
+
+                    <List.Accordion
+                        style={styles.accordingStyle}
+                        title="Theme"
+                        left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />}
+                        expanded={expendedList[20]}
+                        onPress={() => handlePress(20)}  >
+
+                        {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[0])} style={{ height: width * .080, width: width * .080, backgroundColor: '#6750a4', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[1])} style={{ height: width * .080, width: width * .080, backgroundColor: '#4F46E5', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[2])} style={{ height: width * .080, width: width * .080, backgroundColor: '#1DA1F2', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[3])} style={{ height: width * .080, width: width * .080, backgroundColor: '#048BB3', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[4])} style={{ height: width * .080, width: width * .080, backgroundColor: '#4E34E1', marginRight: width * .015 }} />
+
+
+                        </View>
+
+                    </List.Accordion>
+                    <List.Accordion
+                        style={styles.accordingStyle}
+                        title="Update Organogram"
+                        left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(rightArrow)}
+                                style={styles.iconStyle}
+                            />
+                        )} />}
+                        expanded={expendedList[21]}
+                        onPress={() => handlePress(21)}  >
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={{
+
+                                    height: width * .1,
+                                    width: width * .35,
+                                    backgroundColor: `${currentTheme}`,
+                                    marginRight: 6
+                                }}
+                                onPress={() => { }}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'white',
+                                        fontWeight: '600',
+                                        paddingLeft: width * .015,
+                                        paddingTop: width * .015,
+                                    }}>Update Organogram</Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+
+
+                    </List.Accordion>
+
+
+
+
+                </List.Accordion>
+
+
 
 
             </List.Section>

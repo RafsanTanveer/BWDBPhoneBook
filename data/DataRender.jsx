@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, RefreshControl, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Linking,RefreshControl, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -16,8 +16,12 @@ import NoInternetScreen from '../screens/NoInternetScreen';
 import Checkbox from 'expo-checkbox';
 import * as Contacts from 'expo-contacts';
 import { useForm } from 'react-hook-form';
-import { FAB } from 'react-native-paper';
+import { FAB, Portal } from 'react-native-paper';
 import Item from '../component/Item';
+
+import FABComponent from '../component/FABComponent'
+
+
 
 
 
@@ -58,6 +62,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
 
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
+
+    const [state, setState] = React.useState({ open: false });
+
+    const onStateChange = ({ open }) => setState({ open });
+
+    const { open } = state;
+
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -692,17 +703,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }
 
 
-    const bulkSMS = () => {
+    const bulkEmail = () => {
 
-        const mobileNoList = []
+
         const emailNoList = []
 
-        currentSelectedIds.map((itemId) => (
-            filteredData.map((itemData) => {
-                if (itemId === itemData.id)
-                    mobileNoList.push(itemData.mobile)
-            })
-        ))
 
         currentSelectedIds.map((itemId) => (
             filteredData.map((itemData) => {
@@ -711,8 +716,48 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             })
         ))
 
-        console.log(mobileNoList);
+
         console.log(emailNoList);
+
+
+    }
+
+
+    const bulkSMS = () => {
+
+        const mobileNoList = ['01521253100', '01814853373', '01721132051']
+        let msg = "Dummy Msg"
+        let numbers = ''
+
+        currentSelectedIds.map((itemId) => (
+            filteredData.map((itemData) => {
+                if (itemId === itemData.id)
+                    numbers += `${itemData.mobile},`; //mobileNoList.push(itemData.mobile)
+            })
+        ))
+
+        numbers = numbers.slice(0, -1);
+
+        const url = (Platform.OS === 'android')
+            ? `sms:${mobileNoList}?body=${msg}`
+            : `sms:/open?addresses=${mobileNoList}&body=${msg}`;
+
+
+        // console.log(mobileNoList);  01721132051,01521253100,01814853373
+        Linking.openURL(url)
+
+        // Linking.canOpenURL(url).then((supported) => {
+        //     if (!supported) {
+        //         console.log('Unsupported url: ', url);
+        //     } else {
+        //         Linking.openURL(url).then(() => {
+        //             navigateBack(); // or something else
+        //         });
+        //     }
+        // }).catch((err) => console.log('An error occurred', err));
+
+        console.log(numbers);
+
 
 
     }
@@ -739,8 +784,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         // backgroundColor: `${currentTheme}`
                     }}>
 
-                        <View style={{ flex: 10, flexDirection:'row' }}>
-                            <View style={{flex:1}}>
+                        <View style={{ flex: 10, flexDirection: 'row' }}>
+                            <View style={{ flex: 1 }}>
                                 <TextInput
                                     selectionColor={'black'}       // for changing curcsor color
                                     style={{
@@ -761,33 +806,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     mode='outlined'
                                 />
                             </View>
-                            {search ?
-                                <TouchableOpacity
-                                    style={{
-                                        alignContent: 'center',
-                                        justifyContent: 'center',
-                                        alignSelf: 'flex-end',
-                                        position: 'absolute',
-                                        marginTop: height * .01,
-                                        paddingRight: width * .025,
+                            <View>
 
-
-                                    }}
-                                    onPress={() => (
-                                        searchFilter("")
-                                        , setDistrictValue(),
-                                        setdistName("")
-                                    )}
-                                >
-                                    <Image
-                                        style={{
-                                            height: 22,
-                                            width: 22,
-                                        }}
-                                        source={require("../assets/close.png")}
-                                    />
-                                </TouchableOpacity> : ""
-                            }
+                            </View>
                         </View>
 
 
@@ -824,7 +845,33 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     </View>
 
 
-                    
+                    {search ?
+                        <TouchableOpacity
+                            style={{
+                                alignContent: 'center',
+                                justifyContent: 'center',
+                                alignSelf: 'flex-end',
+                                position: 'absolute',
+                                marginTop: height * .01,
+                                paddingRight: width * .135,
+
+
+                            }}
+                            onPress={() => (
+                                searchFilter("")
+                                , setDistrictValue(),
+                                setdistName("")
+                            )}
+                        >
+                            <Image
+                                style={{
+                                    height: 22,
+                                    width: 22,
+                                }}
+                                source={require("../assets/close.png")}
+                            />
+                        </TouchableOpacity> : ""
+                    }
                     {refreshing ? <ActivityIndicator /> : null}
 
 
@@ -891,19 +938,44 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     borderRadius: 70
                                 }}>
 
-                                <FAB style={{
-                                    backgroundColor: `${currentTheme}`
+                                <Portal style={{ marginBottom: 100 }}>
+                                    <FAB.Group
+                                        fabStyle={{ backgroundColor: `${currentTheme}`, color: 'white', marginBottom: height * .045 }}
+                                        color='white'
 
-                                }}
-                                    color='white'
-                                    small
-                                    visible
-                                    icon="message"
-                                    onPress={() =>
-                                        bulkSMS()
-                                        // console.log('sdf')
-                                    }
-                                />
+                                        open={open}
+                                        visible
+                                        icon={open ? 'close' : 'plus'}
+                                        actions={[
+
+                                            {
+                                                style: { backgroundColor: `${currentTheme}`, color: 'white' },
+                                                icon: 'export',
+                                                fabStyle: { color: 'white' },
+                                                label: 'Export',
+                                                onPress: () => console.log('Pressed star'),
+                                            },
+                                            {
+                                                style: { backgroundColor: `${currentTheme}` },
+                                                icon: 'email',
+                                                label: 'Email',
+                                                onPress: () => bulkEmail(),
+                                            },
+                                            {
+                                                style: { backgroundColor: `${currentTheme}` },
+                                                icon: 'message',
+                                                label: 'Message',
+                                                onPress: () => bulkSMS(),
+                                            },
+                                        ]}
+                                        onStateChange={onStateChange}
+                                        onPress={() => {
+                                            if (open) {
+                                                // do something if the speed dial is open
+                                            }
+                                        }}
+                                    />
+                                </Portal>
                             </TouchableOpacity> : ''
                     }
 

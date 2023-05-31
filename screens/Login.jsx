@@ -76,6 +76,24 @@ const Login = () => {
                         }}
                         placeholder='BWDB PMIS ID'>
                     </TextInput>
+                    <TextInput
+                        maxLength={9}                  // set maximum string length to 9
+                        // keyboardType={"decimal-pad"}   // set keyboard type
+                        selectionColor={'black'}       // for changing curcsor color
+                        onChangeText={(txt) => setpmisId(txt)}
+                        style={{
+                            paddingLeft: 15,
+                            marginTop: 2,
+                            borderWidth: 1,
+                            borderColor: 'purple',
+                            height: height / 20,
+                            width: "70%",
+                            borderRadius: 10,
+                            marginBottom: 5,
+                            fontWeight: '700',
+                        }}
+                        placeholder='PASSWORD'>
+                    </TextInput>
                     <TouchableOpacity
                         style={{ height: height / 20, width: "70%", borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF0000' }}
                         onPress={ () => {
