@@ -64,7 +64,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     let higherPost = ''
     const [higherPostForCurrentDesig, setHigherPostForCurrentDesig] = useState('');
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
-
+    const [isFilterOn, setIsFilterOn] = useState(false);
     const [state, setState] = React.useState({ open: false });
 
     const onStateChange = ({ open }) => setState({ open });
@@ -96,6 +96,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const [isChecked, setChecked] = useState();
     const [isrtDateChecked, setisrtDateChecked] = useState();
+    const [isrtJoiningChecked, setisrtJoiningChecked] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -142,6 +143,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         setisrtDateChecked(false)
         setChecked(false)
+        setisrtJoiningChecked(false)
 
 
 
@@ -487,6 +489,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             setIsLoading(false);
             setChecked(false)
             setisrtDateChecked(false)
+            setisrtJoiningChecked(false)
             setdistName('')
             setDistrictValue()
 
@@ -603,6 +606,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // fetchData();
         fetchDataFromDb();
         setisrtDateChecked(false)
+        setisrtJoiningChecked(false)
         setChecked(false)
         setSearch()
         setdistName('')
@@ -644,6 +648,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const seniorityUpdate = () => {
 
         setisrtDateChecked(false)
+        setisrtJoiningChecked(false)
 
         !isChecked ? setChecked(true) : setChecked(false)
 
@@ -655,11 +660,28 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }
 
+    const joiningDateUpdate = () => {
+
+        setChecked(false)
+        setisrtDateChecked(false)
+
+        !isrtJoiningChecked ? setisrtJoiningChecked(true) : setisrtJoiningChecked(false)
+
+
+
+        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.bwdbJoiningDt.toString().trim().slice(0, 10)) - new Date(b.bwdbJoiningDt.toString().trim().slice(0, 10)) })) :
+            setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
+
+
+    }
+
     const retirementDateUpdate = () => {
 
         setChecked(false)
+        setisrtJoiningChecked(false)
+
         !isrtDateChecked ? setisrtDateChecked(true) : setisrtDateChecked(false)
-        // isrtDateChecked, setisrtDateChecked   .toString().trim().slice(0, 10)
+
 
 
         !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate.toString().trim().slice(0, 10)) - new Date(b.retiredate.toString().trim().slice(0, 10)) })) :
@@ -911,10 +933,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         </TouchableOpacity> : ""
                     }
                     {refreshing ? <ActivityIndicator /> : null}
-
+                    <TouchableOpacity
+                        onPress={() => setIsFilterOn(!isFilterOn)}
+                        style={{ marginLeft: width * .036 , backgroundColor:'blue', width:width*.93}}
+                    >
+                        <Text style={{color:'white', fontSize:width*.037}}>Filters</Text>
+                    </TouchableOpacity>
 
                     {
-                        notDgOrAdg && isAdmin?
+                        notDgOrAdg && isAdmin && isFilterOn ?
 
                             <View style={{
 
@@ -937,13 +964,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => retirementDateUpdate()}
+                                        onPress={() => joiningDateUpdate()}
                                         style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
                                         <Checkbox
                                             style={{ height: 18, width: 18 }}
-                                            value={isrtDateChecked}
+                                            value={isrtJoiningChecked}
 
-                                            color={isrtDateChecked ? `${currentTheme}` : undefined}
+                                            color={isrtJoiningChecked ? `${currentTheme}` : undefined}
                                         />
 
                                         <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
@@ -966,12 +993,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 </View>
 
 
-                            </View> : ""}
+                            </View> : ""
+                    }
 
 
                     {
                         !search && DATA ?
-                            <Text style={{ marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} {distName}: {filteredData.length}</Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} {distName}: {filteredData.length}</Text>
                             : ""
                     }
 
