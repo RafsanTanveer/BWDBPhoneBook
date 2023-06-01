@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     const [isSplashLoading, setSplashLoading] = useState(false);
     const [name, setName] = useState()
+    const [pmisId, setPmisId] = useState();
     const [isLogged, setisLogged] = useState(false)
     const [photo, setphoto] = useState()
     const [presentDesig, setpresentDesig] = useState()
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
     const [presentCharge, setpresentCharge] = useState()
     const [officeAddres, setofficeAddres] = useState()
     const [presentOfficeCode, setpresentOfficeCode] = useState()
+    const [designationContext, setDesignationContext] = useState([]);
 
     ////////////////////////// General ////////////////////////
     const [generalPresentOffice, setgeneralPresentOffice] = useState()
@@ -123,16 +125,15 @@ export const AuthProvider = ({ children }) => {
 
         setisLogged(false)
         setUserInfo([])
-    
         setisAdmin(false)
-
         setName()
-
+        setPmisId()
         setphoto()
         setofficeAddres()
         setpresentOfficeCode()
         setpresentPost()
         setpresentOffice()
+        setDesignationContext([])
 
         AsyncStorage.removeItem('userInfo');
 
@@ -174,6 +175,7 @@ export const AuthProvider = ({ children }) => {
                     name,
                     isLogged, setisLogged,
                     name, setName,
+                    pmisId, setPmisId,
                     photo, setphoto,
                     presentDesig, setpresentDesig,
                     presentOffice, setpresentOffice,
@@ -183,7 +185,8 @@ export const AuthProvider = ({ children }) => {
                     presentOfficeCode, setpresentOfficeCode,
                     generalPresentOffice, setgeneralPresentOffice,
                     generalPresentPost, setgeneralPresentPost,
-                    isAdmin, setisAdmin
+                    isAdmin, setisAdmin,
+                    designationContext, setDesignationContext
                 }}>
                 {children}
             </AuthContext.Provider>

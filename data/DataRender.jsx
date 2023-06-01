@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, Linking,RefreshControl, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ToastAndroid, ActivityIndicator, Linking, RefreshControl, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -58,9 +58,11 @@ const selectAllInactive = '../assets/icons/select-all-inactive.png'
 const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
+
     const navigation = useNavigation();
     // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
-
+    let higherPost = ''
+    const [higherPostForCurrentDesig, setHigherPostForCurrentDesig] = useState('');
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
 
     const [state, setState] = React.useState({ open: false });
@@ -88,7 +90,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [seniorityText, setseniorityText] = useState()
 
     const { presentOfficeCode } = useContext(AuthContext);
-    const { isAdmin } = useContext(AuthContext);
+    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
+    const { isAdmin, designationContext } = useContext(AuthContext);
     const { currentTheme, currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);  //currentSelectedIds, setCurrentSelectedIds
 
     const [isChecked, setChecked] = useState();
@@ -110,6 +113,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const [districtValue, setDistrictValue] = useState();
     const [district, setDistrict] = useState([]);
+
+
+    let charge = presentCharge === 'R' ? '' :
+        presentCharge === 'C' ? ',CC' :
+            presentCharge === 'A' ? ',Addl.' :
+                presentCharge === 'I' ? ',Incharge' : ''
+
+    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB`
+
+    let toastMsg = `Please Select at least 1\n ${designation}`
 
     // const onGenderOpen = useCallback(() => {
     //     // setCompanyOpen(false);
@@ -198,6 +211,22 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         const desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig";
         const snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority";
         setseniorityText(snrTxt);
+
+
+        console.log('designationContext=====================================', designationContext);
+
+
+        designationContext.forEach((desigItem, index) => {
+            if (desigItem.designame === designation) {
+                if (index - 1 >= 0)
+                    if (desigItem.cadre === designationContext[index - 1].cadre)
+                        higherPost = designationContext[index - 1].designame
+            }
+        });
+
+        setHigherPostForCurrentDesig(higherPost)
+
+        console.log(designation, '---------higherPost  ---------------------------', higherPost);
 
         try {
             setRefreshing(false);
@@ -339,6 +368,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 id          TEXT,
                                 name        TEXT,
                                 designation TEXT,
+                                post        TEXT,
+                                charge      TEXT,
                                 seniority   INTEGER,
                                 office      TEXT,
                                 officeAddress  TEXT,
@@ -347,6 +378,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 pabx        TEXT,
                                 email       TEXT,
                                 retiredate  TEXT,
+                                bwdbJoiningDt TEXT,
                                 photo       BLOB,
                                 selected    TEXT
                                                  );`
@@ -360,6 +392,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                       id,
                                       name,
                                       designation,
+                                      post,
+                                      charge,
                                       seniority,
                                       office,
                                       officeAddress,
@@ -368,13 +402,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                       pabx,
                                       email,
                                       retiredate,
+                                      bwdbJoiningDt,
                                       photo,
                                       selected)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);`,
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);`,
                                 [
                                     it.id,
                                     it.name,
                                     it.designation,
+                                    it.post,
+                                    it.charge,
                                     it.seniority,
                                     it.office,
                                     it.officeAddress,
@@ -383,6 +420,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     it.pabx,
                                     it.email,
                                     it.retiredate,
+                                    it.bwdbJoiningDt,
                                     it.photo,
                                     it.selected]
                             );
@@ -510,6 +548,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 id,
                                 name,
                                 designation,
+                                post,
+                                charge,
                                 seniority,
                                 office,
                                 officeAddress,
@@ -518,13 +558,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 pabx,
                                 email,
                                 retiredate,
+                                bwdbJoiningDt,
                                 photo,
                                 selected)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);`,
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);`,
                             [
                                 it.id,
                                 it.name,
                                 it.designation,
+                                it.post,
+                                it.charge,
                                 it.seniority,
                                 it.office,
                                 it.officeAddress,
@@ -533,6 +576,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 it.pabx,
                                 it.email,
                                 it.retiredate,
+                                it.bwdbJoiningDt,
                                 it.photo,
                                 it.selected]
                         );
@@ -706,59 +750,53 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const bulkEmail = () => {
 
 
-        const emailNoList = []
+        if (currentSelectedIds.length === 0)
+            ToastAndroid.show(toastMsg, ToastAndroid.LONG, ToastAndroid.TOP)
+        else {
+            let numbers = [];
 
+            currentSelectedIds.map((itemId) => (
+                filteredData.map((itemData) => {
+                    if (itemId === itemData.id)
+                        numbers += `${itemData.email};`; //mobileNoList.push(itemData.mobile)
+                })
+            ))
 
-        currentSelectedIds.map((itemId) => (
-            filteredData.map((itemData) => {
-                if (itemId === itemData.id)
-                    emailNoList.push(itemData.email)
-            })
-        ))
+            numbers = numbers.slice(0, -1);
+            console.log(numbers);
 
+            const url = (Platform.OS === 'android')
+                ? `mailto:${numbers}?body=${msg}`
+                : `mailto:/open?addresses=${numbers}&body=${msg}`;
 
-        console.log(emailNoList);
-
-
+            Linking.openURL(url)
+        }
     }
 
 
     const bulkSMS = () => {
 
-        const mobileNoList = ['01521253100', '01814853373', '01721132051']
-        let msg = "Dummy Msg"
-        let numbers = ''
+        if (currentSelectedIds.length === 0)
+            ToastAndroid.show(toastMsg, ToastAndroid.LONG, ToastAndroid.TOP)
+        else {
+            let numbers = [];
 
-        currentSelectedIds.map((itemId) => (
-            filteredData.map((itemData) => {
-                if (itemId === itemData.id)
-                    numbers += `${itemData.mobile},`; //mobileNoList.push(itemData.mobile)
-            })
-        ))
+            currentSelectedIds.map((itemId) => (
+                filteredData.map((itemData) => {
+                    if (itemId === itemData.id)
+                        numbers += `${itemData.mobile};`; //mobileNoList.push(itemData.mobile)
+                })
+            ))
 
-        numbers = numbers.slice(0, -1);
+            numbers = numbers.slice(0, -1);
+            console.log(numbers);
 
-        const url = (Platform.OS === 'android')
-            ? `sms:${mobileNoList}?body=${msg}`
-            : `sms:/open?addresses=${mobileNoList}&body=${msg}`;
+            const url = (Platform.OS === 'android')
+                ? `sms:${numbers}?body=${msg}`
+                : `sms:/open?addresses=${numbers}&body=${msg}`;
 
-
-        // console.log(mobileNoList);  01721132051,01521253100,01814853373
-        Linking.openURL(url)
-
-        // Linking.canOpenURL(url).then((supported) => {
-        //     if (!supported) {
-        //         console.log('Unsupported url: ', url);
-        //     } else {
-        //         Linking.openURL(url).then(() => {
-        //             navigateBack(); // or something else
-        //         });
-        //     }
-        // }).catch((err) => console.log('An error occurred', err));
-
-        console.log(numbers);
-
-
+            Linking.openURL(url)
+        }
 
     }
 
@@ -876,7 +914,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                     {
-                        notDgOrAdg ?
+                        notDgOrAdg && isAdmin?
 
                             <View style={{
 
@@ -908,9 +946,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             color={isrtDateChecked ? `${currentTheme}` : undefined}
                                         />
 
+                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
+
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => retirementDateUpdate()}
+                                        style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                        <Checkbox
+                                            style={{ height: 18, width: 18 }}
+                                            value={isrtDateChecked}
+
+                                            color={isrtDateChecked ? `${currentTheme}` : undefined}
+                                        />
+
                                         <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
 
                                     </TouchableOpacity>
+
                                 </View>
 
 
@@ -995,11 +1047,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 mobile={item.mobile}
                                 seniority={item.seniority}
                                 retiredate={item.retiredate}
+                                bwdbJoiningDt={item.bwdbJoiningDt}
                                 pabx={item.pabx}
                                 selected={item.selected}
                                 photo={item.photo}
                                 index={index}
                                 designation={designation}
+                                post={item.post}
+                                higherPost={higherPostForCurrentDesig}
+                                charge={item.charge}
                                 isAdmin={isAdmin}
                                 notDgOrAdg={notDgOrAdg}
                                 currentTheme={currentTheme}

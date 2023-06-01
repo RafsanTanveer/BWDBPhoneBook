@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, TouchableOpacity, Dimensions } from 'react-native';
-
+import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
@@ -9,8 +10,15 @@ const whatsappIcon = '../assets/icons/whatsapp.png'
 
 const MakeCallModalComponent = ({ number, toggleModal }) => {
 
+    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
+    const { currentTheme } = useContext(ThemeContext);
+//`, ${presentCharge}`
+    let charge = presentCharge === 'R' ? '' :
+        presentCharge === 'C' ? ',CC' :
+            presentCharge === 'A' ? ',Addl.' :
+                presentCharge === 'I'?',Incharge':''
 
-    let msg = "\n\n\n\n\n...\nBest Regurds, \n\nRafsan Zani Rabbi\nAssistant Programmer\nHuman Resource Developemet Directorate\n"
+    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB`
 
     const closeModal = () => {
         toggleModal(false)

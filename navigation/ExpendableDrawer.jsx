@@ -6,6 +6,7 @@ import api from '../api/api';
 import OfficeList from '../data/OfficeList';
 import ThemeContainer from '../component/ThemeContainer'
 import { ThemeContext } from '../context/ThemeContext';
+import { AuthContext } from '../context/AuthContext'
 
 import db from '../database/database'
 
@@ -43,6 +44,8 @@ const ExpendableDrawer = () => {
     const [expendedList, setexpendedList] = React.useState([])
 
     const { setcurrentTheme, themes, currentTheme } = useContext(ThemeContext);
+    const { setDesignationContext } = useContext(AuthContext);
+
     //  ******************************  fetching data ***************************************
 
     const [data, setData] = useState([]);
@@ -104,6 +107,7 @@ const ExpendableDrawer = () => {
                             (_, result) => {
                                 const desig = result.rows._array
                                 setdesigList(desig);
+                                setDesignationContext(desig)
                             },
                             (_, error) => {
                                 __DEV__ && console.log(error);
@@ -120,6 +124,7 @@ const ExpendableDrawer = () => {
 
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
+                setDesignationContext(response.rows)
                 __DEV__ && console.log(response.rows.length);
 
                 await new Promise((resolve, reject) => {

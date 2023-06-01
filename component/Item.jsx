@@ -19,7 +19,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
 
 import { Picker } from '@react-native-picker/picker';
-
+import MakeCallModalComponent from '../component/MakeCallModalComponent'
 import * as SQLite from 'expo-sqlite'
 
 import db from '../database/database'
@@ -36,13 +36,20 @@ let selectedPId = []
 
 
 
-const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, selected, photo, index, designation, isAdmin, notDgOrAdg, currentTheme, length }) => {
+const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
     const navigation = useNavigation();
 
-    // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
+    const { pmisId } = useContext(AuthContext);
+    console.log(higherPost, 'in ippppppppppppppppppppppppppp item');
+
     const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
 
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = (isVisible) => {
+        setModalVisible(isVisible);
+    };
 
     useEffect(() => {
         selectedPId = []
@@ -55,7 +62,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
 
     const onSelect = (id) => {
 
-        selectedPId=currentSelectedIds
+        selectedPId = currentSelectedIds
         const ifIdExitsInSelectedPID = selectedPId.includes(id);
         // console.log(id);
 
@@ -84,10 +91,9 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
 
     return (
 
-        <TouchableOpacity onPress={() => (
-            onSelect(id)
-
-        )}>
+        <TouchableOpacity
+            style={{}}
+            onPress={() => (onSelect(id))}>
 
             <View style={
                 currentSelectedIds.includes(id) ?
@@ -120,7 +126,9 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
                         {
 
                             photo ?
-                                <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                                <Image style={[styles.logo,
+                                pmisId === id ? { borderWidth: 1, borderColor: 'red' } : '']}
+                                    source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 :
                                 <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
 
@@ -145,21 +153,23 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
 
 
                                         </TouchableOpacity>
-                                        {/* <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isChecked}
-                                            onValueChange={() => (console.log('sdf'))}
-                                            color={isChecked ? `${currentTheme}` : undefined}
-                                        /> */}
+
                                     </View>
                                     : null
                             }
                             {
-                                notDgOrAdg ?
+                                notDgOrAdg && isAdmin ?
                                     <View style={{ justifyContent: 'space-between' }}>
                                         <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
-                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {retiredate.toString().trim().slice(0, 10)}</Text>
-                                        {/* <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+                                        {
+                                            bwdbJoiningDt &&
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
+                                        }
+                                        {
+                                            retiredate &&
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
+                                        }
+                                        {/*bwdbJoiningDt <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
                                     </View>
                                     : ""
@@ -167,11 +177,37 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
                             <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
                         </View>
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>{designation} </Text>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
                         </View>
+
                         <View style={{ flex: 1, }}>
                             <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{office} </Text>
                         </View>
+                        {
+                            post ?
+                                <View style={{ flex: 1, }}>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {charge === 'R' ? '' :
+                                        charge === 'C' ? ', CC' :
+                                            charge === 'A' ? ', Addl.' :
+                                                charge === 'I' ? ', Incharge' : ''} </Text>
+                                </View>
+                                :
+                                charge === 'C' ?
+                                    <View style={{ flex: 1, }}>
+                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} N {charge === 'R' ? '' :
+                                            charge === 'C' ? ', CC' :
+                                                charge === 'A' ? ', Addl.' :
+                                                    charge === 'I' ? ', Incharge' : ''} </Text>
+                                    </View>
+                                    : charge === 'R' ?
+                                        <View style={{ flex: 1, }}>
+                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} N {charge === 'R' ? '' :
+                                                charge === 'C' ? ', CC' :
+                                                    charge === 'A' ? ', Addl.' :
+                                                        charge === 'I' ? ', Incharge' : ''} </Text>
+                                        </View>
+                                    : ''
+                        }
 
                     </View>
 
@@ -224,7 +260,10 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
                         }
                         {
                             mobile &&
-                            <TouchableOpacity onPress={() => (Linking.openURL(`sms:${mobile}`))}
+                            <TouchableOpacity
+                                //toggleModal(true)
+                                onPress={() => (toggleModal(true))}
+                                // onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',
                                     flexDirection: 'row',
@@ -291,6 +330,14 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, pabx, se
                     </View>
                 </View>
             </View>
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isModalVisible}
+                onRequestClose={() => toggleModal(true)}
+            >
+                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
+            </Modal>
         </TouchableOpacity>
     )
 }
@@ -323,6 +370,7 @@ const styles = StyleSheet.create({
         width: width * (1 / 5.5),
         height: width * (1 / 5.5),
         borderRadius: 100,
+        elevation: 20
 
 
     },

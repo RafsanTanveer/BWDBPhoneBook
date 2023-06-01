@@ -25,7 +25,7 @@ const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
 
     const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost, setisAdmin, presentOfficeCode } = useContext(AuthContext);
-    const { setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge } = useContext(AuthContext);
+    const { setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge, pmisId, setPmisId, } = useContext(AuthContext);
 
 
     //  ******************************  fetching data ***************************************
@@ -122,7 +122,7 @@ const BiodataScreen = ({ id, navigation }) => {
         const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
         setpersonalData(personalresponse.rows);
 
-
+        setPmisId(personalresponse.rows[0].id)
         setName(personalresponse.rows[0].name)
 
         setphoto(personalresponse.rows[0].photo)
@@ -491,6 +491,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setpersonalData(tempBiodata);
                                     __DEV__ && console.log(tempBiodata[0].id);
 
+                                    setPmisId(tempBiodata[0].id)
 
                                     setName(tempBiodata[0].name)
 
@@ -560,6 +561,7 @@ const BiodataScreen = ({ id, navigation }) => {
                     const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
                     setpersonalData(personalresponse.rows);
 
+                    setPmisId(personalresponse.rows[0].id)
 
                     setName(personalresponse.rows[0].name)
 
