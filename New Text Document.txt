@@ -2170,3 +2170,53 @@ index={index}
                                         // console.log('sdf')
                                     }
                                 />
+
+
+
+
+                                 // <View style={{ width: 150, marginRight: 10,  }}>
+                                //     <View >
+                                //         <DropDownPicker
+                                //             items={tempDist}
+                                //             open={isOpen}
+                                //             setOpen={() => setIsOpen(!isOpen)}
+                                //             value={currentDistValue}
+                                //             setValue={setCurrentDistValue}
+                                //             maxHeight={450}
+                                //             placeholder="Select Location"
+                                //             onChangeValue={() => sortByDistrict()}
+                                //         />
+                                //     </View>
+
+                                // </View>
+
+
+
+
+                                <View style={{ width: 150, marginRight: 10,marginTop:10, flexDirection:'row',  }}>
+                                        <View style={{ width: 150, marginRight: 5 }}>
+                                            <DropDownPicker
+                                                items={tempDist}
+                                                open={isOpen}
+                                                setOpen={() => setIsOpen(!isOpen)}
+                                                value={currentDistValue}
+                                                setValue={setCurrentDistValue}
+                                                maxHeight={450}
+                                                placeholder="Select Location"
+                                                onChangeValue={() => sortByDistrict()}
+                                            />
+                                        </View>
+                                        <View style={{ width: 150 }}>
+                                            <DropDownPicker
+                                                items={tempDist}
+                                                open={isOpen}
+                                                setOpen={() => setIsOpen(!isOpen)}
+                                                value={currentDistValue}
+                                                setValue={setCurrentDistValue}
+                                                maxHeight={450}
+                                                placeholder="Select Location"
+                                                onChangeValue={() => sortByDistrict()}
+                                            />
+                                        </View>
+
+                                    </View>

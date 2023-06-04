@@ -23,6 +23,9 @@ import FABComponent from '../component/FABComponent'
 
 
 
+const filterIcon = '../assets/icons/filter.png'
+const downArrowIcon = '../assets/icons/down-arrow.png'
+const upArrowIcon = '../assets/icons/up-arrow.png'
 
 
 
@@ -38,12 +41,12 @@ let selectedPId = []
 
 let tempDist = []
 let tempDropVal = [
-    { label: "All DISTRICT", vlaue: 0 },
-    { label: "CHATTOGRAM", vlaue: 1 },
-    { label: "DHAKA", vlaue: 2 },
-    { label: "MUNSHIGANJ", vlaue: 3 },
-    { label: "RANGAMATI", vlaue: 4 },
-    { label: "PANI BHABAN", vlaue: 5 }]
+    { label: "All DISTRICT", value: 0 },
+    { label: "CHATTOGRAM", value: 1 },
+    { label: "DHAKA", value: 2 },
+    { label: "MUNSHIGANJ", value: 3 },
+    { label: "RANGAMATI", value: 4 },
+    { label: "PANI BHABAN", value: 5 }]
 let tempValue = []
 let tempLevel = []
 
@@ -145,7 +148,45 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
         setisrtJoiningChecked(false)
 
+        console.log('sortByDistrict', currentDistValue);
 
+        if (currentDistValue === 'All DISTRICT') {
+            setdistName('')
+            setFilteredData(DATA)
+        }
+        else if (currentDistValue === 'PANI BHABAN') {
+            setdistName('in HEADQUARTER')
+            const newDataDhakaDist = DATA.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = "DHAKA".toLocaleLowerCase();
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newDataPaniBhaban = newDataDhakaDist.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? 'PANI BHABAN'.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newDataHydrologyBuilding = newDataDhakaDist.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? 'Hydro'.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newData = [...newDataPaniBhaban, ...newDataHydrologyBuilding]
+
+            setFilteredData(newData)
+        }
+        else {
+            setdistName("in " + currentDistValue)
+            const newData = DATA.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? currentDistValue.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData)
+        }
 
 
         // if (distValue != 0 && distValue != 65) {
@@ -284,20 +325,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         distMap[item.officeDistrict] = 1;
                     }
                 });
-
+                console.log("distMap =---------------------------", distMap);
 
                 var sortedKeys = Object.keys(distMap).sort();
 
-                tempDist = [...tempDist, { label: "All DISTRICT", vlaue: "All DISTRICT" }]
+                tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { label: item, vlaue: item }],
+                    tempDist = [...tempDist, { label: item + ' - ' + distMap[item], value: item }],
                     // tempLevel = [...tempLevel, {item}],
                     //tempValue=[...tempValue,{item}]
                 )
 
-                tempDist = [...tempDist, { label: "PANI BHABAN", vlaue: "PANI BHABAN" }]
+                tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
 
                 console.log(tempDist);
 
@@ -344,14 +385,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 var sortedKeys = Object.keys(distMap).sort();
 
-                tempDist = [...tempDist, { label: "All DISTRICT", vlaue: "All DISTRICT" }]
+                tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
 
                 sortedKeys.map(item =>
                     // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { label: item, vlaue: distMap[item] }]
+                    tempDist = [...tempDist, { label: item + ' - ' + distMap[item], value: item }],
+
                 )
 
-                tempDist = [...tempDist, { label: "PANI BHABAN", vlaue: "PANI BHABAN" }]
+                tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
 
                 console.log(tempDist);
 
@@ -487,11 +529,17 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             fetchDataAndInsert()
 
             setIsLoading(false);
+
             setChecked(false)
             setisrtDateChecked(false)
             setisrtJoiningChecked(false)
+
             setdistName('')
             setDistrictValue()
+            setCurrentDistValue()
+            setIsOpen(false)
+
+
 
         } catch (error) {
             __DEV__ && console.error(error.message);
@@ -605,17 +653,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         // fetchData();
         fetchDataFromDb();
+
         setisrtDateChecked(false)
         setisrtJoiningChecked(false)
         setChecked(false)
-        setSearch()
+
+        setSearch('')
         setdistName('')
         tempDist = []
         // controller.reset()
-        // setDistrictValue() // for reseting dropdown picker
+        setCurrentDistValue() // for reseting dropdown picker
         // fetchDistrictFromDb()
         setItems(tempDist)
         setCurrentSelectedIds([])
+        setIsFilterOn(false)
+        setIsOpen(false)
 
     }, [desig_code]);
 
@@ -650,8 +702,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setisrtDateChecked(false)
         setisrtJoiningChecked(false)
 
-        !isChecked ? setChecked(true) : setChecked(false)
 
+        setChecked(!isChecked)
 
 
         !isChecked ? setFilteredData(filteredData.sort((a, b) => { return a.seniority - b.seniority })) :
@@ -665,11 +717,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
         setisrtDateChecked(false)
 
-        !isrtJoiningChecked ? setisrtJoiningChecked(true) : setisrtJoiningChecked(false)
+
+        setisrtJoiningChecked(!isrtJoiningChecked)
 
 
 
-        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.bwdbJoiningDt.toString().trim().slice(0, 10)) - new Date(b.bwdbJoiningDt.toString().trim().slice(0, 10)) })) :
+        !isrtJoiningChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.bwdbJoiningDt.toString().trim().slice(0, 10)) - new Date(b.bwdbJoiningDt.toString().trim().slice(0, 10)) })) :
             setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
 
 
@@ -680,8 +733,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
         setisrtJoiningChecked(false)
 
-        !isrtDateChecked ? setisrtDateChecked(true) : setisrtDateChecked(false)
 
+        setisrtDateChecked(!isrtDateChecked)
 
 
         !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate.toString().trim().slice(0, 10)) - new Date(b.retiredate.toString().trim().slice(0, 10)) })) :
@@ -933,12 +986,43 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         </TouchableOpacity> : ""
                     }
                     {refreshing ? <ActivityIndicator /> : null}
-                    <TouchableOpacity
-                        onPress={() => setIsFilterOn(!isFilterOn)}
-                        style={{ marginLeft: width * .036 , backgroundColor:'blue', width:width*.93}}
-                    >
-                        <Text style={{color:'white', fontSize:width*.037}}>Filters</Text>
-                    </TouchableOpacity>
+                    {
+                        notDgOrAdg &&
+                        <TouchableOpacity
+                            onPress={() => setIsFilterOn(!isFilterOn)}
+                            style={{
+                                marginLeft: width * .036,
+                                backgroundColor: `${currentTheme}`,
+                                width: width * .23,
+                                flexDirection: 'row',
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                padding: 2
+                            }}
+                        >
+                            <Image
+                                source={require(filterIcon)}
+                                style={{ height: 20, width: 20 }}
+                            />
+                            <Text style={{
+                                color: 'white',
+                                fontSize: width * .037,
+                                fontWeight: '800'
+                            }}>Filters</Text>
+                            {
+                                !isFilterOn ?
+                                    <Image
+                                        source={require(downArrowIcon)}
+                                        style={{ height: 20, width: 20 }}
+                                    />
+                                    :
+                                    <Image
+                                        source={require(upArrowIcon)}
+                                        style={{ height: 20, width: 20 }}
+                                    />}
+                        </TouchableOpacity>
+                    }
 
                     {
                         notDgOrAdg && isAdmin && isFilterOn ?
@@ -948,7 +1032,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
                                 flexDirection: 'row',
                                 borderRadius: 10,
-                                justifyContent: 'space-between'
+                                justifyContent: 'space-between',
+                                // elevation:.2
 
                             }}>
                                 <View style={{ flexDirection: 'column' }}>
@@ -989,6 +1074,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
 
                                     </TouchableOpacity>
+
+                                </View>
+                                <View style={{ width: 160, marginRight: 10, }}>
+                                    <View >
+                                        <DropDownPicker
+                                            items={tempDist}
+                                            open={isOpen}
+                                            setOpen={() => setIsOpen(!isOpen)}
+                                            value={currentDistValue}
+                                            setValue={setCurrentDistValue}
+                                            maxHeight={450}
+                                            placeholder="Select Office Location"
+                                            onChangeValue={() => sortByDistrict()}
+                                        />
+                                    </View>
 
                                 </View>
 

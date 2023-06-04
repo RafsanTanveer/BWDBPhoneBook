@@ -41,7 +41,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
-    console.log(higherPost, 'in ippppppppppppppppppppppppppp item');
+    
 
     const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
 
