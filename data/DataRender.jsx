@@ -109,6 +109,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
 
+    const [tabelCreationTime, setTabelCreationTime] = useState('');
 
     const [currentDistValue, setCurrentDistValue] = useState();
     const [distName, setdistName] = useState();
@@ -284,6 +285,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 });
             });
 
+
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
             __DEV__ && console.log('Total table = ', tableNames.length);
             __DEV__ && console.log('Table names:', tableNames);
@@ -302,6 +304,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
 
+                setTabelCreationTime(timeStamp())
 
                 const dataWithSelected = data.map(item => (
                     item = { ...item, selected: 'false' }
@@ -342,6 +345,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 console.log(tempDist);
 
+                console.log(timeStamp());
 
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
@@ -366,6 +370,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 // console.log(dataWithSelected);
 
+                setTabelCreationTime(timeStamp())
 
                 setDATA(dataWithSelected);
 
@@ -397,6 +402,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 console.log(tempDist);
 
+                console.log(timeStamp());
+
+
+
+
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
 
@@ -424,7 +434,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 retiredate  TEXT,
                                 bwdbJoiningDt TEXT,
                                 photo       BLOB,
-                                selected    TEXT
+                                selected    TEXT,
+                                timestamp   TEXT
                                                  );`
                         );
 
@@ -448,8 +459,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                       retiredate,
                                       bwdbJoiningDt,
                                       photo,
-                                      selected)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);`,
+                                      selected,
+                                      timestamp)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);`,
                                 [
                                     it.id,
                                     it.name,
@@ -466,7 +478,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     it.retiredate,
                                     it.bwdbJoiningDt,
                                     it.photo,
-                                    it.selected]
+                                    it.selected,
+                                    timeStamp()
+                                ]
                             );
                         });
 
@@ -611,8 +625,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 retiredate,
                                 bwdbJoiningDt,
                                 photo,
-                                selected)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);`,
+                                selected,
+                                timestamp)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);`,
                             [
                                 it.id,
                                 it.name,
@@ -629,7 +644,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 it.retiredate,
                                 it.bwdbJoiningDt,
                                 it.photo,
-                                it.selected]
+                                it.selected,
+                                timeStamp()
+                            ]
                         );
                     });
                 }, null, resolve);
@@ -781,45 +798,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }
 
-    const ModalViewForEditNumber = ({ viewModal, name }) => (
-
-        <View style={styles.centeredView}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={viewModal}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{name}</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-
-        </View>
-    )
-
-
-    const onSelect = (index) => {
-
-        let tempFilterData = [...filteredData]
-
-        tempFilterData[index].selected === "true" ?
-            tempFilterData[index].selected = "false"
-            : tempFilterData[index].selected = "true"
-
-
-        setFilteredData(tempFilterData)
-
+    const padTo2Digits = (num) => {
+        return num.toString().padStart(2, '0');
     }
+
+    const timeStamp = () => {
+        const months = ['JAN', 'FEB', 'MAR', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const date = new Date()
+        const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
+        const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
+        // console.log(dateStr);
+        return dateStr;
+    }
+
+
 
 
     const bulkEmail = () => {
@@ -988,41 +980,55 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     {refreshing ? <ActivityIndicator /> : null}
                     {
                         notDgOrAdg &&
-                        <TouchableOpacity
-                            onPress={() => setIsFilterOn(!isFilterOn)}
-                            style={{
-                                marginLeft: width * .036,
-                                backgroundColor: `${currentTheme}`,
-                                width: width * .23,
-                                flexDirection: 'row',
-                                borderRadius: 10,
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                padding: 2
-                            }}
-                        >
-                            <Image
-                                source={require(filterIcon)}
-                                style={{ height: 20, width: 20 }}
-                            />
-                            <Text style={{
-                                color: 'white',
-                                fontSize: width * .037,
-                                fontWeight: '800'
-                            }}>Filters</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                onPress={() => setIsFilterOn(!isFilterOn)}
+                                style={{
+                                    marginLeft: width * .036,
+                                    backgroundColor: `${currentTheme}`,
+                                    width: width * .23,
+                                    flexDirection: 'row',
+                                    borderRadius: 10,
+                                    justifyContent: 'center',
+                                    alignContent: 'center',
+                                    padding: 2
+                                }}
+                            >
+                                <Image
+                                    source={require(filterIcon)}
+                                    style={{ height: 20, width: 20 }}
+                                />
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: width * .037,
+                                    fontWeight: '800'
+                                }}>Filters</Text>
+                                {
+                                    !isFilterOn ?
+                                        <Image
+                                            source={require(downArrowIcon)}
+                                            style={{ height: 20, width: 20 }}
+                                        />
+                                        :
+                                        <Image
+                                            source={require(upArrowIcon)}
+                                            style={{ height: 20, width: 20 }}
+                                        />}
+                            </TouchableOpacity>
                             {
-                                !isFilterOn ?
-                                    <Image
-                                        source={require(downArrowIcon)}
-                                        style={{ height: 20, width: 20 }}
-                                    />
-                                    :
-                                    <Image
-                                        source={require(upArrowIcon)}
-                                        style={{ height: 20, width: 20 }}
-                                    />}
-                        </TouchableOpacity>
+                                !isFilterOn &&
+                                <View style={{ alignContent: 'center', justifyContent: 'center' }}>
+                                    <Text
+                                        style={{
+                                            marginLeft: 3, color: 'grey', fontSize: height * .015
+                                        }}> {isChecked ? 'Seniority' :
+                                                    isrtDateChecked ? 'Retired Date' :
+                                                        isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
+                                </View>
+                            }
+                        </View>
                     }
+
 
                     {
                         notDgOrAdg && isAdmin && isFilterOn ?
@@ -1102,6 +1108,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} {distName}: {filteredData.length}</Text>
                             : ""
                     }
+                    <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : { tabelCreationTime}</Text>
 
 
                     {
