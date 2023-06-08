@@ -106,6 +106,7 @@ const ExpendableDrawer = () => {
                             [],
                             (_, result) => {
                                 const desig = result.rows._array
+                                console.log('desig table extist ____________________________________________________',desig);
                                 setdesigList(desig);
                                 setDesignationContext(desig)
                             },
@@ -125,6 +126,8 @@ const ExpendableDrawer = () => {
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
                 setDesignationContext(response.rows)
+                console.log('desig table does not extist ____________________________________________________', response.rows);
+
                 __DEV__ && console.log(response.rows.length);
 
                 await new Promise((resolve, reject) => {
@@ -137,7 +140,8 @@ const ExpendableDrawer = () => {
                                 paygrade    TEXT,
                                 desig       TEXT,
                                 designame   TEXT,
-                                tablename   TEXT
+                                tablename   TEXT,
+                                totalPostNBS TEXT
                                                  );`
                         );
 
@@ -150,13 +154,14 @@ const ExpendableDrawer = () => {
                                     desig,
                                     designame,
                                     tablename)
-               VALUES (  ?, ?, ?, ?,?);`,
+               VALUES (  ?, ?, ?, ?,?,?);`,
                                 [
                                     it.cadre,
                                     it.paygrade,
                                     it.desig,
                                     it.designame,
-                                    it.tablename
+                                    it.tablename,
+                                    it.totalPostNBS
                                 ]
                             );
                         });

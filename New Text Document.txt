@@ -2220,3 +2220,59 @@ index={index}
                                         </View>
 
                                     </View>
+
+
+
+
+
+
+
+
+
+// <View style={{ width: 160, marginRight: 10, }}>
+                                //     <View >
+                                //         <DropDownPicker
+                                //             items={tempDist}
+                                //             open={isOpen}
+                                //             setOpen={() => setIsOpen(!isOpen)}
+                                //             value={currentDistValue}
+                                //             setValue={setCurrentDistValue}
+                                //             maxHeight={450}
+                                //             placeholder="Select Office Location"
+                                //             onChangeValue={() => sortByDistrict()}
+                                //         />
+                                //     </View>
+
+                                // </View>
+
+
+
+
+
+
+
+                                <DropDownComponent
+                                    items={tempDist}
+                                    isOpen={isOpen}
+                                    setOpen={ setIsOpen}
+                                    currentDistValue={currentDistValue}
+                                    setCurrentDistValue={setCurrentDistValue}
+                                    maxHeight={450}
+                                    placeholder="Select Office Location"
+                                    sortByDistrict={ sortByDistrict}
+                                />
+
+
+
+                                <View style={{ width: 120, marginRight: 10, }}>
+                                    //     <DropDownPicker
+                                    //         items={tempDist}
+                                    //         open={isOpen}
+                                    //         setOpen={() => setIsOpen(!isOpen)}
+                                    //         value={currentDistValue}
+                                    //         setValue={setCurrentDistValue}
+                                    //         maxHeight={450}
+                                    //         placeholder="Select Office Location"
+                                    //         onChangeValue={() => sortByDistrict()}
+                                    //     />
+                                    // </View>

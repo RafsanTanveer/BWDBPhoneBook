@@ -77,7 +77,8 @@ const Login = () => {
                         placeholder='BWDB PMIS ID'>
                     </TextInput>
                     <TextInput
-                        maxLength={9}                  // set maximum string length to 9
+                        secureTextEntry={true}
+                        
                         // keyboardType={"decimal-pad"}   // set keyboard type
                         selectionColor={'black'}       // for changing curcsor color
                         onChangeText={(txt) => setpmisId(txt)}
@@ -99,7 +100,7 @@ const Login = () => {
                         onPress={ () => {
 
 
-                            login(pmisId, "rafsan t");
+                            login(pmisId, "pass");
                         }}
                     >
                         <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>

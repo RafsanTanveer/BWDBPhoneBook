@@ -41,7 +41,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
-    
+
 
     const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
 
@@ -54,7 +54,6 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
     useEffect(() => {
         selectedPId = []
         setisSelected([])
-
     }, []);
 
 

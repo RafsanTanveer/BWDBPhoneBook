@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useEffect, useState } from "react";
-import { ToastAndroid, ActivityIndicator, Linking, RefreshControl, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ToastAndroid, ActivityIndicator, Linking, RefreshControl, ScrollView, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -18,9 +18,10 @@ import * as Contacts from 'expo-contacts';
 import { useForm } from 'react-hook-form';
 import { FAB, Portal } from 'react-native-paper';
 import Item from '../component/Item';
-
+import DropDownComponent from '../component/DropDownComponent'
 import FABComponent from '../component/FABComponent'
 
+import { Charges } from '../data/Charges'
 
 
 const filterIcon = '../assets/icons/filter.png'
@@ -50,6 +51,13 @@ let tempDropVal = [
 let tempValue = []
 let tempLevel = []
 
+let charges = [
+    { label: "All", value: "All" },
+    { label: "Current", value: "C" },
+    { label: "Additional", value: "A" },
+    { label: "Incharge", value: "I" },
+]
+
 
 const selectAllActive = '../assets/icons/select-all-active.png'
 const selectAllInactive = '../assets/icons/select-all-inactive.png'
@@ -73,7 +81,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const onStateChange = ({ open }) => setState({ open });
 
     const { open } = state;
-
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -106,12 +113,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [notDgOrAdg, setnotDgOrAdg] = useState(false)
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isChargeOpen, setIsChargeOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
 
     const [tabelCreationTime, setTabelCreationTime] = useState('');
+    const [totalNBSPost, setTotalNBSPost] = useState('');
 
     const [currentDistValue, setCurrentDistValue] = useState();
+    const [currentChargeValue, setCurrentChargeValue] = useState();
     const [distName, setdistName] = useState();
 
     const [distForDropDown, setDistForDropDown] = useState();
@@ -120,12 +130,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [district, setDistrict] = useState([]);
 
 
-    let charge = presentCharge === 'R' ? '' :
+    let charge = presentCharge ? presentCharge === 'R' ? '' :
         presentCharge === 'C' ? ',CC' :
             presentCharge === 'A' ? ',Addl.' :
-                presentCharge === 'I' ? ',Incharge' : ''
+                presentCharge === 'I' ? ',Incharge' : '' : ''
 
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB`
+
+    let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
+
 
     let toastMsg = `Please Select at least 1\n ${designation}`
 
@@ -227,6 +240,37 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }
 
+    const chargeFilter = () => {
+
+        setisrtDateChecked(false)
+        setChecked(false)
+        setisrtJoiningChecked(false)
+
+        // console.log('chargeFilter', Charges(currentChargeValue));
+
+
+        // setdistName("in " + Charges(currentChargeValue))
+
+
+        if (currentChargeValue === 'All') {
+            setdistName('')
+            setFilteredData(DATA)
+        }
+        else {
+            const newData = DATA.filter((item) => {
+                const itemData = item.charge ? item.charge.toLocaleLowerCase() : ''
+                const textData = currentChargeValue ? currentChargeValue.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData)
+        }
+
+
+    }
+
+
+
+
     useEffect(() => {
 
         currentSelectedIds.length === 0 ? setselectIcon(selectAllInactive) : setselectIcon(selectAllActive)
@@ -257,11 +301,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setseniorityText(snrTxt);
 
 
-        console.log('designationContext=====================================', designationContext);
+        // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
 
 
         designationContext.forEach((desigItem, index) => {
             if (desigItem.designame === designation) {
+                setTotalNBSPost(desigItem.totalPostNBS)
+                // console.log('desigItem.totalPostNBS ######################################',desigItem.totalPostNBS);
                 if (index - 1 >= 0)
                     if (desigItem.cadre === designationContext[index - 1].cadre)
                         higherPost = designationContext[index - 1].designame
@@ -304,7 +350,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
 
-                setTabelCreationTime(timeStamp())
+                // console.log(data[0].timestamp);
+
+                setTabelCreationTime(data[0].timestamp)
+
 
                 const dataWithSelected = data.map(item => (
                     item = { ...item, selected: 'false' }
@@ -343,9 +392,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
 
-                console.log(tempDist);
+                // console.log(tempDist);
 
-                console.log(timeStamp());
+                // console.log(timeStamp());
 
                 // setDistForDropDown(tempDist)
                 // setDistrict(tempDist)
@@ -400,9 +449,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
 
-                console.log(tempDist);
+                // console.log(tempDist);
 
-                console.log(timeStamp());
+                // console.log(timeStamp());
 
 
 
@@ -547,11 +596,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             setChecked(false)
             setisrtDateChecked(false)
             setisrtJoiningChecked(false)
+            setTabelCreationTime(timeStamp())
 
             setdistName('')
             setDistrictValue()
             setCurrentDistValue()
+            setCurrentChargeValue()
             setIsOpen(false)
+            setIsChargeOpen(false)
 
 
 
@@ -680,11 +732,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         tempDist = []
         // controller.reset()
         setCurrentDistValue() // for reseting dropdown picker
-        // fetchDistrictFromDb()
+        setCurrentChargeValue()
         setItems(tempDist)
         setCurrentSelectedIds([])
         setIsFilterOn(false)
         setIsOpen(false)
+        setIsChargeOpen(false)
 
     }, [desig_code]);
 
@@ -1022,8 +1075,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         style={{
                                             marginLeft: 3, color: 'grey', fontSize: height * .015
                                         }}> {isChecked ? 'Seniority' :
-                                                    isrtDateChecked ? 'Retired Date' :
-                                                        isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
+                                            isrtDateChecked ? 'Retired Date' :
+                                                isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
                                 </View>
                             }
                         </View>
@@ -1039,10 +1092,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 flexDirection: 'row',
                                 borderRadius: 10,
                                 justifyContent: 'space-between',
-                                // elevation:.2
+
 
                             }}>
-                                <View style={{ flexDirection: 'column' }}>
+                                <View style={{ flex: 1.25, flexDirection: 'column' }}>
                                     <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Checkbox
                                             style={{ height: 18, width: 18 }}
@@ -1080,14 +1133,18 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
 
                                     </TouchableOpacity>
+                                    <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
 
                                 </View>
-                                <View style={{ width: 160, marginRight: 10, }}>
-                                    <View >
+
+                                <View style={{ flex: 1 }}>
+
+                                    <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
                                         <DropDownPicker
+                                            style={{ zIndex: 1000 }}
                                             items={tempDist}
                                             open={isOpen}
-                                            setOpen={() => setIsOpen(!isOpen)}
+                                            setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
                                             value={currentDistValue}
                                             setValue={setCurrentDistValue}
                                             maxHeight={450}
@@ -1095,8 +1152,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             onChangeValue={() => sortByDistrict()}
                                         />
                                     </View>
+                                    <View style={{ width: width * .40, marginRight: 10, }}>
+                                        <DropDownPicker
+                                            style={{ zIndex: 900 }}
+                                            items={charges}
+                                            open={isChargeOpen}
+                                            setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
+                                            value={currentChargeValue}
+                                            setValue={setCurrentChargeValue}
+                                            maxHeight={200}
+                                            placeholder="Select Charge"
+                                            onChangeValue={() => chargeFilter()}
+                                        />
+                                    </View>
 
                                 </View>
+
+
 
 
                             </View> : ""
@@ -1108,7 +1180,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} {distName}: {filteredData.length}</Text>
                             : ""
                     }
-                    <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : { tabelCreationTime}</Text>
+                    <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
 
 
                     {

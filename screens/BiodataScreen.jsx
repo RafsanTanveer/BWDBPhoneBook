@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator,Dimensions } from 'react-native';
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -7,6 +7,11 @@ import { AuthContext } from '../context/AuthContext';
 import SplashScreen from '../screens/SplashScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import db from '../database/database'
+
+
+const height = Dimensions.get('window').height;
+const width = Dimensions.get('window').width;
+
 
 const officeLevel = [
     "Board",
@@ -30,6 +35,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
     //  ******************************  fetching data ***************************************
 
+    const [tabelCreationTime, setTabelCreationTime] = useState('');
+
     const [personalData, setpersonalData] = useState([])
     const [isLoading, setIsLoading] = useState(false);
     const [DATA, setDATA] = useState([])
@@ -38,6 +45,20 @@ const BiodataScreen = ({ id, navigation }) => {
     const [edu, setEdu] = useState([])
     const [experience, setexperience] = useState([])
     const [training, settraining] = useState([])
+
+    const padTo2Digits = (num) => {
+        return num.toString().padStart(2, '0');
+    }
+
+    const timeStamp = () => {
+        const months = ['JAN', 'FEB', 'MAR', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const date = new Date()
+        const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
+        const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
+        // console.log(dateStr);
+        return dateStr;
+    }
+
 
     const updateBiodata = () => {
         __DEV__ && console.log('updateBiodata ++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
@@ -48,6 +69,7 @@ const BiodataScreen = ({ id, navigation }) => {
         settraining([])
         deleteAllData([])
         fetchPersonalData()
+        setTabelCreationTime(timeStamp())
 
     }
     const deleteAllData = () => {
@@ -336,6 +358,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 officeLevel     TEXT,
                                 officeLevel1    TEXT,
                                 officeLevel2    TEXT,
+                                timestamp       TEXT,
                                 photo           BLOB
                                                  );`
                 );
@@ -371,8 +394,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                    officeLevel,
                                    officeLevel1,
                                    officeLevel2,
+                                   timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?);`,
                         [
                             it.id,
                             it.name,
@@ -401,6 +425,7 @@ const BiodataScreen = ({ id, navigation }) => {
                             it.officeLevel,
                             it.officeLevel1,
                             it.officeLevel2,
+                            timeStamp(),
                             it.photo
                         ]
                     );
@@ -490,6 +515,8 @@ const BiodataScreen = ({ id, navigation }) => {
                                     const tempBiodata = result.rows._array
                                     setpersonalData(tempBiodata);
                                     __DEV__ && console.log(tempBiodata[0].id);
+                                    console.log(tempBiodata);
+                                    setTabelCreationTime(tempBiodata[0].timestamp)
 
                                     setPmisId(tempBiodata[0].id)
 
@@ -560,7 +587,7 @@ const BiodataScreen = ({ id, navigation }) => {
                     //biodata
                     const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
                     setpersonalData(personalresponse.rows);
-
+                    setTabelCreationTime(timeStamp())
                     setPmisId(personalresponse.rows[0].id)
 
                     setName(personalresponse.rows[0].name)
@@ -717,8 +744,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                    regularDate,
                                    officeAddress,
                                    offceCode,
+                                   timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?,?);`,
                                     [
                                         it.id,
                                         it.name,
@@ -744,6 +772,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         it.regularDate,
                                         it.officeAddress,
                                         it.offceCode,
+                                        timeStamp(),
                                         it.photo
                                     ]
                                 );
@@ -1251,10 +1280,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                         firstQueryResult=""
                                         delimiter=""
                                     />
-
+                                    <Text style={{alignSelf:'center', fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
 
                                 </View>
                             </ScrollView >
+
+
                         </View >
                     ))
             }
