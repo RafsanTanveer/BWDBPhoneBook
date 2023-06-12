@@ -27,8 +27,8 @@ import { Charges } from '../data/Charges'
 const filterIcon = '../assets/icons/filter.png'
 const downArrowIcon = '../assets/icons/down-arrow.png'
 const upArrowIcon = '../assets/icons/up-arrow.png'
-
-
+const leftArrowIcon = '../assets/icons/left-arrow.png'
+const bwdLogo = '../assets/bwdLogo.png'
 
 
 import db from '../database/database';
@@ -51,6 +51,8 @@ let tempDropVal = [
 let tempValue = []
 let tempLevel = []
 
+
+
 let charges = [
     { label: "All", value: "All" },
     { label: "Current", value: "C" },
@@ -62,6 +64,12 @@ let charges = [
 const selectAllActive = '../assets/icons/select-all-active.png'
 const selectAllInactive = '../assets/icons/select-all-inactive.png'
 
+//selectAll-theme-9
+const selectAll_9 = '../assets/icons/selectAll-theme-9.png'
+const selectAll_0 = '../assets/icons/selectAll-theme-0.png'
+const selectAll_3 = '../assets/icons/selectAll-theme-3.png'
+const selectAll_6 = '../assets/icons/selectAll-theme-6.png'
+
 
 
 
@@ -70,6 +78,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
+    let listViewRef;
     const navigation = useNavigation();
     // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
     let higherPost = ''
@@ -81,7 +90,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const onStateChange = ({ open }) => setState({ open });
 
     const { open } = state;
-
+    const [isFloatingBtnExteded, setIsFloatingBtnExteded] = useState(false);
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [DATA, setDATA] = useState([])
@@ -90,7 +99,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [districtOpen, setDistrictOpen] = useState(false);
 
     const [selectedItems, setSelectedItems] = useState([]);
-
+    const [activeIcon, setActiveIcon] = useState();
     const [masterData, setMasterData] = useState([])
     const [filteredData, setFilteredData] = useState(DATA)
     const [selectedId, setSelectedId] = useState(null);
@@ -130,12 +139,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [district, setDistrict] = useState([]);
 
 
+    let activIcon = currentTheme === '#6750a4' ? selectAll_0 :
+        currentTheme === '#048BB3' ? selectAll_3 :
+            currentTheme === '#0089E3' ? selectAll_6 :
+                currentTheme === '#0069C4' ? selectAll_9 : selectAllInactive
+
+
+    // console.log('activIcon ================================================', activIcon);
+
+
     let charge = presentCharge ? presentCharge === 'R' ? '' :
         presentCharge === 'C' ? ',CC' :
             presentCharge === 'A' ? ',Addl.' :
                 presentCharge === 'I' ? ',Incharge' : '' : ''
 
-    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB`
+    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB ${bwdLogo}`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
 
@@ -162,7 +180,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
         setisrtJoiningChecked(false)
 
-        console.log('sortByDistrict', currentDistValue);
+        __DEV__ && console.log('sortByDistrict', currentDistValue);
 
         if (currentDistValue === 'All DISTRICT') {
             setdistName('')
@@ -271,11 +289,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        currentSelectedIds.length === 0 ? setselectIcon(selectAllInactive) : setselectIcon(selectAllActive)
+    //     currentSelectedIds.length === 0 ? setselectIcon(selectAllInactive) : setselectIcon(activIcon)
 
-    }, [currentSelectedIds]);
+    // }, [currentSelectedIds]);
 
 
     // ********************************  Internet Connection checked *************************************
@@ -289,7 +307,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     //  ******************************  fetching data ***************************************
 
+    const downButtonHandler = () => {
+        //OnCLick of down button we scrolled the list to bottom
+        listViewRef.scrollToEnd({ animated: true });
+    };
 
+    const upButtonHandler = () => {
+        //OnCLick of Up button we scrolled the list to top
+        listViewRef.scrollToOffset({ offset: 0, animated: true });
+    };
 
     const fetchDataFromDb = async () => {
         __DEV__ && console.log('in fetchDataFromDb');
@@ -316,7 +342,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         setHigherPostForCurrentDesig(higherPost)
 
-        console.log(designation, '---------higherPost  ---------------------------', higherPost);
+        __DEV__ && console.log(designation, '---------higherPost  ---------------------------', higherPost);
 
         try {
             setRefreshing(false);
@@ -377,7 +403,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         distMap[item.officeDistrict] = 1;
                     }
                 });
-                console.log("distMap =---------------------------", distMap);
+                // console.log("distMap =---------------------------", distMap);
 
                 var sortedKeys = Object.keys(distMap).sort();
 
@@ -404,10 +430,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 /////////////////////// district calculation //////////////////////////
 
 
-                __DEV__ && console.log(data.length);
+                // __DEV__ && console.log(data.length);
+
 
             } else {
-                __DEV__ && console.log(tablename, ' table does not exist');
+                // __DEV__ && console.log(tablename, ' table does not exist');
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
@@ -578,8 +605,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         try {
 
-            console.log(districtFromDB.length);
-            districtFromDB.map((item, index) => console.log(index + 1, ' ', item.officeDistrict, ' = ', item.count))
+            // __DEV__ && console.log(districtFromDB.length);
+            // districtFromDB.map((item, index) => console.log(index + 1, ' ', item.officeDistrict, ' = ', item.count))
 
             setRefreshing(false);
             setIsLoading(true);
@@ -731,6 +758,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setdistName('')
         tempDist = []
         // controller.reset()
+
+
+        setActiveIcon(activIcon)
+
         setCurrentDistValue() // for reseting dropdown picker
         setCurrentChargeValue()
         setItems(tempDist)
@@ -817,7 +848,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const searchFilter = (text) => {
 
         let firstCharacter = text.charAt(0);
-        console.log(firstCharacter);
+        __DEV__ && console.log(firstCharacter);
         let isNameSearch = (/[a-zA-Z]/).test(firstCharacter)
 
         let isMobileSearch = false
@@ -883,7 +914,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             ))
 
             numbers = numbers.slice(0, -1);
-            console.log(numbers);
+            __DEV__ && console.log(numbers);
 
             const url = (Platform.OS === 'android')
                 ? `mailto:${numbers}?body=${msg}`
@@ -909,7 +940,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             ))
 
             numbers = numbers.slice(0, -1);
-            console.log(numbers);
+            __DEV__ && console.log(numbers);
 
             const url = (Platform.OS === 'android')
                 ? `sms:${numbers}?body=${msg}`
@@ -992,11 +1023,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         source={require(selectAllInactive)}
                                         style={styles.select_all_icon}
                                     />
-                                    :
-                                    <Image
-                                        source={require(selectAllActive)}
-                                        style={styles.select_all_icon}
-                                    />
+                                    : currentTheme === '#6750a4' ?
+                                        <Image
+                                            source={require(selectAll_0)}
+                                            style={styles.select_all_icon}
+                                        /> : currentTheme === '#048BB3' ?
+                                            <Image
+                                                source={require(selectAll_3)}
+                                                style={styles.select_all_icon}
+                                            /> : currentTheme === '#0089E3' ?
+                                                <Image
+                                                    source={require(selectAll_6)}
+                                                    style={styles.select_all_icon}
+                                                /> : currentTheme === '#0069C4' ?
+                                                    <Image
+                                                        source={require(selectAll_9)}
+                                                        style={styles.select_all_icon}
+                                                    /> : ''
                             }
 
                         </TouchableOpacity>
@@ -1017,8 +1060,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}
                             onPress={() => (
                                 searchFilter("")
-                                , setDistrictValue(),
-                                setdistName("")
+                                , setCurrentDistValue(""),
+                                setdistName(""),
+                                setCurrentChargeValue("")
+
                             )}
                         >
                             <Image
@@ -1044,7 +1089,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     borderRadius: 10,
                                     justifyContent: 'center',
                                     alignContent: 'center',
-                                    padding: 2
+                                    padding: 2,
+                                    elevation: 5
                                 }}
                             >
                                 <Image
@@ -1055,7 +1101,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     color: 'white',
                                     fontSize: width * .037,
                                     fontWeight: '800'
-                                }}>Filters</Text>
+                                }}>Filter</Text>
                                 {
                                     !isFilterOn ?
                                         <Image
@@ -1075,7 +1121,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         style={{
                                             marginLeft: 3, color: 'grey', fontSize: height * .015
                                         }}> {isChecked ? 'Seniority' :
-                                            isrtDateChecked ? 'Retired Date' :
+                                            isrtDateChecked ? 'Retirement Date' :
                                                 isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
                                 </View>
                             }
@@ -1183,60 +1229,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
 
 
-                    {
-                        // currentSelectedIds.length != 0 ?
-                        true ?
-                            <TouchableOpacity
-                                style={{
-                                    position: 'absolute',
-                                    marginBottom: 40,
-                                    marginRight: 30,
-                                    right: 0,
-                                    bottom: 0,
-                                    zIndex: 1000,
-                                    borderRadius: 70
-                                }}>
 
-                                <Portal style={{ marginBottom: 100 }}>
-                                    <FAB.Group
-                                        fabStyle={{ backgroundColor: `${currentTheme}`, color: 'white', marginBottom: height * .045 }}
-                                        color='white'
-
-                                        open={open}
-                                        visible
-                                        icon={open ? 'close' : 'plus'}
-                                        actions={[
-
-                                            {
-                                                style: { backgroundColor: `${currentTheme}`, color: 'white' },
-                                                icon: 'export',
-                                                fabStyle: { color: 'white' },
-                                                label: 'Export',
-                                                onPress: () => console.log('Pressed star'),
-                                            },
-                                            {
-                                                style: { backgroundColor: `${currentTheme}` },
-                                                icon: 'email',
-                                                label: 'Email',
-                                                onPress: () => bulkEmail(),
-                                            },
-                                            {
-                                                style: { backgroundColor: `${currentTheme}` },
-                                                icon: 'message',
-                                                label: 'Message',
-                                                onPress: () => bulkSMS(),
-                                            },
-                                        ]}
-                                        onStateChange={onStateChange}
-                                        onPress={() => {
-                                            if (open) {
-                                                // do something if the speed dial is open
-                                            }
-                                        }}
-                                    />
-                                </Portal>
-                            </TouchableOpacity> : ''
-                    }
 
                     <FlashList
                         data={filteredData}
@@ -1271,8 +1264,141 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                         )}
+                        ref={(ref) => {
+                            listViewRef = ref;
+                        }}
 
                     />
+
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={downButtonHandler}
+                        style={{
+                            position: 'absolute',
+                            width: width * .1,
+                            height: width * .1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            right: width * .0598,
+                            bottom: height * .069,
+                            backgroundColor: `${currentTheme}`,
+                            borderTopRightRadius: height * .005,
+                            borderBottomEndRadius: height * .005,
+                            elevation: 2
+
+
+                        }}>
+                        <Image
+                            source={require(downArrowIcon)}
+                            style={{
+                                resizeMode: 'contain',
+                                width: 50,
+                                height: 30,
+                                marginTop: 2
+                            }}
+                        />
+
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={upButtonHandler}
+                        style={{
+                            position: 'absolute',
+                            width: width * .1,
+                            height: width * .1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            right: width * .163,
+                            bottom: height * .069,
+                            backgroundColor: `${currentTheme}`,
+                            borderTopLeftRadius: height * .005,
+                            borderBottomStartRadius: height * .005,
+                            elevation: 2
+
+                        }}>
+                        <Image
+                            source={require(upArrowIcon)}
+                            style={{
+                                resizeMode: 'contain',
+                                width: 55,
+                                height: 30,
+                                marginTop: 0
+                            }}
+                        />
+
+                    </TouchableOpacity>
+
+
+                    <View
+                        activeOpacity={0.5}
+                        onPress={upButtonHandler}
+                        style={{
+                            position: 'absolute',
+                            // width: width * .1,
+                            // height: width * .1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            right: width * .01,
+                            bottom: height * .39,
+                            // backgroundColor: `${currentTheme}`,
+                            borderTopLeftRadius: height * .005,
+                            borderBottomStartRadius: height * .005,
+                            // elevation: 2
+
+                        }}>
+                        <View style={{
+                            flexDirection: 'row-reverse',
+                            flex: 1,
+                            // backgroundColor: 'blue',
+                            marginRight: 10
+                        }}>
+                            <TouchableOpacity
+
+                                // style={{height:20, width:20}}
+
+                                onPress={() => setIsFloatingBtnExteded(!isFloatingBtnExteded)}
+                            >
+                                <Image
+                                    source={require(leftArrowIcon)}
+                                    style={{
+                                        resizeMode: 'contain',
+                                        width: 30,
+                                        height: 30,
+                                        marginTop: 0
+                                    }}
+                                />
+                            </TouchableOpacity>
+
+                            {
+                                isFloatingBtnExteded &&
+                                <View style={{
+                                    flexDirection: 'row-reverse',
+                                    flex: 1,
+                                }}>
+                                    <Image
+                                        source={require(leftArrowIcon)}
+                                        style={{
+                                            resizeMode: 'contain',
+                                            width: 30,
+                                            height: 30,
+                                            marginTop: 0
+                                        }}
+                                    />
+                                    <Image
+                                        source={require(leftArrowIcon)}
+                                        style={{
+                                            resizeMode: 'contain',
+                                            width: 30,
+                                            height: 30,
+                                            marginTop: 0
+                                        }}
+                                    />
+                                </View>
+                            }
+
+                        </View>
+
+                    </View>
 
 
 
@@ -1442,7 +1568,24 @@ const styles = StyleSheet.create({
     select_all_icon: {
         height: height * .055,
         width: height * .055,
-    }
+    },
+    downButtonStyle: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: 70,
+        backgroundColor: 'white',
+        borderRadius: 20
+
+    },
+    downButtonImageStyle: {
+        resizeMode: 'contain',
+        width: 50,
+        height: 30,
+    },
 
 });
 

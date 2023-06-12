@@ -2276,3 +2276,86 @@ index={index}
                                     //         onChangeValue={() => sortByDistrict()}
                                     //     />
                                     // </View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ///////////////////////FAB
+
+
+
+
+
+
+
+
+                                    {
+                        // currentSelectedIds.length != 0 ?
+                        true ?
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    marginBottom: 40,
+                                    marginRight: 30,
+                                    right: 0,
+                                    bottom: 0,
+                                    zIndex: 1000,
+                                    borderRadius: 70
+                                }}>
+
+                                <Portal style={{ marginBottom: 100 }}>
+                                    <FAB.Group
+                                        fabStyle={{ backgroundColor: `${currentTheme}`, color: 'white', marginBottom: height * .045 }}
+                                        color='white'
+
+                                        open={open}
+                                        visible
+                                        icon={open ? 'close' : 'plus'}
+                                        actions={[
+
+                                            // {
+                                            //     style: { backgroundColor: `${currentTheme}`, color: 'white' },
+                                            //     icon: 'export',
+                                            //     fabStyle: { color: 'white' },
+                                            //     label: 'Export',
+                                            //     onPress: () => console.log('Pressed star'),
+                                            // },
+                                            {
+                                                style: { backgroundColor: `${currentTheme}` },
+                                                icon: 'email',
+                                                label: 'Email',
+                                                onPress: () => bulkEmail(),
+                                            },
+                                            {
+                                                style: { backgroundColor: `${currentTheme}` },
+                                                icon: 'message',
+                                                label: 'Message',
+                                                onPress: () => bulkSMS(),
+                                            },
+                                        ]}
+                                        onStateChange={onStateChange}
+                                        onPress={() => {
+                                            if (open) {
+                                                // do something if the speed dial is open
+                                            }
+                                        }}
+                                    />
+                                </Portal>
+                            </TouchableOpacity> : ''
+                    }
+
+                    //////////////////////FAB///////////////////////////

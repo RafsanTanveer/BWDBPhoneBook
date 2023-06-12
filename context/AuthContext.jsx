@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
                 // __DEV__ && console.log(userInfo);
             })
             .catch(e => {
-                __DEV__ && console.log(`register error ${e}`);
+                // __DEV__ && console.log(`register error ${e}`);
                 setIsLoading(false);
             });
     };

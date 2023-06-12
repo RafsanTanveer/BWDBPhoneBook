@@ -16,6 +16,7 @@ const width = Dimensions.get('window').width;
 //****************************************** icons ********************************************** */
 
 
+
 const bwdbLogo = '../assets/bwdLogo.png'
 const rightArrow = '../assets/icons/right.png'
 const engLogo = '../assets/icons8-architect-48.png'
@@ -106,7 +107,7 @@ const ExpendableDrawer = () => {
                             [],
                             (_, result) => {
                                 const desig = result.rows._array
-                                console.log('desig table extist ____________________________________________________',desig);
+                                // console.log('desig table extist ____________________________________________________',desig);
                                 setdesigList(desig);
                                 setDesignationContext(desig)
                             },
@@ -126,7 +127,7 @@ const ExpendableDrawer = () => {
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
                 setDesignationContext(response.rows)
-                console.log('desig table does not extist ____________________________________________________', response.rows);
+                // console.log('desig table does not extist ____________________________________________________', response.rows);
 
                 __DEV__ && console.log(response.rows.length);
 
@@ -811,11 +812,10 @@ const ExpendableDrawer = () => {
 
                         {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[0])} style={{ height: width * .080, width: width * .080, backgroundColor: '#6750a4', marginRight: width * .015 }} />
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[1])} style={{ height: width * .080, width: width * .080, backgroundColor: '#4F46E5', marginRight: width * .015 }} />
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[2])} style={{ height: width * .080, width: width * .080, backgroundColor: '#1DA1F2', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[9])} style={{ height: width * .080, width: width * .080, backgroundColor: '#0069C4', marginRight: width * .015 }} />
                             <TouchableOpacity onPress={() => setcurrentTheme(themes[3])} style={{ height: width * .080, width: width * .080, backgroundColor: '#048BB3', marginRight: width * .015 }} />
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[4])} style={{ height: width * .080, width: width * .080, backgroundColor: '#4E34E1', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[6])} style={{ height: width * .080, width: width * .080, backgroundColor: '#0089E3', marginRight: width * .015 }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themes[0])} style={{ height: width * .080, width: width * .080, backgroundColor: '#6750a4', marginRight: width * .015 }} />
 
 
                         </View>

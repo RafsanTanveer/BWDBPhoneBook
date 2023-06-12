@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Linking } from "react-native";
+import { Text, View, TouchableOpacity, Linking, Image } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 
 import DataRender from '../data/DataRender'
@@ -32,14 +32,18 @@ const DesignationScreen = ({ route, navigation }) => {
         <>
 
             <View style={{
-                alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15, marginBottom:5,
+                alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15, marginBottom: 5,
                 backgroundColor: `${currentTheme}`,//'#C1B8DC',  //'#6750a4'
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
+                // flexDirection: 'row'
 
             }}>
+                {/* <View style={{ flex: 1 }}>
+                    <Image style={{ width: 40, height: 40,backgroundColor:'white' }} source={require('../assets/bwdLogo.png')} />
+                </View> */}
 
-                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
+                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
 
             </View>
 

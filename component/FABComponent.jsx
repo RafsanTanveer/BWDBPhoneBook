@@ -34,7 +34,7 @@ const FABComponent = () => {
         ))
 
 
-        console.log(emailNoList);
+        // console.log(emailNoList);
 
 
     }
@@ -54,7 +54,7 @@ const FABComponent = () => {
 
 
 
-        console.log(mobileNoList);
+        // console.log(mobileNoList);
 
 
 
@@ -73,13 +73,13 @@ const FABComponent = () => {
                 icon={open ? 'close' : 'plus'}
                 actions={[
 
-                    {
-                        style: { backgroundColor: `${currentTheme}`, color: 'white' },
-                        icon: 'export',
-                        fabStyle: { color: 'white' },
-                        label: 'Export',
-                        onPress: () => console.log('Pressed star'),
-                    },
+                    // {
+                    //     style: { backgroundColor: `${currentTheme}`, color: 'white' },
+                    //     icon: 'export',
+                    //     fabStyle: { color: 'white' },
+                    //     label: 'Export',
+                    //     onPress: () => console.log('Pressed star'),
+                    // },
                     {
                         style: { backgroundColor: `${currentTheme}` },
                         icon: 'email',

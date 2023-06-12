@@ -10,7 +10,7 @@ import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { FAB, Portal } from 'react-native-paper';
 import { FlashList } from "@shopify/flash-list";
-
+import ItemOffice from '../component/ItemOffice'
 import FABComponent from '../component/FABComponent'
 
 const height = Dimensions.get('window').height;
@@ -22,6 +22,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
 
     const { presentOfficeCode } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
+    const { isAdmin, designationContext } = useContext(AuthContext);
 
 
 
@@ -239,10 +240,36 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                     {!search ? <Text style={{ marginBottom: 2, marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total Employee : {DATA.length}</Text> : ""}
 
                     {refreshing ? <ActivityIndicator /> : null}
-                    <FlatList
+
+                    <FlashList
+                        estimatedItemSize={200}
 
                         data={filteredData}
-                        renderItem={Item}
+
+                        renderItem={({ item, index }) => (
+                            <ItemOffice
+                                id={item.id}
+                                name={item.name}
+                                designation={item.designation}
+                                office={item.office}
+                                email={item.email}
+                                mobile={item.mobile}
+                                pabx={item.pabx}
+                                selected={item.selected}
+                                photo={item.photo}
+                                index={index}
+
+                                post={item.post}
+
+                                charge={item.charge}
+                                isAdmin={isAdmin}
+                                currentTheme={currentTheme}
+                                length={filteredData.length}
+                            />
+
+
+                        )}
+
                         keyExtractor={(item) => item.id}
                         extraData={selectedId}
                         refreshControl={

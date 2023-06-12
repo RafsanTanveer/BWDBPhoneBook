@@ -463,14 +463,14 @@ const BiodataScreen = ({ id, navigation }) => {
             });
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table = ', tableNames.length);
-            __DEV__ && console.log('Table names:', tableNames);
+            // __DEV__ && console.log('Total table = ', tableNames.length);
+            // __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes('biodata');
 
 
             if (tableExists) {
-                __DEV__ && console.log('biodata', ' table exists............................................................................');
+               // __DEV__ && console.log('biodata', ' table exists............................................................................');
 
                 /////// check if id exists or not
 
@@ -483,13 +483,13 @@ const BiodataScreen = ({ id, navigation }) => {
                 });
 
                 const exsistingIDs = idExistsResult.rows._array.map((table) => table.id);
-                __DEV__ && console.log('Total table = ', exsistingIDs.length);
-                __DEV__ && console.log('exsistingIDs:**************', exsistingIDs);
+                // __DEV__ && console.log('Total table = ', exsistingIDs.length);
+                // __DEV__ && console.log('exsistingIDs:**************', exsistingIDs);
 
                 const isIdExist = exsistingIDs.includes(id);
 
                 if (isIdExist) {
-                    __DEV__ && console.log(id, 'exists');
+                   // __DEV__ && console.log(id, 'exists');
 
                     await new Promise((resolve, reject) => {
                         var isIdExist = true;
@@ -515,7 +515,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     const tempBiodata = result.rows._array
                                     setpersonalData(tempBiodata);
                                     __DEV__ && console.log(tempBiodata[0].id);
-                                    console.log(tempBiodata);
+                                    //__DEV__ &&  console.log(tempBiodata);
                                     setTabelCreationTime(tempBiodata[0].timestamp)
 
                                     setPmisId(tempBiodata[0].id)

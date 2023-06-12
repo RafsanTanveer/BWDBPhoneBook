@@ -117,22 +117,30 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                 }
 
                 <View style={{ justifyContent: 'center', alignContent: 'center', }}>
-                    <View style={{ borderRadius: 10 }}>
-                        <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
-                    </View>
+
 
                     <TouchableOpacity >
                         {
 
                             photo ?
-                                <Image style={[styles.logo,
-                                pmisId === id ? { borderWidth: 1, borderColor: 'red' } : '']}
-                                    source={{ uri: "data:image/jpeg;base64," + photo }} />
+
+                                <View>
+                                    <Image style={[styles.logo,
+                                    pmisId === id ? { borderWidth: 1, borderColor: 'red' } : '']}
+                                        source={{ uri: "data:image/jpeg;base64," + photo }} />
+                                </View>
                                 :
-                                <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                                <View>
+                                    <Image style={styles.place_holder_logo}
+                                        source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                                </View>
+
 
                         }
                     </TouchableOpacity>
+                    <View style={{ elevation: 3, backgroundColor: `${currentTheme}`,alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5) }}>
+                        <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }} >{index + 1}</Text>
+                    </View>
                 </View>
                 <View style={{
                     flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
@@ -205,7 +213,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                                     charge === 'A' ? ', Addl.' :
                                                         charge === 'I' ? ', Incharge' : ''} </Text>
                                         </View>
-                                    : ''
+                                        : ''
                         }
 
                     </View>
@@ -235,7 +243,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                     borderRadius: height * .005,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
-                                    paddingHorizontal: 5
+                                    paddingHorizontal: 5,
+                                    elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                                 <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
@@ -251,7 +260,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                     borderRadius: height * .005,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
-                                    paddingHorizontal: 10
+                                    paddingHorizontal: 10,
+                                    elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                                 <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{pabx} </Text>
@@ -270,7 +280,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                     borderRadius: height * .005,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
-                                    paddingHorizontal: 12
+                                    paddingHorizontal: 12,
+                                    elevation:3
                                 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                             </TouchableOpacity>
@@ -379,7 +390,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: "pink",
         borderWidth: 1,
-        borderColor: '#6750a4'
+        borderColor: '#6750a4',
+        elevation: 5
 
 
     },

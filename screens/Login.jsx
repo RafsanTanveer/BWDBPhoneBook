@@ -2,7 +2,10 @@ import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
 
+import GradientText from '../component/GradientText'
 
 const paniBhaban = '../assets/paniBhaban.png'
 const botom = '../assets/botom.png'
@@ -31,7 +34,14 @@ const Login = () => {
     }
     return (
         //  this view works as a keyboard avoiding view
-        <View style={{ flex: 1, height: screenHeight, backgroundColor: 'white', flexDirection: 'column-reverse' }}>
+        <View
+            style={{
+                flex: 1,
+                flexDirection: 'column-reverse',
+                height: screenHeight,
+                backgroundColor: 'white',
+
+            }}>
             <StatusBar hidden />
             <View style={{ height: screenHeight, }}>
                 <Image
@@ -55,9 +65,9 @@ const Login = () => {
                     source={require(bwdbLogo)}
                 />
                 <View style={{ marginTop: screenHeight * .6, alignItems: 'center', }}>
-                    <Text style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory</Text>
-                    <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</Text>
-                    <Text style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</Text>
+                    <GradientText style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory </GradientText>
+                    <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</GradientText>
+                    <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</GradientText>
                     <TextInput
                         maxLength={9}                  // set maximum string length to 9
                         keyboardType={"decimal-pad"}   // set keyboard type
@@ -78,7 +88,7 @@ const Login = () => {
                     </TextInput>
                     <TextInput
                         secureTextEntry={true}
-                        
+
                         // keyboardType={"decimal-pad"}   // set keyboard type
                         selectionColor={'black'}       // for changing curcsor color
                         onChangeText={(txt) => setpmisId(txt)}
@@ -97,7 +107,7 @@ const Login = () => {
                     </TextInput>
                     <TouchableOpacity
                         style={{ height: height / 20, width: "70%", borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF0000' }}
-                        onPress={ () => {
+                        onPress={() => {
 
 
                             login(pmisId, "pass");
