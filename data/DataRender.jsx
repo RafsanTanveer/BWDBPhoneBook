@@ -28,7 +28,10 @@ const filterIcon = '../assets/icons/filter.png'
 const downArrowIcon = '../assets/icons/down-arrow.png'
 const upArrowIcon = '../assets/icons/up-arrow.png'
 const leftArrowIcon = '../assets/icons/left-arrow.png'
-const bwdLogo = '../assets/bwdLogo.png'
+const emailIcon = '../assets/icons/gmail.png'
+const msglIcon = '../assets/icons/message.png'
+const bwdLogo = '../assets/bwdLogo.png'  // message
+
 
 
 import db from '../database/database';
@@ -769,6 +772,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setIsFilterOn(false)
         setIsOpen(false)
         setIsChargeOpen(false)
+        setIsFloatingBtnExteded(false)
 
     }, [desig_code]);
 
@@ -1338,11 +1342,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             // height: width * .1,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            right: width * .01,
+                            right: 0,
                             bottom: height * .39,
                             // backgroundColor: `${currentTheme}`,
-                            borderTopLeftRadius: height * .005,
-                            borderBottomStartRadius: height * .005,
+
                             // elevation: 2
 
                         }}>
@@ -1354,7 +1357,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         }}>
                             <TouchableOpacity
 
-                                // style={{height:20, width:20}}
+                                style={{
+                                    // backgroundColor: 'blue'
+                                }}
 
                                 onPress={() => setIsFloatingBtnExteded(!isFloatingBtnExteded)}
                             >
@@ -1362,8 +1367,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     source={require(leftArrowIcon)}
                                     style={{
                                         resizeMode: 'contain',
-                                        width: 30,
-                                        height: 30,
+                                        width: width * .1,
+                                        height: width * .1,
                                         marginTop: 0
                                     }}
                                 />
@@ -1375,21 +1380,22 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     flexDirection: 'row-reverse',
                                     flex: 1,
                                 }}>
+
                                     <Image
-                                        source={require(leftArrowIcon)}
+                                        source={require(msglIcon)}
                                         style={{
                                             resizeMode: 'contain',
-                                            width: 30,
-                                            height: 30,
+                                            width: width * .1,
+                                            height: width * .1,
                                             marginTop: 0
                                         }}
                                     />
                                     <Image
-                                        source={require(leftArrowIcon)}
+                                        source={require(msglIcon)}
                                         style={{
                                             resizeMode: 'contain',
-                                            width: 30,
-                                            height: 30,
+                                            width: width * .1,
+                                            height: width * .1,
                                             marginTop: 0
                                         }}
                                     />
