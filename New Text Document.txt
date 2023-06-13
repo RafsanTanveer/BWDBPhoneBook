@@ -2359,3 +2359,99 @@ index={index}
                     }
 
                     //////////////////////FAB///////////////////////////
+
+
+                     <View
+                        // activeOpacity={0.5}
+                        onPress={upButtonHandler}
+                        style={{
+                            position: 'absolute',
+                            // width: width * .1,
+                            // height: width * .1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            right: 0,
+                            bottom: height * .39,
+                            //  backgroundColor: `${currentTheme}`,
+
+                            // elevation: 2
+
+                        }}>
+                        <View style={{
+                            flexDirection: 'row-reverse',
+                            flex: 1,
+                            //  backgroundColor: 'blue',
+                            marginRight: 10
+                        }}>
+                            <TouchableOpacity
+
+                                style={{
+                                    // backgroundColor: 'blue'
+                                }}
+
+                                onPress={() => setIsFloatingBtnExteded(!isFloatingBtnExteded)}
+                            >
+                                <Image
+                                    source={require(leftArrowIcon)}
+                                    style={{
+                                        resizeMode: 'contain',
+                                        width: width * .1,
+                                        height: width * .1,
+                                        marginTop: 0
+                                    }}
+                                />
+                            </TouchableOpacity>
+
+                            {
+                                isFloatingBtnExteded &&
+                                <View style={{
+                                    flexDirection: 'row-reverse',
+                                    flex: 1,
+                                }}>
+                                        <TouchableOpacity
+                                            onPress={() => bulkEmail()}
+                                        style={{ marginRight: width * .105, }}>
+                                        <Image
+                                            source={require(msglIcon)}
+                                            style={{
+                                                resizeMode: 'contain',
+                                                width: width * .1,
+                                                height: width * .1,
+                                                marginTop: 0
+                                            }}
+                                        />
+
+                                    </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => bulkSMS()}
+                                        style={{ marginRight: width * .105 }}
+                                    >
+                                        <Image
+                                            source={require(msglIcon)}
+                                            style={{
+                                                resizeMode: 'contain',
+                                                width: width * .1,
+                                                height: width * .1,
+                                                marginTop: 0
+                                            }}
+                                        />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ marginRight: width * .105 }}
+                                        >
+                                            <Image
+                                                source={require(msglIcon)}
+                                                style={{
+                                                    resizeMode: 'contain',
+                                                    width: width * .1,
+                                                    height: width * .1,
+                                                    marginTop: 0
+                                                }}
+                                            />
+                                        </TouchableOpacity>
+                                </View>
+                            }
+
+                        </View>
+
+                    </View>

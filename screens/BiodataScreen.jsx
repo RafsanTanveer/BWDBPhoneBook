@@ -862,6 +862,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                 </View>
                             </View>
+                            <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey', margin:9 }}>Last Update Taken : {tabelCreationTime}</Text>
+
                             {refreshing ? <ActivityIndicator /> : null}
 
                             <ScrollView
@@ -869,7 +871,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     <RefreshControl refreshing={refreshing} onRefresh={updateBiodata} />
                                 }
                             >
-                                <View style={{ flex: 1, marginTop: 20, marginHorizontal: 10 }}>
+                                <View style={{ flex: 1, marginTop: 0, marginHorizontal: 10 }}>
 
                                     <View style={{ marginTop: 7, flexDirection: 'row', marginBottom: 0 }}>
                                         <View style={{ flex: 1 }}>
@@ -1275,13 +1277,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     </ScrollView >
 
 
-                                    <SingleColumnComponent
-                                        firstHeading=""
-                                        firstQueryResult=""
-                                        delimiter=""
-                                    />
-                                    <Text style={{alignSelf:'center', fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
-
+                                   
                                 </View>
                             </ScrollView >
 

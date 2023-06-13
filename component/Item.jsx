@@ -43,7 +43,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
     const { pmisId } = useContext(AuthContext);
 
 
-    const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
+    const { currentSelectedIds, setCurrentSelectedIds, setGroupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -79,6 +79,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
         }
 
         setCurrentSelectedIds(selectedPId)
+        setGroupIds(selectedPId)
 
         setisSelected([...isSelected, id])
         // console.log(selectedPId);

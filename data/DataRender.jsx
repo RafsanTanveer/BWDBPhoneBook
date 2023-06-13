@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useEffect, useState } from "react";
-import { ToastAndroid, ActivityIndicator, Linking, RefreshControl, ScrollView, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ToastAndroid, ActivityIndicator, Linking, Keyboard, RefreshControl, ScrollView, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -28,8 +28,9 @@ const filterIcon = '../assets/icons/filter.png'
 const downArrowIcon = '../assets/icons/down-arrow.png'
 const upArrowIcon = '../assets/icons/up-arrow.png'
 const leftArrowIcon = '../assets/icons/left-arrow.png'
-const emailIcon = '../assets/icons/gmail.png'
+const emailIcon = '../assets/icons/email.png'
 const msglIcon = '../assets/icons/message.png'
+const groupIcon = '../assets/icons/group.png'
 const bwdLogo = '../assets/bwdLogo.png'  // message
 
 
@@ -114,7 +115,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const { presentOfficeCode } = useContext(AuthContext);
     const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
     const { isAdmin, designationContext } = useContext(AuthContext);
-    const { currentTheme, currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);  //currentSelectedIds, setCurrentSelectedIds
+    const { currentTheme, currentSelectedIds, setCurrentSelectedIds, groupIds } = useContext(ThemeContext);  //currentSelectedIds, setCurrentSelectedIds
 
     const [isChecked, setChecked] = useState();
     const [isrtDateChecked, setisrtDateChecked] = useState();
@@ -142,6 +143,30 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [district, setDistrict] = useState([]);
 
 
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+                setKeyboardVisible(true); // or some other action
+                setIsFloatingBtnExteded(false)
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setKeyboardVisible(false); // or some other action
+            }
+        );
+
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
+    }, []);
+
+
     let activIcon = currentTheme === '#6750a4' ? selectAll_0 :
         currentTheme === '#048BB3' ? selectAll_3 :
             currentTheme === '#0089E3' ? selectAll_6 :
@@ -156,7 +181,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             presentCharge === 'A' ? ',Addl.' :
                 presentCharge === 'I' ? ',Incharge' : '' : ''
 
-    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB ${bwdLogo}`
+    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
 
@@ -851,6 +876,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const searchFilter = (text) => {
 
+
         let firstCharacter = text.charAt(0);
         __DEV__ && console.log(firstCharacter);
         let isNameSearch = (/[a-zA-Z]/).test(firstCharacter)
@@ -892,6 +918,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const timeStamp = () => {
         const months = ['JAN', 'FEB', 'MAR', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const hours = ['', '', '', '', '', '', '', '', '', '', '', '',];
         const date = new Date()
         const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
         const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
@@ -995,7 +1022,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     placeholder="Search Name or Mobile or PABX ( 3 . . )"
                                     value={search}
                                     //underlineColorAndroid='trasparent'
-                                    onChangeText={(text) => searchFilter(text)}
+                                    onChangeText={(text) => { searchFilter(text) }}
                                     mode='outlined'
                                 />
                             </View>
@@ -1333,36 +1360,26 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     </TouchableOpacity>
 
 
-                    <View
-                        activeOpacity={0.5}
-                        onPress={upButtonHandler}
-                        style={{
-                            position: 'absolute',
-                            // width: width * .1,
-                            // height: width * .1,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            right: 0,
-                            bottom: height * .39,
-                            // backgroundColor: `${currentTheme}`,
+                    {
+                        !isKeyboardVisible &&
+                        <View
+                            // activeOpacity={0.5}
 
-                            // elevation: 2
+                            style={{
+                                flexDirection: 'row-reverse',
+                                position: 'absolute',
+                                // width: width * .1,
+                                // height: width * .1,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: 0,
+                                bottom: height * .35,
+                                //  backgroundColor: `${currentTheme}`,
 
-                        }}>
-                        <View style={{
-                            flexDirection: 'row-reverse',
-                            flex: 1,
-                            // backgroundColor: 'blue',
-                            marginRight: 10
-                        }}>
-                            <TouchableOpacity
+                                elevation: 10
 
-                                style={{
-                                    // backgroundColor: 'blue'
-                                }}
-
-                                onPress={() => setIsFloatingBtnExteded(!isFloatingBtnExteded)}
-                            >
+                            }}>
+                            <TouchableOpacity onPress={() => setIsFloatingBtnExteded(!isFloatingBtnExteded)}>
                                 <Image
                                     source={require(leftArrowIcon)}
                                     style={{
@@ -1370,6 +1387,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         width: width * .1,
                                         height: width * .1,
                                         marginTop: 0
+
                                     }}
                                 />
                             </TouchableOpacity>
@@ -1377,34 +1395,139 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             {
                                 isFloatingBtnExteded &&
                                 <View style={{
-                                    flexDirection: 'row-reverse',
-                                    flex: 1,
+                                    backgroundColor: `${currentTheme}`,
+                                    flexDirection: 'row',
+                                    borderRadius: height * .005,
                                 }}>
+                                    <TouchableOpacity style={{ flexDirection: 'column', margin: 7 }}>
+                                        <View
+                                            style={{
+                                                backgroundColor: `${currentTheme}`,
+                                                borderColor: 'white',
+                                                borderWidth: 1,
+                                                borderRadius: 50,
+                                                width: width * .051,
+                                                height: width * .051,
+                                                justifyContent: 'center',
+                                                position: 'absolute',
+                                                left: 25,
+                                                top: 0,
+                                                zIndex: 300
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: 'white',
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold',
+                                                    fontSize: width * .02
+                                                }}>{groupIds.length}</Text>
+                                        </View>
+                                        <View>
+                                            <Image
+                                                source={require(groupIcon)}
+                                                style={{
+                                                    resizeMode: 'contain',
+                                                    width: width * .1,
+                                                    height: width * .1,
+                                                    marginTop: 5,
+                                                    alignSelf: 'center'
+                                                }}
+                                            />
 
-                                    <Image
-                                        source={require(msglIcon)}
-                                        style={{
-                                            resizeMode: 'contain',
-                                            width: width * .1,
-                                            height: width * .1,
-                                            marginTop: 0
-                                        }}
-                                    />
-                                    <Image
-                                        source={require(msglIcon)}
-                                        style={{
-                                            resizeMode: 'contain',
-                                            width: width * .1,
-                                            height: width * .1,
-                                            marginTop: 0
-                                        }}
-                                    />
+                                        </View>
+                                        <View>
+                                            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>Group</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => bulkEmail()}
+                                        style={{ flexDirection: 'column', margin: 7 }}>
+                                        <View>
+                                            <View
+                                                style={{
+                                                    backgroundColor: `${currentTheme}`,
+                                                    borderColor: 'white',
+                                                    borderWidth: 1,
+                                                    borderRadius: 50,
+                                                    width: width * .051,
+                                                    height: width * .051,
+                                                    justifyContent: 'center',
+                                                    position: 'absolute',
+                                                    left: 25,
+                                                    top: 0,
+                                                    zIndex: 300
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: 'white',
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold',
+                                                        fontSize: width * .02
+                                                            }}>{currentSelectedIds.length}</Text>
+                                            </View>
+                                            <Image
+                                                source={require(emailIcon)}
+                                                style={{
+                                                    resizeMode: 'contain',
+                                                    width: width * .1,
+                                                    height: width * .1,
+                                                    marginTop: 5,
+                                                    alignSelf: 'center'
+                                                }}
+                                            />
+
+                                        </View>
+                                        <View>
+                                            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>Email</Text>
+                                        </View>
+                                    </TouchableOpacity >
+                                    <TouchableOpacity
+                                        onPress={() => bulkSMS()}
+                                        style={{ flexDirection: 'column', margin: 7 }}>
+                                        <View>
+                                            <View
+                                                style={{
+                                                    backgroundColor: `${currentTheme}`,
+                                                    borderColor: 'white',
+                                                    borderWidth: 1,
+                                                    borderRadius: 50,
+                                                    width: width * .051,
+                                                    height: width * .051,
+                                                    justifyContent: 'center',
+                                                    position: 'absolute',
+                                                    left: 25,
+                                                    top: 0,
+                                                    zIndex: 300
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: 'white',
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold',
+                                                        fontSize: width * .02
+                                                            }}>{currentSelectedIds.length}</Text>
+                                            </View>
+                                            <Image
+                                                source={require(msglIcon)}
+                                                style={{
+                                                    resizeMode: 'contain',
+                                                    width: width * .1,
+                                                    height: width * .1,
+                                                    marginTop: 5,
+                                                    alignSelf: 'center'
+                                                }}
+                                            />
+
+                                        </View>
+                                        <View>
+                                            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>SMS</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
                             }
 
                         </View>
-
-                    </View>
+                    }
 
 
 

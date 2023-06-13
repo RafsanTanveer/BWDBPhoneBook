@@ -18,6 +18,8 @@ export const ThemeProvider = ({ children }) => {
 
     const [filterdataContext, setfilterdataContext] = useState([])
 
+    const [groupIds, setGroupIds] = useState([]);
+
     const setTheme = (themeNo) => { }
 
 
@@ -28,7 +30,8 @@ export const ThemeProvider = ({ children }) => {
                 value={{
                     themes, currentTheme, setcurrentTheme,
                     currentSelectedIds, setCurrentSelectedIds,
-                    filterdataContext, setfilterdataContext
+                    filterdataContext, setfilterdataContext,
+                    groupIds, setGroupIds
                 }}>
                 {children}
             </ThemeContext.Provider>
