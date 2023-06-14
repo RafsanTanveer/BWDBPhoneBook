@@ -31,7 +31,7 @@ const width = Dimensions.get('window').width;
 
 
 let selectedPId = []
-
+let selectedGroupIds =[]
 
 
 
@@ -43,7 +43,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
     const { pmisId } = useContext(AuthContext);
 
 
-    const { currentSelectedIds, setCurrentSelectedIds, setGroupIds } = useContext(ThemeContext);
+    const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -79,11 +79,29 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
         }
 
         setCurrentSelectedIds(selectedPId)
-        setGroupIds(selectedPId)
+        //  setGroupIds([...groupIds, selectedPId])
 
-        setisSelected([...isSelected, id])
-        // console.log(selectedPId);
-        // console.log(currentSelectedIds);
+        setisSelected([...isSelected, id])   // dummy state for updating ui
+
+
+
+        selectedGroupIds = groupIds
+        const ifIdExitsInSelectedGroupIds = selectedGroupIds.includes(id);
+
+        if (ifIdExitsInSelectedGroupIds) {
+            const gindex = selectedGroupIds.indexOf(id);
+            if (gindex > -1) {
+                selectedGroupIds.splice(gindex, 1);
+            }
+
+        }
+        else {
+            selectedGroupIds.push(id)
+        }
+
+
+        setGroupIds(selectedGroupIds)
+
 
     }
 
