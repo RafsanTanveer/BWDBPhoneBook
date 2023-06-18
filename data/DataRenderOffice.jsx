@@ -1,17 +1,16 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState, useContext } from "react";
-import { Dimensions, FlatList, Image, Linking, TextInput, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { ActivityIndicator, Dimensions, Image, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 // import { TextInput } from "react-native-paper";
+import { FlashList } from "@shopify/flash-list";
 import api from '../api/api';
-import LoadingScreen from "../screens/LoadingScreen";
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import NoDataFoundScreen from '../screens/NoDataFoundScreen';
+import ItemOffice from '../component/ItemOffice';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
-import { FAB, Portal } from 'react-native-paper';
-import { FlashList } from "@shopify/flash-list";
-import ItemOffice from '../component/ItemOffice'
-import FABComponent from '../component/FABComponent'
+import LoadingScreen from "../screens/LoadingScreen";
+import NoDataFoundScreen from '../screens/NoDataFoundScreen';
+import { Images } from '../utility/Images';
+
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -111,7 +110,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                 {item.photo ?
                     <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
                     :
-                    <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                    <Image style={styles.place_holder_logo} source={Images['placeHolderImg']} ></Image>
 
                 }
             </View>

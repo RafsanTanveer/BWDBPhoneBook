@@ -1,45 +1,27 @@
-import { Ionicons } from '@expo/vector-icons';
-import { FlashList } from "@shopify/flash-list";
-import React, { useContext, useEffect, useState } from "react";
-import { ToastAndroid, ActivityIndicator, Linking, Keyboard, RefreshControl, ScrollView, Dimensions, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import FloatingBtnComponent from '../component/FloatingBtnComponent'
-import DropDownPicker from 'react-native-dropdown-picker'
-import { Images } from '../utility/Images'
 import NetInfo from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
+import { FlashList } from "@shopify/flash-list";
+import Checkbox from 'expo-checkbox';
+import * as Contacts from 'expo-contacts';
+import React, { useContext, useEffect, useState } from "react";
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
+import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
+import FloatingBtnComponent from '../component/FloatingBtnComponent';
+import Item from '../component/Item';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import LoadingScreen from "../screens/LoadingScreen";
 import NoInternetScreen from '../screens/NoInternetScreen';
-
-import Checkbox from 'expo-checkbox';
-import * as Contacts from 'expo-contacts';
-import { useForm } from 'react-hook-form';
-import { FAB, Portal } from 'react-native-paper';
-import Item from '../component/Item';
-import DropDownComponent from '../component/DropDownComponent'
-import FABComponent from '../component/FABComponent'
-
-import { Charges } from '../data/Charges'
-
-
-const filterIcon = '../assets/icons/filter.png'
-const downArrowIcon = '../assets/icons/down-arrow.png'
-const upArrowIcon = '../assets/icons/up-arrow.png'
-const leftArrowIcon = '../assets/icons/left-arrow.png'
-const emailIcon = '../assets/icons/email.png'
-const msglIcon = '../assets/icons/message.png'
-const groupIcon = '../assets/icons/group.png'
-const bwdLogo = '../assets/bwdLogo.png'  // message
-
-
-
+import { Images } from '../utility/Images';
+import { height, width } from '../utility/ScreenDimensions';
+import { timeStamp } from '../utility/Time';
+import { Charges } from '../utility/Charges';
 import db from '../database/database';
+import { imgSizeMini } from '../utility/Scalling'
 
 
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 
 
 let selectedPId = []
@@ -167,19 +149,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }, []);
 
 
-    let activIcon = currentTheme === '#6750a4' ? selectAll_0 :
-        currentTheme === '#048BB3' ? selectAll_3 :
-            currentTheme === '#0089E3' ? selectAll_6 :
-                currentTheme === '#0069C4' ? selectAll_9 : selectAllInactive
+    // let activIcon = currentTheme === '#6750a4' ? selectAll_0 :
+    //     currentTheme === '#048BB3' ? selectAll_3 :
+    //         currentTheme === '#0089E3' ? selectAll_6 :
+    //             currentTheme === '#0069C4' ? selectAll_9 : selectAllInactive
 
 
     // console.log('activIcon ================================================', activIcon);
 
 
-    let charge = presentCharge ? presentCharge === 'R' ? '' :
-        presentCharge === 'C' ? ',CC' :
-            presentCharge === 'A' ? ',Addl.' :
-                presentCharge === 'I' ? ',Incharge' : '' : ''
+    let charge = Charges(presentCharge)
 
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
@@ -788,7 +767,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // controller.reset()
 
 
-        setActiveIcon(activIcon)
+        // setActiveIcon(activIcon)
 
         setCurrentDistValue() // for reseting dropdown picker
         setCurrentChargeValue()
@@ -913,19 +892,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }
 
-    const padTo2Digits = (num) => {
-        return num.toString().padStart(2, '0');
-    }
 
-    const timeStamp = () => {
-        const months = ['JAN', 'FEB', 'MAR', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-        const hours = ['', '', '', '', '', '', '', '', '', '', '', '',];
-        const date = new Date()
-        const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
-        const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
-        // console.log(dateStr);
-        return dateStr;
-    }
+
 
 
     const groupHanlder = () => {
@@ -1061,19 +1029,19 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     />
                                     : currentTheme === '#6750a4' ?
                                         <Image
-                                            source={require(selectAll_0)}
+                                            source={Images['selectAll_0']}
                                             style={styles.select_all_icon}
                                         /> : currentTheme === '#048BB3' ?
                                             <Image
-                                                source={require(selectAll_3)}
+                                                source={Images['selectAll_3']}
                                                 style={styles.select_all_icon}
                                             /> : currentTheme === '#0089E3' ?
                                                 <Image
-                                                    source={require(selectAll_6)}
+                                                    source={Images['selectAll_6']}
                                                     style={styles.select_all_icon}
                                                 /> : currentTheme === '#0069C4' ?
                                                     <Image
-                                                        source={require(selectAll_9)}
+                                                        source={Images['selectAll_9']}
                                                         style={styles.select_all_icon}
                                                     /> : ''
                             }
@@ -1107,7 +1075,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     height: 22,
                                     width: 22,
                                 }}
-                                source={require("../assets/close.png")}
+                                source={Images['close']}
                             />
                         </TouchableOpacity> : ""
                     }
@@ -1131,7 +1099,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             >
                                 <Image
                                     source={Images['filterIcon']}
-                                    style={{ height: 20, width: 20 }}
+                                        style={{ height: imgSizeMini, width: imgSizeMini }}
                                 />
                                 <Text style={{
                                     color: 'white',
@@ -1142,12 +1110,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     !isFilterOn ?
                                         <Image
                                             source={Images['downArrowIcon']}
-                                            style={{ height: 20, width: 20 }}
+                                            style={{ height: imgSizeMini, width: imgSizeMini }}
                                         />
                                         :
                                         <Image
                                             source={Images['upArrowIcon']}
-                                            style={{ height: 20, width: 20 }}
+                                            style={{ height: imgSizeMini, width: imgSizeMini }}
                                         />}
                             </TouchableOpacity>
                             {
@@ -1384,7 +1352,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 elevation: 10
 
                             }}>
-                            <TouchableOpacity onPress={() => setIsFloatingBtnExteded(!isFloatingBtnExteded)}>
+                            <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded), setGroupMenu(false) }}>
                                 <Image
                                     source={Images['leftArrowIcon']}
                                     style={{
@@ -1448,7 +1416,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             // height: width * .1,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            right: width * .37,
+                            right: width * .40,
                             bottom: height * .46,
                             //  backgroundColor: `${currentTheme}`,
 
@@ -1468,16 +1436,24 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
-                                    icon='msglIcon'
-                                    txt="SMS"
+                                    icon='creatGroup'
+                                    txt="Create"
                                     badgeCount={currentSelectedIds.length}
                                     callBackFn={bulkSMS}
                                 />
 
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
-                                    icon='emailIcon'
-                                    txt="Email"
+                                    icon='addGroup'
+                                    txt="Add"
+                                    badgeCount={currentSelectedIds.length}
+                                    callBackFn={bulkEmail}
+                                />
+
+                                <FloatingBtnComponent
+                                    currentTheme={currentTheme}
+                                    icon='clearGroup'
+                                    txt="Clear"
                                     badgeCount={currentSelectedIds.length}
                                     callBackFn={bulkEmail}
                                 />

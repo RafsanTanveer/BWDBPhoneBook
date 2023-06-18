@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Images } from '../utility/Images'
 
 import GradientText from '../component/GradientText'
 
@@ -51,7 +52,7 @@ const Login = () => {
                         width: screenWidth * 1,
                         height: screenHeight * .6,
                     }}
-                    source={require(paniBhaban)}
+                    source={Images['paniBhaban']}
                 />
                 <Image
                     style={{
@@ -62,7 +63,7 @@ const Login = () => {
                         marginLeft: screenWidth * .70,
                         marginTop: screenHeight * .42,
                     }}
-                    source={require(bwdbLogo)}
+                    source={Images['bwdLogo']}
                 />
                 <View style={{ marginTop: screenHeight * .6, alignItems: 'center', }}>
                     <GradientText style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory </GradientText>
@@ -122,7 +123,7 @@ const Login = () => {
 
                 }}>
                     <View style={{ justifyContent: 'flex-end' }}>
-                        <Image style={{ width: screenWidth, height: screenHeight * .1, }} source={require(botom)} />
+                        <Image style={{ width: screenWidth, height: screenHeight * .1, }} source={Images['bottom']} />
                     </View>
                 </View>
             </View>

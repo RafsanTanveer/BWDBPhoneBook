@@ -11,6 +11,7 @@ import ExperienceScreenGeneral from '../component/ExperienceScreenGeneral';
 import TrainingComponent from '../component/TrainingComponent';
 import api from '../api/api';
 import { AuthContext } from '../context/AuthContext';
+import { Images } from '../utility/Images'
 
 
 
@@ -78,7 +79,7 @@ const Biodata = ({ id, navigation, route }) => {
 
 
                             <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5 }}>
-                                <Image style={{ width: 60, height: 60 }} source={require('../assets/bwdLogo.png')} />
+                                <Image style={{ width: 60, height: 60 }} source={Images['bwdLogo']} />
                             </View>
                             <View style={{
                                 alignItems: 'center',
@@ -104,7 +105,7 @@ const Biodata = ({ id, navigation, route }) => {
                                         {
                                             item.photo ?
                                                 <Image style={{ height: 100, width: 90 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
-                                                <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                                                <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                         }
 
 

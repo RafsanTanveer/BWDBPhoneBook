@@ -1,43 +1,28 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState, useContext, useCallback, memo } from "react";
-import { Modal, Dimensions, FlatList, Image, Linking, TextInput, Pressable, RefreshControl, ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
-import { FlashList } from "@shopify/flash-list";
+import React, { memo, useContext, useEffect, useState } from "react";
+import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import api from '../api/api';
-import LoadingScreen from "../screens/LoadingScreen";
-import NetInfo from '@react-native-community/netinfo';
-import NoInternetScreen from '../screens/NoInternetScreen'
-import NoDataFoundScreen from '../screens/NoDataFoundScreen';
-import { AuthContext } from '../context/AuthContext';
-import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
-import Checkbox from 'expo-checkbox';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-// import { FAB } from 'react-native-paper';
-import { useForm, Controller } from 'react-hook-form';
-import * as Contacts from 'expo-contacts'
+import { Images } from '../utility/Images';
 
-import { Picker } from '@react-native-picker/picker';
-import MakeCallModalComponent from '../component/MakeCallModalComponent'
-import * as SQLite from 'expo-sqlite'
+import MakeCallModalComponent from '../component/MakeCallModalComponent';
+import { Charges } from '../utility/Charges';
 
-import db from '../database/database'
-// import { DataContext } from '../context/DataContext';
-
-
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
-
+import { height, width } from '../utility/ScreenDimensions';
+import { imgSizeMini, txtSizeNormal,txtSizeBig } from "../utility/Scalling";
 
 let selectedPId = []
-let selectedGroupIds =[]
+let selectedGroupIds = []
 
 
 
 
 const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
+    const presentCharge = Charges(charge)
+    console.log(presentCharge);
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
@@ -151,13 +136,13 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                 :
                                 <View>
                                     <Image style={styles.place_holder_logo}
-                                        source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                                        source={Images['placeHolderImg']} ></Image>
                                 </View>
 
 
                         }
                     </TouchableOpacity>
-                    <View style={{ elevation: 3, backgroundColor: `${currentTheme}`,alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5) }}>
+                    <View style={{ elevation: 3, backgroundColor: `${currentTheme}`, alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5) }}>
                         <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }} >{index + 1}</Text>
                     </View>
                 </View>
@@ -175,7 +160,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                         <TouchableOpacity onPress={() => {
                                             navigation.navigate('Biodata', { id: id })
                                         }}>
-                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
 
 
                                         </TouchableOpacity>
@@ -186,33 +171,33 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                             {
                                 notDgOrAdg && isAdmin ?
                                     <View style={{ justifyContent: 'space-between' }}>
-                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
                                         {
                                             bwdbJoiningDt &&
-                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
                                         }
                                         {
                                             retiredate &&
-                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
                                         }
-                                        {/*bwdbJoiningDt <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+                                        {/*bwdbJoiningDt <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
                                     </View>
                                     : ""
                             }
-                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                            <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
                         </View>
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
                         </View>
 
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', }}>{office} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'grey', }}>{office} </Text>
                         </View>
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {charge === 'R' ? '' :
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {charge === 'R' ? '' :
                                         charge === 'C' ? ', CC' :
                                             charge === 'A' ? ', Addl.' :
                                                 charge === 'I' ? ', Incharge' : ''} </Text>
@@ -220,14 +205,14 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                 :
                                 charge === 'C' ?
                                     <View style={{ flex: 1, }}>
-                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} N {charge === 'R' ? '' :
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} N {charge === 'R' ? '' :
                                             charge === 'C' ? ', CC' :
                                                 charge === 'A' ? ', Addl.' :
                                                     charge === 'I' ? ', Incharge' : ''} </Text>
                                     </View>
                                     : charge === 'R' ?
                                         <View style={{ flex: 1, }}>
-                                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} N {charge === 'R' ? '' :
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} N {charge === 'R' ? '' :
                                                 charge === 'C' ? ', CC' :
                                                     charge === 'A' ? ', Addl.' :
                                                         charge === 'I' ? ', Incharge' : ''} </Text>
@@ -240,7 +225,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                     {
                         email &&
                         <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
                         </TouchableOpacity>
                     }
 
@@ -265,8 +250,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                     paddingHorizontal: 5,
                                     elevation: 3
                                 }}>
-                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
+                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>{mobile} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -282,8 +267,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                     paddingHorizontal: 10,
                                     elevation: 3
                                 }}>
-                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{pabx} </Text>
+                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -300,9 +285,9 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 12,
-                                    elevation:3
+                                    elevation: 3
                                 }}>
-                                <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
+                                <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
                             </TouchableOpacity>
                         }
                         {
@@ -352,8 +337,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                             //         paddingVertical: 1,
                             //         paddingHorizontal: 5
                             //     }}>
-                            //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" /> */}
-                            //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>ADD</Text>
+                            //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" /> */}
+                            //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>ADD</Text>
                             // </TouchableOpacity>
                         }
                     </View>

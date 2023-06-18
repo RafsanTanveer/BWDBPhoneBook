@@ -7,10 +7,10 @@ import { AuthContext } from '../context/AuthContext';
 import SplashScreen from '../screens/SplashScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import db from '../database/database'
+import { Images } from '../utility/Images'
+import { timeStamp } from '../utility/Time'
 
-
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
+import { height, width } from '../utility/ScreenDimensions'
 
 
 const officeLevel = [
@@ -50,14 +50,6 @@ const BiodataScreen = ({ id, navigation }) => {
         return num.toString().padStart(2, '0');
     }
 
-    const timeStamp = () => {
-        const months = ['JAN', 'FEB', 'MAR', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-        const date = new Date()
-        const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
-        const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
-        // console.log(dateStr);
-        return dateStr;
-    }
 
 
     const updateBiodata = () => {
@@ -851,7 +843,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
                                 <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5 }}>
-                                    <Image style={{ width: 60, height: 60 }} source={require('../assets/bwdLogo.png')} />
+                                    <Image style={{ width: 60, height: 60 }} source={Images['bwdLogo']} />
                                 </View>
                                 <View style={{
                                     alignItems: 'center',
@@ -886,7 +878,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             {
                                                 item.photo ?
                                                     <Image style={{ height: 100, width: 90 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
-                                                    <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                                                    <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
 
 
@@ -1277,7 +1269,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     </ScrollView >
 
 
-                                   
+
                                 </View>
                             </ScrollView >
 
