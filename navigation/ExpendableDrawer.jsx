@@ -7,6 +7,7 @@ import OfficeList from '../data/OfficeList';
 import ThemeContainer from '../component/ThemeContainer'
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext'
+import { timeStamp } from '../utility/Time';
 
 import db from '../database/database'
 
@@ -131,6 +132,8 @@ const ExpendableDrawer = () => {
 
                 __DEV__ && console.log(response.rows.length);
 
+
+
                 await new Promise((resolve, reject) => {
                     db.transaction((tx) => {
 
@@ -154,7 +157,8 @@ const ExpendableDrawer = () => {
                                     paygrade,
                                     desig,
                                     designame,
-                                    tablename)
+                                    tablename,
+                                    totalPostNBS)
                VALUES (  ?, ?, ?, ?,?,?);`,
                                 [
                                     it.cadre,
@@ -171,6 +175,35 @@ const ExpendableDrawer = () => {
                     }, null, resolve);
 
                 });
+
+
+
+                response.rows.forEach(async (it, index) => {
+
+
+                    const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
+                    const { data: response } = await api.get(desigUrl, { params: { desig: it.desig } });
+                    const data = response.rows;
+                    console.log(index, ' it.desig, tablename ------------------', it.desig, it.tablename, ' length === ', data.length);
+
+                    const dataWithSelected = data.map(item => (
+                        item = { ...item, selected: 'false' }
+
+                    ))
+
+                    console.log('dataWithSelected  (()))  ', dataWithSelected.length);
+
+
+
+
+
+
+
+
+                });
+
+
+
             }
 
 

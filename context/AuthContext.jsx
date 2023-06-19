@@ -4,6 +4,8 @@ import { ToastAndroid } from 'react-native';
 import api from '../api/api';
 import db from '../database/database'
 
+
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -72,7 +74,7 @@ export const AuthProvider = ({ children }) => {
 
         // const tableExists = tableNames.includes('employee');
 
-        __DEV__ && console.log('in loing');
+
         api
             .get("userinfo", {
                 params: {

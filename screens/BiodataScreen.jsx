@@ -805,6 +805,12 @@ const BiodataScreen = ({ id, navigation }) => {
         setIsLoading(false);
     }
 
+
+    const donwLoadAllData = () => {
+        
+    }
+
+
     // DownloadDataAtStartup()
 
     // console.log(designationContext);
