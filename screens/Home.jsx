@@ -1,12 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import api from "../api/api";
-import DataRender from "../data/DataRender";
-import { View, StyleSheet, ToastAndroid, Button, StatusBar, Text } from "react-native";
-import * as SQLite from 'expo-sqlite'
+import React, { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { DatabaseConnection } from "../data/DbConnection";
 import BiodataScreen from "./BiodataScreen";
-import { AuthContext } from "../context/AuthContext";
-import LoadingScreen from '../screens/LoadingScreen'
 
 const db = DatabaseConnection.getConnection();
 const Home = ({ navigation }) => {

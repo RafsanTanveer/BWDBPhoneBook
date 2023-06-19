@@ -8,6 +8,6 @@ export const timeStamp = () => {
     const date = new Date()
     const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
     const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
-    // console.log(dateStr);
+     
     return dateStr;
 }

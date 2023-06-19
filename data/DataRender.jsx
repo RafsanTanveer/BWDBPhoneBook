@@ -21,6 +21,8 @@ import { Charges } from '../utility/Charges';
 import db from '../database/database';
 import { imgSizeMini } from '../utility/Scalling'
 
+import { CreateQueries } from '../database/CreateQueries'
+
 
 
 
@@ -622,6 +624,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             setDATA([])
 
             deleteAllData();
+            // CreateQueries(tablename)
+            // timeStamp()
 
             fetchDataAndInsert()
 
@@ -764,10 +768,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setSearch('')
         setdistName('')
         tempDist = []
-        // controller.reset()
 
-
-        // setActiveIcon(activIcon)
 
         setCurrentDistValue() // for reseting dropdown picker
         setCurrentChargeValue()

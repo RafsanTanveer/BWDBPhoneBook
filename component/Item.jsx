@@ -22,7 +22,7 @@ let selectedGroupIds = []
 const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
     const presentCharge = Charges(charge)
-    console.log(presentCharge);
+    // console.log('presentCharge - ',charge, presentCharge);
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);

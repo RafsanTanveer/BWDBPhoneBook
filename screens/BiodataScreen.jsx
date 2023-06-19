@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator,Dimensions } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator, Dimensions } from 'react-native';
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -11,7 +11,7 @@ import { Images } from '../utility/Images'
 import { timeStamp } from '../utility/Time'
 
 import { height, width } from '../utility/ScreenDimensions'
-
+import DownloadDataAtStartup from '../utility/DownloadDataAtStartup'
 
 const officeLevel = [
     "Board",
@@ -30,7 +30,7 @@ const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
 
     const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost, setisAdmin, presentOfficeCode } = useContext(AuthContext);
-    const { setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge, pmisId, setPmisId, } = useContext(AuthContext);
+    const { designationContext, setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge, pmisId, setPmisId, } = useContext(AuthContext);
 
 
     //  ******************************  fetching data ***************************************
@@ -462,7 +462,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
             if (tableExists) {
-               // __DEV__ && console.log('biodata', ' table exists............................................................................');
+                // __DEV__ && console.log('biodata', ' table exists............................................................................');
 
                 /////// check if id exists or not
 
@@ -481,7 +481,7 @@ const BiodataScreen = ({ id, navigation }) => {
                 const isIdExist = exsistingIDs.includes(id);
 
                 if (isIdExist) {
-                   // __DEV__ && console.log(id, 'exists');
+                    // __DEV__ && console.log(id, 'exists');
 
                     await new Promise((resolve, reject) => {
                         var isIdExist = true;
@@ -805,6 +805,12 @@ const BiodataScreen = ({ id, navigation }) => {
         setIsLoading(false);
     }
 
+    // DownloadDataAtStartup()
+
+    // console.log(designationContext);
+    // console.log('DownloadDataAtStartup Start');
+    // designationContext.forEach((item) => DownloadDataAtStartup(item.desig, item.tablename))
+    // console.log('DownloadDataAtStartup End');
 
 
 
@@ -819,6 +825,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
     //  ******************************  fetching data ***************************************
     // __DEV__ && console.log('in biodata');
+
+
 
 
 
@@ -854,7 +862,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                 </View>
                             </View>
-                            <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey', margin:9 }}>Last Update Taken : {tabelCreationTime}</Text>
+                            <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey', margin: 9 }}>Last Update Taken : {tabelCreationTime}</Text>
 
                             {refreshing ? <ActivityIndicator /> : null}
 
