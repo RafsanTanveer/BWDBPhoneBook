@@ -8,7 +8,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import { Images } from '../utility/Images';
 
 import MakeCallModalComponent from '../component/MakeCallModalComponent';
-import { Charges } from '../utility/Charges';
+// import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
 import { imgSizeMini, txtSizeNormal,txtSizeBig } from "../utility/Scalling";
@@ -21,7 +21,7 @@ let selectedGroupIds = []
 
 const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
-    const presentCharge = Charges(charge)
+    // const presentCharge = Charges(charge)
     // console.log('presentCharge - ',charge, presentCharge);
     const navigation = useNavigation();
 

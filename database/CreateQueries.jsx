@@ -1,6 +1,38 @@
 import db from '../database/database'
 
-export const createDesignationTable  =  ({ tablename }) => {
-     console.log('createDesignationTable in file/////////////////////////////////////', tablename);
 
+
+export const createDesignationTable = (tableName) => {
+     return new Promise((resolve, reject) => {
+          db.transaction((tx) => {
+               tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS ${tableName} (
+                                id          TEXT,
+                                name        TEXT,
+                                designation TEXT,
+                                post        TEXT,
+                                charge      TEXT,
+                                seniority   INTEGER,
+                                office      TEXT,
+                                officeAddress  TEXT,
+                                officeDistrict  TEXT,
+                                mobile      TEXT,
+                                pabx        TEXT,
+                                email       TEXT,
+                                retiredate  TEXT,
+                                bwdbJoiningDt TEXT,
+                                photo       BLOB,
+                                selected    TEXT,
+                                timestamp   TEXT
+                                                 );`,
+                    [],
+                    (_, result) => {
+                         resolve(result);
+                    },
+                    (_, error) => {
+                         reject(error);
+                    }
+               );
+          });
+     });
 };

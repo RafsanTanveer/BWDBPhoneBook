@@ -8,7 +8,8 @@ import ThemeContainer from '../component/ThemeContainer'
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext'
 import { timeStamp } from '../utility/Time';
-
+import { createDesignationTable } from '../database/CreateQueries'
+import { insertDataIntoDesignationTable } from '../database/InsertQueries'
 import db from '../database/database'
 
 const height = Dimensions.get('window').height;
@@ -16,6 +17,7 @@ const width = Dimensions.get('window').width;
 
 //****************************************** icons ********************************************** */
 
+let storage = {}
 
 
 const bwdbLogo = '../assets/bwdLogo.png'
@@ -67,6 +69,8 @@ const ExpendableDrawer = () => {
     const [waterDesig, setwaterDesig] = useState([])
     const [mechDesig, setmechDesig] = useState([])
     const [medicalDesig, setmedicalDesig] = useState([])
+
+
 
 
 
@@ -133,6 +137,19 @@ const ExpendableDrawer = () => {
                 __DEV__ && console.log(response.rows.length);
 
 
+                response.rows.forEach(async (it, index) => {
+
+
+                    const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
+                    // const { data: response } = await api.get(desigUrl, { params: { desig: it.desig } });
+                    // const data = response.rows;
+
+                    fetchDataAndStore(desigUrl, it.tablename, it.desig);
+
+
+                })
+
+
 
                 await new Promise((resolve, reject) => {
                     db.transaction((tx) => {
@@ -177,30 +194,114 @@ const ExpendableDrawer = () => {
                 });
 
 
-
-                response.rows.forEach(async (it, index) => {
-
-
-                    const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
-                    const { data: response } = await api.get(desigUrl, { params: { desig: it.desig } });
-                    const data = response.rows;
-                    console.log(index, ' it.desig, tablename ------------------', it.desig, it.tablename, ' length === ', data.length);
-
-                    const dataWithSelected = data.map(item => (
-                        item = { ...item, selected: 'false' }
-
-                    ))
-
-                    console.log('dataWithSelected  (()))  ', dataWithSelected.length);
+                // await new Promise((resolve, reject) => {
+                //     db.transaction((tx) => {
 
 
+                //         response.rows.forEach(async (it, index) => {
+
+
+                //             const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
+                //             const { data: response } = await api.get(desigUrl, { params: { desig: it.desig } });
+                //             const data = response.rows;
+                //             console.log(index, ' it.desig, tablename ------------------', it.desig, it.tablename, ' length === ', data.length);
+
+                //             const dataWithSelected = data.map(item => (
+                //                 item = { ...item, selected: 'false' }
+
+                //             ))
+
+                //             // dataWithSelected.length && console.log('dataWithSelected  ((()))  ', dataWithSelected[0].name);
+
+                //             storage[`${it.tablename}`] = dataWithSelected
+
+                //             // console.log('storage.length llllllllllllllllllllllllllllll  ', storage[`${it.tablename}`].rows);
+
+                //             // storage[`${it.tablename}`].forEach((it,index) => {
+                //             //     console.log(it[index].name);
+                //             // });
+
+
+                //             tx.executeSql(
+                //                 `CREATE TABLE IF NOT EXISTS ${it.tablename} (
+                //                 id          TEXT,
+                //                 name        TEXT,
+                //                 designation TEXT,
+                //                 post        TEXT,
+                //                 charge      TEXT,
+                //                 seniority   INTEGER,
+                //                 office      TEXT,
+                //                 officeAddress  TEXT,
+                //                 officeDistrict  TEXT,
+                //                 mobile      TEXT,
+                //                 pabx        TEXT,
+                //                 email       TEXT,
+                //                 retiredate  TEXT,
+                //                 bwdbJoiningDt TEXT,
+                //                 photo       BLOB,
+                //                 selected    TEXT,
+                //                 timestamp   TEXT
+                //                                  );`
+                //             );
+
+
+                //         });
+
+
+
+                //     }, null, resolve);
+
+                // });
+
+                await new Promise((resolve, reject) => { console.log('storage  ----  ', storage.length) })
+
+
+                // storage['DIRADMIN'].forEach((it,index) => {
+                //                 console.log(it[index].name);
+                //             });
+
+
+                // await new Promise((resolve, reject) => {
+                //     db.transaction((tx) => {
+                //         response.rows.forEach(async (it, index) => {
+
+                //             tx.executeSql(
+                //                 `CREATE TABLE IF NOT EXISTS ${it.tablename} (
+                //                 id          TEXT,
+                //                 name        TEXT,
+                //                 designation TEXT,
+                //                 post        TEXT,
+                //                 charge      TEXT,
+                //                 seniority   INTEGER,
+                //                 office      TEXT,
+                //                 officeAddress  TEXT,
+                //                 officeDistrict  TEXT,
+                //                 mobile      TEXT,
+                //                 pabx        TEXT,
+                //                 email       TEXT,
+                //                 retiredate  TEXT,
+                //                 bwdbJoiningDt TEXT,
+                //                 photo       BLOB,
+                //                 selected    TEXT,
+                //                 timestamp   TEXT
+                //                                  );`
+                //             );
+
+
+                //         });
+
+
+
+                //     }, null, resolve);
+
+                // });
 
 
 
 
 
 
-                });
+
 
 
 
@@ -215,6 +316,26 @@ const ExpendableDrawer = () => {
 
         setIsLoading(false);
     }
+
+
+
+    const fetchDataAndStore = async (apiUrl, tableName, desig) => {
+        try {
+
+
+            const { data: response } = await api.get(apiUrl, { params: { desig: desig } });
+            const data = response.rows;
+
+
+            await createDesignationTable(tableName); // Create table if it doesn't exist
+            await insertDataIntoDesignationTable(tableName, data); // Insert data into table
+
+            console.log('url = ', apiUrl);
+            console.log(`Data stored in  ${tableName} table.`);
+        } catch (error) {
+            console.error(`Error storing data in ${tableName} table:`, error);
+        }
+    };
 
     useEffect(() => {
 

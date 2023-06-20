@@ -17,7 +17,7 @@ import NoInternetScreen from '../screens/NoInternetScreen';
 import { Images } from '../utility/Images';
 import { height, width } from '../utility/ScreenDimensions';
 import { timeStamp } from '../utility/Time';
-import { Charges } from '../utility/Charges';
+// import { Charges } from '../utility/Charges';
 import db from '../database/database';
 import { imgSizeMini } from '../utility/Scalling'
 
@@ -160,9 +160,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     // console.log('activIcon ================================================', activIcon);
 
 
-    let charge = Charges(presentCharge)
+    // let charge = Charges(presentCharge)
 
-    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
+    // let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
 
@@ -385,20 +385,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
 
-                // console.log(data[0].timestamp);
+                console.log('data[0] === ',data.length);
 
-                setTabelCreationTime(data[0].timestamp)
+                data.length && setTabelCreationTime(data[0].timestamp)
 
 
-                const dataWithSelected = data.map(item => (
-                    item = { ...item, selected: 'false' }
+                // const dataWithSelected = data.map(item => (
+                //     item = { ...item, selected: 'false' }
 
-                ))
+                // ))
 
                 // console.log(dataWithSelected);
 
 
-                setDATA(dataWithSelected);
+                setDATA(data);
 
 
                 /////////////////////// district calculation //////////////////////////
