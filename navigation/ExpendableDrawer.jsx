@@ -4,13 +4,15 @@ import { Button, Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } f
 import { List } from 'react-native-paper';
 import api from '../api/api';
 import OfficeList from '../data/OfficeList';
+import GroupList from '../data/GroupList'
 import ThemeContainer from '../component/ThemeContainer'
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext'
 import { timeStamp } from '../utility/Time';
-import { createDesignationTable } from '../database/CreateQueries'
-import { insertDataIntoDesignationTable } from '../database/InsertQueries'
+import { createDesignationTable, createDesignationListTable } from '../database/CreateQueries'
+import { insertDataIntoDesignationTable,insertDataIntoDesignationListTable } from '../database/InsertQueries'
 import db from '../database/database'
+import Images from '../utility/Images'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -37,7 +39,7 @@ const water = '../assets/icons/water.png'
 const office = '../assets/icons/office.png'
 const medical = '../assets/icons/medical.png'
 const settings = '../assets/icons/settings.png'
-
+const groupIcon = '../assets/icons/groupIcon.png'
 
 //*******************************************icons ********************************************** */
 
@@ -95,8 +97,8 @@ const ExpendableDrawer = () => {
             });
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table = ', tableNames.length);
-            __DEV__ && console.log('Table names:', tableNames);
+            // __DEV__ && console.log('Total table = ', tableNames.length);
+            // __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes('designation');
 
@@ -132,174 +134,19 @@ const ExpendableDrawer = () => {
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
                 setDesignationContext(response.rows)
-                // console.log('desig table does not extist ____________________________________________________', response.rows);
 
-                __DEV__ && console.log(response.rows.length);
-
-
+                // pre download all data at installatin time
                 response.rows.forEach(async (it, index) => {
 
-
                     const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
-                    // const { data: response } = await api.get(desigUrl, { params: { desig: it.desig } });
-                    // const data = response.rows;
 
                     fetchDataAndStore(desigUrl, it.tablename, it.desig);
 
-
                 })
 
+                createDesignationListTable('designation')
 
-
-                await new Promise((resolve, reject) => {
-                    db.transaction((tx) => {
-
-
-                        tx.executeSql(
-                            `CREATE TABLE IF NOT EXISTS designation (
-                                cadre       TEXT,
-                                paygrade    TEXT,
-                                desig       TEXT,
-                                designame   TEXT,
-                                tablename   TEXT,
-                                totalPostNBS TEXT
-                                                 );`
-                        );
-
-
-                        response.rows.forEach((it) => {
-                            tx.executeSql(
-                                `INSERT INTO designation (
-                                    cadre,
-                                    paygrade,
-                                    desig,
-                                    designame,
-                                    tablename,
-                                    totalPostNBS)
-               VALUES (  ?, ?, ?, ?,?,?);`,
-                                [
-                                    it.cadre,
-                                    it.paygrade,
-                                    it.desig,
-                                    it.designame,
-                                    it.tablename,
-                                    it.totalPostNBS
-                                ]
-                            );
-                        });
-
-
-                    }, null, resolve);
-
-                });
-
-
-                // await new Promise((resolve, reject) => {
-                //     db.transaction((tx) => {
-
-
-                //         response.rows.forEach(async (it, index) => {
-
-
-                //             const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
-                //             const { data: response } = await api.get(desigUrl, { params: { desig: it.desig } });
-                //             const data = response.rows;
-                //             console.log(index, ' it.desig, tablename ------------------', it.desig, it.tablename, ' length === ', data.length);
-
-                //             const dataWithSelected = data.map(item => (
-                //                 item = { ...item, selected: 'false' }
-
-                //             ))
-
-                //             // dataWithSelected.length && console.log('dataWithSelected  ((()))  ', dataWithSelected[0].name);
-
-                //             storage[`${it.tablename}`] = dataWithSelected
-
-                //             // console.log('storage.length llllllllllllllllllllllllllllll  ', storage[`${it.tablename}`].rows);
-
-                //             // storage[`${it.tablename}`].forEach((it,index) => {
-                //             //     console.log(it[index].name);
-                //             // });
-
-
-                //             tx.executeSql(
-                //                 `CREATE TABLE IF NOT EXISTS ${it.tablename} (
-                //                 id          TEXT,
-                //                 name        TEXT,
-                //                 designation TEXT,
-                //                 post        TEXT,
-                //                 charge      TEXT,
-                //                 seniority   INTEGER,
-                //                 office      TEXT,
-                //                 officeAddress  TEXT,
-                //                 officeDistrict  TEXT,
-                //                 mobile      TEXT,
-                //                 pabx        TEXT,
-                //                 email       TEXT,
-                //                 retiredate  TEXT,
-                //                 bwdbJoiningDt TEXT,
-                //                 photo       BLOB,
-                //                 selected    TEXT,
-                //                 timestamp   TEXT
-                //                                  );`
-                //             );
-
-
-                //         });
-
-
-
-                //     }, null, resolve);
-
-                // });
-
-                await new Promise((resolve, reject) => { console.log('storage  ----  ', storage.length) })
-
-
-                // storage['DIRADMIN'].forEach((it,index) => {
-                //                 console.log(it[index].name);
-                //             });
-
-
-                // await new Promise((resolve, reject) => {
-                //     db.transaction((tx) => {
-                //         response.rows.forEach(async (it, index) => {
-
-                //             tx.executeSql(
-                //                 `CREATE TABLE IF NOT EXISTS ${it.tablename} (
-                //                 id          TEXT,
-                //                 name        TEXT,
-                //                 designation TEXT,
-                //                 post        TEXT,
-                //                 charge      TEXT,
-                //                 seniority   INTEGER,
-                //                 office      TEXT,
-                //                 officeAddress  TEXT,
-                //                 officeDistrict  TEXT,
-                //                 mobile      TEXT,
-                //                 pabx        TEXT,
-                //                 email       TEXT,
-                //                 retiredate  TEXT,
-                //                 bwdbJoiningDt TEXT,
-                //                 photo       BLOB,
-                //                 selected    TEXT,
-                //                 timestamp   TEXT
-                //                                  );`
-                //             );
-
-
-                //         });
-
-
-
-                //     }, null, resolve);
-
-                // });
-
-
-
-
-
+                insertDataIntoDesignationListTable('designation', response.rows)
 
 
 
@@ -337,6 +184,12 @@ const ExpendableDrawer = () => {
         }
     };
 
+
+
+
+
+
+
     useEffect(() => {
 
         fetchData();
@@ -364,47 +217,56 @@ const ExpendableDrawer = () => {
     //  ******************************  fetching data ***************************************
 
 
+    let highestHandlePressNumber=22
+
     const handlePress = (no) => {
         const arr = []
 
         if (no == 0) {
             expendedList[0] ? arr[0] = false : arr[0] = true;
-            for (let i = 1; i <= 21; i++) {
+            for (let i = 1; i <= highestHandlePressNumber; i++) {
 
                 arr[i] = false;
             }
         }
         else if (no == 12) {
             expendedList[12] ? arr[12] = false : arr[12] = true;
-            for (let i = 0; i <= 21; i++) {
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
                 if (i != 12)
                     arr[i] = false;
             }
         }
         else if (no == 19) {
             expendedList[19] ? arr[19] = false : arr[19] = true;
-            for (let i = 0; i <= 21; i++) {
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
                 if (i != 19)
+                    arr[i] = false;
+            }
+        }
+        else if (no == 22) {
+            expendedList[22] ? arr[22] = false : arr[22] = true;
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i != 22)
                     arr[i] = false;
             }
         }
         else if (no > 0 && no <= 11) {
             arr[0] = true
-            for (let i = 1; i <= 21; i++) {
+            for (let i = 1; i <= highestHandlePressNumber; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else arr[i] = false;
             }
         }
         else if (no > 12 && no <= 18) {
             arr[12] = true
-            for (let i = 0; i <= 21; i++) {
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else if (i != 12) arr[i] = false;
             }
         }
-        else if (no > 19 && no <= 21) {
+        else if (no > 19 && no <= highestHandlePressNumber) {
             arr[19] = true
-            for (let i = 0; i <= 21; i++) {
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else if (i != 19) arr[i] = false;
             }
@@ -936,6 +798,23 @@ const ExpendableDrawer = () => {
 
                 </List.Accordion>
 
+                <List.Accordion
+                    style={styles.accordingStyleOffice}
+                    title="Group Email & SMS"
+                    left={props => <List.Icon {...props} icon={() => (
+                        <Image
+                            source={require(groupIcon)}
+                            style={styles.iconStyle}
+                        />
+                    )} />}
+                    expanded={expendedList[22]}
+                    onPress={() => handlePress(22)} >
+
+
+
+                    <GroupList />
+
+                </List.Accordion>
 
                 <List.Accordion
                     style={styles.accordingStyleOffice}

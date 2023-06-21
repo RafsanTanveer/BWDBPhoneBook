@@ -11,7 +11,7 @@ import { Images } from '../utility/Images'
 import { timeStamp } from '../utility/Time'
 
 import { height, width } from '../utility/ScreenDimensions'
-import DownloadDataAtStartup from '../utility/DownloadDataAtStartup'
+
 
 const officeLevel = [
     "Board",
@@ -327,7 +327,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                 name            TEXT,
                                 namebn          TEXT,
                                 f_name          TEXT,
+                                f_name_bn       TEXT,
                                 m_name          TEXT,
+                                m_name_bn       TEXT,
                                 bdate           TEXT,
                                 mstatus         TEXT,
                                 gender          TEXT,
@@ -363,7 +365,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                    name,
                                    namebn,
                                    f_name,
+                                   f_name_bn,
                                    m_name,
+                                   m_name_bn,
                                    bdate,
                                    mstatus,
                                    gender,
@@ -388,13 +392,15 @@ const BiodataScreen = ({ id, navigation }) => {
                                    officeLevel2,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?);`,
                         [
                             it.id,
                             it.name,
                             it.namebn,
                             it.f_name,
+                            it.f_name_bn,
                             it.m_name,
+                            it.m_name_bn,
                             it.bdate,
                             it.mstatus,
                             it.gender,
@@ -716,7 +722,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                    name,
                                    namebn,
                                    f_name,
+                                   f_name_bn,
                                    m_name,
+                                   m_name_bn,
                                    bdate,
                                    mstatus,
                                    gender,
@@ -738,13 +746,15 @@ const BiodataScreen = ({ id, navigation }) => {
                                    offceCode,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?,?, ?,?);`,
                                     [
                                         it.id,
                                         it.name,
                                         it.namebn,
                                         it.f_name,
+                                        it.f_name_bn,
                                         it.m_name,
+                                        it.m_name_bn,
                                         it.bdate,
                                         it.mstatus,
                                         it.gender,
@@ -784,7 +794,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
             } else {
-                __DEV__ && console.log('biodata', 'not table exists............................................................................');
+                __DEV__ && console.log('biodata', 'not table existts............................................................................');
 
 
                 fetchDataAndInsertintoDatabase()
@@ -807,16 +817,10 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
     const donwLoadAllData = () => {
-        
+
     }
 
 
-    // DownloadDataAtStartup()
-
-    // console.log(designationContext);
-    // console.log('DownloadDataAtStartup Start');
-    // designationContext.forEach((item) => DownloadDataAtStartup(item.desig, item.tablename))
-    // console.log('DownloadDataAtStartup End');
 
 
 
@@ -883,9 +887,11 @@ const BiodataScreen = ({ id, navigation }) => {
                                         <View style={{ flex: 1 }}>
                                             <RowComponent headingText='Employee ID' queryText={item.id} />
                                             <RowComponent headingText='Employee Name' queryText={item.name} />
-                                            <RowComponent headingText='Employee Name (Bangla)' queryText={item.namebn} />
+                                            <RowComponent headingText='' queryText={item.namebn} />
                                             <RowComponent headingText="Father's Name" queryText={item.f_name} />
+                                            <RowComponent headingText="" queryText={item.f_name_bn} />
                                             <RowComponent headingText="Mother's Name" queryText={item.m_name} />
+                                            <RowComponent headingText="" queryText={item.m_name_bn} />
                                             <RowComponent headingText='Home District' queryText={item.homeDist} />
                                         </View>
                                         <View >

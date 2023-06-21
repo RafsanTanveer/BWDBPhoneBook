@@ -17,11 +17,13 @@ import NoInternetScreen from '../screens/NoInternetScreen';
 import { Images } from '../utility/Images';
 import { height, width } from '../utility/ScreenDimensions';
 import { timeStamp } from '../utility/Time';
-// import { Charges } from '../utility/Charges';
+import { Charges } from '../utility/Charges';
 import db from '../database/database';
 import { imgSizeMini } from '../utility/Scalling'
 
-import { CreateQueries } from '../database/CreateQueries'
+import { createDesignationTable } from '../database/CreateQueries'
+import { deleteDataFromDesignationTable } from '../database/DeleteQueries'
+import { insertDataIntoDesignationTable } from '../database/InsertQueries'
 
 
 
@@ -151,33 +153,18 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }, []);
 
 
-    // let activIcon = currentTheme === '#6750a4' ? selectAll_0 :
-    //     currentTheme === '#048BB3' ? selectAll_3 :
-    //         currentTheme === '#0089E3' ? selectAll_6 :
-    //             currentTheme === '#0069C4' ? selectAll_9 : selectAllInactive
 
 
-    // console.log('activIcon ================================================', activIcon);
-
-
-    // let charge = Charges(presentCharge)
-
-    // let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
+    let charge = Charges(presentCharge)
+    console.log(charge);
+    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
 
 
     let toastMsg = `Please Select at least 1\n ${designation}`
 
-    // const onGenderOpen = useCallback(() => {
-    //     // setCompanyOpen(false);
-    // }, []);
 
-    // const onGenderOpen = useCallback(() => {
-    //     // setCompanyOpen(false);
-    // }, []);
-
-    const onGenderOpen = () => { }
 
     useEffect(() => {
         sortByDistrict()
@@ -368,8 +355,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table = ', tableNames.length);
-            __DEV__ && console.log('Table names:', tableNames);
+            // __DEV__ && console.log('Total table = ', tableNames.length);
+            // __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes(tablename);
             if (tableExists) {
@@ -385,7 +372,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
 
-                console.log('data[0] === ',data.length);
+                console.log('data[0] === ', data.length);
 
                 data.length && setTabelCreationTime(data[0].timestamp)
 
@@ -402,7 +389,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 /////////////////////// district calculation //////////////////////////
-
 
                 const distMap = {};
                 data.forEach(item => {
@@ -427,24 +413,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
 
-                // console.log(tempDist);
-
-                // console.log(timeStamp());
-
-                // setDistForDropDown(tempDist)
-                // setDistrict(tempDist)
-
-
-
                 /////////////////////// district calculation //////////////////////////
 
-
-                // __DEV__ && console.log(data.length);
-
-
             } else {
-                // __DEV__ && console.log(tablename, ' table does not exist');
 
+                //////////////////////////////////////// UNREACHABLE CODE /////////////////////////////////////
+
+                // This block possibaly can not be reached due to preload data while installation or first opening the app
+
+                console.log();
+                console.log('---------------------------------------------------------------------');
+                console.log("----------------- UNREACHED BLOCK HAS BEEN REACHED ------------------");
+                console.log('---------------------------------------------------------------------');
+
+                
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
 
@@ -485,96 +467,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
 
-                // console.log(tempDist);
-
-                // console.log(timeStamp());
-
-
-
-
-                // setDistForDropDown(tempDist)
-                // setDistrict(tempDist)
-
-
 
                 /////////////////////// district calculation //////////////////////////
+                createDesignationTable(tablename)
+
+                insertDataIntoDesignationTable(tablename, data)
 
 
-                await new Promise((resolve, reject) => {
-                    db.transaction((tx) => {
-                        tx.executeSql(
-                            `CREATE TABLE IF NOT EXISTS ${tablename} (
-                                id          TEXT,
-                                name        TEXT,
-                                designation TEXT,
-                                post        TEXT,
-                                charge      TEXT,
-                                seniority   INTEGER,
-                                office      TEXT,
-                                officeAddress  TEXT,
-                                officeDistrict  TEXT,
-                                mobile      TEXT,
-                                pabx        TEXT,
-                                email       TEXT,
-                                retiredate  TEXT,
-                                bwdbJoiningDt TEXT,
-                                photo       BLOB,
-                                selected    TEXT,
-                                timestamp   TEXT
-                                                 );`
-                        );
-
-
-
-                        data.forEach((it) => {
-                            tx.executeSql(
-                                `INSERT INTO ${tablename} (
-                                      id,
-                                      name,
-                                      designation,
-                                      post,
-                                      charge,
-                                      seniority,
-                                      office,
-                                      officeAddress,
-                                      officeDistrict,
-                                      mobile,
-                                      pabx,
-                                      email,
-                                      retiredate,
-                                      bwdbJoiningDt,
-                                      photo,
-                                      selected,
-                                      timestamp)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);`,
-                                [
-                                    it.id,
-                                    it.name,
-                                    it.designation,
-                                    it.post,
-                                    it.charge,
-                                    it.seniority,
-                                    it.office,
-                                    it.officeAddress,
-                                    it.officeDistrict,
-                                    it.mobile,
-                                    it.pabx,
-                                    it.email,
-                                    it.retiredate,
-                                    it.bwdbJoiningDt,
-                                    it.photo,
-                                    it.selected,
-                                    timeStamp()
-                                ]
-                            );
-                        });
-
-
-
-
-                    }, null, resolve);
-                });
-
+                //////////////////////////////////////// UNREACHABLE CODE /////////////////////////////////////
 
 
             }
@@ -585,37 +485,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }
 
 
-    const fetchDistrictFromDb = async () => {
-
-
-        try {
-
-            const { rows } = await new Promise((resolve, reject) => {
-                db.transaction((tx) => {
-                    tx.executeSql(`SELECT count(*) "count", officeDistrict FROM ${tablename} group by officeDistrict;`, [], (_, result) => {
-                        resolve(result);
-                    });
-                });
-            });
-
-            const distData = rows._array;
-            setDistrictFromDB(distData);
-            // console.log(distData.length);
-            // console.log(distData);
-
-        } catch (error) {
-            __DEV__ && console.error(error);
-        }
-        setIsLoading(false);
-    }
-
 
     const refreshData = async () => {
 
         try {
 
-            // __DEV__ && console.log(districtFromDB.length);
-            // districtFromDB.map((item, index) => console.log(index + 1, ' ', item.officeDistrict, ' = ', item.count))
 
             setRefreshing(false);
             setIsLoading(true);
@@ -623,9 +497,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             setDATA([])
 
-            deleteAllData();
-            // CreateQueries(tablename)
-            // timeStamp()
+            deleteDataFromDesignationTable(tablename)
+
 
             fetchDataAndInsert()
 
@@ -651,20 +524,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }
 
 
-    const deleteAllData = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                `DELETE FROM ${tablename};`,
-                [],
-                (tx, result) => {
-                    __DEV__ && console.log('Data deleted');
-                },
-                (tx, error) => {
-                    __DEV__ && console.log('Error deleting data:', error);
-                }
-            );
-        });
-    };
+
 
 
     // Function to read data from API and insert into table
@@ -693,54 +553,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             setDATA(dataWithSelected);
 
-            await new Promise((resolve, reject) => {
-                db.transaction((tx) => {
-
-
-                    data.forEach((it) => {
-                        tx.executeSql(
-                            `INSERT INTO ${tablename} (
-                                id,
-                                name,
-                                designation,
-                                post,
-                                charge,
-                                seniority,
-                                office,
-                                officeAddress,
-                                officeDistrict,
-                                mobile,
-                                pabx,
-                                email,
-                                retiredate,
-                                bwdbJoiningDt,
-                                photo,
-                                selected,
-                                timestamp)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);`,
-                            [
-                                it.id,
-                                it.name,
-                                it.designation,
-                                it.post,
-                                it.charge,
-                                it.seniority,
-                                it.office,
-                                it.officeAddress,
-                                it.officeDistrict,
-                                it.mobile,
-                                it.pabx,
-                                it.email,
-                                it.retiredate,
-                                it.bwdbJoiningDt,
-                                it.photo,
-                                it.selected,
-                                timeStamp()
-                            ]
-                        );
-                    });
-                }, null, resolve);
-            });
+            insertDataIntoDesignationTable(tablename, data)
 
 
 
@@ -1100,7 +913,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             >
                                 <Image
                                     source={Images['filterIcon']}
-                                        style={{ height: imgSizeMini, width: imgSizeMini }}
+                                    style={{ height: imgSizeMini, width: imgSizeMini }}
                                 />
                                 <Text style={{
                                     color: 'white',

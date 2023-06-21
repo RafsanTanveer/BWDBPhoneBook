@@ -59,3 +59,40 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
         });
     });
 };
+
+
+export const insertDataIntoDesignationListTable = (tableName, data) => {
+
+    console.log(tableName, ' length = ', data.length);
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+
+            data.forEach((it, index) => {
+                tx.executeSql(
+                    `INSERT INTO designation (
+                                    cadre,
+                                    paygrade,
+                                    desig,
+                                    designame,
+                                    tablename,
+                                    totalPostNBS)
+               VALUES (  ?, ?, ?, ?,?,?);`,
+                    [
+                        it.cadre,
+                        it.paygrade,
+                        it.desig,
+                        it.designame,
+                        it.tablename,
+                        it.totalPostNBS
+                    ]
+                );
+            });
+
+
+
+        });
+    });
+};

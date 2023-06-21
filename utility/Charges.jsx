@@ -1,5 +1,5 @@
 
-export const Charges = ({ presentCharge }) => {
+export const Charges = ( presentCharge ) => {
 
     let charge = presentCharge === 'R' ? '' :
         presentCharge === 'C' ? ',CC' :

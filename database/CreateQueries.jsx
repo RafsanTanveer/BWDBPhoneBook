@@ -1,7 +1,5 @@
 import db from '../database/database'
 
-
-
 export const createDesignationTable = (tableName) => {
      return new Promise((resolve, reject) => {
           db.transaction((tx) => {
@@ -24,6 +22,33 @@ export const createDesignationTable = (tableName) => {
                                 photo       BLOB,
                                 selected    TEXT,
                                 timestamp   TEXT
+                                                 );`,
+                    [],
+                    (_, result) => {
+                         resolve(result);
+                    },
+                    (_, error) => {
+                         reject(error);
+                    }
+               );
+          });
+     });
+};
+
+
+
+
+export const createDesignationListTable = (tableName) => {
+     return new Promise((resolve, reject) => {
+          db.transaction((tx) => {
+               tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS designation (
+                                cadre       TEXT,
+                                paygrade    TEXT,
+                                desig       TEXT,
+                                designame   TEXT,
+                                tablename   TEXT,
+                                totalPostNBS TEXT
                                                  );`,
                     [],
                     (_, result) => {

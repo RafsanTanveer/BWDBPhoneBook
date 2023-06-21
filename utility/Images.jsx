@@ -42,6 +42,23 @@ Images['creatGroup'] = require('../assets/icons/creatGroup.png')
 Images['clearGroup'] = require('../assets/icons/clearGroup.png')
 Images['bottom'] = require('../assets/botom.png')
 
+
+//  expendable list icon
+
+
+Images['groupIcon'] = require('../assets/icons/groupIcon.png')
+Images['rightArrow'] = require('../assets/icons/right.png')
+Images['dg'] = require('../assets/icons/dg.png')
+Images['admin'] = require('../assets/icons/admin.png')
+Images['land'] = require('../assets/icons/land.png')
+Images['fa'] = require('../assets/icons/accounts.png')
+Images['me'] = require('../assets/icons/me.png')
+Images['water'] = require('../assets/icons/water.png')
+Images['office'] = require('../assets/icons/office.png')
+Images['medical'] = require('../assets/icons/medical.png')
+Images['settings'] = require('../assets/icons/settings.png')
+
+
 //clearGroup
 
 

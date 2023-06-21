@@ -8,7 +8,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import { Images } from '../utility/Images';
 
 import MakeCallModalComponent from '../component/MakeCallModalComponent';
-// import { Charges } from '../utility/Charges';
+import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
 import { imgSizeMini, txtSizeNormal,txtSizeBig } from "../utility/Scalling";
@@ -21,8 +21,8 @@ let selectedGroupIds = []
 
 const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
-    // const presentCharge = Charges(charge)
-    // console.log('presentCharge - ',charge, presentCharge);
+    const presentCharge = Charges(charge)
+    
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
@@ -197,25 +197,16 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {charge === 'R' ? '' :
-                                        charge === 'C' ? ', CC' :
-                                            charge === 'A' ? ', Addl.' :
-                                                charge === 'I' ? ', Incharge' : ''} </Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
                                 </View>
                                 :
                                 charge === 'C' ?
                                     <View style={{ flex: 1, }}>
-                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} N {charge === 'R' ? '' :
-                                            charge === 'C' ? ', CC' :
-                                                charge === 'A' ? ', Addl.' :
-                                                    charge === 'I' ? ', Incharge' : ''} </Text>
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} N {presentCharge} </Text>
                                     </View>
                                     : charge === 'R' ?
                                         <View style={{ flex: 1, }}>
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} N {charge === 'R' ? '' :
-                                                charge === 'C' ? ', CC' :
-                                                    charge === 'A' ? ', Addl.' :
-                                                        charge === 'I' ? ', Incharge' : ''} </Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} N {presentCharge} </Text>
                                         </View>
                                         : ''
                         }

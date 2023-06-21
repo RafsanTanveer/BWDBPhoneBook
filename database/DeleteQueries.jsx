@@ -1,18 +1,23 @@
 import db from '../database/database'
 
 
-export const deleteAllData = ({ tablename }) => {
-    console.log('delete in file/////////////////////////////////////', tablename);
-    db.transaction((tx) => {
-        tx.executeSql(
-            `DELETE FROM ${tablename};`,
-            [],
-            (tx, result) => {
-                __DEV__ && console.log('Data deleted');
-            },
-            (tx, error) => {
-                __DEV__ && console.log('Error deleting data:', error);
-            }
-        );
+export const deleteDataFromDesignationTable = (tableName) => {
+
+   
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+            tx.executeSql(
+                `DELETE FROM ${tableName};`,
+                [],
+                (tx, result) => {
+                    __DEV__ && console.log('Data deleted');
+                },
+                (tx, error) => {
+                    __DEV__ && console.log('Error deleting data:', error);
+                }
+            );
+        })
     });
 };
