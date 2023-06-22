@@ -19,7 +19,7 @@ import { height, width } from '../utility/ScreenDimensions';
 import { timeStamp } from '../utility/Time';
 import { Charges } from '../utility/Charges';
 import db from '../database/database';
-import { imgSizeMini } from '../utility/Scalling'
+import { imgSizeMini, txtSizeNormal } from '../utility/Scalling'
 
 import { createDesignationTable } from '../database/CreateQueries'
 import { deleteDataFromDesignationTable } from '../database/DeleteQueries'
@@ -87,7 +87,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [districtFromDB, setDistrictFromDB] = useState([]);
     const { handleSubmit, control } = useForm();
     const [districtOpen, setDistrictOpen] = useState(false);
-
+    const [isVacantActive, setIsVacantActive] = useState(false);
     const [selectedItems, setSelectedItems] = useState([]);
     const [activeIcon, setActiveIcon] = useState();
     const [masterData, setMasterData] = useState([])
@@ -426,7 +426,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 console.log("----------------- UNREACHED BLOCK HAS BEEN REACHED ------------------");
                 console.log('---------------------------------------------------------------------');
 
-                
+
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
 
@@ -568,7 +568,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-
+    // useeffect for initializing first
     useEffect(() => {
 
         // fetchData();
@@ -582,7 +582,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setdistName('')
         tempDist = []
 
-
+        setIsVacantActive(false)
         setCurrentDistValue() // for reseting dropdown picker
         setCurrentChargeValue()
         setItems(tempDist)
@@ -904,7 +904,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     backgroundColor: `${currentTheme}`,
                                     width: width * .23,
                                     flexDirection: 'row',
-                                    borderRadius: 10,
+                                    borderRadius: height * .009,
                                     justifyContent: 'center',
                                     alignContent: 'center',
                                     padding: 2,
@@ -999,6 +999,59 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     </TouchableOpacity>
                                     <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
 
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            marginTop: 7,
+                                            backgroundColor: 'white',
+                                            borderRadius: height * .005,
+                                            width: 140,
+                                            elevation: 5
+                                            // borderColor: 'black',
+                                            // borderWidth:1
+                                        }}>
+                                        <TouchableOpacity
+                                            onPress={() => setIsVacantActive(false)}
+                                            style={{
+                                                height: 20,
+                                                width: 70,
+                                                backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                                // borderTopLeftRadius: height * .005,
+                                                // borderBottomStartRadius: height * .005,
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: isVacantActive ? 'black' : 'white',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: 'serif',
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>Current</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setIsVacantActive(true)}
+                                            style={{
+                                                height: 20,
+                                                width: 70,
+                                                backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: !isVacantActive ? 'black' : 'white',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: 'serif',
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>Vacant</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+
+
                                 </View>
 
                                 <View style={{ flex: 1 }}>
@@ -1049,44 +1102,49 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-                    <FlashList
-                        data={filteredData}
-                        estimatedItemSize={200}
-                        // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
-                        }
-                        renderItem={({ item, index }) => (
-                            <Item
-                                id={item.id}
-                                name={item.name}
-                                office={item.office}
-                                email={item.email}
-                                mobile={item.mobile}
-                                seniority={item.seniority}
-                                retiredate={item.retiredate}
-                                bwdbJoiningDt={item.bwdbJoiningDt}
-                                pabx={item.pabx}
-                                selected={item.selected}
-                                photo={item.photo}
-                                index={index}
-                                designation={designation}
-                                post={item.post}
-                                higherPost={higherPostForCurrentDesig}
-                                charge={item.charge}
-                                isAdmin={isAdmin}
-                                notDgOrAdg={notDgOrAdg}
-                                currentTheme={currentTheme}
-                                length={filteredData.length}
-                            />
+                    {
+                        !isVacantActive &&
+                        <FlashList
+                            data={filteredData}
+                            estimatedItemSize={200}
+                            // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+                            }
+                            renderItem={({ item, index }) => (
+                                <Item
+                                    id={item.id}
+                                    name={item.name}
+                                    office={item.office}
+                                    email={item.email}
+                                    mobile={item.mobile}
+                                    seniority={item.seniority}
+                                    retiredate={item.retiredate}
+                                    bwdbJoiningDt={item.bwdbJoiningDt}
+                                    pabx={item.pabx}
+                                    selected={item.selected}
+                                    photo={item.photo}
+                                    index={index}
+                                    designation={designation}
+                                    post={item.post}
+                                    higherPost={higherPostForCurrentDesig}
+                                    charge={item.charge}
+                                    isAdmin={isAdmin}
+                                    notDgOrAdg={notDgOrAdg}
+                                    currentTheme={currentTheme}
+                                    length={filteredData.length}
+                                />
 
 
-                        )}
-                        ref={(ref) => {
-                            listViewRef = ref;
-                        }}
+                            )}
+                            ref={(ref) => {
+                                listViewRef = ref;
+                            }}
 
-                    />
+                        />
+                    }
+
+
 
                     <TouchableOpacity
                         activeOpacity={0.5}
