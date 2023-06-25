@@ -11,7 +11,7 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
         db.transaction((tx) => {
 
 
-            data.forEach((it,index) => {
+            data.forEach((it, index) => {
                 tx.executeSql(
                     `INSERT INTO ${tableName} (
                                       id,
@@ -87,6 +87,41 @@ export const insertDataIntoDesignationListTable = (tableName, data) => {
                         it.designame,
                         it.tablename,
                         it.totalPostNBS
+                    ]
+                );
+            });
+
+
+
+        });
+    });
+};
+
+
+
+export const insertDataIntoVacantTable = (tableName, data) => {
+
+
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+
+            data.forEach((it, index) => {
+                console.log(tableName);
+                console.log(it);
+                tx.executeSql(
+                    `INSERT INTO ${tableName} (
+                                     office,
+                                     officeName,
+                                     postNo
+                                     )
+               VALUES (?, ?, ?);`,
+                    [
+                        it.office,
+                        it.officeName,
+                        it.postNo
                     ]
                 );
             });

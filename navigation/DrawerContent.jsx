@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useNavigation } from '@react-navigation/native';
@@ -18,9 +18,15 @@ const designation = 'Addl. Director General'
 const DrawerContent = (props) => {
 
 
-    const [fontsLoaded] = useFonts({
-        'imperial-normal': require('../assets/fonts/imperial-normal.ttf'),
-    });
+    // const [fontsLoaded] = useFonts({
+    //     'imperial-normal': require('../assets/fonts/imperial-normal.ttf'),
+    // });
+
+    // const onLayoutRootView = useCallback(async () => {
+    //     if (fontsLoaded) {
+    //         await SplashScreen.hideAsync();
+    //     }
+    // }, [fontsLoaded]);
 
     const navigation = useNavigation();
     const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
@@ -61,7 +67,7 @@ const DrawerContent = (props) => {
                 borderRadius: height * .005,
                 marginHorizontal: 5,
                 marginVertical:5,
-                paddingVertical: 1,
+                paddingTop:4,
                 paddingHorizontal: 10,
                 elevation:55,
                 position: 'absolute',
@@ -71,8 +77,8 @@ const DrawerContent = (props) => {
                     color: 'white',
                     height: height * (1 / 40),
                     fontSize: txtSizeNormal,
-                    fontFamily: 'imperial-normal',
-                }}>RAFSAN ZANI RABBI</Text>
+                    // fontFamily: 'imperial-normal',
+                }}>{name}</Text>
             </View>
 
             <DrawerContentScrollView style={{ backgroundColor: "#ffffff",marginTop:10 }} {...props}>

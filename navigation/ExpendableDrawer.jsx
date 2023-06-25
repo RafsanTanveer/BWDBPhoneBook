@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { Button, Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { List } from 'react-native-paper';
 import api from '../api/api';
@@ -9,8 +9,8 @@ import ThemeContainer from '../component/ThemeContainer'
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext'
 import { timeStamp } from '../utility/Time';
-import { createDesignationTable, createDesignationListTable } from '../database/CreateQueries'
-import { insertDataIntoDesignationTable,insertDataIntoDesignationListTable } from '../database/InsertQueries'
+import { createDesignationTable, createDesignationListTable, createVacantDesignationTable } from '../database/CreateQueries'
+import { insertDataIntoDesignationTable, insertDataIntoDesignationListTable, insertDataIntoVacantTable } from '../database/InsertQueries'
 import db from '../database/database'
 import Images from '../utility/Images'
 import { useFonts } from 'expo-font'
@@ -47,9 +47,15 @@ const groupIcon = '../assets/icons/groupIcon.png'
 
 const ExpendableDrawer = () => {
 
-    const [fontsLoaded] = useFonts({
-        'imperial-normal': require('../assets/fonts/imperial-normal.ttf'),
-    });
+    // const [fontsLoaded] = useFonts({
+    //     'imperial-normal': require('../assets/fonts/imperial-normal.ttf'),
+    // });
+
+    // const onLayoutRootView = useCallback(async () => {
+    //     if (fontsLoaded) {
+    //         await SplashScreen.hideAsync();
+    //     }
+    // }, [fontsLoaded]);
 
     const navigation = useNavigation();
     const [expendedList, setexpendedList] = React.useState([])
@@ -149,6 +155,16 @@ const ExpendableDrawer = () => {
 
                 })
 
+                response.rows.forEach(async (it, index) => {
+
+
+                    fetchDataAndStoreVacantData(`VACANT${it.tablename}`, it.desig)
+
+                })
+
+
+                //fetchDataAndStoreVacantData
+
                 createDesignationListTable('designation')
 
                 insertDataIntoDesignationListTable('designation', response.rows)
@@ -171,6 +187,7 @@ const ExpendableDrawer = () => {
 
 
 
+
     const fetchDataAndStore = async (apiUrl, tableName, desig) => {
         try {
 
@@ -182,6 +199,8 @@ const ExpendableDrawer = () => {
             await createDesignationTable(tableName); // Create table if it doesn't exist
             await insertDataIntoDesignationTable(tableName, data); // Insert data into table
 
+
+
             console.log('url = ', apiUrl);
             console.log(`Data stored in  ${tableName} table.`);
         } catch (error) {
@@ -189,6 +208,35 @@ const ExpendableDrawer = () => {
         }
     };
 
+
+    const fetchDataAndStoreVacantData = async ( tableName, desig) => {
+        try {
+
+
+
+            const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig } });
+            const vacantData = vacantResponse.rows;
+
+
+            console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
+
+            console.log();
+            // console.log(vacantData);
+            console.log();
+
+            console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
+
+
+
+
+            createVacantDesignationTable(tableName)
+            insertDataIntoVacantTable(tableName, vacantData)
+
+
+        } catch (error) {
+            console.error(`Error storing data in ${tableName} table:`, error);
+        }
+    };
 
 
 
@@ -973,7 +1021,7 @@ const styles = StyleSheet.create({
         height: 20,
     },
     titlestyle: {
-        fontFamily: 'imperial-normal',
+        // fontFamily: 'imperial-normal',
         fontWeight:'normal'
     }
 

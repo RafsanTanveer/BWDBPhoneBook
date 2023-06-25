@@ -61,3 +61,26 @@ export const createDesignationListTable = (tableName) => {
           });
      });
 };
+
+
+export const createVacantDesignationTable = (tableName) => {
+
+     console.log('vatant table name  88888888888888888888888888888        ', tableName);
+     return new Promise((resolve, reject) => {
+          db.transaction((tx) => {
+               tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS ${tableName} (
+                                office            TEXT,
+                                officeName        TEXT,
+                                postNo            TEXT);`,
+                    [],
+                    (_, result) => {
+                         resolve(result);
+                    },
+                    (_, error) => {
+                         reject(error);
+                    }
+               );
+          });
+     });
+};

@@ -10,6 +10,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
 import Item from '../component/Item';
+import ItemVacant from '../component/ItemVacant'
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import LoadingScreen from "../screens/LoadingScreen";
@@ -76,7 +77,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
     const [isFilterOn, setIsFilterOn] = useState(false);
     const [state, setState] = React.useState({ open: false });
-
+    const [vacantData, setvacantData] = useState([]);
     const onStateChange = ({ open }) => setState({ open });
     const [groupMenu, setGroupMenu] = useState(false);
     const { open } = state;
@@ -355,10 +356,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            // __DEV__ && console.log('Total table = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
+            __DEV__ && console.log('Total table = ', tableNames.length);
+            __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes(tablename);
+
+            // const vacantTableNames = tableNames.map(it => (it.includes('vacant') ? it : ''))
+
+            // const vacantTableName = `vacant${tablename}`
+
+
+
+
+            // console.log(vacantTableName);
+
+
             if (tableExists) {
                 __DEV__ && console.log(tablename, ' table exists');
 
@@ -386,6 +398,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 setDATA(data);
+
+
+
+
+                ////////////////////////////////////////vacant list //////////////////////////////////////
+
+                // const { vacantRows } = await new Promise((resolve, reject) => {
+                //     db.transaction((tx) => {
+                //         tx.executeSql(`SELECT * FROM ${vacantTableName};`, [], (_, result) => {
+                //             resolve(result);
+                //         });
+                //     });
+                // });
+
+                // const vacantData = vacantRows._array;
+
+                ////////////////////////////////////////vacant list //////////////////////////////////////
 
 
                 /////////////////////// district calculation //////////////////////////
@@ -484,6 +513,81 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setIsLoading(false);
     }
 
+    const fetchVacantDataFromDb = async () => {
+
+        setIsLoading(true);
+
+
+        // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
+
+
+
+        try {
+            setRefreshing(false);
+
+            // check if table exits or not
+
+            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
+                        resolve([tableExistsResult, null]);
+                    });
+                });
+            });
+
+
+            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
+            __DEV__ && console.log('Total table = ', tableNames.length);
+            // __DEV__ && console.log('Table names:', tableNames);
+
+            const tableExists = tableNames.includes(tablename);
+
+            // const vacantTableNames = tableNames.map(it => (it.includes('vacant') ? it : ''))
+
+            const vacantTableName = `VACANT${tablename}`
+
+
+
+
+            console.log(vacantTableName);
+
+            if (tableExists) {
+
+
+                const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
+                const vacantData = vacantResponse.rows;
+
+                setvacantData(vacantData)
+
+                console.log("in data render");
+                console.log(vacantData);
+
+
+                ////////////////////////////////////////vacant list //////////////////////////////////////
+
+                const { vacantRows } = await new Promise((resolve, reject) => {
+                    db.transaction((tx) => {
+                        tx.executeSql(`SELECT * FROM vacantSUBDIVENGCIV;`, [], (_, result) => {
+                            resolve(result);
+                        });
+                    });
+                });
+
+                console.log(vacantRows);
+                // const vacantData = vacantRows._array;
+
+                ////////////////////////////////////////vacant list //////////////////////////////////////
+
+
+
+
+            }
+        } catch (error) {
+            __DEV__ && console.error(error);
+        }
+        setIsLoading(false);
+    }
+
 
 
     const refreshData = async () => {
@@ -502,7 +606,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             fetchDataAndInsert()
 
-            setIsLoading(false);
 
             setChecked(false)
             setisrtDateChecked(false)
@@ -516,6 +619,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             setIsOpen(false)
             setIsChargeOpen(false)
 
+            setIsLoading(false);
 
 
         } catch (error) {
@@ -573,6 +677,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         // fetchData();
         fetchDataFromDb();
+        fetchVacantDataFromDb()
 
         setisrtDateChecked(false)
         setisrtJoiningChecked(false)
@@ -908,7 +1013,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     justifyContent: 'center',
                                     alignContent: 'center',
                                     padding: 2,
-                                    elevation: 3
+                                    elevation: 5
                                 }}
                             >
                                 <Image
@@ -1146,67 +1251,150 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        onPress={downButtonHandler}
-                        style={{
-                            position: 'absolute',
-                            width: width * .1,
-                            height: width * .1,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            right: width * .0598,
-                            bottom: height * .069,
-                            backgroundColor: `${currentTheme}`,
-                            borderTopRightRadius: height * .005,
-                            borderBottomEndRadius: height * .005,
-                            elevation: 2
+                    {
+                        isVacantActive &&
+                        <>
+
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                margin: 5,
+
+                            }}>
+
+                                <View style={{
+                                    flex: 1, backgroundColor: 'green',
+                                    borderTopLeftRadius: height * .005,
+                                    justifyContent: 'center',
+                                    padding: 5
 
 
-                        }}>
-                        <Image
-                            source={Images['downArrowIcon']}
-                            style={{
-                                resizeMode: 'contain',
-                                width: 50,
-                                height: 30,
-                                marginTop: 2
-                            }}
-                        />
+                                }}>
 
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        onPress={upButtonHandler}
-                        style={{
-                            position: 'absolute',
-                            width: width * .1,
-                            height: width * .1,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            right: width * .163,
-                            bottom: height * .069,
-                            backgroundColor: `${currentTheme}`,
-                            borderTopLeftRadius: height * .005,
-                            borderBottomStartRadius: height * .005,
-                            elevation: 2
+                                    <Text style={{ textAlign: 'center' }}>No.</Text>
+                                </View>
 
-                        }}>
-                        <Image
-                            source={Images['upArrowIcon']}
-                            style={{
-                                resizeMode: 'contain',
-                                width: 55,
-                                height: 30,
-                                marginTop: 0
-                            }}
-                        />
+                                <View style={{
+                                    flex: 2, backgroundColor: 'blue',
+                                    justifyContent: 'center', padding: 5
 
-                    </TouchableOpacity>
+                                }}>
+                                    <Text style={{ textAlign: 'center' }}>Office Code</Text>
+                                </View>
+
+                                <View style={{
+                                    flex: 8, backgroundColor: 'green',
+                                    justifyContent: 'center', padding: 5
+
+                                }}>
+
+                                    <Text style={{ textAlign: 'center' }}>Office Name</Text>
+                                </View>
+
+                                <View style={{
+                                    flex: 2, backgroundColor: 'blue',
+                                    borderTopRightRadius: height * .005,
+                                    justifyContent: 'center', padding: 5
+
+                                }}>
+
+                                    <Text style={{ textAlign: 'center' }}>Vacant Post</Text>
+                                </View>
+                            </View>
+
+                            <FlashList
+                                data={vacantData}
+                                estimatedItemSize={200}
+                                // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+                                }
+                                renderItem={({ item, index }) => (
+                                    <ItemVacant
+
+                                        index={index + 1}
+                                        office={item.office}
+                                        officeName={item.officeName}
+                                        postNo={item.postNo}
+
+                                    />
+
+                                )}
+                                ref={(ref) => {
+                                    listViewRef = ref;
+                                }}
+
+                            />
+                        </>
+                    }
+
 
 
                     {
-                        !isKeyboardVisible &&
+                        !isVacantActive &&
+                        <>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                onPress={downButtonHandler}
+                                style={{
+                                    position: 'absolute',
+                                    width: width * .1,
+                                    height: width * .1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    right: width * .0598,
+                                    bottom: height * .069,
+                                    backgroundColor: `${currentTheme}`,
+                                    borderTopRightRadius: height * .005,
+                                    borderBottomEndRadius: height * .005,
+                                    elevation: 2
+
+
+                                }}>
+                                <Image
+                                    source={Images['downArrowIcon']}
+                                    style={{
+                                        resizeMode: 'contain',
+                                        width: 50,
+                                        height: 30,
+                                        marginTop: 2
+                                    }}
+                                />
+
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                onPress={upButtonHandler}
+                                style={{
+                                    position: 'absolute',
+                                    width: width * .1,
+                                    height: width * .1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    right: width * .163,
+                                    bottom: height * .069,
+                                    backgroundColor: `${currentTheme}`,
+                                    borderTopLeftRadius: height * .005,
+                                    borderBottomStartRadius: height * .005,
+                                    elevation: 2
+
+                                }}>
+                                <Image
+                                    source={Images['upArrowIcon']}
+                                    style={{
+                                        resizeMode: 'contain',
+                                        width: 55,
+                                        height: 30,
+                                        marginTop: 0
+                                    }}
+                                />
+
+                            </TouchableOpacity>
+                        </>
+                    }
+
+                    {
+                        !isKeyboardVisible && !isVacantActive &&
                         <View
                             // activeOpacity={0.5}
 
