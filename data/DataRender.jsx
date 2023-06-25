@@ -908,7 +908,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     justifyContent: 'center',
                                     alignContent: 'center',
                                     padding: 2,
-                                    elevation: 5
+                                    elevation: 3
                                 }}
                             >
                                 <Image
