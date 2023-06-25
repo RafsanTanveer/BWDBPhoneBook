@@ -13,6 +13,7 @@ import { createDesignationTable, createDesignationListTable } from '../database/
 import { insertDataIntoDesignationTable,insertDataIntoDesignationListTable } from '../database/InsertQueries'
 import db from '../database/database'
 import Images from '../utility/Images'
+import { useFonts } from 'expo-font'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -45,6 +46,10 @@ const groupIcon = '../assets/icons/groupIcon.png'
 
 
 const ExpendableDrawer = () => {
+
+    const [fontsLoaded] = useFonts({
+        'imperial-normal': require('../assets/fonts/imperial-normal.ttf'),
+    });
 
     const navigation = useNavigation();
     const [expendedList, setexpendedList] = React.useState([])
@@ -285,6 +290,8 @@ const ExpendableDrawer = () => {
                 <List.Accordion
                     style={styles.sectionStyle}
                     title="Designations"
+                    titleStyle={styles.titlestyle}
+
                     left={props => <List.Icon {...props} icon={() => (
                         <Image
                             source={require(desig)}
@@ -297,6 +304,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="DG & ADG"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(dg)}
@@ -332,6 +341,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Admin"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(admin)}
@@ -366,6 +377,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Civil"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(civil)}
@@ -401,6 +414,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Computer"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(computer)}
@@ -440,6 +455,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Economic"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(economic)}
@@ -476,6 +493,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="FA&A"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(fa)}
@@ -509,6 +528,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Geology"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(geology)}
@@ -543,6 +564,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Land & Revenue"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(land)}
@@ -576,6 +599,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="ME"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(me)}
@@ -610,6 +635,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Water"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(water)}
@@ -646,6 +673,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Medical"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(medical)}
@@ -686,6 +715,8 @@ const ExpendableDrawer = () => {
                 <List.Accordion
                     style={styles.accordingStyleOffice}
                     title="Office"
+                    titleStyle={styles.titlestyle}
+
                     left={props => <List.Icon {...props} icon={() => (
                         <Image
                             source={require(office)}
@@ -701,6 +732,7 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="DIRECTOR GENERAL"
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
@@ -763,6 +795,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="ADG(EAST)"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
@@ -779,6 +813,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="ADG(WEST)"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
@@ -801,6 +837,8 @@ const ExpendableDrawer = () => {
                 <List.Accordion
                     style={styles.accordingStyleOffice}
                     title="Group Email & SMS"
+                    titleStyle={styles.titlestyle}
+
                     left={props => <List.Icon {...props} icon={() => (
                         <Image
                             source={require(groupIcon)}
@@ -819,6 +857,7 @@ const ExpendableDrawer = () => {
                 <List.Accordion
                     style={styles.accordingStyleOffice}
                     title="Settings"
+                    titleStyle={styles.titlestyle}
                     left={props => <List.Icon {...props} icon={() => (
                         <Image
                             source={require(settings)}
@@ -834,6 +873,8 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Theme"
+                        titleStyle={styles.titlestyle}
+
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
@@ -857,6 +898,7 @@ const ExpendableDrawer = () => {
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Update Organogram"
+                        titleStyle={styles.titlestyle}
                         left={props => <List.Icon {...props} icon={() => (
                             <Image
                                 source={require(rightArrow)}
@@ -930,6 +972,10 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
+    titlestyle: {
+        fontFamily: 'imperial-normal',
+        fontWeight:'normal'
+    }
 
 })
 

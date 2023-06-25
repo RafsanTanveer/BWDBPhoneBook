@@ -26,7 +26,13 @@ const CustomDrawer = ({ }) => {
 
     return (
         <Drawer.Navigator
+
             screenOptions={{
+                drawerStyle: {
+                    backgroundColor: '#c6cbef',
+                    width: width*.7,
+                },
+
                 headerTintColor: 'white',
                 headerShown: true,
                 headerLeft: () => (
@@ -88,7 +94,7 @@ const CustomNavigator = () => {
         <>
             {/* <Login /> */}
             <NavigationContainer>
-                {isLogged ?
+                {true ?
                     <>
                         <StatusBar animated={true} backgroundColor={currentTheme} />
                         <CustomDrawer />
