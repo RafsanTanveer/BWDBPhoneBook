@@ -46,7 +46,7 @@ Images['bottom'] = require('../assets/botom.png')
 //  expendable list icon
 
 
-Images['groupIcon'] = require('../assets/icons/groupIcon.png')
+Images['drawerGroupIcon'] = require('../assets/icons/groupIcon.png')
 Images['rightArrow'] = require('../assets/icons/right.png')
 Images['dg'] = require('../assets/icons/dg.png')
 Images['admin'] = require('../assets/icons/admin.png')

@@ -1,5 +1,5 @@
 import NetInfo from '@react-native-community/netinfo';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { FlashList } from "@shopify/flash-list";
 import Checkbox from 'expo-checkbox';
 import * as Contacts from 'expo-contacts';
@@ -78,6 +78,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isFilterOn, setIsFilterOn] = useState(false);
     const [state, setState] = React.useState({ open: false });
     const [vacantData, setvacantData] = useState([]);
+    const [totalVacantPost, setTotalVacantPost] = useState(0);
     const onStateChange = ({ open }) => setState({ open });
     const [groupMenu, setGroupMenu] = useState(false);
     const { open } = state;
@@ -557,10 +558,19 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
                 const vacantData = vacantResponse.rows;
 
+                let totalVacanPost=0
+                vacantData.forEach(it => {
+                    totalVacanPost += parseInt(it.postNo)
+                });
+
+                setTotalVacantPost(totalVacanPost)
+
+                console.log('totalVacanPost ' + totalVacanPost);
+
                 setvacantData(vacantData)
 
                 console.log("in data render");
-                console.log(vacantData);
+                // console.log(vacantData);
 
 
                 ////////////////////////////////////////vacant list //////////////////////////////////////
@@ -1122,8 +1132,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                 width: 70,
                                                 backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
                                                 borderRadius: height * .005,
-                                                // borderTopLeftRadius: height * .005,
-                                                // borderBottomStartRadius: height * .005,
                                             }}>
                                             <Text
                                                 style={{
@@ -1199,7 +1207,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                     {
                         !search && DATA ?
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total {designation} {distName}: {filteredData.length}</Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .02, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}</Text>
                             : ""
                     }
                     <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
@@ -1263,7 +1271,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <View style={{
-                                    flex: 1, backgroundColor: 'green',
+                                    flex: 1, backgroundColor: `${currentTheme}50`,
                                     borderTopLeftRadius: height * .005,
                                     justifyContent: 'center',
                                     padding: 5
@@ -1271,34 +1279,34 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                 }}>
 
-                                    <Text style={{ textAlign: 'center' }}>No.</Text>
+                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>No.</Text>
                                 </View>
 
                                 <View style={{
-                                    flex: 2, backgroundColor: 'blue',
+                                    flex: 2, backgroundColor: `${currentTheme}50`,
                                     justifyContent: 'center', padding: 5
 
                                 }}>
-                                    <Text style={{ textAlign: 'center' }}>Office Code</Text>
+                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Code</Text>
                                 </View>
 
                                 <View style={{
-                                    flex: 8, backgroundColor: 'green',
+                                    flex: 8, backgroundColor: `${currentTheme}50`,
                                     justifyContent: 'center', padding: 5
 
                                 }}>
 
-                                    <Text style={{ textAlign: 'center' }}>Office Name</Text>
+                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Name</Text>
                                 </View>
 
                                 <View style={{
-                                    flex: 2, backgroundColor: 'blue',
+                                    flex: 2, backgroundColor: `${currentTheme}50`,
                                     borderTopRightRadius: height * .005,
                                     justifyContent: 'center', padding: 5
 
                                 }}>
 
-                                    <Text style={{ textAlign: 'center' }}>Vacant Post</Text>
+                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Vacant Post</Text>
                                 </View>
                             </View>
 

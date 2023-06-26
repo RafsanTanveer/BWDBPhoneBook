@@ -26,7 +26,7 @@ const ItemVacant = ({ index, office, officeName, postNo }) => {
     const { pmisId } = useContext(AuthContext);
 
 
-    const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
+    const { currentTheme, } = useContext(ThemeContext);
 
 
 
@@ -39,31 +39,39 @@ const ItemVacant = ({ index, office, officeName, postNo }) => {
         <View style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            margin: 5,
+            marginHorizontal: 5,
 
         }}>
 
             <View style={{
-                flex: 1, 
-                borderTopLeftRadius: height * .005,
+                flex: 1,
+
+                borderWidth: 1,
+                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center'
 
             }}>
 
                 <Text style={{ textAlign: 'center' }}>{index}</Text>
             </View>
 
-            <View style={{ flex: 1,  }}>
+            <View style={{
+                flex: 2, borderWidth: 1,
+                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
                 <Text style={{ textAlign: 'center' }}>{office}</Text>
             </View>
 
-            <View style={{ flex: 8,  }}>
+            <View style={{
+                flex: 8, borderWidth: 1,
+                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
 
                 <Text style={{ textAlign: 'center' }}>{officeName}</Text>
             </View>
 
             <View style={{
-                flex: 1,
-                borderTopRightRadius: height * .005,
+                flex: 2,
+                borderWidth: 1,
+                borderColor: `${currentTheme}`, padding: 5,
+                justifyContent: 'center'
 
             }}>
 
