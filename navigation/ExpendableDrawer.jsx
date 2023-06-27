@@ -41,6 +41,8 @@ const office = '../assets/icons/office.png'
 const medical = '../assets/icons/medical.png'
 const settings = '../assets/icons/settings.png'
 const groupIcon = '../assets/icons/groupIcon.png'
+const requestIcon = '../assets/icons/request.png'
+const aprIcon = '../assets/icons/apr.png'
 
 //*******************************************icons ********************************************** */
 
@@ -60,7 +62,7 @@ const ExpendableDrawer = () => {
     const navigation = useNavigation();
     const [expendedList, setexpendedList] = React.useState([])
 
-    const { setcurrentTheme, themes, currentTheme } = useContext(ThemeContext);
+    const { setcurrentTheme, themeColors, currentTheme } = useContext(ThemeContext);
     const { setDesignationContext } = useContext(AuthContext);
 
     //  ******************************  fetching data ***************************************
@@ -902,9 +904,93 @@ const ExpendableDrawer = () => {
 
                 </List.Accordion>
 
+                {/*******************************************  Change Request ******************************** */}
                 <List.Accordion
                     style={styles.accordingStyleOffice}
-                    title="Settings"
+                    title="Change Request"
+                    titleStyle={styles.titlestyle}
+
+                    left={props => <List.Icon {...props} icon={() => (
+                        <Image
+                            source={require(requestIcon)}
+                            style={styles.iconStyle}
+                        />
+                    )} />}
+                    expanded={expendedList[22]}
+                    onPress={() => handlePress(22)} >
+
+
+
+                <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={{
+
+                                    height: width * .1,
+                                    width: width * .35,
+                                    backgroundColor: `${currentTheme}`,
+                                    marginRight: 6
+                                }}
+                                onPress={() => { }}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'white',
+                                        fontWeight: '600',
+                                        paddingLeft: width * .015,
+                                        paddingTop: width * .015,
+                                    }}>Make Change Request</Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+                </List.Accordion>
+                {/*******************************************  Change Request ******************************** */}
+
+                 {/*******************************************  APR ******************************** */}
+                 <List.Accordion
+                    style={styles.accordingStyleOffice}
+                    title="APR"
+                    titleStyle={styles.titlestyle}
+
+                    left={props => <List.Icon {...props} icon={() => (
+                        <Image
+                            source={require(aprIcon)}
+                            style={styles.iconStyle}
+                        />
+                    )} />}
+                    expanded={expendedList[22]}
+                    onPress={() => handlePress(22)} >
+
+
+
+                <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={{
+
+                                    height: width * .1,
+                                    width: width * .35,
+                                    backgroundColor: `${currentTheme}`,
+                                    marginRight: 6
+                                }}
+                                onPress={() => { }}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'white',
+                                        fontWeight: '600',
+                                        paddingLeft: width * .015,
+                                        paddingTop: width * .015,
+                                    }}>Make Change Request</Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+                </List.Accordion>
+                {/*******************************************  APR ******************************** */}
+
+                <List.Accordion
+                    style={styles.accordingStyleOffice}
+                    title="Setting"
                     titleStyle={styles.titlestyle}
                     left={props => <List.Icon {...props} icon={() => (
                         <Image
@@ -933,16 +1019,19 @@ const ExpendableDrawer = () => {
                         onPress={() => handlePress(20)}  >
 
                         {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
-                        <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[9])} style={{ height: width * .080, width: width * .080, backgroundColor: '#0069C4', marginRight: width * .015 }} />
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[3])} style={{ height: width * .080, width: width * .080, backgroundColor: '#048BB3', marginRight: width * .015 }} />
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[6])} style={{ height: width * .080, width: width * .080, backgroundColor: '#0089E3', marginRight: width * .015 }} />
-                            <TouchableOpacity onPress={() => setcurrentTheme(themes[0])} style={{ height: width * .080, width: width * .080, backgroundColor: '#6750a4', marginRight: width * .015 }} />
+                        <View style={{ flexDirection: 'row', height:height*.05 ,paddingTop:3}}>
+                            <TouchableOpacity onPress={() => setcurrentTheme(themeColors[0])} style={{ ...styles.themeStyle, backgroundColor: themeColors[0] }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themeColors[3])} style={{ ...styles.themeStyle, backgroundColor: themeColors[3] }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themeColors[6])} style={{ ...styles.themeStyle, backgroundColor: themeColors[6] }} />
+                            <TouchableOpacity onPress={() => setcurrentTheme(themeColors[9])} style={{ ...styles.themeStyle, backgroundColor: themeColors[9] }} />
 
 
                         </View>
 
                     </List.Accordion>
+
+
+
                     <List.Accordion
                         style={styles.accordingStyle}
                         title="Update Organogram"
@@ -1023,6 +1112,13 @@ const styles = StyleSheet.create({
     titlestyle: {
         // fontFamily: 'imperial-normal',
         fontWeight:'normal'
+    },
+    themeStyle: {
+        height: width * .080,
+        width: width * .080,
+        //backgroundColor: '#0069C4',
+        marginRight: width * .015,
+        borderRadius: width * .05
     }
 
 })
