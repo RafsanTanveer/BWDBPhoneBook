@@ -1089,7 +1089,7 @@ const ExpendableDrawer = () => {
 
 const styles = StyleSheet.create({
     sectionStyle: {
-        marginVertical: -5,
+        marginVertical: 5,
         backgroundColor: "white"
     },
     accordingStyle: {
