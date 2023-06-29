@@ -19,7 +19,8 @@ const GroupList = () => {
 
       >GroupList</Text>
 
-     
+      
+
 
       <Modal
         transparent={true}
