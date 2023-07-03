@@ -844,7 +844,6 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
         <>
-
             {
                 isLoading ?
                     <LoadingScreen />
