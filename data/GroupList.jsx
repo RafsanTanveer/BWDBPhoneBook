@@ -19,7 +19,7 @@ const GroupList = () => {
 
       >GroupList</Text>
 
-      
+
 
 
       <Modal

@@ -11,7 +11,7 @@ import { Images } from '../utility/Images'
 import { timeStamp } from '../utility/Time'
 
 import { height, width } from '../utility/ScreenDimensions'
-
+import ExperienceScreen from '../component/ExperienceScreen'
 
 const officeLevel = [
     "Board",
@@ -1206,21 +1206,14 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                             {
                                                 experience.map((item, index) => (
+                                                    <ExperienceScreen key={index}
+                                                        post={item.post ? item.post : item.desig}
+                                                        charge={item.charge == 'C' ? ',CC' : item.charge == 'A' ? 'Addl.' : ''}
+                                                        office={item.office}
+                                                        joinDate={item.joinDate}
+                                                        releaseDate={item.releaseDate}
+                                                        index={index} />
 
-                                                    < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                        <View style={{ flex: .75, width: 200, }}>
-                                                            <Text style={styles.queryTextStyle}>{item.post ? item.post : item.desig} {item.charge == 'C' ? ',CC' : item.charge == 'A' ? 'Addl.' : ''}</Text>
-                                                        </View>
-                                                        <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
-                                                            <Text style={styles.queryTextStyle}>{item.office}</Text>
-                                                        </View>
-                                                        <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
-                                                            <Text style={styles.queryTextStyle}>{item.joinDate}</Text>
-                                                        </View>
-                                                        <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
-                                                            <Text style={styles.queryTextStyle}>{item.releaseDate}</Text>
-                                                        </View>
-                                                    </View >
                                                 ))
 
                                             }

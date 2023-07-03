@@ -1,18 +1,39 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Modal } from 'react-native'
+import React, { useState } from "react";
+
+import CorrectionModalComponent from '../component/CorrectionModalComponent'
+
 
 const SingleColumnComponent = ({ firstHeading, firstQueryResult, delimiter }) => {
+
+
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = (isVisible) => {
+        setModalVisible(isVisible);
+    };
+
+
     return (
         <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: .3088, }}>
-                <Text style={styles.textStyle}>{firstHeading}</Text>
+                <Text style={styles.textStyle} onLongPress={() => toggleModal(true)}>{firstHeading}</Text>
             </View>
             <View style={{ flex: .01, }}>
                 <Text style={styles.textStyle}>{delimiter}</Text>
             </View>
             <View style={{ flex: .7, alignItems: 'flex-start',  }}>
-                <Text style={styles.queryTextStyle}>{firstQueryResult}</Text>
-            </View>           
+                <Text style={styles.queryTextStyle} onLongPress={() => toggleModal(true)}>{firstQueryResult}</Text>
+            </View>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isModalVisible}
+                onRequestClose={() => toggleModal(true)}
+            >
+                <CorrectionModalComponent correctionType={firstHeading} txt={firstQueryResult} toggleModal={toggleModal} />
+            </Modal>
+
         </View>
     )
 }
