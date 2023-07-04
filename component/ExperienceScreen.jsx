@@ -24,7 +24,7 @@ const ExperienceScreen = ({ post, charge, office, joinDate, releaseDate, index }
 
     // console.log(post, charge, office, joinDate, releaseDate);
 
-    let relDt = releaseDate ? releaseDate : ' - present '
+    let relDt = releaseDate ? releaseDate : 'present'
     console.log(relDt);
 
 
@@ -63,7 +63,7 @@ const ExperienceScreen = ({ post, charge, office, joinDate, releaseDate, index }
                 visible={isModalVisible}
                 onRequestClose={() => toggleModal(true)}
             >
-                <CorrectionModalComponent correctionType={'Experience'} txt={post + ' ' + charge + ' ' + office + ' ' + joinDate + ' ' + relDt} toggleModal={toggleModal} />
+                <CorrectionModalComponent correctionType={'Experience'} txt={post + '#' + charge + '#' + office + '#' + joinDate + '#' + relDt} toggleModal={toggleModal} />
             </Modal>
 
 
