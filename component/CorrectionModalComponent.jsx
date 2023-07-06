@@ -12,12 +12,12 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
 
     // console.log(correctionType,txt);
 
+    console.log(correctionType);
     let expTxt
-    if (correctionType === 'Experience')
-    {
+    if (correctionType === 'Experience') {
         expTxt = txt.split('#')
-        console.log(expTxt);
-        
+        // console.log(expTxt);
+
         expTxt[1] ?
             expTxt[1] = expTxt[1].replace(',', '')
             : expTxt[1] = expTxt[1].replace('', 'Reguler')
@@ -33,16 +33,77 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
 
     const [problemSt, setProblemSt] = useState([]);
     const [requiredDocsStatus, setRequiredDocsStatus] = useState([false, false, false, false, false, false, false, false, false,]);
+
+    let documents = []
+
+    let reqDocs =
+    {
+        PersonalInfo: [
+            'JSC Certificate',
+            'SSC Certificate',
+            'HSC Certificate',
+            'Honors Certificate',
+            'NID',
+        ],
+        Education: [
+            'JSC Certificate',
+            'SSC Certificate',
+            'HSC Certificate',
+            'Honors Certificate',
+            'Master’s Certificate',
+            'Phd’s Certificate',
+        ],
+        Experience: [
+            'Tranfer/Posting Order',
+            'Charge Paper',
+            'Release Order',
+            'Service Book',
+        ],
+        Training: [
+            'Training Order',
+            'Certificate',
+            'Release Order'
+        ]
+    }
+
+
+    console.log(reqDocs.Experience);
+
     const [requiredDocs, setRequiredDocs] = useState([
+        'JSC Certificate',
         'SSC Certificate',
         'HSC Certificate',
         'Honors Certificate',
+        'Master’s Certificate',
+        'Phd’s Certificate',
         'NID',
-        'Service Book',
-        'Tranfer/Posting Order',
+        'Tranfer/Promotion Order',
         'Charge Paper',
-        'Release Order'
+        'Release Order',
+        'Service Book',
+        'Marriage Certificate'
     ]);
+// Date of Birth
+    if (correctionType === 'Employee Name' ||
+        correctionType === "Father's Name" ||
+        correctionType === "Mother's Name" ||
+        correctionType === "Date of Birth") {
+        reqDocs.PersonalInfo.map((it) => documents.push(it))
+
+    }
+
+    if (correctionType === 'Experience') {
+        reqDocs.Experience.map((it) => documents.push(it))
+    }
+
+    if (correctionType === 'Marital Status') {
+        reqDocs.Experience.map((it) => documents.push(it))
+
+    }
+
+
+
+    // console.log(documents);
 
     const closeModal = () => {
 
@@ -225,9 +286,9 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
                     <View style={{ margin: 3, flex: 1, backgroundColor: '#ffffffff', padding: 5 }} >
                         <Text style={{ fontWeight: 'bold' }} >Required Documents:</Text>
                     </View>
-                    {/* <View style={{ margin: 3, flex: 2, }} >
+                    <View style={{ margin: 3, flex: 2, }} >
                         {
-                            requiredDocs.map((it, index) =>
+                            documents.map((it, index) =>
 
                                 <TouchableOpacity key={index} onPress={() => { }}
                                     style={{ ...styles.requrementBtnStyle, backgroundColor: `${currentTheme}` }} >
@@ -242,7 +303,7 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
                         </TouchableOpacity>
 
 
-                    </View> */}
+                    </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -335,10 +396,10 @@ const styles = StyleSheet.create({
     requrementBtnStyle: {
         // backgroundColor: {currentTheme},
         // height: height * .04,
-        width: width * .3,
+        width: width * .2,
         justifyContent: 'center',
-        margin: 3,
-        padding: 5,
+        margin: 2,
+        padding: 2,
         borderRadius: 3,
         elevation: 8
     },

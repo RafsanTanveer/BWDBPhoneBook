@@ -558,7 +558,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
                 const vacantData = vacantResponse.rows;
 
-                let totalVacanPost=0
+                let totalVacanPost = 0
                 vacantData.forEach(it => {
                     totalVacanPost += parseInt(it.postNo)
                 });
@@ -933,49 +933,51 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             </View>
                         </View>
 
+                        {
+                            isAdmin &&
+                            <TouchableOpacity style={{
 
-                        <TouchableOpacity style={{
+                                height: height / 20,
+                                flex: 1,
+                                borderRadius: 5,
+                                marginBottom: 5,
+                                // marginLeft: 5,
+                                marginRight: 5,
+                                // borderColor: `${currentTheme}`,//'#6750a4',
+                                // borderWidth: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
 
-                            height: height / 20,
-                            flex: 1,
-                            borderRadius: 5,
-                            marginBottom: 5,
-                            // marginLeft: 5,
-                            marginRight: 5,
-                            // borderColor: `${currentTheme}`,//'#6750a4',
-                            // borderWidth: 2,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-
-                        }}
-                            onPress={() => { selectAll() }}
-                        >
-                            {
-                                currentSelectedIds.length === 0 ?
-                                    <Image
-                                        source={require(selectAllInactive)}
-                                        style={styles.select_all_icon}
-                                    />
-                                    : currentTheme === '#6750a4' ?
+                            }}
+                                onPress={() => { selectAll() }}
+                            >
+                                {
+                                    currentSelectedIds.length === 0 ?
                                         <Image
-                                            source={Images['selectAll_0']}
+                                            source={require(selectAllInactive)}
                                             style={styles.select_all_icon}
-                                        /> : currentTheme === '#048BB3' ?
+                                        />
+                                        : currentTheme === '#6750a4' ?
                                             <Image
-                                                source={Images['selectAll_3']}
+                                                source={Images['selectAll_0']}
                                                 style={styles.select_all_icon}
-                                            /> : currentTheme === '#0089E3' ?
+                                            /> : currentTheme === '#048BB3' ?
                                                 <Image
-                                                    source={Images['selectAll_6']}
+                                                    source={Images['selectAll_3']}
                                                     style={styles.select_all_icon}
-                                                /> : currentTheme === '#0069C4' ?
+                                                /> : currentTheme === '#0089E3' ?
                                                     <Image
-                                                        source={Images['selectAll_9']}
+                                                        source={Images['selectAll_6']}
                                                         style={styles.select_all_icon}
-                                                    /> : ''
-                            }
+                                                    /> : currentTheme === '#0069C4' ?
+                                                        <Image
+                                                            source={Images['selectAll_9']}
+                                                            style={styles.select_all_icon}
+                                                        /> : ''
+                                }
 
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        }
                     </View>
 
 
@@ -987,7 +989,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 alignSelf: 'flex-end',
                                 position: 'absolute',
                                 marginTop: height * .01,
-                                paddingRight: width * .135,
+                                paddingRight: isAdmin ? width * .135 : width * .03,
 
 
                             }}
@@ -1010,7 +1012,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                     {refreshing ? <ActivityIndicator /> : null}
                     {
-                        notDgOrAdg &&
+                        notDgOrAdg && isAdmin &&
                         <View style={{ flexDirection: 'row' }}>
                             <TouchableOpacity
                                 onPress={() => setIsFilterOn(!isFilterOn)}
@@ -1402,7 +1404,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
 
                     {
-                        !isKeyboardVisible && !isVacantActive &&
+                        !isKeyboardVisible && !isVacantActive && isAdmin &&
                         <View
                             // activeOpacity={0.5}
 
