@@ -9,13 +9,13 @@ const Home = ({ navigation }) => {
 
   const { userInfo, splashLoading, name, isLogged } = useContext(AuthContext);
 
-
+  console.log("in home --- ",userInfo[0].id);
   return (
     <>
 
       {
         isLogged &&
-        <BiodataScreen id={userInfo.rows[0].id} />
+        <BiodataScreen id={userInfo[0].id} />
       }
     </>
 

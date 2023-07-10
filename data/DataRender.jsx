@@ -357,8 +357,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table = ', tableNames.length);
-            __DEV__ && console.log('Table names:', tableNames);
+            // __DEV__ && console.log('Total table = ', tableNames.length);
+            // __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes(tablename);
 

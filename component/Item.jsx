@@ -22,7 +22,7 @@ let selectedGroupIds = []
 const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
     const presentCharge = Charges(charge)
-    
+
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
         width: width * (1 / 5.5),
         height: width * (1 / 5.5),
         borderRadius: 100,
-        elevation: 20
+        // elevation: 20
 
 
     },
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
         backgroundColor: "pink",
         borderWidth: 1,
         borderColor: '#6750a4',
-        elevation: 5
+        // elevation: 5
 
 
     },

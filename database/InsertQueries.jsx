@@ -4,7 +4,7 @@ import { timeStamp } from '../utility/Time';
 
 export const insertDataIntoDesignationTable = (tableName, data) => {
 
-    console.log(tableName, ' length = ', data.length);
+    // console.log(tableName, ' length = ', data.length);
 
     return new Promise((resolve, reject) => {
 
@@ -63,7 +63,7 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
 
 export const insertDataIntoDesignationListTable = (tableName, data) => {
 
-    console.log(tableName, ' length = ', data.length);
+    // console.log(tableName, ' length = ', data.length);
 
     return new Promise((resolve, reject) => {
 
@@ -109,8 +109,8 @@ export const insertDataIntoVacantTable = (tableName, data) => {
 
 
             data.forEach((it, index) => {
-                console.log(tableName);
-                console.log(it);
+                // console.log(tableName);
+                // console.log(it);
                 tx.executeSql(
                     `INSERT INTO ${tableName} (
                                      office,
@@ -122,6 +122,40 @@ export const insertDataIntoVacantTable = (tableName, data) => {
                         it.office,
                         it.officeName,
                         it.postNo
+                    ]
+                );
+            });
+
+
+
+        });
+    });
+};
+
+
+export const insertDataIntoEmployeeInfoTable = (tableName, data) => {
+
+
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+
+            data.forEach((it, index) => {
+                console.log(tableName, '', it);
+
+                tx.executeSql(
+                    `INSERT INTO ${tableName} (
+                                     id,
+                                     name,
+                                     status
+                                     )
+               VALUES (?, ?, ?);`,
+                    [
+                        it.id,
+                        it.name,
+                        it.status
                     ]
                 );
             });
