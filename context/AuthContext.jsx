@@ -3,8 +3,11 @@ import React, { createContext, useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 import api from '../api/api';
 import db from '../database/database'
+import { createEmployeeInfoTable } from '../database/CreateQueries'
+import { insertDataIntoEmployeeInfoTable } from '../database/InsertQueries'
+import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
 
-
+let tempUserInfo = []
 
 export const AuthContext = createContext();
 
@@ -56,23 +59,84 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
+
+
+
+    const idCheckAndLogin = (empInfo, id) => {
+
+
+        empInfo.map((emp) => {
+            if (emp.id === id) {
+                tempUserInfo.push(emp)
+            }
+        })
+
+        if (tempUserInfo.length === 0) {
+            ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
+            setisLogged(false)
+            setUserInfo([])
+        } else if (tempUserInfo[0].status === 'I') {
+
+            ToastAndroid.show('RETIRED', ToastAndroid.LONG,);
+            setisLogged(false)
+            setUserInfo([])
+
+        }
+        else {
+
+            setUserInfo(tempUserInfo);
+            setisLogged(true)
+
+
+        }
+
+
+    }
+
     const login = async (id, password) => {
         setIsLoading(true);
 
 
-        // const [tableExistsResult, dataResult] =  new Promise((resolve, reject) => {
-        //     db.transaction((tx) => {
-        //         tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
-        //             resolve([tableExistsResult, null]);
-        //         });
-        //     });
-        // });
 
-        // const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-        // __DEV__ && console.log('Total table ++++++++++++++++++++++++++++++++++++++++= ', tableNames.length);
-        // __DEV__ && console.log('Table names:+++++++++++++++++++++++++++++++++++++++++', tableNames);
+        // console.log('lkklklk');
 
-        // const tableExists = tableNames.includes('employee');
+        // const tablenames = await getAllTableName()
+
+        // const tableNames = tablenames.map((table) => table.name);
+        // // console.log(tableNames);
+
+        // const tableExists = tableNames.includes('employeeInfo');
+
+
+        // if (tableExists) {
+        //     console.log("tableExists", tableExists);
+        //     const empInfo = await getEmployeeInfo("employeeInfo")
+
+        //     idCheckAndLogin(empInfo, id)
+
+        // }
+        // else {
+        //     const { data: response } = await api.get("allEmpInfo");
+        //     const empData = response.rows
+
+        //     console.log("in not exits employeeInfo table");
+
+        //     createEmployeeInfoTable("employeeInfo")
+        //     insertDataIntoEmployeeInfoTable("employeeInfo", empData)
+
+        //     idCheckAndLogin(empData, id)
+
+        // }
+
+        // await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
+
+
+
+
+        // setIsLoading(false);
+
+
+
 
 
         api
@@ -82,18 +146,19 @@ export const AuthProvider = ({ children }) => {
                 }
             })
             .then(async (res) => {
-                const userData = res.data;
+                const userData = res.data.rows;
 
+                console.log(userData);
 
 
                 // __DEV__ && console.log('Length  ------------- ' + userData.rows.length);
-                if (userData.rows.length === 0) {
+                if (userData.length === 0) {
                     ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
                     setisLogged(false)
                     setUserInfo([])
                     // __DEV__ && console.log(userData.rows)
                 }
-                else if (userData.rows[0].status === 'I') {
+                else if (userData[0].status === 'I') {
                     // __DEV__ && console.log(userData.rows);
                     ToastAndroid.show('INACTIVE', ToastAndroid.LONG,);
                     setisLogged(false)
