@@ -22,7 +22,7 @@ let selectedGroupIds = []
 const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
 
     const presentCharge = Charges(charge)
-    
+
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
@@ -120,7 +120,11 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                     // __DEV__ && console.log("items length "+items.length)
                 }
 
-                <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                <View style={{
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    // backgroundColor:'red'
+                }}>
 
 
                     <TouchableOpacity >

@@ -1,5 +1,6 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator, Dimensions } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator,  ToastAndroid } from 'react-native';
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -50,18 +51,29 @@ const BiodataScreen = ({ id, navigation }) => {
         return num.toString().padStart(2, '0');
     }
 
+    // ********************************  Internet Connection checked *************************************
 
+    const netInfo = useNetInfo();
+
+
+    // ********************************  Internet Connection checked *************************************
 
     const updateBiodata = () => {
-        __DEV__ && console.log('updateBiodata ++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        setpersonalData([])
-        setpromotion([])
-        setEdu([])
-        setexperience([])
-        settraining([])
-        deleteAllData([])
-        fetchPersonalData()
-        setTabelCreationTime(timeStamp())
+        if (netInfo.isConnected) {
+
+            setpersonalData([])
+            setpromotion([])
+            setEdu([])
+            setexperience([])
+            settraining([])
+            deleteAllData([])
+            fetchPersonalData()
+            setTabelCreationTime(timeStamp())
+        }
+        else {
+            ToastAndroid.show("Please Connect Internet To Update Data", ToastAndroid.LONG, ToastAndroid.TOP)
+
+        }
 
     }
     const deleteAllData = () => {

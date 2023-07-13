@@ -67,7 +67,7 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
     }
 
 
-    console.log(reqDocs.Experience);
+    // console.log(reqDocs.Experience);
 
     const [requiredDocs, setRequiredDocs] = useState([
         'JSC Certificate',

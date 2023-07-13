@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.rafsantanveer.bwdbempdir"
+      "package": "com.rafsantanveer.bwdbempdir",
+      "userInterfaceStyle":"light"
     },
     "web": {
       "favicon": "./assets/favicon.png"

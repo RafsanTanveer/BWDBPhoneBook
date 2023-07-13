@@ -1,4 +1,4 @@
-import NetInfo from '@react-native-community/netinfo';
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { FlashList } from "@shopify/flash-list";
 import Checkbox from 'expo-checkbox';
@@ -295,11 +295,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     // ********************************  Internet Connection checked *************************************
-    NetInfo.fetch().then(state => {
-        // __DEV__ && console.log('Connection type', state.type);
-        // __DEV__ && console.log('Is connected?', state.isConnected);
-        setnoInternetConnection(state.isConnected)
-    });
+
+    const netInfo = useNetInfo();
+
+
     // ********************************  Internet Connection checked *************************************
 
 
@@ -358,7 +357,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
             __DEV__ && console.log('Total table = ', tableNames.length);
-            __DEV__ && console.log('Table names:', tableNames);
+            // __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes(tablename);
 
@@ -554,6 +553,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             if (tableExists) {
 
+                if (netInfo.isConnected) {
+
+
 
                 const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
                 const vacantData = vacantResponse.rows;
@@ -571,7 +573,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 console.log("in data render");
                 // console.log(vacantData);
-
+                }
+                else {
+                    setTotalVacantPost(0)
+                    setvacantData([])
+                }
 
                 ////////////////////////////////////////vacant list //////////////////////////////////////
 
@@ -602,38 +608,45 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const refreshData = async () => {
 
-        try {
+        if (netInfo.isConnected) {
+
+            try {
 
 
-            setRefreshing(false);
-            setIsLoading(true);
-            setSearch()
+                setRefreshing(false);
+                setIsLoading(true);
+                setSearch()
 
-            setDATA([])
+                setDATA([])
 
-            deleteDataFromDesignationTable(tablename)
-
-
-            fetchDataAndInsert()
+                deleteDataFromDesignationTable(tablename)
 
 
-            setChecked(false)
-            setisrtDateChecked(false)
-            setisrtJoiningChecked(false)
-            setTabelCreationTime(timeStamp())
-
-            setdistName('')
-            setDistrictValue()
-            setCurrentDistValue()
-            setCurrentChargeValue()
-            setIsOpen(false)
-            setIsChargeOpen(false)
-
-            setIsLoading(false);
+                fetchDataAndInsert()
 
 
-        } catch (error) {
-            __DEV__ && console.error(error.message);
+                setChecked(false)
+                setisrtDateChecked(false)
+                setisrtJoiningChecked(false)
+                setTabelCreationTime(timeStamp())
+
+                setdistName('')
+                setDistrictValue()
+                setCurrentDistValue()
+                setCurrentChargeValue()
+                setIsOpen(false)
+                setIsChargeOpen(false)
+
+                setIsLoading(false);
+
+
+            } catch (error) {
+                __DEV__ && console.error(error.message);
+            }
+        }
+        else {
+            ToastAndroid.show("Please Connect Internet To Update Data", ToastAndroid.LONG, ToastAndroid.TOP)
+
         }
     }
 
@@ -894,7 +907,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     return (
-        !noInternetConnection ? <NoInternetScreen /> :
+        // !netInfo.isConnected ? <NoInternetScreen /> :
 
             isLoading ?
                 <LoadingScreen /> :
@@ -1010,7 +1023,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                     {refreshing ? <ActivityIndicator /> : null}
                     {
-                        notDgOrAdg &&
+                        notDgOrAdg && isAdmin &&
                         <View style={{ flexDirection: 'row' }}>
                             <TouchableOpacity
                                 onPress={() => setIsFilterOn(!isFilterOn)}
