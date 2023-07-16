@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
-import {useColorScheme, Dimensions, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar } from 'react-native';
+import { useColorScheme, Dimensions, Alert, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Images } from '../utility/Images'
-
+import TouchID from "react-native-touch-id";
 import GradientText from '../component/GradientText'
 
 const paniBhaban = '../assets/paniBhaban.png'
@@ -25,8 +25,8 @@ const screenWidth = Dimensions.get('screen').width;
 
 const Login = () => {
 
-    const systemTheme = useColorScheme();
-    alert("your color scheme is: " + systemTheme);
+    // const systemTheme = useColorScheme();
+    // alert("your color scheme is: " + systemTheme);
     const [pmisId, setpmisId] = useState()
     const [password, setPassword] = useState();
     const { isLoading, login, setUserInfo, setisLogged } = useContext(AuthContext);
@@ -37,6 +37,29 @@ const Login = () => {
             ToastAndroid.SHORT,
             ToastAndroid.CENTER)
     }
+
+    const handleAuth = () => {
+        TouchID.isSupported().then((biometryType) => {
+            if (biometryType === "FaceID") {
+                TouchID.authenticate("")
+                    .then((success) => {
+                        navigation.replace("ProtectedScreen");
+                    })
+                    .catch((error) => {
+                        Alert.alert("Authentication Failed", error.message);
+                    });
+            } else {
+                TouchID.authenticate("")
+                    .then((success) => {
+                        navigation.replace("ProtectedScreen");
+                    })
+                    .catch((error) => {
+                        Alert.alert("Authentication Failed", error.message);
+                    });
+            }
+        });
+    };
+
     return (
         //  this view works as a keyboard avoiding view
         <View
@@ -71,7 +94,11 @@ const Login = () => {
                     }}
                     source={Images['bwdLogo']}
                 />
-                <View style={{ marginTop: screenHeight * .6, alignItems: 'center', }}>
+                <View style={{
+                    marginTop: screenHeight * .6,
+                    alignItems: 'center',
+                }}>
+
                     <GradientText style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory </GradientText>
                     <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</GradientText>
                     <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</GradientText>
@@ -112,40 +139,69 @@ const Login = () => {
                         }}
                         placeholder='PASSWORD'>
                     </TextInput>
+                    <View style={{ width: "70%", flexDirection: 'row' }} >
+                        <View style={{ flex: 1000 }} >
+                            <TouchableOpacity
+                                style={{
+                                    height: height / 20,
+
+                                    borderRadius: 10,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: '#FF0000',
+                                    elevation: 10
+                                }}
+                                onPress={() => {
+
+
+                                    login(pmisId, password);
+                                }}
+                            >
+                                <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {
+                            true &&
+                            <TouchableOpacity
+                                style={{ flex: .1, }}
+                                onPress={() => { handleAuth() }}
+                            >
+                                <Image
+                                    style={{
+
+                                        width: screenHeight * 0.07,
+                                        height: screenHeight * 0.045,
+                                        zIndex: 100,
+                                        elevation: 5
+                                    }}
+                                    source={Images['fingerprint']}
+                                />
+                            </TouchableOpacity>
+                        }
+
+                    </View>
                     <TouchableOpacity
                         style={{
                             height: height / 20,
                             width: "70%",
                             borderRadius: 10,
-                            alignItems: 'center',
+                            alignItems: 'flex-end',
                             justifyContent: 'center',
-                            backgroundColor: '#FF0000',
-                            elevation: 10
-                        }}
-                        onPress={() => {
-
-
-                            login(pmisId, password);
-                        }}
-                    >
-                        <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            alignContent: 'flex-end',
-                            flexDirection: 'row',
-                            elevation: 10,
-                            marginTop: 10,
                             zIndex: 100,
-
-                        }}>
+                        }}
+                        onPress={() => { }}
+                    >
                         <Text style={{
                             textAlign: 'right',
                             fontStyle: 'italic',
-                            textAlign:'right'
-                        }}> * Forgot Password</Text>
+                            textAlign: 'right',
+                            fontWeight: 'bold',
+                            color: '#D74826'
+                        }}>Forgot Password ?</Text>
                     </TouchableOpacity>
+
                 </View>
+
                 <View style={{
                     width: screenWidth, height: screenHeight * .1, position: 'absolute', //Here is the trick
                     bottom: 0, //Here is the trick
@@ -167,3 +223,15 @@ const Login = () => {
 }
 
 export default Login
+
+
+//     < Image
+// style = {{
+
+//     width: screenHeight * 0.04,
+//         height: screenHeight * 0.045,
+//             zIndex: 100,
+//                 elevation: 5
+// }}
+// source = { Images['fingerprint']}
+//     />

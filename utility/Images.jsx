@@ -40,6 +40,9 @@ Images['settings'] = require('../assets/icons/settings.png')
 Images['addGroup'] = require('../assets/icons/addGroup.png')
 Images['creatGroup'] = require('../assets/icons/creatGroup.png')
 Images['clearGroup'] = require('../assets/icons/clearGroup.png')
+Images['fingerprint'] = require('../assets/icons/fingerprint.png')
+
+
 Images['bottom'] = require('../assets/botom.png')
 
 

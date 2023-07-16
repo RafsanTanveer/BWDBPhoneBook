@@ -64,7 +64,7 @@ const CustomDrawer = ({ }) => {
                 },
                 headerTitleStyle: {
                     color: 'white',
-                    textAlign: "center",
+                    textAlign: "center"
 
 
                 }
