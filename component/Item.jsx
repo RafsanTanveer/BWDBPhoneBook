@@ -120,7 +120,11 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                     // __DEV__ && console.log("items length "+items.length)
                 }
 
-                <View style={{ justifyContent: 'center', alignContent: 'center', }}>
+                <View style={{
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    // backgroundColor:'red'
+                }}>
 
 
                     <TouchableOpacity >
@@ -375,7 +379,7 @@ const styles = StyleSheet.create({
         width: width * (1 / 5.5),
         height: width * (1 / 5.5),
         borderRadius: 100,
-        // elevation: 20
+        elevation: 20
 
 
     },
@@ -386,7 +390,7 @@ const styles = StyleSheet.create({
         backgroundColor: "pink",
         borderWidth: 1,
         borderColor: '#6750a4',
-        // elevation: 5
+        elevation: 5
 
 
     },

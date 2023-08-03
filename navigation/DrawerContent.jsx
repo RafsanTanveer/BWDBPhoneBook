@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { imgSizeMini, txtSizeNormal, txtSizeBig } from "../utility/Scalling";
 import {useFonts} from 'expo-font'
 const { width, height } = Dimensions.get('window');
+import { Images } from '../utility/Images';
 
 import ExpendableDrawer from "./ExpendableDrawer";
 import { AuthContext } from "../context/AuthContext";
@@ -45,7 +46,13 @@ const DrawerContent = (props) => {
                 paddingHorizontal: 5
             }}>
                 <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5 }}>
-                    <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                    {
+                        photo ?
+                            <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                            :
+                            <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={Images['placeHolderImg']} />
+
+                    }
                 </View>
                 <View style={{ flex: 3.5 }}>
                     <Text style={{ fontSize: width * .04, fontWeight: '600' }}>{name}</Text>

@@ -14,6 +14,11 @@ import { insertDataIntoDesignationTable, insertDataIntoDesignationListTable, ins
 import db from '../database/database'
 import Images from '../utility/Images'
 import { useFonts } from 'expo-font'
+import { useNetInfo } from "@react-native-community/netinfo";
+
+
+
+
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -58,7 +63,7 @@ const ExpendableDrawer = () => {
     //         await SplashScreen.hideAsync();
     //     }
     // }, [fontsLoaded]);
-
+    const netInfo = useNetInfo();
     const navigation = useNavigation();
     const [expendedList, setexpendedList] = React.useState([])
 
@@ -220,13 +225,13 @@ const ExpendableDrawer = () => {
             const vacantData = vacantResponse.rows;
 
 
-            console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
+            // console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
 
             console.log();
             // console.log(vacantData);
             console.log();
 
-            console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
+            // console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
 
 
 
@@ -790,7 +795,7 @@ const ExpendableDrawer = () => {
                 {/**************************************** Office *************************************/}
 
                 {
-                    true ?
+                    true && netInfo.isConnected ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -921,7 +926,7 @@ const ExpendableDrawer = () => {
 
                 {/**************************************** Group Email & SMS *************************************/}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -997,7 +1002,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1015,7 +1020,7 @@ const ExpendableDrawer = () => {
 
 
 
-                                <View style={{ flexDirection: 'row' }}>
+                                {/* <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         style={{
 
@@ -1035,7 +1040,7 @@ const ExpendableDrawer = () => {
                                             }}>Make Change Request</Text>
                                     </TouchableOpacity>
 
-                                </View>
+                                </View> */}
 
                             </List.Accordion>
                         </>

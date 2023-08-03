@@ -1,11 +1,11 @@
-import NetInfo from '@react-native-community/netinfo';
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { FlashList } from "@shopify/flash-list";
 import Checkbox from 'expo-checkbox';
 import * as Contacts from 'expo-contacts';
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
-import { ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
@@ -25,6 +25,11 @@ import { imgSizeMini, txtSizeNormal } from '../utility/Scalling'
 import { createDesignationTable } from '../database/CreateQueries'
 import { deleteDataFromDesignationTable } from '../database/DeleteQueries'
 import { insertDataIntoDesignationTable } from '../database/InsertQueries'
+
+import CreateGroupModalComponent from '../component/modalComponents/CreateGroupModalComponent'
+
+
+import AddGroupModalComponent from '../component/modalComponents/AddGroupModalComponent'
 
 
 
@@ -99,6 +104,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [refreshing, setRefreshing] = useState(true);
     const [noInternetConnection, setnoInternetConnection] = useState()
     const [seniorityText, setseniorityText] = useState()
+    const [isCreateModalVisible, setisCreateModalVisible] = useState(false);
+    const [isAddModalVisible, setisAddModalVisible] = useState(false);
 
     const { presentOfficeCode } = useContext(AuthContext);
     const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
@@ -133,12 +140,22 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+
+    const toggleCreateModal = (isVisible) => {
+        setisCreateModalVisible(isVisible);
+    };
+
+    const toggleAddModal = (isVisible) => {
+        setisAddModalVisible(isVisible);
+    };
+
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             () => {
                 setKeyboardVisible(true); // or some other action
                 setIsFloatingBtnExteded(false)
+                setGroupMenu(false)
             }
         );
         const keyboardDidHideListener = Keyboard.addListener(
@@ -295,11 +312,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     // ********************************  Internet Connection checked *************************************
-    NetInfo.fetch().then(state => {
-        // __DEV__ && console.log('Connection type', state.type);
-        // __DEV__ && console.log('Is connected?', state.isConnected);
-        setnoInternetConnection(state.isConnected)
-    });
+
+    const netInfo = useNetInfo();
+
+
     // ********************************  Internet Connection checked *************************************
 
 
@@ -357,7 +373,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            // __DEV__ && console.log('Total table = ', tableNames.length);
+            __DEV__ && console.log('Total table = ', tableNames.length);
             // __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes(tablename);
@@ -554,24 +570,31 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             if (tableExists) {
 
+                if (netInfo.isConnected) {
 
-                const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
-                const vacantData = vacantResponse.rows;
 
-                let totalVacanPost = 0
-                vacantData.forEach(it => {
-                    totalVacanPost += parseInt(it.postNo)
-                });
 
-                setTotalVacantPost(totalVacanPost)
+                    const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
+                    const vacantData = vacantResponse.rows;
 
-                console.log('totalVacanPost ' + totalVacanPost);
+                    let totalVacanPost = 0
+                    vacantData.forEach(it => {
+                        totalVacanPost += parseInt(it.postNo)
+                    });
 
-                setvacantData(vacantData)
+                    setTotalVacantPost(totalVacanPost)
 
-                console.log("in data render");
-                // console.log(vacantData);
+                    console.log('totalVacanPost ' + totalVacanPost);
 
+                    setvacantData(vacantData)
+
+                    console.log("in data render");
+                    // console.log(vacantData);
+                }
+                else {
+                    setTotalVacantPost(0)
+                    setvacantData([])
+                }
 
                 ////////////////////////////////////////vacant list //////////////////////////////////////
 
@@ -602,38 +625,45 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const refreshData = async () => {
 
-        try {
+        if (netInfo.isConnected) {
+
+            try {
 
 
-            setRefreshing(false);
-            setIsLoading(true);
-            setSearch()
+                setRefreshing(false);
+                setIsLoading(true);
+                setSearch()
 
-            setDATA([])
+                setDATA([])
 
-            deleteDataFromDesignationTable(tablename)
-
-
-            fetchDataAndInsert()
+                deleteDataFromDesignationTable(tablename)
 
 
-            setChecked(false)
-            setisrtDateChecked(false)
-            setisrtJoiningChecked(false)
-            setTabelCreationTime(timeStamp())
-
-            setdistName('')
-            setDistrictValue()
-            setCurrentDistValue()
-            setCurrentChargeValue()
-            setIsOpen(false)
-            setIsChargeOpen(false)
-
-            setIsLoading(false);
+                fetchDataAndInsert()
 
 
-        } catch (error) {
-            __DEV__ && console.error(error.message);
+                setChecked(false)
+                setisrtDateChecked(false)
+                setisrtJoiningChecked(false)
+                setTabelCreationTime(timeStamp())
+
+                setdistName('')
+                setDistrictValue()
+                setCurrentDistValue()
+                setCurrentChargeValue()
+                setIsOpen(false)
+                setIsChargeOpen(false)
+
+                setIsLoading(false);
+
+
+            } catch (error) {
+                __DEV__ && console.error(error.message);
+            }
+        }
+        else {
+            ToastAndroid.show("Please Connect Internet To Update Data", ToastAndroid.LONG, ToastAndroid.TOP)
+
         }
     }
 
@@ -894,362 +924,438 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     return (
-        !noInternetConnection ? <NoInternetScreen /> :
+        // !netInfo.isConnected ? <NoInternetScreen /> :
 
-            isLoading ?
-                <LoadingScreen /> :
-                //DATA.length == 0 ? <NoDataFoundScreen /> :
-                <SafeAreaView style={styles.container}>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        // backgroundColor: `${currentTheme}`
-                    }}>
+        isLoading ?
+            <LoadingScreen /> :
+            //DATA.length == 0 ? <NoDataFoundScreen /> :
+            <SafeAreaView style={styles.container}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    // backgroundColor: `${currentTheme}`
+                }}>
 
-                        <View style={{ flex: 10, flexDirection: 'row' }}>
-                            <View style={{ flex: 1 }}>
-                                <TextInput
-                                    selectionColor={'black'}       // for changing curcsor color
-                                    style={{
-                                        height: height / 20,
-                                        width: "97%",
-                                        borderRadius: 5,
-                                        marginBottom: 5,
-                                        marginLeft: 5,
-                                        borderColor: `${currentTheme}`,//'#6750a4',
-                                        borderWidth: 2,
-                                        paddingLeft: 15,
-                                        backgroundColor: 'white'
-                                    }}
-                                    placeholder="Search Name or Mobile or PABX ( 3 . . )"
-                                    value={search}
-                                    //underlineColorAndroid='trasparent'
-                                    onChangeText={(text) => { searchFilter(text) }}
-                                    mode='outlined'
-                                />
-                            </View>
-                            <View>
-
-                            </View>
+                    <View style={{ flex: 10, flexDirection: 'row' }}>
+                        <View style={{ flex: 1 }}>
+                            <TextInput
+                                selectionColor={'black'}       // for changing curcsor color
+                                style={{
+                                    height: height / 20,
+                                    width: "97%",
+                                    borderRadius: 5,
+                                    marginBottom: 5,
+                                    marginLeft: 5,
+                                    borderColor: `${currentTheme}`,//'#6750a4',
+                                    borderWidth: 2,
+                                    paddingLeft: 15,
+                                    backgroundColor: 'white'
+                                }}
+                                placeholder="Search Name or Mobile or PABX ( 3 . . )"
+                                value={search}
+                                //underlineColorAndroid='trasparent'
+                                onChangeText={(text) => { searchFilter(text) }}
+                                mode='outlined'
+                            />
                         </View>
+                        <View>
 
-                        {
-                            isAdmin &&
-                            <TouchableOpacity style={{
-
-                                height: height / 20,
-                                flex: 1,
-                                borderRadius: 5,
-                                marginBottom: 5,
-                                // marginLeft: 5,
-                                marginRight: 5,
-                                // borderColor: `${currentTheme}`,//'#6750a4',
-                                // borderWidth: 2,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-
-                            }}
-                                onPress={() => { selectAll() }}
-                            >
-                                {
-                                    currentSelectedIds.length === 0 ?
-                                        <Image
-                                            source={require(selectAllInactive)}
-                                            style={styles.select_all_icon}
-                                        />
-                                        : currentTheme === '#6750a4' ?
-                                            <Image
-                                                source={Images['selectAll_0']}
-                                                style={styles.select_all_icon}
-                                            /> : currentTheme === '#048BB3' ?
-                                                <Image
-                                                    source={Images['selectAll_3']}
-                                                    style={styles.select_all_icon}
-                                                /> : currentTheme === '#0089E3' ?
-                                                    <Image
-                                                        source={Images['selectAll_6']}
-                                                        style={styles.select_all_icon}
-                                                    /> : currentTheme === '#0069C4' ?
-                                                        <Image
-                                                            source={Images['selectAll_9']}
-                                                            style={styles.select_all_icon}
-                                                        /> : ''
-                                }
-
-                            </TouchableOpacity>
-                        }
+                        </View>
                     </View>
 
 
-                    {search ?
-                        <TouchableOpacity
+                    <TouchableOpacity style={{
+
+                        height: height / 20,
+                        flex: 1,
+                        borderRadius: 5,
+                        marginBottom: 5,
+                        // marginLeft: 5,
+                        marginRight: 5,
+                        // borderColor: `${currentTheme}`,//'#6750a4',
+                        // borderWidth: 2,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+
+                    }}
+                        onPress={() => { selectAll() }}
+                    >
+                        {
+                            currentSelectedIds.length === 0 ?
+                                <Image
+                                    source={require(selectAllInactive)}
+                                    style={styles.select_all_icon}
+                                />
+                                : currentTheme === '#6750a4' ?
+                                    <Image
+                                        source={Images['selectAll_0']}
+                                        style={styles.select_all_icon}
+                                    /> : currentTheme === '#048BB3' ?
+                                        <Image
+                                            source={Images['selectAll_3']}
+                                            style={styles.select_all_icon}
+                                        /> : currentTheme === '#0089E3' ?
+                                            <Image
+                                                source={Images['selectAll_6']}
+                                                style={styles.select_all_icon}
+                                            /> : currentTheme === '#0069C4' ?
+                                                <Image
+                                                    source={Images['selectAll_9']}
+                                                    style={styles.select_all_icon}
+                                                /> : ''
+                        }
+
+                    </TouchableOpacity>
+                </View>
+
+
+                {search ?
+                    <TouchableOpacity
+                        style={{
+                            alignContent: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'flex-end',
+                            position: 'absolute',
+                            marginTop: height * .01,
+                            paddingRight: width * .135,
+
+
+                        }}
+                        onPress={() => (
+                            searchFilter("")
+                            , setCurrentDistValue(""),
+                            setdistName(""),
+                            setCurrentChargeValue("")
+
+                        )}
+                    >
+                        <Image
                             style={{
-                                alignContent: 'center',
-                                justifyContent: 'center',
-                                alignSelf: 'flex-end',
-                                position: 'absolute',
-                                marginTop: height * .01,
-                                paddingRight: isAdmin ? width * .135 : width * .03,
-
-
+                                height: 22,
+                                width: 22,
                             }}
-                            onPress={() => (
-                                searchFilter("")
-                                , setCurrentDistValue(""),
-                                setdistName(""),
-                                setCurrentChargeValue("")
-
-                            )}
+                            source={Images['close']}
+                        />
+                    </TouchableOpacity> : ""
+                }
+                {refreshing ? <ActivityIndicator /> : null}
+                {
+                    notDgOrAdg && isAdmin &&
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                            onPress={() => setIsFilterOn(!isFilterOn)}
+                            style={{
+                                marginLeft: width * .036,
+                                backgroundColor: `${currentTheme}`,
+                                width: width * .23,
+                                flexDirection: 'row',
+                                borderRadius: height * .009,
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                padding: 2,
+                                elevation: 5
+                            }}
                         >
                             <Image
-                                style={{
-                                    height: 22,
-                                    width: 22,
-                                }}
-                                source={Images['close']}
+                                source={Images['filterIcon']}
+                                style={{ height: imgSizeMini, width: imgSizeMini }}
                             />
-                        </TouchableOpacity> : ""
-                    }
-                    {refreshing ? <ActivityIndicator /> : null}
-                    {
-                        notDgOrAdg && isAdmin &&
-                        <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity
-                                onPress={() => setIsFilterOn(!isFilterOn)}
-                                style={{
-                                    marginLeft: width * .036,
-                                    backgroundColor: `${currentTheme}`,
-                                    width: width * .23,
-                                    flexDirection: 'row',
-                                    borderRadius: height * .009,
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    padding: 2,
-                                    elevation: 5
-                                }}
-                            >
-                                <Image
-                                    source={Images['filterIcon']}
-                                    style={{ height: imgSizeMini, width: imgSizeMini }}
-                                />
-                                <Text style={{
-                                    color: 'white',
-                                    fontSize: width * .037,
-                                    fontWeight: '800'
-                                }}>Filter</Text>
-                                {
-                                    !isFilterOn ?
-                                        <Image
-                                            source={Images['downArrowIcon']}
-                                            style={{ height: imgSizeMini, width: imgSizeMini }}
-                                        />
-                                        :
-                                        <Image
-                                            source={Images['upArrowIcon']}
-                                            style={{ height: imgSizeMini, width: imgSizeMini }}
-                                        />}
-                            </TouchableOpacity>
+                            <Text style={{
+                                color: 'white',
+                                fontSize: width * .037,
+                                fontWeight: '800'
+                            }}>Filter</Text>
                             {
-                                !isFilterOn &&
-                                <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-                                    <Text
+                                !isFilterOn ?
+                                    <Image
+                                        source={Images['downArrowIcon']}
+                                        style={{ height: imgSizeMini, width: imgSizeMini }}
+                                    />
+                                    :
+                                    <Image
+                                        source={Images['upArrowIcon']}
+                                        style={{ height: imgSizeMini, width: imgSizeMini }}
+                                    />}
+                        </TouchableOpacity>
+                        {
+                            !isFilterOn &&
+                            <View style={{ alignContent: 'center', justifyContent: 'center' }}>
+                                <Text
+                                    style={{
+                                        marginLeft: 3, color: 'grey', fontSize: height * .015
+                                    }}> {isChecked ? 'Seniority' :
+                                        isrtDateChecked ? 'Retirement Date' :
+                                            isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
+                            </View>
+                        }
+                    </View>
+                }
+
+
+                {
+                    notDgOrAdg && isAdmin && isFilterOn ?
+
+                        <View style={{
+
+                            marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
+                            flexDirection: 'row',
+                            borderRadius: 10,
+                            justifyContent: 'space-between',
+
+
+                        }}>
+                            <View style={{ flex: 1.25, flexDirection: 'column' }}>
+                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isChecked}
+
+                                        color={isChecked ? `${currentTheme}` : undefined}
+                                    />
+
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => joiningDateUpdate()}
+                                    style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isrtJoiningChecked}
+
+                                        color={isrtJoiningChecked ? `${currentTheme}` : undefined}
+                                    />
+
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
+
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => retirementDateUpdate()}
+                                    style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isrtDateChecked}
+
+                                        color={isrtDateChecked ? `${currentTheme}` : undefined}
+                                    />
+
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
+
+                                </TouchableOpacity>
+                                <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
+
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        marginTop: 7,
+                                        backgroundColor: 'white',
+                                        borderRadius: height * .005,
+                                        width: 140,
+                                        elevation: 5
+                                        // borderColor: 'black',
+                                        // borderWidth:1
+                                    }}>
+                                    <TouchableOpacity
+                                        onPress={() => setIsVacantActive(false)}
                                         style={{
-                                            marginLeft: 3, color: 'grey', fontSize: height * .015
-                                        }}> {isChecked ? 'Seniority' :
-                                            isrtDateChecked ? 'Retirement Date' :
-                                                isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
+                                            height: 20,
+                                            width: 70,
+                                            backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
+                                            borderRadius: height * .005,
+                                        }}>
+                                        <Text
+                                            style={{
+                                                color: isVacantActive ? 'black' : 'white',
+                                                height: height * (1 / 40),
+                                                fontSize: txtSizeNormal,
+                                                fontFamily: 'serif',
+                                                textAlign: 'center',
+                                                fontWeight: 'bold'
+                                            }}>Current</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setIsVacantActive(true)}
+                                        style={{
+                                            height: 20,
+                                            width: 70,
+                                            backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                            borderRadius: height * .005,
+                                        }}>
+                                        <Text
+                                            style={{
+                                                color: !isVacantActive ? 'black' : 'white',
+                                                height: height * (1 / 40),
+                                                fontSize: txtSizeNormal,
+                                                fontFamily: 'serif',
+                                                textAlign: 'center',
+                                                fontWeight: 'bold'
+                                            }}>Vacant</Text>
+                                    </TouchableOpacity>
                                 </View>
-                            }
-                        </View>
-                    }
 
 
-                    {
-                        notDgOrAdg && isAdmin && isFilterOn ?
+
+                            </View>
+
+                            <View style={{ flex: 1 }}>
+
+                                <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
+                                    <DropDownPicker
+                                        style={{ zIndex: 1000 }}
+                                        items={tempDist}
+                                        open={isOpen}
+                                        setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
+                                        value={currentDistValue}
+                                        setValue={setCurrentDistValue}
+                                        maxHeight={450}
+                                        placeholder="Select Office Location"
+                                        onChangeValue={() => sortByDistrict()}
+                                    />
+                                </View>
+                                <View style={{ width: width * .40, marginRight: 10, }}>
+                                    <DropDownPicker
+                                        style={{ zIndex: 900 }}
+                                        items={charges}
+                                        open={isChargeOpen}
+                                        setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
+                                        value={currentChargeValue}
+                                        setValue={setCurrentChargeValue}
+                                        maxHeight={200}
+                                        placeholder="Select Charge"
+                                        onChangeValue={() => chargeFilter()}
+                                    />
+                                </View>
+
+                            </View>
+
+
+
+
+                        </View> : ""
+                }
+
+
+                {
+                    !search && DATA ?
+                        <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .02, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}</Text>
+                        : ""
+                }
+                <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
+
+
+
+
+                {
+                    !isVacantActive &&
+                    <FlashList
+                        data={filteredData}
+                        estimatedItemSize={200}
+                        // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+                        }
+                        renderItem={({ item, index }) => (
+                            <Item
+                                id={item.id}
+                                name={item.name}
+                                office={item.office}
+                                email={item.email}
+                                mobile={item.mobile}
+                                seniority={item.seniority}
+                                retiredate={item.retiredate}
+                                bwdbJoiningDt={item.bwdbJoiningDt}
+                                pabx={item.pabx}
+                                selected={item.selected}
+                                photo={item.photo}
+                                index={index}
+                                designation={designation}
+                                post={item.post}
+                                higherPost={higherPostForCurrentDesig}
+                                charge={item.charge}
+                                isAdmin={isAdmin}
+                                notDgOrAdg={notDgOrAdg}
+                                currentTheme={currentTheme}
+                                length={filteredData.length}
+                            />
+
+
+                        )}
+                        ref={(ref) => {
+                            listViewRef = ref;
+                        }}
+
+                    />
+                }
+
+
+
+                {
+                    isVacantActive &&
+                    <>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            margin: 5,
+
+                        }}>
 
                             <View style={{
-
-                                marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
-                                flexDirection: 'row',
-                                borderRadius: 10,
-                                justifyContent: 'space-between',
+                                flex: 1, backgroundColor: `${currentTheme}50`,
+                                borderTopLeftRadius: height * .005,
+                                justifyContent: 'center',
+                                padding: 5
 
 
                             }}>
-                                <View style={{ flex: 1.25, flexDirection: 'column' }}>
-                                    <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isChecked}
 
-                                            color={isChecked ? `${currentTheme}` : undefined}
-                                        />
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>No.</Text>
+                            </View>
 
-                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+                            <View style={{
+                                flex: 2, backgroundColor: `${currentTheme}50`,
+                                justifyContent: 'center', padding: 5
 
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => joiningDateUpdate()}
-                                        style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                        <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isrtJoiningChecked}
+                            }}>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Code</Text>
+                            </View>
 
-                                            color={isrtJoiningChecked ? `${currentTheme}` : undefined}
-                                        />
+                            <View style={{
+                                flex: 8, backgroundColor: `${currentTheme}50`,
+                                justifyContent: 'center', padding: 5
 
-                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
+                            }}>
 
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => retirementDateUpdate()}
-                                        style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                        <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isrtDateChecked}
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Name</Text>
+                            </View>
 
-                                            color={isrtDateChecked ? `${currentTheme}` : undefined}
-                                        />
+                            <View style={{
+                                flex: 2, backgroundColor: `${currentTheme}50`,
+                                borderTopRightRadius: height * .005,
+                                justifyContent: 'center', padding: 5
 
-                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
+                            }}>
 
-                                    </TouchableOpacity>
-                                    <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Vacant Post</Text>
+                            </View>
+                        </View>
 
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            marginTop: 7,
-                                            backgroundColor: 'white',
-                                            borderRadius: height * .005,
-                                            width: 140,
-                                            elevation: 5
-                                            // borderColor: 'black',
-                                            // borderWidth:1
-                                        }}>
-                                        <TouchableOpacity
-                                            onPress={() => setIsVacantActive(false)}
-                                            style={{
-                                                height: 20,
-                                                width: 70,
-                                                backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
-                                                borderRadius: height * .005,
-                                            }}>
-                                            <Text
-                                                style={{
-                                                    color: isVacantActive ? 'black' : 'white',
-                                                    height: height * (1 / 40),
-                                                    fontSize: txtSizeNormal,
-                                                    fontFamily: 'serif',
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold'
-                                                }}>Current</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => setIsVacantActive(true)}
-                                            style={{
-                                                height: 20,
-                                                width: 70,
-                                                backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
-                                                borderRadius: height * .005,
-                                            }}>
-                                            <Text
-                                                style={{
-                                                    color: !isVacantActive ? 'black' : 'white',
-                                                    height: height * (1 / 40),
-                                                    fontSize: txtSizeNormal,
-                                                    fontFamily: 'serif',
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold'
-                                                }}>Vacant</Text>
-                                        </TouchableOpacity>
-                                    </View>
-
-
-
-                                </View>
-
-                                <View style={{ flex: 1 }}>
-
-                                    <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
-                                        <DropDownPicker
-                                            style={{ zIndex: 1000 }}
-                                            items={tempDist}
-                                            open={isOpen}
-                                            setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
-                                            value={currentDistValue}
-                                            setValue={setCurrentDistValue}
-                                            maxHeight={450}
-                                            placeholder="Select Office Location"
-                                            onChangeValue={() => sortByDistrict()}
-                                        />
-                                    </View>
-                                    <View style={{ width: width * .40, marginRight: 10, }}>
-                                        <DropDownPicker
-                                            style={{ zIndex: 900 }}
-                                            items={charges}
-                                            open={isChargeOpen}
-                                            setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
-                                            value={currentChargeValue}
-                                            setValue={setCurrentChargeValue}
-                                            maxHeight={200}
-                                            placeholder="Select Charge"
-                                            onChangeValue={() => chargeFilter()}
-                                        />
-                                    </View>
-
-                                </View>
-
-
-
-
-                            </View> : ""
-                    }
-
-
-                    {
-                        !search && DATA ?
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .02, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}</Text>
-                            : ""
-                    }
-                    <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
-
-
-
-
-                    {
-                        !isVacantActive &&
                         <FlashList
-                            data={filteredData}
+                            data={vacantData}
                             estimatedItemSize={200}
                             // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
                             refreshControl={
                                 <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                             }
                             renderItem={({ item, index }) => (
-                                <Item
-                                    id={item.id}
-                                    name={item.name}
-                                    office={item.office}
-                                    email={item.email}
-                                    mobile={item.mobile}
-                                    seniority={item.seniority}
-                                    retiredate={item.retiredate}
-                                    bwdbJoiningDt={item.bwdbJoiningDt}
-                                    pabx={item.pabx}
-                                    selected={item.selected}
-                                    photo={item.photo}
-                                    index={index}
-                                    designation={designation}
-                                    post={item.post}
-                                    higherPost={higherPostForCurrentDesig}
-                                    charge={item.charge}
-                                    isAdmin={isAdmin}
-                                    notDgOrAdg={notDgOrAdg}
-                                    currentTheme={currentTheme}
-                                    length={filteredData.length}
-                                />
+                                <ItemVacant
 
+                                    index={index + 1}
+                                    office={item.office}
+                                    officeName={item.officeName}
+                                    postNo={item.postNo}
+
+                                />
 
                             )}
                             ref={(ref) => {
@@ -1257,273 +1363,134 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}
 
                         />
-                    }
+                    </>
+                }
 
 
 
-                    {
-                        isVacantActive &&
-                        <>
-
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                margin: 5,
-
-                            }}>
-
-                                <View style={{
-                                    flex: 1, backgroundColor: `${currentTheme}50`,
-                                    borderTopLeftRadius: height * .005,
-                                    justifyContent: 'center',
-                                    padding: 5
-
-
-                                }}>
-
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>No.</Text>
-                                </View>
-
-                                <View style={{
-                                    flex: 2, backgroundColor: `${currentTheme}50`,
-                                    justifyContent: 'center', padding: 5
-
-                                }}>
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Code</Text>
-                                </View>
-
-                                <View style={{
-                                    flex: 8, backgroundColor: `${currentTheme}50`,
-                                    justifyContent: 'center', padding: 5
-
-                                }}>
-
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Name</Text>
-                                </View>
-
-                                <View style={{
-                                    flex: 2, backgroundColor: `${currentTheme}50`,
-                                    borderTopRightRadius: height * .005,
-                                    justifyContent: 'center', padding: 5
-
-                                }}>
-
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Vacant Post</Text>
-                                </View>
-                            </View>
-
-                            <FlashList
-                                data={vacantData}
-                                estimatedItemSize={200}
-                                // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
-                                refreshControl={
-                                    <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
-                                }
-                                renderItem={({ item, index }) => (
-                                    <ItemVacant
-
-                                        index={index + 1}
-                                        office={item.office}
-                                        officeName={item.officeName}
-                                        postNo={item.postNo}
-
-                                    />
-
-                                )}
-                                ref={(ref) => {
-                                    listViewRef = ref;
-                                }}
-
-                            />
-                        </>
-                    }
-
-
-
-                    {
-                        !isVacantActive &&
-                        <>
-                            <TouchableOpacity
-                                activeOpacity={0.5}
-                                onPress={downButtonHandler}
-                                style={{
-                                    position: 'absolute',
-                                    width: width * .1,
-                                    height: width * .1,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    right: width * .0598,
-                                    bottom: height * .069,
-                                    backgroundColor: `${currentTheme}`,
-                                    borderTopRightRadius: height * .005,
-                                    borderBottomEndRadius: height * .005,
-                                    elevation: 2
-
-
-                                }}>
-                                <Image
-                                    source={Images['downArrowIcon']}
-                                    style={{
-                                        resizeMode: 'contain',
-                                        width: 50,
-                                        height: 30,
-                                        marginTop: 2
-                                    }}
-                                />
-
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                activeOpacity={0.5}
-                                onPress={upButtonHandler}
-                                style={{
-                                    position: 'absolute',
-                                    width: width * .1,
-                                    height: width * .1,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    right: width * .163,
-                                    bottom: height * .069,
-                                    backgroundColor: `${currentTheme}`,
-                                    borderTopLeftRadius: height * .005,
-                                    borderBottomStartRadius: height * .005,
-                                    elevation: 2
-
-                                }}>
-                                <Image
-                                    source={Images['upArrowIcon']}
-                                    style={{
-                                        resizeMode: 'contain',
-                                        width: 55,
-                                        height: 30,
-                                        marginTop: 0
-                                    }}
-                                />
-
-                            </TouchableOpacity>
-                        </>
-                    }
-
-                    {
-                        !isKeyboardVisible && !isVacantActive && isAdmin &&
-                        <View
-                            // activeOpacity={0.5}
-
+                {
+                    !isVacantActive &&
+                    <>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={downButtonHandler}
                             style={{
-                                flexDirection: 'row-reverse',
                                 position: 'absolute',
-                                // width: width * .1,
-                                // height: width * .1,
+                                width: width * .1,
+                                height: width * .1,
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                right: 0,
-                                bottom: height * .35,
-                                //  backgroundColor: `${currentTheme}`,
+                                right: width * .0598,
+                                bottom: height * .069,
+                                backgroundColor: `${currentTheme}`,
+                                borderTopRightRadius: height * .005,
+                                borderBottomEndRadius: height * .005,
+                                elevation: 2
 
-                                elevation: 10
 
                             }}>
-                            <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded), setGroupMenu(false) }}>
-                                <Image
-                                    source={Images['leftArrowIcon']}
-                                    style={{
-                                        resizeMode: 'contain',
-                                        width: width * .1,
-                                        height: width * .1,
-                                        marginTop: 0
+                            <Image
+                                source={Images['downArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: 50,
+                                    height: 30,
+                                    marginTop: 2
+                                }}
+                            />
 
-                                    }}
-                                />
-                            </TouchableOpacity>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={upButtonHandler}
+                            style={{
+                                position: 'absolute',
+                                width: width * .1,
+                                height: width * .1,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: width * .163,
+                                bottom: height * .069,
+                                backgroundColor: `${currentTheme}`,
+                                borderTopLeftRadius: height * .005,
+                                borderBottomStartRadius: height * .005,
+                                elevation: 2
 
-                            {
-                                isFloatingBtnExteded &&
-                                <View style={{
-                                    backgroundColor: `${currentTheme}`,
-                                    flexDirection: 'row',
-                                    borderRadius: height * .005,
-                                    borderColor: 'white',
-                                    borderWidth: 2
-                                }}>
-                                    <FloatingBtnComponent
-                                        currentTheme={currentTheme}
-                                        icon='groupIcon'
-                                        txt="Group"
-                                        badgeCount={groupIds.length}
-                                        callBackFn={groupHanlder}
-                                    />
-                                    <FloatingBtnComponent
-                                        currentTheme={currentTheme}
-                                        icon='msglIcon'
-                                        txt="SMS"
-                                        badgeCount={currentSelectedIds.length}
-                                        callBackFn={bulkSMS}
-                                    />
+                            }}>
+                            <Image
+                                source={Images['upArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: 55,
+                                    height: 30,
+                                    marginTop: 0
+                                }}
+                            />
 
-                                    <FloatingBtnComponent
-                                        currentTheme={currentTheme}
-                                        icon='emailIcon'
-                                        txt="Email"
-                                        badgeCount={currentSelectedIds.length}
-                                        callBackFn={bulkEmail}
-                                    />
+                        </TouchableOpacity>
+                    </>
+                }
 
-                                </View>
-                            }
-
-                        </View>
-
-
-                    }
-
-
+                {
+                    !isKeyboardVisible && !isVacantActive &&
                     <View
                         // activeOpacity={0.5}
 
                         style={{
-                            flexDirection: 'column',
+                            flexDirection: 'row-reverse',
                             position: 'absolute',
                             // width: width * .1,
                             // height: width * .1,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            right: width * .40,
-                            bottom: height * .46,
+                            right: 0,
+                            bottom: height * .35,
                             //  backgroundColor: `${currentTheme}`,
 
                             elevation: 10
 
                         }}>
+                        <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded), setGroupMenu(false), setIsFilterOn(false) }}>
+                            <Image
+                                source={Images['leftArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: width * .1,
+                                    height: width * .1,
+                                    marginTop: 0
+
+                                }}
+                            />
+                        </TouchableOpacity>
 
                         {
-                            groupMenu &&
+                            isFloatingBtnExteded &&
                             <View style={{
                                 backgroundColor: `${currentTheme}`,
-                                flexDirection: 'column',
+                                flexDirection: 'row',
                                 borderRadius: height * .005,
                                 borderColor: 'white',
                                 borderWidth: 2
                             }}>
-
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
-                                    icon='creatGroup'
-                                    txt="Create"
+                                    icon='groupIcon'
+                                    txt="Group"
+                                    badgeCount={groupIds.length}
+                                    callBackFn={groupHanlder}
+                                />
+                                <FloatingBtnComponent
+                                    currentTheme={currentTheme}
+                                    icon='msglIcon'
+                                    txt="SMS"
                                     badgeCount={currentSelectedIds.length}
                                     callBackFn={bulkSMS}
                                 />
 
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
-                                    icon='addGroup'
-                                    txt="Add"
-                                    badgeCount={currentSelectedIds.length}
-                                    callBackFn={bulkEmail}
-                                />
-
-                                <FloatingBtnComponent
-                                    currentTheme={currentTheme}
-                                    icon='clearGroup'
-                                    txt="Clear"
+                                    icon='emailIcon'
+                                    txt="Email"
                                     badgeCount={currentSelectedIds.length}
                                     callBackFn={bulkEmail}
                                 />
@@ -1533,7 +1500,87 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                     </View>
 
-                </SafeAreaView>
+
+                }
+
+
+                <View
+                    // activeOpacity={0.5}
+
+                    style={{
+                        flexDirection: 'column',
+                        position: 'absolute',
+                        // width: width * .1,
+                        // height: width * .1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        right: width * .40,
+                        bottom: height * .46,
+                        //  backgroundColor: `${currentTheme}`,
+                        zIndex: 1200,
+                        elevation: 10
+
+                    }}>
+
+                    {
+                        !isKeyboardVisible && groupMenu &&
+                        <View style={{
+                            backgroundColor: `${currentTheme}`,
+                            flexDirection: 'column',
+                            borderRadius: height * .005,
+                            borderColor: 'white',
+                            borderWidth: 2
+                        }}>
+
+                            <FloatingBtnComponent
+                                currentTheme={currentTheme}
+                                icon='creatGroup'
+                                txt="Create"
+                                badgeCount={currentSelectedIds.length}
+                                callBackFn={setisCreateModalVisible}
+                            />
+
+                            <FloatingBtnComponent
+                                currentTheme={currentTheme}
+                                icon='addGroup'
+                                txt="Add"
+                                badgeCount={currentSelectedIds.length}
+                                callBackFn={setisAddModalVisible}
+                            />
+
+                            <FloatingBtnComponent
+                                currentTheme={currentTheme}
+                                icon='clearGroup'
+                                txt="Clear"
+                                badgeCount={currentSelectedIds.length}
+                                callBackFn={bulkEmail}
+                            />
+
+                        </View>
+                    }
+
+                </View>
+
+
+                <Modal
+                    transparent={true}
+                    animationType="fade"
+                    visible={isCreateModalVisible}
+                    onRequestClose={() => toggleCreateModal(true)}
+                >
+                    <CreateGroupModalComponent number={'mobile'} toggleModal={toggleCreateModal} />
+                </Modal>
+
+                <Modal
+                    transparent={true}
+                    animationType="fade"
+                    visible={isAddModalVisible}
+                    onRequestClose={() => toggleAddModal(true)}
+                >
+                    <AddGroupModalComponent number={'mobile'} toggleModal={toggleAddModal} />
+                </Modal>
+
+            </SafeAreaView>
     )
 }
 

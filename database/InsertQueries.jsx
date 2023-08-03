@@ -165,3 +165,52 @@ export const insertDataIntoEmployeeInfoTable = (tableName, data) => {
         });
     });
 };
+
+
+export const insertDataIntoGroupTable = (tableName, data) => {
+
+    // console.log(tableName, ' length = ', data.length);
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+
+            data.forEach((it, index) => {
+                tx.executeSql(
+                    `INSERT INTO ${tableName} (
+                                      id,
+                                      name,
+                                      designation,
+                                      post,
+                                      charge,
+                                      office,
+                                      officeAddress,
+                                      mobile,
+                                      pabx,
+                                      email,
+                                      photao,
+                                      timestamp)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                    [
+                        it.id,
+                        it.name,
+                        it.designation,
+                        it.post,
+                        it.charge,
+                        it.office,
+                        it.officeAddress,
+                        it.mobile,
+                        it.pabx,
+                        it.email,
+                        it.photo,
+                        timeStamp()
+                    ]
+                );
+            });
+
+
+
+        });
+    });
+};

@@ -98,94 +98,94 @@ export const AuthProvider = ({ children }) => {
 
 
 
-        // console.log('lkklklk');
+        console.log('lkklklk ', id);
 
-        // const tablenames = await getAllTableName()
+        const tablenames = await getAllTableName()
 
-        // const tableNames = tablenames.map((table) => table.name);
-        // // console.log(tableNames);
+        const tableNames = tablenames.map((table) => table.name);
+        // console.log(tableNames);
 
-        // const tableExists = tableNames.includes('employeeInfo');
-
-
-        // if (tableExists) {
-        //     console.log("tableExists", tableExists);
-        //     const empInfo = await getEmployeeInfo("employeeInfo")
-
-        //     idCheckAndLogin(empInfo, id)
-
-        // }
-        // else {
-        //     const { data: response } = await api.get("allEmpInfo");
-        //     const empData = response.rows
-
-        //     console.log("in not exits employeeInfo table");
-
-        //     createEmployeeInfoTable("employeeInfo")
-        //     insertDataIntoEmployeeInfoTable("employeeInfo", empData)
-
-        //     idCheckAndLogin(empData, id)
-
-        // }
-
-        // await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
+        const tableExists = tableNames.includes('employeeInfo');
 
 
+        if (tableExists) {
+            console.log("tableExists", tableExists);
+            const empInfo = await getEmployeeInfo("employeeInfo")
 
+            idCheckAndLogin(empInfo, id)
 
-        // setIsLoading(false);
+        }
+        else {
+            const { data: response } = await api.get("allEmpInfo");
+            const empData = response.rows
+
+            console.log("in not exits employeeInfo table");
+
+            createEmployeeInfoTable("employeeInfo")
+            insertDataIntoEmployeeInfoTable("employeeInfo", empData)
+
+            idCheckAndLogin(empData, id)
+
+        }
+
+        await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
 
 
 
 
-
-        api
-            .get("userinfo", {
-                params: {
-                    id: id
-                }
-            })
-            .then(async (res) => {
-                const userData = res.data.rows;
-
-                console.log(userData);
-
-
-                // __DEV__ && console.log('Length  ------------- ' + userData.rows.length);
-                if (userData.length === 0) {
-                    ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
-                    setisLogged(false)
-                    setUserInfo([])
-                    // __DEV__ && console.log(userData.rows)
-                }
-                else if (userData[0].status === 'I') {
-                    // __DEV__ && console.log(userData.rows);
-                    ToastAndroid.show('INACTIVE', ToastAndroid.LONG,);
-                    setisLogged(false)
-                    setUserInfo([])
-
-                }
-                else {
-                    // __DEV__ && console.log(userData.rows)
-                    setUserInfo(userData);
-                    setisLogged(true)
-
-
-                }
-
-
-
-                await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
+        setIsLoading(false);
 
 
 
 
-                setIsLoading(false);
-            })
-            .catch(e => {
-                __DEV__ && console.log(`login error ${e}`);
-                setIsLoading(false);
-            });
+
+        // api
+        //     .get("userinfo", {
+        //         params: {
+        //             id: id
+        //         }
+        //     })
+        //     .then(async (res) => {
+        //         const userData = res.data.rows;
+
+        //         console.log(userData);
+
+
+        //         // __DEV__ && console.log('Length  ------------- ' + userData.rows.length);
+        //         if (userData.length === 0) {
+        //             ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
+        //             setisLogged(false)
+        //             setUserInfo([])
+        //             // __DEV__ && console.log(userData.rows)
+        //         }
+        //         else if (userData[0].status === 'I') {
+        //             // __DEV__ && console.log(userData.rows);
+        //             ToastAndroid.show('INACTIVE', ToastAndroid.LONG,);
+        //             setisLogged(false)
+        //             setUserInfo([])
+
+        //         }
+        //         else {
+        //             // __DEV__ && console.log(userData.rows)
+        //             setUserInfo(userData);
+        //             setisLogged(true)
+
+
+        //         }
+
+
+
+        //         await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
+
+
+
+
+        //         setIsLoading(false);
+        //     })
+        //     .catch(e => {
+        //         __DEV__ && console.log(`login error ${e}`);
+        //         setIsLoading(false);
+        //     });
     };
 
     const logout = () => {

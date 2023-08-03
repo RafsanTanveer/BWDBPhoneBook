@@ -9,10 +9,9 @@ const Home = ({ navigation }) => {
 
   const { userInfo, splashLoading, name, isLogged } = useContext(AuthContext);
 
-  console.log("in home --- ",userInfo[0].id);
+  // console.log("in home --- ", userInfo);
   return (
     <>
-
       {
         isLogged &&
         <BiodataScreen id={userInfo[0].id} />

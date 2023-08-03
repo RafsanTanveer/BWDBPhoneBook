@@ -67,7 +67,7 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
     }
 
 
-    console.log(reqDocs.Experience);
+    // console.log(reqDocs.Experience);
 
     const [requiredDocs, setRequiredDocs] = useState([
         'JSC Certificate',
@@ -83,7 +83,7 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
         'Service Book',
         'Marriage Certificate'
     ]);
-// Date of Birth
+    // Date of Birth
     if (correctionType === 'Employee Name' ||
         correctionType === "Father's Name" ||
         correctionType === "Mother's Name" ||

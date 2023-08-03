@@ -7,7 +7,7 @@ export const timeStamp = () => {
     const hours = ['', '', '', '', '', '', '', '', '', '', '', '',];
     const date = new Date()
     const amOrpm = date.getHours() >= 12 ? 'PM' : 'AM'
-    const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12}:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
-     
+    const dateStr = `${months[(date.getMonth())]} ${padTo2Digits(date.getDate())}, ${date.getFullYear()}, ${date.getHours() % 12 === 0 ? 12 : date.getHours() % 12 }:${padTo2Digits(date.getMinutes())} ${amOrpm}`;
+
     return dateStr;
 }
