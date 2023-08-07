@@ -162,12 +162,12 @@ const ExpendableDrawer = () => {
 
                 })
 
-                response.rows.forEach(async (it, index) => {
+                // response.rows.forEach(async (it, index) => {
 
 
-                    fetchDataAndStoreVacantData(`VACANT${it.tablename}`, it.desig)
+                //     fetchDataAndStoreVacantData(`VACANT${it.tablename}`, it.desig)
 
-                })
+                // })
 
 
                 //fetchDataAndStoreVacantData
