@@ -1144,54 +1144,57 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 </TouchableOpacity>
                                 <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
 
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        marginTop: 7,
-                                        backgroundColor: 'white',
-                                        borderRadius: height * .005,
-                                        width: 140,
-                                        elevation: 5
-                                        // borderColor: 'black',
-                                        // borderWidth:1
-                                    }}>
-                                    <TouchableOpacity
-                                        onPress={() => setIsVacantActive(false)}
+                                {
+                                    netInfo &&
+                                    <View
                                         style={{
-                                            height: 20,
-                                            width: 70,
-                                            backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
+                                            flexDirection: 'row',
+                                            marginTop: 7,
+                                            backgroundColor: 'white',
                                             borderRadius: height * .005,
+                                            width: 140,
+                                            elevation: 5
+                                            // borderColor: 'black',
+                                            // borderWidth:1
                                         }}>
-                                        <Text
+                                        <TouchableOpacity
+                                            onPress={() => setIsVacantActive(false)}
                                             style={{
-                                                color: isVacantActive ? 'black' : 'white',
-                                                height: height * (1 / 40),
-                                                fontSize: txtSizeNormal,
-                                                fontFamily: 'serif',
-                                                textAlign: 'center',
-                                                fontWeight: 'bold'
-                                            }}>Current</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => setIsVacantActive(true)}
-                                        style={{
-                                            height: 20,
-                                            width: 70,
-                                            backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
-                                            borderRadius: height * .005,
-                                        }}>
-                                        <Text
+                                                height: 20,
+                                                width: 70,
+                                                backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: isVacantActive ? 'black' : 'white',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: 'serif',
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>Current</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setIsVacantActive(true)}
                                             style={{
-                                                color: !isVacantActive ? 'black' : 'white',
-                                                height: height * (1 / 40),
-                                                fontSize: txtSizeNormal,
-                                                fontFamily: 'serif',
-                                                textAlign: 'center',
-                                                fontWeight: 'bold'
-                                            }}>Vacant</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                                height: 20,
+                                                width: 70,
+                                                backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: !isVacantActive ? 'black' : 'white',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: 'serif',
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>Vacant</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
 
 
 

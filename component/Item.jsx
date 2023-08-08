@@ -11,7 +11,7 @@ import MakeCallModalComponent from '../component/MakeCallModalComponent';
 import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
-import { imgSizeMini, txtSizeNormal,txtSizeBig } from "../utility/Scalling";
+import { imgSizeMini, txtSizeNormal, txtSizeBig } from "../utility/Scalling";
 
 let selectedPId = []
 let selectedGroupIds = []
@@ -95,8 +95,11 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
     return (
 
         <TouchableOpacity
+            disabled={true}
             style={{}}
-            onPress={() => (onSelect(id))}>
+            onPress={() => (onSelect(id))}
+        >
+
 
             <View style={
                 currentSelectedIds.includes(id) ?
@@ -127,7 +130,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                 }}>
 
 
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={() => (onSelect(id))}>
                         {
 
                             photo ?
@@ -229,12 +232,8 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                         {
                             mobile &&
                             <TouchableOpacity
-                                onLongPress={() => (
-                                    <>
-
-                                        < ModalViewForEditNumber viewModal={true} name={mobile} />
-                                    </>
-                                )} onPress={() => { Linking.openURL(`tel:${mobile}`) }}
+                                // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+                                onPress={() => { Linking.openURL(`tel:${mobile}`) }}
                                 style={{
                                     alignItems: 'center',
                                     flexDirection: 'row',
