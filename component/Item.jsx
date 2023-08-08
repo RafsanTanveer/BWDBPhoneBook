@@ -158,42 +158,64 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                     borderBottomWidth: StyleSheet.hairlineWidth,
                 }}>
                     <View style={{ flex: 1, }}>
-                        <View style={{ flex: 1, }}>
-                            {/* {__DEV__ && console.log('isAdmin : '+isAdmin)} */}
-                            {
-                                // presentOfficeCode === 30 ?
-                                isAdmin ?
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <TouchableOpacity onPress={() => {
-                                            navigation.navigate('Biodata', { id: id })
-                                        }}>
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
+
+                        <View style={{ flex: 1, flexDirection:'row'}}>
+
+                            <View style={{  }} >
+                                {
+                                    // presentOfficeCode === 30 ?
+                                    isAdmin ?
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <TouchableOpacity onPress={() => {
+                                                navigation.navigate('Biodata', { id: id })
+                                            }}>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
 
 
-                                        </TouchableOpacity>
+                                            </TouchableOpacity>
 
-                                    </View>
-                                    : null
-                            }
-                            {
-                                notDgOrAdg && isAdmin ?
-                                    <View style={{ justifyContent: 'space-between' }}>
-                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
-                                        {
-                                            bwdbJoiningDt &&
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
-                                        }
-                                        {
-                                            retiredate &&
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
-                                        }
-                                        {/*bwdbJoiningDt <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
+                                        </View>
+                                        : null
+                                }
+                                {
+                                    notDgOrAdg && isAdmin ?
+                                        <View style={{ justifyContent: 'space-between' }}>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
+                                            {
+                                                bwdbJoiningDt &&
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
+                                            }
+                                            {
+                                                retiredate &&
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
+                                            }
+                                            {/*bwdbJoiningDt <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
-                                    </View>
-                                    : ""
-                            }
-                            <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                                        </View>
+                                        : ""
+                                }
+                            </View>
+                            <View style={{ paddingLeft: 50, }} >
+                                <Image
+
+                                    style={{
+                                        opacity: 0.2,
+                                        width: width * (1 / 5.5),
+                                        height: width * (1 / 5.5),
+                                        borderRadius: 100,
+                                        borderWidth: 1,
+
+                                        elevation: 5
+
+                                    }}
+                                    source={Images['bwdLogo']} >
+
+                                    </Image>
+                            </View>
                         </View>
+
+                        <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+
                         <View style={{ flex: 1, }}>
                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
                         </View>
