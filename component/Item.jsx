@@ -159,9 +159,9 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                 }}>
                     <View style={{ flex: 1, }}>
 
-                        <View style={{ flex: 1, flexDirection:'row'}}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={{  }} >
+                            <View style={{}} >
                                 {
                                     // presentOfficeCode === 30 ?
                                     isAdmin ?
@@ -195,27 +195,30 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                         : ""
                                 }
                             </View>
-                            <View style={{ paddingLeft: 50, }} >
-                                <Image
 
-                                    style={{
-                                        opacity: 0.2,
-                                        width: width * (1 / 5.5),
-                                        height: width * (1 / 5.5),
-                                        borderRadius: 100,
-                                        borderWidth: 1,
-
-                                        elevation: 5
-
-                                    }}
-                                    source={Images['bwdLogo']} >
-
-                                    </Image>
-                            </View>
                         </View>
 
                         <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                        <View style={{}} >
+                            <Image
 
+                                style={{
+
+                                    marginLeft: width * .2,
+
+                                    opacity: 0.2,
+                                    width: width * (1 / 6.5),
+                                    height: width * (1 / 6.5),
+                                    borderRadius: 100,
+                                    borderWidth: 1,
+                                    position: 'absolute',
+                                    elevation: 5
+
+                                }}
+                                source={Images['bwdLogo']} >
+
+                            </Image>
+                        </View>
                         <View style={{ flex: 1, }}>
                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
                         </View>
