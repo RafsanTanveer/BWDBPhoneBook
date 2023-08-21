@@ -259,16 +259,16 @@ const ExpendableDrawer = () => {
     useEffect(() => {
 
         setdgAdgDesig(desigList.filter((it) => (it.cadre === '00')))
-        setcivilDesig(desigList.filter((it) => (it.cadre === '01')))
-        setmechDesig(desigList.filter((it) => (it.cadre === '02')))
-        setadminDesig(desigList.filter((it) => (it.cadre === '03')))
-        setfinanceDesig(desigList.filter((it) => (it.cadre === '04')))
-        setwaterDesig(desigList.filter((it) => (it.cadre === '05')))
-        setlandDesig(desigList.filter((it) => (it.cadre === '06')))
-        setgeologyDesig(desigList.filter((it) => (it.cadre === '07')))
-        seteconomicDesig(desigList.filter((it) => (it.cadre === '08')))
-        setcomputerDesig(desigList.filter((it) => (it.cadre === '09')))
-        setmedicalDesig(desigList.filter((it) => (it.cadre === '10')))
+        setcivilDesig(desigList.filter((it) => (it.cadre === '10' || it.cadre === '12')))
+        setmechDesig(desigList.filter((it) => (it.cadre === '20')))
+        setadminDesig(desigList.filter((it) => (it.cadre === '30')))
+        setfinanceDesig(desigList.filter((it) => (it.cadre === '40')))
+        setwaterDesig(desigList.filter((it) => (it.cadre === '50')))
+        setlandDesig(desigList.filter((it) => (it.cadre === '60')))
+        setgeologyDesig(desigList.filter((it) => (it.cadre === '70')))
+        seteconomicDesig(desigList.filter((it) => (it.cadre === '80')))
+        setcomputerDesig(desigList.filter((it) => (it.cadre === '90')))
+        setmedicalDesig(desigList.filter((it) => (it.cadre === '39')))
 
     }, [desigList]);
 

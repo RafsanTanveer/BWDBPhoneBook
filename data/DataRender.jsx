@@ -35,8 +35,10 @@ import AddGroupModalComponent from '../component/modalComponents/AddGroupModalCo
 
 
 let selectedPId = []
-
+let chargeMap = {};
 let tempDist = []
+let postMap = {}
+let postKeys
 let tempDropVal = [
     { label: "All DISTRICT", value: 0 },
     { label: "CHATTOGRAM", value: 1 },
@@ -66,7 +68,7 @@ const selectAll_0 = '../assets/icons/selectAll-theme-0.png'
 const selectAll_3 = '../assets/icons/selectAll-theme-3.png'
 const selectAll_6 = '../assets/icons/selectAll-theme-6.png'
 
-
+let higherPost = ''
 
 
 
@@ -77,7 +79,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     let listViewRef;
     const navigation = useNavigation();
     // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);
-    let higherPost = ''
+
+    const [isSummeryVisible, setIsSummeryVisible] = useState(false);
+
     const [higherPostForCurrentDesig, setHigherPostForCurrentDesig] = useState('');
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
     const [isFilterOn, setIsFilterOn] = useState(false);
@@ -95,6 +99,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const { handleSubmit, control } = useForm();
     const [districtOpen, setDistrictOpen] = useState(false);
     const [isVacantActive, setIsVacantActive] = useState(false);
+    const [isReportActive, setIsReportActive] = useState(false);
+    const [isCurrentActive, setIsCurrentActive] = useState(true);
     const [selectedItems, setSelectedItems] = useState([]);
     const [activeIcon, setActiveIcon] = useState();
     const [masterData, setMasterData] = useState([])
@@ -148,6 +154,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const toggleAddModal = (isVisible) => {
         setisAddModalVisible(isVisible);
     };
+
+    // function camelize(str) {
+    //     return str
+    //         .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) =>
+    //             index === 0
+    //                 ? letter.toLowerCase()
+    //                 : letter.toUpperCase()
+    //         )
+    //         .replace(/\s+/g, '');
+    // }
+
+    function camelize(string) {
+        string = string.toLowerCase()
+        return string.replace(/(?:)([a-z])/g, (match, group1) => group1.toUpperCase())
+    }
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -433,6 +454,40 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 ////////////////////////////////////////vacant list //////////////////////////////////////
 
+                /////////////////////// charge calculation //////////////////////////
+
+
+                data.forEach(item => {
+                    if (chargeMap[item.charge]) {
+                        chargeMap[item.charge]++;
+                    } else {
+                        chargeMap[item.charge] = 1;
+                    }
+                });
+
+                console.log(chargeMap);
+                /////////////////////// charge calculation //////////////////////////
+
+                /////////////////////// post calculation //////////////////////////
+
+
+                data.forEach(item => {
+                    if (postMap[item.post]) {
+                        postMap[item.post]++;
+                    } else {
+                        postMap[item.post] = 1;
+                    }
+                });
+
+                console.log(postMap);
+
+                for (const key in postMap) {
+                    console.log(`${postMap[key]}`);
+                }
+
+                postKeys = Object.keys(postMap);
+
+                /////////////////////// post calculation //////////////////////////
 
                 /////////////////////// district calculation //////////////////////////
 
@@ -640,7 +695,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 fetchDataAndInsert()
-
+                chargeMap = {}
 
                 setChecked(false)
                 setisrtDateChecked(false)
@@ -726,8 +781,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setSearch('')
         setdistName('')
         tempDist = []
-
+        chargeMap = {};
+        postMap = {}
+        setIsSummeryVisible(false)
         setIsVacantActive(false)
+        setIsReportActive(false)
+        setIsCurrentActive(true)
         setCurrentDistValue() // for reseting dropdown picker
         setCurrentChargeValue()
         setItems(tempDist)
@@ -1144,30 +1203,32 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 </TouchableOpacity>
                                 <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
 
+
+
                                 {
-                                    netInfo &&
+                                    true  &&
                                     <View
                                         style={{
                                             flexDirection: 'row',
                                             marginTop: 7,
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                            width: 140,
+                                            width: netInfo.isConnected ? 210 : 140,
                                             elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
                                         }}>
                                         <TouchableOpacity
-                                            onPress={() => setIsVacantActive(false)}
+                                            onPress={() => (setIsCurrentActive(true), setIsVacantActive(false), setIsReportActive(false))}
                                             style={{
                                                 height: 20,
                                                 width: 70,
-                                                backgroundColor: isVacantActive ? 'white' : `${currentTheme}`,
+                                                backgroundColor: isCurrentActive ? `${currentTheme}` : 'white',
                                                 borderRadius: height * .005,
                                             }}>
                                             <Text
                                                 style={{
-                                                    color: isVacantActive ? 'black' : 'white',
+                                                    color: isCurrentActive ? 'white' : 'black',
                                                     height: height * (1 / 40),
                                                     fontSize: txtSizeNormal,
                                                     fontFamily: 'serif',
@@ -1175,23 +1236,44 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                     fontWeight: 'bold'
                                                 }}>Current</Text>
                                         </TouchableOpacity>
+                                        {
+                                            netInfo.isConnected &&
+                                            <TouchableOpacity
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
+                                                style={{
+                                                    height: 20,
+                                                    width: 70,
+                                                    backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                                    borderRadius: height * .005,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: !isVacantActive ? 'black' : 'white',
+                                                        height: height * (1 / 40),
+                                                        fontSize: txtSizeNormal,
+                                                        fontFamily: 'serif',
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold'
+                                                    }}>Vacant</Text>
+                                            </TouchableOpacity>
+                                        }
                                         <TouchableOpacity
-                                            onPress={() => setIsVacantActive(true)}
+                                            onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
                                             style={{
                                                 height: 20,
                                                 width: 70,
-                                                backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                                backgroundColor: isReportActive ? `${currentTheme}` : 'white',
                                                 borderRadius: height * .005,
                                             }}>
                                             <Text
                                                 style={{
-                                                    color: !isVacantActive ? 'black' : 'white',
+                                                    color: isReportActive ? 'white' : 'black',
                                                     height: height * (1 / 40),
                                                     fontSize: txtSizeNormal,
                                                     fontFamily: 'serif',
                                                     textAlign: 'center',
                                                     fontWeight: 'bold'
-                                                }}>Vacant</Text>
+                                                }}>Report</Text>
                                         </TouchableOpacity>
                                     </View>
                                 }
@@ -1240,16 +1322,22 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 {
                     !search && DATA ?
-                        <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .02, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}</Text>
+                        <View style={{ flexDirection: 'row' }} >
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .02, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}</Text>
+
+                        </View>
                         : ""
                 }
+
+
+
                 <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
 
 
 
 
                 {
-                    !isVacantActive &&
+                    isCurrentActive &&
                     <FlashList
                         data={filteredData}
                         estimatedItemSize={200}
@@ -1312,16 +1400,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>No.</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>No.</Text>
                             </View>
 
-                            <View style={{
-                                flex: 2, backgroundColor: `${currentTheme}50`,
-                                justifyContent: 'center', padding: 5
 
-                            }}>
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Code</Text>
-                            </View>
 
                             <View style={{
                                 flex: 8, backgroundColor: `${currentTheme}50`,
@@ -1329,17 +1411,27 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Office Name</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Office Name</Text>
                             </View>
 
                             <View style={{
                                 flex: 2, backgroundColor: `${currentTheme}50`,
-                                borderTopRightRadius: height * .005,
+
                                 justifyContent: 'center', padding: 5
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal }}>Vacant Post</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant Post</Text>
+                            </View>
+                            <View style={{
+                                flex: 2,
+                                backgroundColor: `${currentTheme}50`,
+                                justifyContent: 'center',
+                                padding: 5,
+                                borderTopRightRadius: height * .005,
+
+                            }}>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Post Type</Text>
                             </View>
                         </View>
 
@@ -1357,6 +1449,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     office={item.office}
                                     officeName={item.officeName}
                                     postNo={item.postNo}
+                                    postType={item.postType}
 
                                 />
 
@@ -1370,9 +1463,136 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
 
 
+                {
+                    isReportActive &&
+                    <View style={{
+                        margin: 10,
+                        borderColor: 'black',
+                        borderWidth: .5,
+                        height: !isFilterOn ? height * .73 : height * .522,
+                        // borderRadius: 5
+                    }} >
+
+                        <View style={{ margin: 5 }} >
+                            <Text style={{ color: '#0080FF', textAlign: 'center', fontWeight: 'bold' }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
+                            <Text style={{ color: '#008023', textAlign: 'center', fontWeight: 'bold' }} >Designation Occupency Report</Text>
+                            <Text style={{ color: '#0080FF', textAlign: 'center', fontWeight: '500', fontSize: 12 }} >{designation}</Text>
+                        </View>
+
+                        <View style={{}} >
+                            {
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        Reguler = {chargeMap['R'] ? `${chargeMap['R']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                            {
+                                chargeMap['C'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['C'] ? `${camelize(higherPost)}, CC             = ${chargeMap['C']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+
+                            {
+                                chargeMap['A'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['A'] ? `${higherPost}, Addl.         = ${chargeMap['A']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                            {
+                                chargeMap['I'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['I'] ? `${higherPost}, Incharge   = ${chargeMap['I']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                            {
+                                chargeMap['I'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['N'] ? `Without Post = ${chargeMap['N']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                        </View>
+
+
+                        {
+                            postKeys &&
+                            <View style={{ marginTop: 10 }} >
+                                {
+                                    postKeys.map((key) =>
+
+                                        <View key={key} style={{ paddingLeft: width * .035 }} >
+                                            <Text
+                                                style={{
+                                                    marginLeft: width * .035,
+                                                    color: 'black',
+                                                    fontStyle: 'italic',
+                                                    fontSize: height * .014,
+                                                    marginRight: height * .02,
+                                                    fontWeight: '600'
+                                                }}>
+                                                {key}: {postMap[key]}
+                                            </Text>
+                                        </View>
+                                    )
+                                }
+                            </View>
+                        }
+
+                    </View>
+                }
+
 
                 {
-                    !isVacantActive &&
+                    isCurrentActive &&
                     <>
                         <TouchableOpacity
                             activeOpacity={0.5}
@@ -1435,7 +1655,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
 
                 {
-                    !isKeyboardVisible && !isVacantActive &&
+                    !isKeyboardVisible && isCurrentActive &&
                     <View
                         // activeOpacity={0.5}
 
