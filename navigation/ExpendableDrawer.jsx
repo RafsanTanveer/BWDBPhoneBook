@@ -68,7 +68,7 @@ const ExpendableDrawer = () => {
     const [expendedList, setexpendedList] = React.useState([])
 
     const { setcurrentTheme, themeColors, currentTheme } = useContext(ThemeContext);
-    const { setDesignationContext } = useContext(AuthContext);
+    const { setDesignationContext, postGrade } = useContext(AuthContext);
 
     //  ******************************  fetching data ***************************************
 
@@ -360,7 +360,7 @@ const ExpendableDrawer = () => {
                 {/**************************************** Designation *************************************/}
 
                 {
-                    true ?
+                    postGrade <= 9 &&
                         <>
                             <List.Accordion
                                 style={styles.sectionStyle}
@@ -376,42 +376,46 @@ const ExpendableDrawer = () => {
                                 expanded={expendedList[0]}
                                 onPress={() => handlePress(0)}  >
 
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="DG & ADG"
-                                    titleStyle={styles.titlestyle}
 
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(dg)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[1]}
-                                    onPress={() => handlePress(1)}  >
-                                    {
-                                        dgAdgDesig.map((it) => (
-                                            <List.Item key={it.desig}
-                                                onPress={() => {
-                                                    navigation.navigate('DesignationScreen', {
-                                                        designation: it.designame,
-                                                        desig_code: it.desig,
-                                                        title: 'Employee List',
-                                                        tablename: it.tablename
-                                                    })
-                                                }}
-                                                left={props => <List.Icon {...props} icon={() => (
-                                                    <Image
-                                                        source={require(rightArrow)}
-                                                        style={styles.iconStyle}
-                                                    />
-                                                )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
-                                        ))
-                                    }
+                                {
+                                    postGrade <= 5 &&
+                                    <List.Accordion
+                                        style={styles.accordingStyle}
+                                        title="DG & ADG"
+                                        titleStyle={styles.titlestyle}
+
+                                        left={props => <List.Icon {...props} icon={() => (
+                                            <Image
+                                                source={require(dg)}
+                                                style={styles.iconStyle}
+                                            />
+                                        )} />}
+                                        expanded={expendedList[1]}
+                                        onPress={() => handlePress(1)}  >
+                                        {
+                                            dgAdgDesig.map((it) => (
+                                                <List.Item key={it.desig}
+                                                    onPress={() => {
+                                                        navigation.navigate('DesignationScreen', {
+                                                            designation: it.designame,
+                                                            desig_code: it.desig,
+                                                            title: 'Employee List',
+                                                            tablename: it.tablename
+                                                        })
+                                                    }}
+                                                    left={props => <List.Icon {...props} icon={() => (
+                                                        <Image
+                                                            source={require(rightArrow)}
+                                                            style={styles.iconStyle}
+                                                        />
+                                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            ))
+                                        }
 
 
 
-                                </List.Accordion>
+                                    </List.Accordion>
+                                }
 
                                 <List.Accordion
                                     style={styles.accordingStyle}
@@ -787,7 +791,7 @@ const ExpendableDrawer = () => {
 
                             </List.Accordion>
                         </>
-                        : ''
+
                 }
 
                 {/**************************************** Designation *************************************/}
@@ -811,111 +815,114 @@ const ExpendableDrawer = () => {
                                 expanded={expendedList[12]}
                                 onPress={() => handlePress(12)} >
 
+                                {console.log("+++++++++++++++++++++++++++"+postGrade)}
+                                {
+                                    postGrade <= 9 ?
+                                    <>
+
+                                        <List.Accordion
+                                            style={styles.accordingStyle}
+                                            title="DIRECTOR GENERAL"
+
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />}
+                                            expanded={expendedList[13]}
+                                            onPress={() => handlePress(13)}  >
+
+                                            <OfficeList lcode='01' />
+
+                                        </List.Accordion>
+                                        <List.Accordion
+                                            style={styles.accordingStyle}
+                                            title="ADG(ADMIN)"
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />}
+                                            expanded={expendedList[14]}
+                                            onPress={() => handlePress(14)}  >
+
+                                            <OfficeList lcode='02' />
 
 
+                                        </List.Accordion>
+                                        <List.Accordion
+                                            style={styles.accordingStyle}
+                                            title="ADG(FIANANCE)"
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />}
+                                            expanded={expendedList[15]}
+                                            onPress={() => handlePress(15)}  >
 
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="DIRECTOR GENERAL"
+                                            <OfficeList lcode='03' />
 
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[13]}
-                                    onPress={() => handlePress(13)}  >
+                                        </List.Accordion>
+                                        <List.Accordion
+                                            style={styles.accordingStyle}
+                                            title="ADG(PLANNING)"
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />}
+                                            expanded={expendedList[16]}
+                                            onPress={() => handlePress(16)}  >
 
-                                    <OfficeList lcode='01' />
-
-                                </List.Accordion>
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="ADG(ADMIN)"
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[14]}
-                                    onPress={() => handlePress(14)}  >
-
-                                    <OfficeList lcode='02' />
-
-
-                                </List.Accordion>
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="ADG(FIANANCE)"
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[15]}
-                                    onPress={() => handlePress(15)}  >
-
-                                    <OfficeList lcode='03' />
-
-                                </List.Accordion>
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="ADG(PLANNING)"
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[16]}
-                                    onPress={() => handlePress(16)}  >
-
-                                    <OfficeList lcode='04' />
+                                            <OfficeList lcode='04' />
 
 
-                                </List.Accordion>
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="ADG(EAST)"
-                                    titleStyle={styles.titlestyle}
+                                        </List.Accordion>
+                                        <List.Accordion
+                                            style={styles.accordingStyle}
+                                            title="ADG(EAST)"
+                                            titleStyle={styles.titlestyle}
 
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[17]}
-                                    onPress={() => handlePress(17)}  >
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />}
+                                            expanded={expendedList[17]}
+                                            onPress={() => handlePress(17)}  >
 
-                                    <OfficeList lcode='05' />
-
-
-                                </List.Accordion>
-                                <List.Accordion
-                                    style={styles.accordingStyle}
-                                    title="ADG(WEST)"
-                                    titleStyle={styles.titlestyle}
-
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />}
-                                    expanded={expendedList[18]}
-                                    onPress={() => handlePress(18)}  >
-
-                                    <OfficeList lcode='06' />
-                                    {/* <ADGWEST  /> */}
+                                            <OfficeList lcode='05' />
 
 
-                                </List.Accordion>
+                                        </List.Accordion>
+                                        <List.Accordion
+                                            style={styles.accordingStyle}
+                                            title="ADG(WEST)"
+                                            titleStyle={styles.titlestyle}
+
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />}
+                                            expanded={expendedList[18]}
+                                            onPress={() => handlePress(18)}  >
+
+                                            <OfficeList lcode='06' />
+                                            {/* <ADGWEST  /> */}
 
 
+                                        </List.Accordion>
+
+                                    </>:''
+                                }
 
                             </List.Accordion>
                         </>

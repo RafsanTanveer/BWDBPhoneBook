@@ -114,7 +114,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isAddModalVisible, setisAddModalVisible] = useState(false);
 
     const { presentOfficeCode } = useContext(AuthContext);
-    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
+    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, postGrade } = useContext(AuthContext);
     const { isAdmin, designationContext } = useContext(AuthContext);
     const { currentTheme, currentSelectedIds, setCurrentSelectedIds, groupIds } = useContext(ThemeContext);  //currentSelectedIds, setCurrentSelectedIds
 

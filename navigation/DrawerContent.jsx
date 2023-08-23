@@ -64,16 +64,16 @@ const DrawerContent = (props) => {
             <View style={{
 
 
-                left: width * .15,
+                // left: width * .15,
                 justifyContent: 'center',
-                marginTop: height * .235,
+                marginTop: height * .25,
                 // marginLeft:width*.15,
-                alignItems: 'center',
+                // alignItems: 'center',
                 flexDirection: 'column',
                 backgroundColor: `${currentTheme}`,
                 borderRadius: height * .005,
-                marginHorizontal: 5,
-                marginVertical:5,
+                marginHorizontal: 1,
+                marginVertical:0,
                 paddingTop:4,
                 paddingHorizontal: 10,
                 elevation:55,

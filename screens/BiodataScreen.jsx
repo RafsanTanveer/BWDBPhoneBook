@@ -1,6 +1,6 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator,  ToastAndroid } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator, ToastAndroid } from 'react-native';
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -31,7 +31,7 @@ const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
 
     const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost, setisAdmin, presentOfficeCode } = useContext(AuthContext);
-    const { designationContext, setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge, pmisId, setPmisId, } = useContext(AuthContext);
+    const { designationContext, setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge, pmisId, setPmisId, setpostGrade } = useContext(AuthContext);
 
 
     //  ******************************  fetching data ***************************************
@@ -149,16 +149,17 @@ const BiodataScreen = ({ id, navigation }) => {
         setpersonalData(personalresponse.rows);
 
         setPmisId(personalresponse.rows[0].id)
-        setName(personalresponse.rows[0].name)
-
+        setName(personalresponse.rows[0].name)  // setpostGrade
+        setpostGrade(personalresponse.rows[0].postGrade)
         setphoto(personalresponse.rows[0].photo)
         setofficeAddres(personalresponse.rows[0].officeAddress)
         setpresentOfficeCode(personalresponse.rows[0].offceCode)
-        // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
-        setisAdmin(true)
+
+        personalresponse.rows[0].offceCode === '30.0' ?setisAdmin(true):setisAdmin(false)
+        // setisAdmin(false)
         // __DEV__ && console.log(response.rows[0].offceCode);
 
-
+        console.log("____________________________________________________________" + personalresponse.rows[0].offceCode);
         //promotion
         const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
         setpromotion(promotionresponse.rows);
@@ -343,6 +344,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 m_name          TEXT,
                                 m_name_bn       TEXT,
                                 bdate           TEXT,
+                                postGrade       TEXT,
                                 mstatus         TEXT,
                                 gender          TEXT,
                                 religion        TEXT,
@@ -381,6 +383,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    m_name,
                                    m_name_bn,
                                    bdate,
+                                   postGrade,
                                    mstatus,
                                    gender,
                                    religion,
@@ -404,7 +407,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    officeLevel2,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?);`,
                         [
                             it.id,
                             it.name,
@@ -414,6 +417,7 @@ const BiodataScreen = ({ id, navigation }) => {
                             it.m_name,
                             it.m_name_bn,
                             it.bdate,
+                            it.postGrade,
                             it.mstatus,
                             it.gender,
                             it.religion,
@@ -525,18 +529,21 @@ const BiodataScreen = ({ id, navigation }) => {
                                     const tempBiodata = result.rows._array
                                     setpersonalData(tempBiodata);
                                     __DEV__ && console.log(tempBiodata[0].id);
-                                    //__DEV__ &&  console.log(tempBiodata);
+                                    //__DEV__ &&  console.log(tempBiodata);response
                                     setTabelCreationTime(tempBiodata[0].timestamp)
 
                                     setPmisId(tempBiodata[0].id)
 
                                     setName(tempBiodata[0].name)
 
+                                    setpostGrade(tempBiodata[0].postGrade)
+
                                     setphoto(tempBiodata[0].photo)
                                     setofficeAddres(tempBiodata[0].officeAddress)
                                     setpresentOfficeCode(tempBiodata[0].offceCode)
-                                    //   tempBiodata.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
-                                    setisAdmin(true)
+                                    console.log(tempBiodata[0].offceCode);
+                                      tempBiodata[0].offceCode === '30.0' ?setisAdmin(true):setisAdmin(false)
+                                    // setisAdmin(false)
 
                                 },
                                 (_, error) => {
@@ -602,11 +609,13 @@ const BiodataScreen = ({ id, navigation }) => {
 
                     setName(personalresponse.rows[0].name)
 
+                    setpostGrade(personalresponse.rows[0].postGrade)
+
                     setphoto(personalresponse.rows[0].photo)
                     setofficeAddres(personalresponse.rows[0].officeAddress)
                     setpresentOfficeCode(personalresponse.rows[0].offceCode)
-                    // response.rows[0].offceCode === 30 ?setisAdmin(true):setisAdmin(false)
-                    setisAdmin(true)
+                    personalresponse.rows[0].offceCode === '30.0' ?setisAdmin(true):setisAdmin(false)
+                    // setisAdmin(true)
                     // __DEV__ && console.log(response.rows[0].offceCode);
 
 
@@ -1045,6 +1054,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                         firstQueryResult={item.officeAddress}
                                         delimiter=":"
                                     />
+
+                                    <SingleColumnComponent
+                                        firstHeading="Office Address"
+                                        firstQueryResult={item.officecode}
+                                        delimiter=":"
+                                    />
+
 
 
 

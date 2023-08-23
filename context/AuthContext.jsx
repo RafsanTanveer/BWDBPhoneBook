@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     const [presentCharge, setpresentCharge] = useState()
     const [officeAddres, setofficeAddres] = useState()
     const [presentOfficeCode, setpresentOfficeCode] = useState()
+    const [postGrade, setpostGrade] = useState();
     const [designationContext, setDesignationContext] = useState([]);
 
     ////////////////////////// General ////////////////////////
@@ -202,6 +203,7 @@ export const AuthProvider = ({ children }) => {
         setpresentOffice()
         setDesignationContext([])
         tempUserInfo = []
+        setpostGrade()
         AsyncStorage.removeItem('userInfo');
 
     };
@@ -253,7 +255,8 @@ export const AuthProvider = ({ children }) => {
                     generalPresentOffice, setgeneralPresentOffice,
                     generalPresentPost, setgeneralPresentPost,
                     isAdmin, setisAdmin,
-                    designationContext, setDesignationContext
+                    designationContext, setDesignationContext,
+                    postGrade, setpostGrade
                 }}>
                 {children}
             </AuthContext.Provider>
