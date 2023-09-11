@@ -181,7 +181,7 @@ const BiodataScreen = ({ id, navigation }) => {
         setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
 
 
-        console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' +personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
+        console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
 
 
         personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
@@ -576,23 +576,30 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setTabelCreationTime(tempBiodata[0].timestamp)
 
                                     setPmisId(tempBiodata[0].id)
-
+                                    console.log(tempBiodata[0].name);
                                     setName(tempBiodata[0].name)
 
                                     setpostGrade(tempBiodata[0].postGrade)
+                                    console.log('postGrade --- ' + tempBiodata[0].postGrade);
 
                                     setphoto(tempBiodata[0].photo)
                                     setofficeAddres(tempBiodata[0].officeAddress)
+                                    console.log('officeAddress --- ' + tempBiodata[0].officeAddress);
+
+                                    console.log('offceCode --- ' + tempBiodata[0].offceCode);
                                     setpresentOfficeCode(tempBiodata[0].offceCode)
-                                    console.log(tempBiodata[0].offceCode);
+
                                     tempBiodata[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
                                     setofficelevel1code(tempBiodata[0].officelevel1code)
+
+                                    console.log('officelevel1code --- ' + tempBiodata[0].officelevel1code);
+                                    console.log('adminLevel --- ' + tempBiodata[0].adminLevel);
 
                                     setadminLevel(tempBiodata[0].adminLevel)
                                     setcanCallBulk(tempBiodata[0].canCallBulk)
                                     setcanAccessSeniority(tempBiodata[0].canAccessSeniority)
 
-                                    console.log('from database --------------------nnnnnnnnnnnnnnnn----------  '+tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
+                                    console.log('from database --------------------nnnnnnnnnnnnnnnn----------  ' + tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
 
                                     // setisAdmin(false)
 
@@ -805,6 +812,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    m_name,
                                    m_name_bn,
                                    bdate,
+                                   postGrade,
                                    mstatus,
                                    gender,
                                    religion,
@@ -816,6 +824,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    postalCode,
                                    upazila,
                                    village,
+                                   officelevel1code,
                                    cadre,
                                    accfile,
                                    joinDesig,
@@ -823,9 +832,15 @@ const BiodataScreen = ({ id, navigation }) => {
                                    regularDate,
                                    officeAddress,
                                    offceCode,
+                                   officeLevel,
+                                   officeLevel1,
+                                   officeLevel2,
+                                   adminLevel,
+                                   canCallBulk,
+                                   canAccessSeniority,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?,?, ?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?);`,
                                     [
                                         it.id,
                                         it.name,
@@ -835,6 +850,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         it.m_name,
                                         it.m_name_bn,
                                         it.bdate,
+                                        it.postGrade,
                                         it.mstatus,
                                         it.gender,
                                         it.religion,
@@ -846,6 +862,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         it.postalCode,
                                         it.upazila,
                                         it.village,
+                                        it.officelevel1code,
                                         it.cadre,
                                         it.accfile,
                                         it.joinDesig,
@@ -853,6 +870,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                         it.regularDate,
                                         it.officeAddress,
                                         it.offceCode,
+                                        it.officeLevel,
+                                        it.officeLevel1,
+                                        it.officeLevel2,
+                                        it.adminLevel,
+                                        it.canCallBulk,
+                                        it.canAccessSeniority,
                                         timeStamp(),
                                         it.photo
                                     ]

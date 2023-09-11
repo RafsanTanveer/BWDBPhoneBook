@@ -532,7 +532,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 //////////////////////////////////////// UNREACHABLE CODE /////////////////////////////////////
 
-                // This block possibaly can not be reached due to preload data while installation or first opening the app
+                // This block possibly can not be reached due to preload data while installation or first opening the app
 
                 console.log();
                 console.log('---------------------------------------------------------------------');
@@ -1036,7 +1036,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                     {
-                        canCallBulk==='' &&
+                        canCallBulk === 'true' &&
                         <TouchableOpacity style={{
 
                             height: height / 20,

@@ -822,7 +822,7 @@ const ExpendableDrawer = () => {
                                 expanded={expendedList[12]}
                                 onPress={() => handlePress(12)} >
 
-                                {console.log("+++++++++++++++++++++++++++" + postGrade)}
+                                
                                 {
                                     adminLevel !== 'viewer' ?
                                         <>
