@@ -188,7 +188,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     return (
         isLoading ?
             <LoadingScreen /> :
-            DATA.length == 0 ? <NoDataFoundScreen /> :
+          //  DATA.length == 0 ? <NoDataFoundScreen /> :
                 <SafeAreaView style={styles.container}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
 
@@ -236,7 +236,13 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                             />
                         </TouchableOpacity> : ""
                     }
-                    {!search ? <Text style={{ marginBottom: 2, marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total Employee : {DATA.length}</Text> : ""}
+                    {
+                        !search ?
+                            DATA &&
+                            <Text style={{ marginBottom: 2, marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total Employee : {DATA.length}</Text>
+                            : ""
+                    }
+
 
                     {refreshing ? <ActivityIndicator /> : null}
 

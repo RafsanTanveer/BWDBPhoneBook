@@ -114,8 +114,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isAddModalVisible, setisAddModalVisible] = useState(false);
 
     const { presentOfficeCode } = useContext(AuthContext);
-    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, postGrade } = useContext(AuthContext);
-    const { isAdmin, designationContext } = useContext(AuthContext);
+    const { photo,
+        officeAddres,
+        presentOffice,
+        name,
+        logout,
+        presentPost,
+        presentCharge,
+        postGrade,
+        adminLevel,
+        canCallBulk,
+        canAccessSeniority,
+        isAdmin,
+        designationContext } = useContext(AuthContext);
+
     const { currentTheme, currentSelectedIds, setCurrentSelectedIds, groupIds } = useContext(ThemeContext);  //currentSelectedIds, setCurrentSelectedIds
 
     const [isChecked, setChecked] = useState();
@@ -1023,48 +1035,51 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     </View>
 
 
-                    <TouchableOpacity style={{
+                    {
+                        canCallBulk==='' &&
+                        <TouchableOpacity style={{
 
-                        height: height / 20,
-                        flex: 1,
-                        borderRadius: 5,
-                        marginBottom: 5,
-                        // marginLeft: 5,
-                        marginRight: 5,
-                        // borderColor: `${currentTheme}`,//'#6750a4',
-                        // borderWidth: 2,
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                            height: height / 20,
+                            flex: 1,
+                            borderRadius: 5,
+                            marginBottom: 5,
+                            // marginLeft: 5,
+                            marginRight: 5,
+                            // borderColor: `${currentTheme}`,//'#6750a4',
+                            // borderWidth: 2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
 
-                    }}
-                        onPress={() => { selectAll() }}
-                    >
-                        {
-                            currentSelectedIds.length === 0 ?
-                                <Image
-                                    source={require(selectAllInactive)}
-                                    style={styles.select_all_icon}
-                                />
-                                : currentTheme === '#6750a4' ?
+                        }}
+                            onPress={() => { selectAll() }}
+                        >
+                            {
+                                currentSelectedIds.length === 0 ?
                                     <Image
-                                        source={Images['selectAll_0']}
+                                        source={require(selectAllInactive)}
                                         style={styles.select_all_icon}
-                                    /> : currentTheme === '#048BB3' ?
+                                    />
+                                    : currentTheme === '#6750a4' ?
                                         <Image
-                                            source={Images['selectAll_3']}
+                                            source={Images['selectAll_0']}
                                             style={styles.select_all_icon}
-                                        /> : currentTheme === '#0089E3' ?
+                                        /> : currentTheme === '#048BB3' ?
                                             <Image
-                                                source={Images['selectAll_6']}
+                                                source={Images['selectAll_3']}
                                                 style={styles.select_all_icon}
-                                            /> : currentTheme === '#0069C4' ?
+                                            /> : currentTheme === '#0089E3' ?
                                                 <Image
-                                                    source={Images['selectAll_9']}
+                                                    source={Images['selectAll_6']}
                                                     style={styles.select_all_icon}
-                                                /> : ''
-                        }
+                                                /> : currentTheme === '#0069C4' ?
+                                                    <Image
+                                                        source={Images['selectAll_9']}
+                                                        style={styles.select_all_icon}
+                                                    /> : ''
+                            }
 
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    }
                 </View>
 
 
@@ -1099,7 +1114,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
                 {refreshing ? <ActivityIndicator /> : null}
                 {
-                    notDgOrAdg && isAdmin &&
+                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity
                             onPress={() => setIsFilterOn(!isFilterOn)}
@@ -1152,7 +1167,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 {
-                    notDgOrAdg && isAdmin && isFilterOn ?
+                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' && isFilterOn ?
 
                         <View style={{
 
@@ -1206,7 +1221,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                                 {
-                                    true  &&
+                                    true &&
                                     <View
                                         style={{
                                             flexDirection: 'row',
@@ -1364,6 +1379,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 higherPost={higherPostForCurrentDesig}
                                 charge={item.charge}
                                 isAdmin={isAdmin}
+                                adminLevel={adminLevel}
+                                canCallBulk={canCallBulk}
+                                canAccessSeniority={canAccessSeniority}
                                 notDgOrAdg={notDgOrAdg}
                                 currentTheme={currentTheme}
                                 length={filteredData.length}
@@ -1655,7 +1673,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
 
                 {
-                    !isKeyboardVisible && isCurrentActive &&
+                    !isKeyboardVisible && isCurrentActive && adminLevel === 'superAdmin' && canCallBulk === 'true' &&
                     <View
                         // activeOpacity={0.5}
 
@@ -1687,6 +1705,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         </TouchableOpacity>
 
                         {
+
                             isFloatingBtnExteded &&
                             <View style={{
                                 backgroundColor: `${currentTheme}`,

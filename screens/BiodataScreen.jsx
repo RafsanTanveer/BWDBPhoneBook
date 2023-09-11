@@ -30,8 +30,28 @@ const officeLevel = [
 const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
 
-    const { setofficeAddres, setphoto, setpresentOfficeCode, setName, presentOffice, presentPost, setisAdmin, presentOfficeCode } = useContext(AuthContext);
-    const { designationContext, setpresentDesig, setpresentOffice, setpresentPost, setpresentCharge, pmisId, setPmisId, setpostGrade } = useContext(AuthContext);
+    const { setofficeAddres,
+        setphoto,
+        setpresentOfficeCode,
+        setName,
+        presentOffice,
+        presentPost,
+        setisAdmin,
+        presentOfficeCode,
+        setadminLevel,
+        setcanCallBulk,
+        setcanAccessSeniority,
+        designationContext,
+        setpresentDesig,
+        setpresentOffice,
+        setpresentPost,
+        setpresentCharge,
+        pmisId,
+        setPmisId,
+        setpostGrade,
+        officelevel1code,
+        setofficelevel1code } = useContext(AuthContext);
+
 
 
     //  ******************************  fetching data ***************************************
@@ -154,8 +174,17 @@ const BiodataScreen = ({ id, navigation }) => {
         setphoto(personalresponse.rows[0].photo)
         setofficeAddres(personalresponse.rows[0].officeAddress)
         setpresentOfficeCode(personalresponse.rows[0].offceCode)
+        setofficelevel1code(personalresponse.rows[0].officelevel1code)
 
-        personalresponse.rows[0].offceCode === '30.0' ?setisAdmin(true):setisAdmin(false)
+        setadminLevel(personalresponse.rows[0].adminLevel)
+        setcanCallBulk(personalresponse.rows[0].canCallBulk)
+        setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
+
+
+        console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' +personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
+
+
+        personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
         // setisAdmin(false)
         // __DEV__ && console.log(response.rows[0].offceCode);
 
@@ -356,6 +385,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 postalCode      TEXT,
                                 upazila         TEXT,
                                 village         TEXT,
+                                officelevel1code TEXT,
                                 cadre           TEXT,
                                 accfile         TEXT,
                                 joinDesig       TEXT,
@@ -366,6 +396,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                 officeLevel     TEXT,
                                 officeLevel1    TEXT,
                                 officeLevel2    TEXT,
+                                adminLevel      TEXT,
+                                canCallBulk     TEXT,
+                                canAccessSeniority TEXT,
                                 timestamp       TEXT,
                                 photo           BLOB
                                                  );`
@@ -395,6 +428,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    postalCode,
                                    upazila,
                                    village,
+                                   officelevel1code,
                                    cadre,
                                    accfile,
                                    joinDesig,
@@ -405,9 +439,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                    officeLevel,
                                    officeLevel1,
                                    officeLevel2,
+                                   adminLevel,
+                                   canCallBulk,
+                                   canAccessSeniority,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?);`,
                         [
                             it.id,
                             it.name,
@@ -429,6 +466,7 @@ const BiodataScreen = ({ id, navigation }) => {
                             it.postalCode,
                             it.upazila,
                             it.village,
+                            it.officelevel1code,
                             it.cadre,
                             it.accfile,
                             it.joinDesig,
@@ -439,6 +477,9 @@ const BiodataScreen = ({ id, navigation }) => {
                             it.officeLevel,
                             it.officeLevel1,
                             it.officeLevel2,
+                            it.adminLevel,
+                            it.canCallBulk,
+                            it.canAccessSeniority,
                             timeStamp(),
                             it.photo
                         ]
@@ -525,8 +566,10 @@ const BiodataScreen = ({ id, navigation }) => {
                                 `SELECT * FROM biodata where id = ${id}`,
                                 [],
                                 (_, result) => {
-                                    __DEV__ && console.log('biodata .................................');
+                                    __DEV__ && console.log('id exist.........biodata .................................');
                                     const tempBiodata = result.rows._array
+                                    console.log('ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt' + tempBiodata[0].adminLevel);
+
                                     setpersonalData(tempBiodata);
                                     __DEV__ && console.log(tempBiodata[0].id);
                                     //__DEV__ &&  console.log(tempBiodata);response
@@ -542,7 +585,15 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setofficeAddres(tempBiodata[0].officeAddress)
                                     setpresentOfficeCode(tempBiodata[0].offceCode)
                                     console.log(tempBiodata[0].offceCode);
-                                      tempBiodata[0].offceCode === '30.0' ?setisAdmin(true):setisAdmin(false)
+                                    tempBiodata[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
+                                    setofficelevel1code(tempBiodata[0].officelevel1code)
+
+                                    setadminLevel(tempBiodata[0].adminLevel)
+                                    setcanCallBulk(tempBiodata[0].canCallBulk)
+                                    setcanAccessSeniority(tempBiodata[0].canAccessSeniority)
+
+                                    console.log('from database --------------------nnnnnnnnnnnnnnnn----------  '+tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
+
                                     // setisAdmin(false)
 
                                 },
@@ -614,7 +665,14 @@ const BiodataScreen = ({ id, navigation }) => {
                     setphoto(personalresponse.rows[0].photo)
                     setofficeAddres(personalresponse.rows[0].officeAddress)
                     setpresentOfficeCode(personalresponse.rows[0].offceCode)
-                    personalresponse.rows[0].offceCode === '30.0' ?setisAdmin(true):setisAdmin(false)
+                    personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
+                    setofficelevel1code(personalresponse.rows[0].officelevel1code)
+
+                    setadminLevel(personalresponse.rows[0].adminLevel)
+                    setcanCallBulk(personalresponse.rows[0].canCallBulk)
+                    setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
+                    console.log('id does not exist --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + ' ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
+
                     // setisAdmin(true)
                     // __DEV__ && console.log(response.rows[0].offceCode);
 

@@ -19,7 +19,29 @@ let selectedGroupIds = []
 
 
 
-const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoiningDt, pabx, selected, photo, index, designation, post, higherPost, charge, isAdmin, notDgOrAdg, currentTheme, length }) => {
+const Item = ({ id,
+    name,
+    office,
+    email,
+    mobile,
+    seniority,
+    retiredate,
+    bwdbJoiningDt,
+    pabx,
+    selected,
+    photo,
+    index,
+    designation,
+    post,
+    higherPost,
+    charge,
+    isAdmin,
+    adminLevel,
+    canCallBulk,
+    canAccessSeniority,
+    notDgOrAdg,
+    currentTheme,
+    length }) => {
 
     const presentCharge = Charges(charge)
 
@@ -164,7 +186,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                             <View style={{}} >
                                 {
                                     // presentOfficeCode === 30 ?
-                                    isAdmin ?
+                                    adminLevel ==='superAdmin' ?
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <TouchableOpacity onPress={() => {
                                                 navigation.navigate('Biodata', { id: id })
@@ -178,7 +200,7 @@ const Item = ({ id, name, office, email, mobile, seniority, retiredate, bwdbJoin
                                         : null
                                 }
                                 {
-                                    notDgOrAdg && isAdmin ?
+                                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority==='true' ?
                                         <View style={{ justifyContent: 'space-between' }}>
                                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {

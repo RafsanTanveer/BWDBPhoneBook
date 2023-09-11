@@ -80,7 +80,7 @@ const OfficeScreen = ({ route, navigation }) => {
 
                         {
                             item.email2 ?
-                                <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email1}`) }}  >
+                                <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email2}`) }}  >
                                     <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif',  }}>{item.email2} </Text>
                                 </TouchableOpacity>
                                 : ""

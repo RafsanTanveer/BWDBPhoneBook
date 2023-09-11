@@ -12,7 +12,7 @@ import BiodataScreen from "../screens/BiodataScreen";
 import Biodata from "../screens/Biodata";
 import Login from "../screens/Login";
 import { Images } from '../utility/Images';
-
+import DataRenderOffice from '../data/DataRenderOffice'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -57,7 +57,7 @@ const CustomDrawer = ({ }) => {
                                 /> :
                                 <Image
                                     style={{ height: width * .1, width: width * .1, borderRadius: 70, marginRight: 10 }}
-                                    source={Images['placeHolderImg']} 
+                                    source={Images['placeHolderImg']}
                                 />
                         }
 
@@ -85,6 +85,7 @@ const CustomDrawer = ({ }) => {
             <Drawer.Screen name="DesignationScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreen} />
             <Drawer.Screen name="BiodataScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={BiodataScreen} />
             <Drawer.Screen name="Biodata" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Biodata} />
+            <Drawer.Screen name="DataRenderOffice" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DataRenderOffice} />
 
         </Drawer.Navigator>
     );

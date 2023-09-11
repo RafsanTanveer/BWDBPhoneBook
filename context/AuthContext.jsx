@@ -28,6 +28,10 @@ export const AuthProvider = ({ children }) => {
     const [presentOfficeCode, setpresentOfficeCode] = useState()
     const [postGrade, setpostGrade] = useState();
     const [designationContext, setDesignationContext] = useState([]);
+    const [officelevel1code, setofficelevel1code] = useState();
+    const [adminLevel, setadminLevel] = useState();
+    const [canCallBulk, setcanCallBulk] = useState();
+    const [canAccessSeniority, setcanAccessSeniority] = useState();
 
     ////////////////////////// General ////////////////////////
     const [generalPresentOffice, setgeneralPresentOffice] = useState()
@@ -205,6 +209,10 @@ export const AuthProvider = ({ children }) => {
         tempUserInfo = []
         setpostGrade()
         AsyncStorage.removeItem('userInfo');
+        setofficelevel1code()
+        setadminLevel()
+        setcanCallBulk()
+        setcanAccessSeniority()
 
     };
 
@@ -256,7 +264,11 @@ export const AuthProvider = ({ children }) => {
                     generalPresentPost, setgeneralPresentPost,
                     isAdmin, setisAdmin,
                     designationContext, setDesignationContext,
-                    postGrade, setpostGrade
+                    postGrade, setpostGrade,
+                    officelevel1code, setofficelevel1code,
+                    adminLevel, setadminLevel,
+                    canCallBulk, setcanCallBulk,
+                    canAccessSeniority, setcanAccessSeniority
                 }}>
                 {children}
             </AuthContext.Provider>

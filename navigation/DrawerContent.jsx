@@ -66,8 +66,8 @@ const DrawerContent = (props) => {
 
                 // left: width * .15,
                 justifyContent: 'center',
-                marginTop: height * .25,
-                // marginLeft:width*.15,
+                marginTop: height * .235,
+                marginLeft:width*.15,
                 // alignItems: 'center',
                 flexDirection: 'column',
                 backgroundColor: `${currentTheme}`,
