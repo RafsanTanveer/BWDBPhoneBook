@@ -41,6 +41,10 @@ Images['addGroup'] = require('../assets/icons/addGroup.png')
 Images['creatGroup'] = require('../assets/icons/creatGroup.png')
 Images['clearGroup'] = require('../assets/icons/clearGroup.png')
 Images['bottom'] = require('../assets/botom.png')
+Images['download'] = require('../assets/icons/download.png')
+Images['video-call'] = require('../assets/icons/video-call.png')
+Images['chat'] = require('../assets/icons/chat.png')
+Images['share'] = require('../assets/icons/share.png')
 
 
 //  expendable list icon

@@ -49,6 +49,7 @@ const settings = '../assets/icons/settings.png'
 const groupIcon = '../assets/icons/groupIcon.png'
 const requestIcon = '../assets/icons/request.png'
 const aprIcon = '../assets/icons/apr.png'
+const staffListIcon = '../assets/icons/staff-list.png'
 
 //*******************************************icons ********************************************** */
 
@@ -284,8 +285,11 @@ const ExpendableDrawer = () => {
     //  ******************************  fetching data ***************************************
 
 
-    let highestHandlePressNumber = 24
-    let apr = 24
+    let highestHandlePressNumber = 25
+    let desigStart = 0;
+    let settingsStart=19
+    let aprStart = 24
+    let staffListStart=25
 
     const handlePress = (no) => {
         const arr = []
@@ -325,10 +329,17 @@ const ExpendableDrawer = () => {
                     arr[i] = false;
             }
         }
-        else if (no == apr) {
-            expendedList[apr] ? arr[apr] = false : arr[apr] = true;
+        else if (no == aprStart) {
+            expendedList[aprStart] ? arr[aprStart] = false : arr[aprStart] = true;
             for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != apr)
+                if (i != aprStart)
+                    arr[i] = false;
+            }
+        }
+        else if (no == staffListStart) {
+            expendedList[staffListStart] ? arr[staffListStart] = false : arr[staffListStart] = true;
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i != staffListStart)
                     arr[i] = false;
             }
         }
@@ -822,7 +833,7 @@ const ExpendableDrawer = () => {
                                 expanded={expendedList[12]}
                                 onPress={() => handlePress(12)} >
 
-                                
+
                                 {
                                     adminLevel !== 'viewer' ?
                                         <>
@@ -1052,8 +1063,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[apr]}
-                                onPress={() => handlePress(apr)} >
+                                expanded={expendedList[aprStart]}
+                                onPress={() => handlePress(aprStart)} >
 
 
 
@@ -1078,12 +1089,63 @@ const ExpendableDrawer = () => {
                                     </TouchableOpacity>
 
                                 </View> */}
+                                <Text>Apr</Text>
 
                             </List.Accordion>
                         </>
                         : ''
                 }
                 {/*******************************************  APR ******************************** */}
+
+                {/*******************************************  Staff List ******************************** */}
+                {
+                    true ?
+                        <>
+                            <List.Accordion
+                                style={styles.accordingStyleOffice}
+                                title="Staff List"
+                                titleStyle={styles.titlestyle}
+
+                                left={props => <List.Icon {...props} icon={() => (
+                                    <Image
+                                        source={require(staffListIcon)}
+                                        style={styles.iconStyle}
+                                    />
+                                )} />}
+                                expanded={expendedList[staffListStart]}
+                                onPress={() => handlePress(staffListStart)} >
+
+
+
+                                {/* <View style={{ flexDirection: 'row' }}>
+                                    <TouchableOpacity
+                                        style={{
+
+                                            height: width * .1,
+                                            width: width * .35,
+                                            backgroundColor: `${currentTheme}`,
+                                            marginRight: 6
+                                        }}
+                                        onPress={() => { }}
+                                    >
+                                        <Text
+                                            style={{
+                                                color: 'white',
+                                                fontWeight: '600',
+                                                paddingLeft: width * .015,
+                                                paddingTop: width * .015,
+                                            }}>Make Change Request</Text>
+                                    </TouchableOpacity>
+
+
+                                </View> */}
+                                <Text>Staff List</Text>
+
+                            </List.Accordion>
+                        </>
+                        : ''
+                }
+                {/*******************************************  Staff List ******************************** */}
 
                 {/*******************************************  Settings ******************************** */}
                 {

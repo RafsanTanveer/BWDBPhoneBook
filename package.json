@@ -37,7 +37,12 @@
     "recyclerlistview": "^4.2.0",
     "uuidv4": "^6.2.13",
     "expo-linear-gradient": "~11.4.0",
-    "@react-native-masked-view/masked-view": "0.2.7"
+    "@react-native-masked-view/masked-view": "0.2.7",
+    "expo-camera": "~12.5.0",
+    "expo-print": "~11.3.0",
+    "expo-media-library": "~14.2.0",
+    "expo-sharing": "~10.3.0",
+    "expo-file-system": "~14.1.0"
   },
   "private": true
 }

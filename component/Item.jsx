@@ -43,6 +43,8 @@ const Item = ({ id,
     currentTheme,
     length }) => {
 
+    console.log("adminlevel in item " + adminLevel);
+
     const presentCharge = Charges(charge)
 
     const navigation = useNavigation();
@@ -118,7 +120,7 @@ const Item = ({ id,
 
         <TouchableOpacity
             disabled={true}
-            style={{}}
+            // style={{ marginBottom: adminLevel != 'superAdmin' ? height * .02 :  0}}
             onPress={() => (onSelect(id))}
         >
 
@@ -152,7 +154,11 @@ const Item = ({ id,
                 }}>
 
 
-                    <TouchableOpacity onPress={() => (onSelect(id))}>
+                    <TouchableOpacity onPress={() => (onSelect(id))}
+
+                        disabled={adminLevel === 'superAdmin' ? false : true}
+
+                    >
                         {
 
                             photo ?
@@ -171,7 +177,11 @@ const Item = ({ id,
 
                         }
                     </TouchableOpacity>
-                    <View style={{ elevation: 3, backgroundColor: `${currentTheme}`, alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5) }}>
+                    <View style={{
+                        elevation: 3,
+                        backgroundColor: `${currentTheme}`,
+                        alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5)
+                    }}>
                         <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }} >{index + 1}</Text>
                     </View>
                 </View>
@@ -181,12 +191,46 @@ const Item = ({ id,
                 }}>
                     <View style={{ flex: 1, }}>
 
+                        {
+                            true &&
+                            <View style={{ position: adminLevel === 'superAdmin' ? 'absolute' : 'relative', justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2 }}>
+                                <View style={{ flex: 1 }}></View>
+
+                                <TouchableOpacity style={{
+                                    // backgroundColor: `${currentTheme}`,
+                                    padding: 2,
+                                    elevation: 0,
+                                    borderRadius: height * .009,
+                                }}>
+                                    <Image
+                                        source={Images['video-call']}
+                                        style={{ height: imgSizeMini * 1.2, width: imgSizeMini * 1.5 }}
+                                    />
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{
+                                    // backgroundColor: `${currentTheme}`,
+                                    padding: 2,
+                                    elevation: 0,
+                                    borderRadius: height * .009,
+                                }}>
+                                    <Image
+                                        source={Images['chat']}
+                                        style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
+                                    />
+                                </TouchableOpacity>
+
+
+                            </View>
+                        }
+
                         <View style={{ flex: 1, flexDirection: 'row' }}>
+
 
                             <View style={{}} >
                                 {
                                     // presentOfficeCode === 30 ?
-                                    adminLevel ==='superAdmin' ?
+                                    adminLevel === 'superAdmin' ?
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <TouchableOpacity onPress={() => {
                                                 navigation.navigate('Biodata', { id: id })
@@ -200,7 +244,7 @@ const Item = ({ id,
                                         : null
                                 }
                                 {
-                                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority==='true' ?
+                                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' ?
                                         <View style={{ justifyContent: 'space-between' }}>
                                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {
@@ -331,6 +375,9 @@ const Item = ({ id,
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
                             </TouchableOpacity>
                         }
+
+
+
                         {
                             // item.mobile &&
                             // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}

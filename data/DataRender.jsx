@@ -26,6 +26,8 @@ import { createDesignationTable } from '../database/CreateQueries'
 import { deleteDataFromDesignationTable } from '../database/DeleteQueries'
 import { insertDataIntoDesignationTable } from '../database/InsertQueries'
 
+import { Camera } from 'expo-camera'
+
 import CreateGroupModalComponent from '../component/modalComponents/CreateGroupModalComponent'
 
 
@@ -205,6 +207,22 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }, []);
 
 
+    const [hasCameraPermission, sethasCameraPermission] = useState();
+    const [hasMicrophonePermission, sethasMicrophonePermission] = useState();
+
+    useEffect(() => {
+
+        (async () => {
+            const cameraPermission = await Camera.requestCameraPermissionsAsync()
+            const microphonePermission = await Camera.requestMicrophonePermissionsAsync()
+
+            sethasCameraPermission(cameraPermission.status === 'granted')
+            sethasMicrophonePermission(microphonePermission.status === 'granted')
+
+
+        })();
+
+    }, []);
 
 
     let charge = Charges(presentCharge)
@@ -1036,7 +1054,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                     {
-                        canCallBulk === 'true' &&
+                        canCallBulk === 'true' && adminLevel === 'superAdmin' &&
                         <TouchableOpacity style={{
 
                             height: height / 20,
@@ -1156,7 +1174,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             <View style={{ alignContent: 'center', justifyContent: 'center' }}>
                                 <Text
                                     style={{
-                                        marginLeft: 3, color: 'grey', fontSize: height * .015
+                                        marginLeft: 3, color: 'grey', fontSize: height * .015, fontStyle: 'italic'
                                     }}> {isChecked ? 'Seniority' :
                                         isrtDateChecked ? 'Retirement Date' :
                                             isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
@@ -1337,9 +1355,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 {
                     !search && DATA ?
-                        <View style={{ flexDirection: 'row' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .02, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}</Text>
-
+                        <View style={{ flexDirection: 'row', alignContent: 'center' }} >
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length} </Text>
+                            <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{adminLevel != 'superAdmin' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
                 }
