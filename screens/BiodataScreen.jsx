@@ -20,6 +20,8 @@ import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
 
+import {BiodataReport} from '../component/Reports/BiodataReport'
+
 const officeLevel = [
     "Board",
     "Region",
@@ -32,6 +34,7 @@ const officeLevel = [
     "Others"
 
 ]
+
 
 const BiodataScreen = ({ id, navigation }) => {
     const animation = useRef(null);
@@ -56,7 +59,9 @@ const BiodataScreen = ({ id, navigation }) => {
         setPmisId,
         setpostGrade,
         officelevel1code,
-        setofficelevel1code } = useContext(AuthContext);
+        setofficelevel1code,
+        name,
+        photo } = useContext(AuthContext);
 
     const { currentTheme } = useContext(ThemeContext);
 
@@ -924,127 +929,11 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
 
-    const html = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-
-  <body >
-    <div style="display: flex; height: 110px; justify-content: center; flex-direction: column; align-content: center; text-align: center">
-      <div style="color: rgb(33, 27, 202); height: 100px; align-items: center; font-size: 30px; font-weight: bold">Bangladesh Water Development Board</div>
-      <div style="font-size: 20px; color: rgb(7, 130, 50); height: 80px; font-weight: bold">Human Resourse Development Directorate</div>
-      <div style="font-size: 20px; color: rgb(114, 145, 223); height: 80px; font-weight: bold">Bio-data</div>
-    </div>
-    <hr />
-
-    <div style="display: flex; flex-direction: row; flex: 1;">
-      <div style=" flex: 2; display: flex; flex-direction: column; justify-content: space-between">
-        <div style="display: flex; flex: 1; flex: auto; justify-content: space-between">
-          <div style="flex: 0.67;color: #377DF5; font-weight: bold;">Employee ID</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">920219001</div>
-        </div>
-
-        <div style=" display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Name</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Rafsan Zani Rabbi</div>
-        </div>
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Father's Name</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Belayet Hossain</div>
-        </div>
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Mother's Name</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Khadia Begum</div>
-        </div>
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.645;color: #377DF5;">Home District</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Dhaka</div>
-        </div>
-      </div>
-
-
-      <div style=" flex: 2; display: flex; flex-direction: column; justify-content: space-between">
-        <div style="display: flex; flex: 1; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Date Of Birth</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">920219001</div>
-        </div>
-
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Gender</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Rafsan Zani Rabbi</div>
-        </div>
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Religion</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Belayet Hossain</div>
-        </div>
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Maritial Status</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Khadia Begum</div>
-        </div>
-        <div style="display: flex; flex-direction: row; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Employee Status</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 1; padding-left: 5px">Dhaka</div>
-        </div>
-      </div>
-      <div style="background-color: bisque; flex: 0.7; display: flex; flex-direction: row; justify-content: space-between">
-        <div style="text-align: center; ">920219001</div>
-      </div>
-    </div>
-
-
-    <div style="display: flex; flex-direction: row; flex: 1.5">
-      <div style=" flex: 1; display: flex; flex-direction: column; justify-content: space-between">
-        <div style="display: flex; flex: 1; flex: auto; justify-content: space-between">
-          <div style="flex: 5;color: #377DF5; font-weight: bold;">Permanent Address</div>
-          <div style="flex: .1; padding-left: 5px">:</div>
-          <div style="flex: 1; padding-left: 5px"></div>
-        </div>
-
-
-      </div>
-
-
-      <div style=" flex: 4; display: flex; flex-direction: column; justify-content: space-between">
-        <div style="display: flex; flex: 1; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Date Of Birth</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 2; padding-left: 5px">920219001</div>
-        </div>
-
-         <div style="display: flex; flex: 1; flex: auto; justify-content: space-between">
-          <div style="font-weight: bold;flex: 0.5;color: #377DF5;">Date Of Birth</div>
-          <div style="flex: .1;">:</div>
-          <div style="flex: 2; padding-left: 5px">920219001</div>
-        </div>
-
-      </div>
-
-    </div>
-  </body>
-</html>
-  `;
-
-
     let generatePdf = async () => {
 
 
         const file = await printToFileAsync({
-            html: html,
+            html: BiodataReport(id, name, photo, experience),
             // base64: false
 
         });
@@ -1115,7 +1004,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
-                                        onPress={() => generatePdf(html)}
+                                        onPress={() => generatePdf()}
                                         style={{ flexDirection: 'column', }}
                                     >
                                         <Image
@@ -1131,11 +1020,11 @@ const BiodataScreen = ({ id, navigation }) => {
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        onPress={() => generatePdf(html)}
-                                        style={{ flexDirection: 'column', marginLeft:3}}
+                                        onPress={() => generatePdf()}
+                                        style={{ flexDirection: 'column', marginLeft: 3 }}
                                     >
                                         <Image
-                                            source={Images['download']}
+                                            source={Images['share']}
                                             style={{ height: imgSizeMidium, width: imgSizeMidium, alignSelf: 'center' }}
                                         />
                                         <Text style={{
