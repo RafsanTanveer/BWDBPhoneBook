@@ -136,3 +136,60 @@ export const createGroupTable = (tableName) => {
           });
      });
 };
+
+
+
+
+export const createBiodataTable = (tableName) => {
+     return new Promise((resolve, reject) => {
+          db.transaction((tx) => {
+               tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS biodata (
+                                id              TEXT,
+                                name            TEXT,
+                                namebn          TEXT,
+                                f_name          TEXT,
+                                f_name_bn       TEXT,
+                                m_name          TEXT,
+                                m_name_bn       TEXT,
+                                bdate           TEXT,
+                                postGrade       TEXT,
+                                mstatus         TEXT,
+                                gender          TEXT,
+                                religion        TEXT,
+                                gpf             TEXT,
+                                accountsid      TEXT,
+                                retireDate      TEXT,
+                                homeDist        TEXT,
+                                homeAddress     TEXT,
+                                postalCode      TEXT,
+                                upazila         TEXT,
+                                village         TEXT,
+                                officelevel1code TEXT,
+                                cadre           TEXT,
+                                accfile         TEXT,
+                                joinDesig       TEXT,
+                                joinDate        TEXT,
+                                regularDate     TEXT,
+                                officeAddress   TEXT,
+                                offceCode       TEXT,
+                                officeLevel     TEXT,
+                                officeLevel1    TEXT,
+                                officeLevel2    TEXT,
+                                adminLevel      TEXT,
+                                canCallBulk     TEXT,
+                                canAccessSeniority TEXT,
+                                timestamp       TEXT,
+                                photo           BLOB
+                                                 );`,
+                    [],
+                    (_, result) => {
+                         resolve(result);
+                    },
+                    (_, error) => {
+                         reject(error);
+                    }
+               );
+          });
+     });
+};

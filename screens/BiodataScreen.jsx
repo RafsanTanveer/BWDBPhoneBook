@@ -16,11 +16,11 @@ import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utili
 import { height, width } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
 
-import { printToFileAsync } from 'expo-print';
+import { printAsync, printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
 
-import {BiodataReport} from '../component/Reports/BiodataReport'
+import { BiodataReport } from '../component/Reports/BiodataReport'
 
 const officeLevel = [
     "Board",
@@ -927,16 +927,30 @@ const BiodataScreen = ({ id, navigation }) => {
     }
 
 
+    let sharePdf = async () => {
+
+        const { uri: localUri } = await FileSystem.downloadAsync(
+            `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}`,
+            FileSystem.documentDirectory + `${name}${id}.pdf`
+        ).catch((error) => {
+            console.error(error)
+        })
+        await shareAsync(localUri)
+            .catch((err) => console.log('Sharing::error', err))
+
+
+
+    }
 
 
     let generatePdf = async () => {
 
 
-        const file = await printToFileAsync({
-            html: BiodataReport(id, name, photo, experience),
-            // base64: false
+        // const file = await printToFileAsync({
+        //     html: BiodataReport(photo, personalData[0], presentPost, presentOffice, experience),
+        //     base64: false
 
-        });
+        // });
 
         // const pdfName = `${file.uri.slice(
         //     0,
@@ -949,7 +963,23 @@ const BiodataScreen = ({ id, navigation }) => {
         //     to: pdfName,
         // })
 
-        await shareAsync(file.uri);
+        // const fileUrl=await printAsync({ uri: "data:application/pdf;base64,http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=650204001" })
+
+
+        // await shareAsync(fileUrl.uri);
+
+
+        const { uri: localUri } = await FileSystem.downloadAsync(
+            'http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=650204001',
+            FileSystem.documentDirectory + 'terms-of-use.pdf'
+        ).catch((error) => {
+            console.error(error)
+        })
+        await shareAsync(localUri)
+            .catch((err) => console.log('Sharing::error', err))
+
+
+
     };
 
     useEffect(() => {
@@ -1014,13 +1044,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                         <Text style={{
                                             fontWeight: 'bold',
                                             color: 'black',
-                                            fontSize: txtSizeMini,
+                                            fontSize: txtSizeMini * 1.1,
                                             textAlign: 'center'
                                         }}>Download</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        onPress={() => generatePdf()}
+                                        onPress={() => sharePdf()}
                                         style={{ flexDirection: 'column', marginLeft: 3 }}
                                     >
                                         <Image
@@ -1030,7 +1060,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         <Text style={{
                                             fontWeight: 'bold',
                                             color: 'black',
-                                            fontSize: txtSizeMini,
+                                            fontSize: txtSizeMini * 1.1,
                                             textAlign: 'center'
                                         }}>Share</Text>
                                     </TouchableOpacity>
@@ -1071,13 +1101,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     </View>
                                     <SingleColumnComponent
                                         firstHeading="Religion"
-                                        firstQueryResult={item.religion == "I" ? "ISLAM" :
-                                            (item.religion == "H" ? "HINDU" :
-                                                item.religion == "C" ? "CHRISTIAN" :
-                                                    item.religion == "B" ? "BUDDHIST" :
-                                                        item.religion == "O" ? "OTHERS" :
-                                                            item.religion == "N" ? "NONE" : ""
-                                            )}
+                                        firstQueryResult={item.religion}
                                         delimiter=":"
                                     />
                                     <SingleColumnComponent
@@ -1087,13 +1111,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                     />
                                     <SingleColumnComponent
                                         firstHeading="Gender"
-                                        firstQueryResult={item.gender == "M" ? 'Male' : 'Female'}
+                                        firstQueryResult={item.gender}
                                         delimiter=":"
                                     />
 
                                     <SingleColumnComponent
                                         firstHeading="Marital Status"
-                                        firstQueryResult={item.mstatus === "U" ? 'Unmarried' : 'Married'}
+                                        firstQueryResult={item.mstatus}
                                         delimiter=":"
                                     />
                                     <SingleColumnComponent

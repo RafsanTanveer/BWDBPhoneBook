@@ -214,3 +214,101 @@ export const insertDataIntoGroupTable = (tableName, data) => {
         });
     });
 };
+
+
+
+export const insertDataIntoBiodataTable = (tableName, data) => {
+
+    // console.log(tableName, ' length = ', data.length);
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+
+            data.forEach((it, index) => {
+                tx.executeSql(
+                    `INSERT INTO ${tableName} (
+                                   id,
+                                   name,
+                                   namebn,
+                                   f_name,
+                                   f_name_bn,
+                                   m_name,
+                                   m_name_bn,
+                                   bdate,
+                                   postGrade,
+                                   mstatus,
+                                   gender,
+                                   religion,
+                                   gpf,
+                                   accountsid,
+                                   retireDate,
+                                   homeDist,
+                                   homeAddress,
+                                   postalCode,
+                                   upazila,
+                                   village,
+                                   officelevel1code,
+                                   cadre,
+                                   accfile,
+                                   joinDesig,
+                                   joinDate,
+                                   regularDate,
+                                   officeAddress,
+                                   offceCode,
+                                   officeLevel,
+                                   officeLevel1,
+                                   officeLevel2,
+                                   adminLevel,
+                                   canCallBulk,
+                                   canAccessSeniority,
+                                   timestamp,
+                                   photo)
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?);`,
+                    [
+                        it.id,
+                        it.name,
+                        it.namebn,
+                        it.f_name,
+                        it.f_name_bn,
+                        it.m_name,
+                        it.m_name_bn,
+                        it.bdate,
+                        it.postGrade,
+                        it.mstatus,
+                        it.gender,
+                        it.religion,
+                        it.gpf,
+                        it.accountsid,
+                        it.retireDate,
+                        it.homeDist,
+                        it.homeAddress,
+                        it.postalCode,
+                        it.upazila,
+                        it.village,
+                        it.officelevel1code,
+                        it.cadre,
+                        it.accfile,
+                        it.joinDesig,
+                        it.joinDate,
+                        it.regularDate,
+                        it.officeAddress,
+                        it.offceCode,
+                        it.officeLevel,
+                        it.officeLevel1,
+                        it.officeLevel2,
+                        it.adminLevel,
+                        it.canCallBulk,
+                        it.canAccessSeniority,
+                        timeStamp(),
+                        it.photo
+                    ]
+                );
+            });
+
+
+
+        });
+    });
+};
