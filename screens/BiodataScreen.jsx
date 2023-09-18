@@ -931,7 +931,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
         const { uri: localUri } = await FileSystem.downloadAsync(
             `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}`,
-            FileSystem.documentDirectory + `${name}${id}.pdf`
+            FileSystem.documentDirectory + `${name} - ${id}.pdf`
         ).catch((error) => {
             console.error(error)
         })
@@ -943,42 +943,19 @@ const BiodataScreen = ({ id, navigation }) => {
     }
 
 
-    let generatePdf = async () => {
+    let downloadPdf = async () => {
 
 
-        // const file = await printToFileAsync({
-        //     html: BiodataReport(photo, personalData[0], presentPost, presentOffice, experience),
-        //     base64: false
-
-        // });
-
-        // const pdfName = `${file.uri.slice(
-        //     0,
-        //     file.uri.lastIndexOf('/') + 1
-        // )}invoice_.pdf`
-
-
-        // await FileSystem.moveAsync({
-        //     from: file.uri,
-        //     to: pdfName,
-        // })
-
-        // const fileUrl=await printAsync({ uri: "data:application/pdf;base64,http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=650204001" })
-
-
-        // await shareAsync(fileUrl.uri);
-
-
-        // const { uri: localUri } = await FileSystem.downloadAsync(
-        //     'http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=650204001',
-        //     FileSystem.documentDirectory + 'terms-of-use.pdf'
-        // ).catch((error) => {
-        //     console.error(error)
-        // })
-        // await shareAsync(localUri)
-        //     .catch((err) => console.log('Sharing::error', err))
-
-
+        FileSystem.downloadAsync(
+            `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}`,
+            FileSystem.documentDirectory + 'documents/' + 'small.pdf'
+        )
+            .then(({ uri }) => {
+                console.log('Finished downloading to ', uri);
+            })
+            .catch(error => {
+                console.error(error);
+            });
 
     };
 
@@ -1033,8 +1010,8 @@ const BiodataScreen = ({ id, navigation }) => {
                             <View style={{ flexDirection: 'row', margin: 9, justifyContent: 'space-between', alignItems: 'center', }}>
                                 <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity
-                                        onPress={() => generatePdf()}
+                                    {/* <TouchableOpacity
+                                        onPress={() => downloadPdf()}
                                         style={{ flexDirection: 'column', }}
                                     >
                                         <Image
@@ -1047,7 +1024,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             fontSize: txtSizeMini * 1.1,
                                             textAlign: 'center'
                                         }}>Download</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
 
                                     <TouchableOpacity
                                         onPress={() => sharePdf()}
@@ -1060,9 +1037,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                         <Text style={{
                                             fontWeight: 'bold',
                                             color: 'black',
-                                            fontSize: txtSizeMini * 1.1,
+                                            fontSize: txtSizeMini * 1.2,
                                             textAlign: 'center'
-                                        }}>Share</Text>
+                                        }}>Download / Share</Text>
                                     </TouchableOpacity>
 
 
