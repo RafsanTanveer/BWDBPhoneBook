@@ -929,12 +929,18 @@ const BiodataScreen = ({ id, navigation }) => {
 
     let sharePdf = async () => {
 
+        setIsLoading(true)
+
+
         const { uri: localUri } = await FileSystem.downloadAsync(
             `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}`,
             FileSystem.documentDirectory + `${name} - ${id}.pdf`
         ).catch((error) => {
             console.error(error)
         })
+
+        setIsLoading(false)
+
         await shareAsync(localUri)
             .catch((err) => console.log('Sharing::error', err))
 

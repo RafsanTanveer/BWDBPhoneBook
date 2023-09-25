@@ -6,8 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { Images } from '../utility/Images';
-
+import { Camera, CameraType } from 'expo-camera';
 import MakeCallModalComponent from '../component/MakeCallModalComponent';
+import CameraModalComponent from '../component/modalComponents/CameraModalComponent'
 import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
@@ -43,7 +44,6 @@ const Item = ({ id,
     currentTheme,
     length }) => {
 
-    console.log("adminlevel in item " + adminLevel);
 
     const presentCharge = Charges(charge)
 
@@ -55,15 +55,43 @@ const Item = ({ id,
     const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isCameraModalVisible, setCameraModalVisible] = useState(false);
+
+    const [permission, requestPermission] = Camera.useCameraPermissions();
+
+    const [hasCameraPermission, setHasCameraPermission] = useState(null);
+    const [camera, setCamera] = useState(null);
+    const [image, setImage] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
+
 
     const toggleModal = (isVisible) => {
         setModalVisible(isVisible);
     };
 
+    const toggleCameraModal = (isVisible) => {
+        setCameraModalVisible(isVisible);
+    };
+
+
+
+
+    // useEffect(() => {
+    //     (async () => {
+    //         const cameraStatus = await Camera.requestPermissionsAsync();
+    //         setHasCameraPermission(cameraStatus.status === 'granted');
+    //     })();
+    // }, []);
+
     useEffect(() => {
         selectedPId = []
         setisSelected([])
     }, []);
+
+
+    function toggleCameraType() {
+        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+    }
 
 
     const [isSelected, setisSelected] = useState([]);
@@ -177,6 +205,9 @@ const Item = ({ id,
 
                         }
                     </TouchableOpacity>
+
+
+
                     <View style={{
                         elevation: 3,
                         backgroundColor: `${currentTheme}`,
@@ -201,25 +232,29 @@ const Item = ({ id,
                                     padding: 2,
                                     elevation: 0,
                                     borderRadius: height * .009,
-                                }}>
+                                }}
+                                    onPress={() => toggleCameraModal()}
+                                >
                                     <Image
                                         source={Images['video-call']}
                                         style={{ height: imgSizeMini * 1.2, width: imgSizeMini * 1.5 }}
                                     />
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{
-                                    // backgroundColor: `${currentTheme}`,
-                                    padding: 2,
-                                    elevation: 0,
-                                    borderRadius: height * .009,
-                                }}>
-                                    <Image
-                                        source={Images['chat']}
-                                        style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
-                                    />
-                                </TouchableOpacity>
-
+                                    {
+                                        false &&
+                                    <TouchableOpacity style={{
+                                        // backgroundColor: `${currentTheme}`,
+                                        padding: 2,
+                                        elevation: 0,
+                                        borderRadius: height * .009,
+                                    }}>
+                                        <Image
+                                            source={Images['chat']}
+                                            style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
+                                        />
+                                    </TouchableOpacity>
+                                }
 
                             </View>
                         }
@@ -439,7 +474,20 @@ const Item = ({ id,
                 onRequestClose={() => toggleModal(true)}
             >
                 <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
+
             </Modal>
+
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isCameraModalVisible}
+                onRequestClose={() => toggleCameraModal(true)}
+            >
+
+                <CameraModalComponent toggleModal={toggleCameraModal} />
+            </Modal>
+
         </TouchableOpacity>
     )
 }

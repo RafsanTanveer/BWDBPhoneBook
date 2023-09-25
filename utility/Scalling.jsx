@@ -8,3 +8,4 @@ export const txtSizeBig = height * .019;
 
 export const imgSizeMini = height * .025;
 export const imgSizeMidium = height * .035;
+export const imgSizeLarge = height * .050;

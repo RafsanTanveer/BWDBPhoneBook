@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, TouchableOpacity, Dimensions } from 'react-native';
 import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
+
+
+
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 

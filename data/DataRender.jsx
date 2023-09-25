@@ -715,8 +715,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             try {
 
 
-                setRefreshing(false);
-                setIsLoading(true);
+                // setRefreshing(false);
+                // setIsLoading(true);
                 setSearch()
 
                 setDATA([])
@@ -739,7 +739,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 setIsOpen(false)
                 setIsChargeOpen(false)
 
-                setIsLoading(false);
+                // setIsLoading(false);
 
 
             } catch (error) {
@@ -1239,14 +1239,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                                 {
-                                    true &&
+                                    netInfo.isConnected &&
                                     <View
                                         style={{
                                             flexDirection: 'row',
                                             marginTop: 7,
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                            width: netInfo.isConnected ? 210 : 140,
+                                            width: isReportActive ? 210 : 140,
                                             elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
@@ -1290,24 +1290,27 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                     }}>Vacant</Text>
                                             </TouchableOpacity>
                                         }
-                                        <TouchableOpacity
-                                            onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
-                                            style={{
-                                                height: 20,
-                                                width: 70,
-                                                backgroundColor: isReportActive ? `${currentTheme}` : 'white',
-                                                borderRadius: height * .005,
-                                            }}>
-                                            <Text
+                                        {
+                                            false &&
+                                            <TouchableOpacity
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
                                                 style={{
-                                                    color: isReportActive ? 'white' : 'black',
-                                                    height: height * (1 / 40),
-                                                    fontSize: txtSizeNormal,
-                                                    fontFamily: 'serif',
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold'
-                                                }}>Report</Text>
-                                        </TouchableOpacity>
+                                                    height: 20,
+                                                    width: 70,
+                                                    backgroundColor: isReportActive ? `${currentTheme}` : 'white',
+                                                    borderRadius: height * .005,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: isReportActive ? 'white' : 'black',
+                                                        height: height * (1 / 40),
+                                                        fontSize: txtSizeNormal,
+                                                        fontFamily: 'serif',
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold'
+                                                    }}>Report</Text>
+                                            </TouchableOpacity>
+                                        }
                                     </View>
                                 }
 
