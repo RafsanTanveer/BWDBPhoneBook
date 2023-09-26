@@ -225,6 +225,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }, []);
 
 
+
     let charge = Charges(presentCharge)
     console.log(charge);
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
@@ -847,7 +848,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 if (data.length > 0) {
                     const contact = data[0];
-                    // __DEV__ && console.log(contact);
+                    __DEV__ && console.log(contact);
                 }
             }
         })();

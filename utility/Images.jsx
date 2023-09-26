@@ -46,6 +46,7 @@ Images['video-call'] = require('../assets/icons/video-call.png')
 Images['chat'] = require('../assets/icons/chat.png')
 Images['share'] = require('../assets/icons/share.png')
 Images['end-call'] = require('../assets/icons/end-call.png')
+Images['plus'] = require('../assets/icons/plus.png')
 
 
 //  expendable list icon

@@ -8,6 +8,12 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera.",
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
         }
+      ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
+        }
       ]
     ],
     "name": "BWDB Employee Directory",
@@ -36,7 +42,11 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.rafsantanveer.bwdbempdir",
-      "userInterfaceStyle":"light"
+      "userInterfaceStyle":"light",
+      "permissions": [
+        "READ_CONTACTS",
+        "WRITE_CONTACTS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,6 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { memo, useContext, useEffect, useState } from "react";
 import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as Contacts from 'expo-contacts';
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
@@ -73,6 +74,12 @@ const Item = ({ id,
         setCameraModalVisible(isVisible);
     };
 
+
+    const contact = {
+        [Contacts.Fields.FirstName]: 'Bird',
+        [Contacts.Fields.LastName]: 'Man',
+        [Contacts.Fields.Company]: 'Young Money',
+    };
 
 
 
@@ -404,55 +411,36 @@ const Item = ({ id,
 
 
                         {
-                            // item.mobile &&
-                            // <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
+                            mobile &&
+                            <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
 
-                            //         onPress={async () => {
-                            //             const contact = {
-                            //                 [Contacts.Fields.FirstName]: "Test",
-                            //                 [Contacts.Fields.LastName]: "McTest",
-                            //                 [Contacts.Fields.PhoneNumbers]: [
-                            //                     {
-                            //                         number: "(123) 456-7890",
-                            //                         isPrimary: true,
-                            //                         digits: "1234567890",
-                            //                         countryCode: "PA",
-                            //                         id: "1",
-                            //                         label: "mobile",
-                            //                     },
-                            //                 ],
-                            //                 [Contacts.Fields.Emails]: [
-                            //                     {
-                            //                         email: "test@gmail.com",
-                            //                         isPrimary: true,
-                            //                         id: "2",
-                            //                         label: "mobile",
-                            //                     },
-                            //                 ],
-                            //             };
+                                    onPress={async () => {
 
-                            //             await Contacts.addContactAsync(contact)
-                            //                 .then((contactId) => {
-                            //                     alert("Se creó exitosamente");
-                            //                 })
-                            //                 .catch((err) => {
-                            //                     alert(err);
-                            //                     __DEV__ && console.log(err);
-                            //                 });
-                            //         }}
 
-                            //     style={{
-                            //         alignItems: 'center',
-                            //         flexDirection: 'row',
-                            //         backgroundColor: `${currentTheme}`,
-                            //         borderRadius: height * .005,
-                            //         marginHorizontal: 5,
-                            //         paddingVertical: 1,
-                            //         paddingHorizontal: 5
-                            //     }}>
-                            //     {/* <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" /> */}
-                            //     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>ADD</Text>
-                            // </TouchableOpacity>
+                                        await Contacts.addContactAsync(contact)
+                                            .then((contactId) => {
+                                                alert("contactId --- " + contactId);
+                                            })
+                                            .catch((err) => {
+                                                alert(err);
+                                                __DEV__ && console.log(err);
+                                            });
+                                    }}
+
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 5
+                                }}>
+                                    <Image
+                                        source={Images['plus']}
+                                        style={{ height: imgSizeMini*.6 , width: imgSizeMini*.6  }}
+                                    />
+                            </TouchableOpacity>
                         }
                     </View>
                 </View>
