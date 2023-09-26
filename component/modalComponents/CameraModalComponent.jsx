@@ -5,7 +5,7 @@ import { height, width, heightScreen, widthScreen } from '../../utility/ScreenDi
 import { Images } from "../../utility/Images";
 import { imgSizeLarge } from "../../utility/Scalling";
 
-const CameraModalComponent = ({ toggleModal }) => {
+const CameraModalComponent = ({ toggleModal, photo }) => {
 
     const [type, setType] = useState(CameraType.front);
     const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -31,6 +31,9 @@ const CameraModalComponent = ({ toggleModal }) => {
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <View style={styles.container}>
+
+
+
                         <Camera style={styles.camera} type={type}>
                             <View style={styles.buttonContainer}>
                                 {/* <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
@@ -38,7 +41,25 @@ const CameraModalComponent = ({ toggleModal }) => {
                                 </TouchableOpacity> */}
                             </View>
                         </Camera>
+
+                        {
+                            photo ? <Image style={{
+                                height: heightScreen,
+                                width: widthScreen,
+                                // position: 'absolute'
+                            }} source={{ uri: "data:image/jpeg;base64," + photo }} />
+
+                                :
+                                <Image style={{
+                                    height: heightScreen,
+                                    width: widthScreen,
+                                    // position: 'absolute'
+                                }}
+                                    source={Images['placeHolderImg']} ></Image>
+                        }
+
                     </View>
+
                     <TouchableOpacity
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => closeModal()}>
@@ -46,6 +67,8 @@ const CameraModalComponent = ({ toggleModal }) => {
                             source={Images['end-call']}
                             style={{ height: imgSizeLarge, width: imgSizeLarge }}
                         />
+
+
                     </TouchableOpacity>
                 </View>
             </View>
@@ -85,7 +108,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex: 100
     },
     textStyle: {
         color: 'black',
@@ -101,9 +125,10 @@ const styles = StyleSheet.create({
         width: widthScreen * .25,
         backgroundColor: 'white',
         borderRadius: 10,
-        alignItems: 'center',
-        top: height * .045,
-        left: width * .3
+        marginTop: height * .045,
+        left: width * .7,
+        position: 'absolute',
+        zIndex: 500
     }
 });
 

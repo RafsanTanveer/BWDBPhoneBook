@@ -148,7 +148,7 @@ const Item = ({ id,
 
         <TouchableOpacity
             disabled={true}
-            // style={{ marginBottom: adminLevel != 'superAdmin' ? height * .02 :  0}}
+             style={{ marginBottom: adminLevel != 'superAdmin' ? height * .02 :  0}}
             onPress={() => (onSelect(id))}
         >
 
@@ -223,16 +223,11 @@ const Item = ({ id,
                     <View style={{ flex: 1, }}>
 
                         {
-                            true &&
-                            <View style={{ position: adminLevel === 'superAdmin' ? 'absolute' : 'relative', justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2 }}>
+                            true && mobile &&
+                            <View style={{ position: adminLevel === 'superAdmin' && canAccessSeniority === 'true' ? 'absolute' : 'relative', justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2 }}>
                                 <View style={{ flex: 1 }}></View>
 
-                                <TouchableOpacity style={{
-                                    // backgroundColor: `${currentTheme}`,
-                                    padding: 2,
-                                    elevation: 0,
-                                    borderRadius: height * .009,
-                                }}
+                                <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}
                                     onPress={() => toggleCameraModal()}
                                 >
                                     <Image
@@ -241,14 +236,9 @@ const Item = ({ id,
                                     />
                                 </TouchableOpacity>
 
-                                    {
-                                        false &&
-                                    <TouchableOpacity style={{
-                                        // backgroundColor: `${currentTheme}`,
-                                        padding: 2,
-                                        elevation: 0,
-                                        borderRadius: height * .009,
-                                    }}>
+                                {
+                                    false &&
+                                    <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}>
                                         <Image
                                             source={Images['chat']}
                                             style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
@@ -265,7 +255,7 @@ const Item = ({ id,
                             <View style={{}} >
                                 {
                                     // presentOfficeCode === 30 ?
-                                    adminLevel === 'superAdmin' ?
+                                    adminLevel === 'superAdmin' && canAccessSeniority === 'true' ?
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <TouchableOpacity onPress={() => {
                                                 navigation.navigate('Biodata', { id: id })
@@ -485,7 +475,7 @@ const Item = ({ id,
                 onRequestClose={() => toggleCameraModal(true)}
             >
 
-                <CameraModalComponent toggleModal={toggleCameraModal} />
+                <CameraModalComponent toggleModal={toggleCameraModal} photo={photo} />
             </Modal>
 
         </TouchableOpacity>
