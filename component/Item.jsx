@@ -410,7 +410,7 @@ const Item = ({ id,
 
 
 
-                        {
+                        {/* {
                             mobile &&
                             <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
 
@@ -441,7 +441,7 @@ const Item = ({ id,
                                         style={{ height: imgSizeMini*.6 , width: imgSizeMini*.6  }}
                                     />
                             </TouchableOpacity>
-                        }
+                        } */}
                     </View>
                 </View>
             </View>

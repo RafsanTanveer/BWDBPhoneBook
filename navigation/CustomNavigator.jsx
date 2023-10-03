@@ -13,6 +13,7 @@ import Biodata from "../screens/Biodata";
 import Login from "../screens/Login";
 import { Images } from '../utility/Images';
 import DataRenderOffice from '../data/DataRenderOffice'
+import ReportScreen from '../screens/ReportScreen'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -86,6 +87,7 @@ const CustomDrawer = ({ }) => {
             <Drawer.Screen name="BiodataScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={BiodataScreen} />
             <Drawer.Screen name="Biodata" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Biodata} />
             <Drawer.Screen name="DataRenderOffice" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DataRenderOffice} />
+            <Drawer.Screen name="ReportScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={ReportScreen} />
 
         </Drawer.Navigator>
     );

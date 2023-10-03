@@ -76,7 +76,7 @@ const ExpendableDrawer = () => {
         presentOffice,
         presentOfficeCode,
         officelevel1code,
-        adminLevel } = useContext(AuthContext);
+        adminLevel, name, pmisId } = useContext(AuthContext);
 
     //  ******************************  fetching data ***************************************
 
@@ -157,18 +157,22 @@ const ExpendableDrawer = () => {
 
                 __DEV__ && console.log('desig table not exists [][][][][][][][][][][][][]');
 
+
+
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
                 setDesignationContext(response.rows)
-
+                console.log(response);
                 // pre download all data at installatin time
-                response.rows.forEach(async (it, index) => {
+                if (response.rows != 0) {
+                    response.rows.forEach(async (it, index) => {
 
-                    const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
+                        const desigUrl = it.desig === '001' ? "dg" : it.desig === '002' ? "adg" : "desig";
 
-                    fetchDataAndStore(desigUrl, it.tablename, it.desig);
+                        fetchDataAndStore(desigUrl, it.tablename, it.desig);
 
-                })
+                    })
+                }
 
                 // response.rows.forEach(async (it, index) => {
 
@@ -266,17 +270,19 @@ const ExpendableDrawer = () => {
 
     useEffect(() => {
 
-        setdgAdgDesig(desigList.filter((it) => (it.cadre === '00')))
-        setcivilDesig(desigList.filter((it) => (it.cadre === '10' || it.cadre === '12')))
-        setmechDesig(desigList.filter((it) => (it.cadre === '20')))
-        setadminDesig(desigList.filter((it) => (it.cadre === '30')))
-        setfinanceDesig(desigList.filter((it) => (it.cadre === '40')))
-        setwaterDesig(desigList.filter((it) => (it.cadre === '50')))
-        setlandDesig(desigList.filter((it) => (it.cadre === '60')))
-        setgeologyDesig(desigList.filter((it) => (it.cadre === '70')))
-        seteconomicDesig(desigList.filter((it) => (it.cadre === '80')))
-        setcomputerDesig(desigList.filter((it) => (it.cadre === '90')))
-        setmedicalDesig(desigList.filter((it) => (it.cadre === '39')))
+        if (desigList) {
+            setdgAdgDesig(desigList.filter((it) => (it.cadre === '00')))
+            setcivilDesig(desigList.filter((it) => (it.cadre === '10' || it.cadre === '12')))
+            setmechDesig(desigList.filter((it) => (it.cadre === '20')))
+            setadminDesig(desigList.filter((it) => (it.cadre === '30')))
+            setfinanceDesig(desigList.filter((it) => (it.cadre === '40')))
+            setwaterDesig(desigList.filter((it) => (it.cadre === '50')))
+            setlandDesig(desigList.filter((it) => (it.cadre === '60')))
+            setgeologyDesig(desigList.filter((it) => (it.cadre === '70')))
+            seteconomicDesig(desigList.filter((it) => (it.cadre === '80')))
+            setcomputerDesig(desigList.filter((it) => (it.cadre === '90')))
+            setmedicalDesig(desigList.filter((it) => (it.cadre === '39')))
+        }
 
     }, [desigList]);
 
@@ -287,9 +293,9 @@ const ExpendableDrawer = () => {
 
     let highestHandlePressNumber = 25
     let desigStart = 0;
-    let settingsStart=19
+    let settingsStart = 19
     let aprStart = 24
-    let staffListStart=25
+    let staffListStart = 25
 
     const handlePress = (no) => {
         const arr = []
@@ -955,7 +961,7 @@ const ExpendableDrawer = () => {
                                                 expanded={expendedList[18]}
                                                 onPress={() => handlePress(18)}  >
 
-                                                <OfficeListSingle lcode={officelevel1code} officeId={presentOfficeCode}  />
+                                                <OfficeListSingle lcode={officelevel1code} officeId={presentOfficeCode} />
                                                 {/* <OfficeListSingle lcode={officelevel1code} officeId={presentOfficeCode}  /> */}
                                                 {/* <ADGWEST presentOfficeCode, officelevel1code  /> */}
 
@@ -1115,31 +1121,50 @@ const ExpendableDrawer = () => {
                                 expanded={expendedList[staffListStart]}
                                 onPress={() => handlePress(staffListStart)} >
 
+                                <List.Item key={'Individual'}
+
+                                    onPress={() => {
+                                        navigation.navigate('ReportScreen', {
+                                            id: pmisId,
+                                            name:name,
+                                            recStatus: "C",
+                                            officecode: presentOfficeCode,
+                                            individualOrOffice: true
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="INDIAVIDUAL" />
 
 
-                                {/* <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity
-                                        style={{
+                                <List.Item key={'office'}
 
-                                            height: width * .1,
-                                            width: width * .35,
-                                            backgroundColor: `${currentTheme}`,
-                                            marginRight: 6
-                                        }}
-                                        onPress={() => { }}
-                                    >
-                                        <Text
-                                            style={{
-                                                color: 'white',
-                                                fontWeight: '600',
-                                                paddingLeft: width * .015,
-                                                paddingTop: width * .015,
-                                            }}>Make Change Request</Text>
-                                    </TouchableOpacity>
+                                    onPress={() => {
+                                        navigation.navigate('ReportScreen', {
+                                            id: pmisId,
+                                            name: presentOffice,
+                                            recStatus: "C",
+                                            officecode: presentOfficeCode,
+                                            individualOrOffice: false
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="OFFICE" />
 
 
-                                </View> */}
-                                <Text>Staff List</Text>
+
+
+
+
 
                             </List.Accordion>
                         </>

@@ -933,7 +933,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
         const { uri: localUri } = await FileSystem.downloadAsync(
-            `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}`,
+            `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}&p_user=${id}(from App)`,
             FileSystem.documentDirectory + `${name} - ${id}.pdf`
         ).catch((error) => {
             console.error(error)
