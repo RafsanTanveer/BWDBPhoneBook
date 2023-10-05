@@ -20,7 +20,6 @@ import { printAsync, printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
 
-import { BiodataReport } from '../component/Reports/BiodataReport'
 
 const officeLevel = [
     "Board",
