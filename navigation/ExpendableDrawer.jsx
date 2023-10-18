@@ -162,7 +162,7 @@ const ExpendableDrawer = () => {
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
                 setDesignationContext(response.rows)
-                console.log(response);
+                // __DEV__ && console.log(response);
                 // pre download all data at installatin time
                 if (response.rows != 0) {
                     response.rows.forEach(async (it, index) => {
@@ -737,7 +737,7 @@ const ExpendableDrawer = () => {
                             </List.Accordion>
                             <List.Accordion
                                 style={styles.accordingStyle}
-                                title="Water"
+                                title="Water Management"
                                 titleStyle={styles.titlestyle}
 
                                 left={props => <List.Icon {...props} icon={() => (

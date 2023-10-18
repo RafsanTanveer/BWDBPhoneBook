@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
 
 
 
-        console.log('lkklklk ', id);
+        console.log('login id - ', id);
 
         const tablenames = await getAllTableName()
 

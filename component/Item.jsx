@@ -26,6 +26,7 @@ const Item = ({ id,
     office,
     email,
     mobile,
+    blood,
     seniority,
     retiredate,
     bwdbJoiningDt,
@@ -57,7 +58,7 @@ const Item = ({ id,
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [isCameraModalVisible, setCameraModalVisible] = useState(false);
-
+    const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -155,7 +156,7 @@ const Item = ({ id,
 
         <TouchableOpacity
             disabled={true}
-             style={{ marginBottom: adminLevel != 'superAdmin' ? height * .02 :  0}}
+            style={{ marginBottom: adminLevel != 'superAdmin' ? height * .02 : 0 }}
             onPress={() => (onSelect(id))}
         >
 
@@ -206,7 +207,8 @@ const Item = ({ id,
                                 :
                                 <View>
                                     <Image style={styles.place_holder_logo}
-                                        source={Images['placeHolderImg']} ></Image>
+                                        source={Images['placeHolderImg']} >
+                                    </Image>
                                 </View>
 
 
@@ -234,14 +236,18 @@ const Item = ({ id,
                             <View style={{ position: adminLevel === 'superAdmin' && canAccessSeniority === 'true' ? 'absolute' : 'relative', justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2 }}>
                                 <View style={{ flex: 1 }}></View>
 
-                                <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}
-                                    onPress={() => toggleCameraModal()}
-                                >
-                                    <Image
-                                        source={Images['video-call']}
-                                        style={{ height: imgSizeMini * 1.2, width: imgSizeMini * 1.5 }}
-                                    />
-                                </TouchableOpacity>
+
+                                {
+                                    false &&
+                                    <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}
+                                        onPress={() => toggleCameraModal()}
+                                    >
+                                        <Image
+                                            source={Images['video-call']}
+                                            style={{ height: imgSizeMini * 1.2, width: imgSizeMini * 1.5 }}
+                                        />
+                                    </TouchableOpacity>
+                                }
 
                                 {
                                     false &&
@@ -285,7 +291,7 @@ const Item = ({ id,
                                             }
                                             {
                                                 retiredate &&
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#EF867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
                                             }
                                             {/*bwdbJoiningDt <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
@@ -345,31 +351,139 @@ const Item = ({ id,
 
                     {
                         email &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+                            <TouchableOpacity style={{}} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{
+                                // marginHorizontal: width * .02,
+                            }}>
+                                {
+
+
+                                    pmisId === id &&
+                                    <TouchableOpacity
+                                        // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            backgroundColor: `${currentTheme}30`,
+                                            borderRadius: height * .005,
+                                            // marginHorizontal: 5,
+                                            // marginRight: 5,
+                                            paddingVertical: 3,
+                                            paddingHorizontal: 5,
+                                            // elevation: 3
+                                        }}>
+                                        <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
+                                            source={Images['update']} >
+                                        </Image>
+                                        {/* <Text style={{
+                                            color: 'black',
+                                            height: height * (1 / 40),
+                                            fontSize: txtSizeNormal * .8,
+                                            fontFamily: 'serif',
+                                            fontStyle: 'italic',
+
+                                            alignSelf: 'center',
+                                            textAlignVertical: 'center',
+
+                                            fontWeight: 'bold'
+                                        }}>Update</Text> */}
+                                    </TouchableOpacity>
+                                }
+                            </TouchableOpacity>
+                        </View>
                     }
+                    <View style={{ flexDirection: 'row', }}>
+                        <TouchableOpacity>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ marginHorizontal: width * .04 }}>
+                            {
+
+
+                                pmisId === id &&
+                                <TouchableOpacity
+                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}30`,
+                                        borderRadius: height * .005,
+                                        marginHorizontal: 5,
+
+                                        paddingVertical: 3,
+                                        paddingHorizontal: 5,
+                                        // elevation: 3
+                                    }}>
+                                    <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
+                                        source={Images['update']} >
+                                    </Image>
+                                    {/* <Text style={{
+                                        color: 'black',
+                                        height: height * (1 / 40),
+                                        fontSize: txtSizeNormal * .8,
+                                        fontFamily: 'serif',
+                                        fontStyle: 'italic',
+
+                                        alignSelf: 'center',
+                                        textAlignVertical: 'center',
+
+                                        fontWeight: 'bold'
+                                    }}>Update</Text> */}
+                                </TouchableOpacity>
+                            }
+                        </TouchableOpacity>
+
+
+                    </View>
+
 
                     <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
 
                         {
                             mobile &&
-                            <TouchableOpacity
-                                // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
-                                onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                style={{
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    backgroundColor: `${currentTheme}`,
-                                    borderRadius: height * .005,
-                                    marginHorizontal: 5,
-                                    paddingVertical: 1,
-                                    paddingHorizontal: 5,
-                                    elevation: 3
-                                }}>
-                                <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>{mobile} </Text>
-                            </TouchableOpacity>
+                            <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity
+                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+                                    onPress={() => { Linking.openURL(`tel:${mobile}`) }}
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}`,
+                                        borderRadius: height * .005,
+                                        marginHorizontal: 5,
+                                        paddingVertical: 1,
+                                        paddingHorizontal: 5,
+                                        elevation: 3
+                                    }}>
+                                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
+                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>{mobile} </Text>
+                                </TouchableOpacity>
+
+                                {
+                                    pmisId === id &&
+                                    <TouchableOpacity
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            backgroundColor: `${currentTheme}30`,
+                                            borderRadius: height * .005,
+                                            // marginHorizontal: 5,
+                                            paddingVertical: 1,
+                                            paddingHorizontal: 5,
+                                            // elevation: 3
+                                        }}>
+                                        <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
+                                            source={Images['update']} >
+                                        </Image>
+                                    </TouchableOpacity>
+                                }
+                            </View>
                         }
                         {
                             pabx &&
@@ -445,6 +559,10 @@ const Item = ({ id,
                     </View>
                 </View>
             </View>
+
+
+            {/**********************************************  MODALS **********************************************************/}
+
             <Modal
                 transparent={true}
                 animationType="fade"
@@ -465,6 +583,11 @@ const Item = ({ id,
 
                 <CameraModalComponent toggleModal={toggleCameraModal} photo={photo} />
             </Modal>
+
+
+            {/**********************************************  MODALS **********************************************************/}
+
+
 
         </TouchableOpacity>
     )

@@ -18,6 +18,7 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
                                       name,
                                       designation,
                                       post,
+                                      blood,
                                       charge,
                                       seniority,
                                       office,
@@ -31,12 +32,13 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
                                       photo,
                                       selected,
                                       timestamp)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);`,
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?);`,
                     [
                         it.id,
                         it.name,
                         it.designation,
                         it.post,
+                        it.blood,
                         it.charge,
                         it.seniority,
                         it.office,

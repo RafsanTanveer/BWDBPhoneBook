@@ -453,7 +453,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const data = rows._array;
 
-                console.log('data[0] === ', data.length);
+                // __DEV__ && console.log('data[0] === ', data.length);
 
                 data.length && setTabelCreationTime(data[0].timestamp)
 
@@ -496,7 +496,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                 });
 
-                console.log(chargeMap);
+                // __DEV__ &&  console.log(chargeMap);
                 /////////////////////// charge calculation //////////////////////////
 
                 /////////////////////// post calculation //////////////////////////
@@ -510,10 +510,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                 });
 
-                console.log(postMap);
+                // __DEV__ && console.log(postMap);
 
                 for (const key in postMap) {
-                    console.log(`${postMap[key]}`);
+                    __DEV__ && console.log(`${postMap[key]}`);
                 }
 
                 postKeys = Object.keys(postMap);
@@ -1360,8 +1360,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length} </Text>
-                            <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{adminLevel != 'superAdmin' ? 'Alphabatically' : ''}</Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
+                            <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true'? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
                 }
@@ -1389,6 +1389,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 office={item.office}
                                 email={item.email}
                                 mobile={item.mobile}
+                                blood={item.blood}
                                 seniority={item.seniority}
                                 retiredate={item.retiredate}
                                 bwdbJoiningDt={item.bwdbJoiningDt}

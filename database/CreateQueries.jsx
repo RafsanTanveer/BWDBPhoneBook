@@ -9,6 +9,7 @@ export const createDesignationTable = (tableName) => {
                                 name        TEXT,
                                 designation TEXT,
                                 post        TEXT,
+                                blood       TEXT,
                                 charge      TEXT,
                                 seniority   INTEGER,
                                 office      TEXT,
