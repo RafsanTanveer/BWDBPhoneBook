@@ -912,22 +912,35 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         let isMobileSearch = false
         let isPabxSearch = false
+        let isBloodSearch = false
 
         if (firstCharacter === '3')
             isPabxSearch = true
+        if (firstCharacter === '+')
+            isBloodSearch = true
         else
             isMobileSearch = true
 
         if (text) {
             const newData = DATA.filter((item) => {
+
                 let itemData
+
                 isMobileSearch ? itemData = item.mobile ? item.mobile.toLocaleLowerCase() : '' : ''
                 isPabxSearch ? itemData = item.pabx ? item.pabx.toLocaleLowerCase() : '' : ''
                 isNameSearch ? itemData = item.name ? item.name.toLocaleLowerCase() : '' : ''
-                if (!(isMobileSearch || isPabxSearch || isNameSearch))
+                isBloodSearch ? itemData = item.blood ? item.blood.toLocaleLowerCase() : '' : ''
+
+                if (!(isMobileSearch || isPabxSearch || isNameSearch || isBloodSearch))
                     itemData = ''
                 const textData = text.toLocaleLowerCase();
-                return itemData.indexOf(textData) > -1;
+                console.log(textData.substring(1));
+
+                if (isBloodSearch)
+
+                    return itemData.indexOf(isBloodSearch ? textData.substring(1) : textData,0) > -1;
+                else
+                    return itemData.indexOf(textData) > -1;
             });
             setFilteredData(newData)
             setSearch(text)
@@ -1041,7 +1054,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     paddingLeft: 15,
                                     backgroundColor: 'white'
                                 }}
-                                placeholder="Search Name or Mobile or PABX ( 3 . . )"
+                                placeholder="Search Name or Mobile or PABX (3..) or Blood (+..)"
                                 value={search}
                                 //underlineColorAndroid='trasparent'
                                 onChangeText={(text) => { searchFilter(text) }}
@@ -1361,7 +1374,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
                             <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
-                            <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true'? 'Alphabatically' : ''}</Text>
+                            <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
                 }
