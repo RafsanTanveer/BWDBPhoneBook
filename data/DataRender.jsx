@@ -934,11 +934,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 if (!(isMobileSearch || isPabxSearch || isNameSearch || isBloodSearch))
                     itemData = ''
                 const textData = text.toLocaleLowerCase();
-                console.log(textData.substring(1));
+
 
                 if (isBloodSearch)
 
-                    return itemData.indexOf(isBloodSearch ? textData.substring(1) : textData,0) > -1;
+                    return itemData.indexOf(isBloodSearch ? textData.substring(1) : textData, 0) > -1;
                 else
                     return itemData.indexOf(textData) > -1;
             });
@@ -1123,7 +1123,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             alignSelf: 'flex-end',
                             position: 'absolute',
                             marginTop: height * .01,
-                            paddingRight: width * .135,
+                            paddingRight: canCallBulk === 'true' ? width * .135 : width * .04
 
 
                         }}
@@ -1421,6 +1421,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 notDgOrAdg={notDgOrAdg}
                                 currentTheme={currentTheme}
                                 length={filteredData.length}
+                                reloadList={refreshData}
                             />
 
 

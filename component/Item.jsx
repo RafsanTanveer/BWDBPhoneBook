@@ -10,6 +10,7 @@ import { Images } from '../utility/Images';
 import { Camera, CameraType } from 'expo-camera';
 import MakeCallModalComponent from '../component/MakeCallModalComponent';
 import CameraModalComponent from '../component/modalComponents/CameraModalComponent'
+import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateBloodGroupModalComponent'
 import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
@@ -44,7 +45,8 @@ const Item = ({ id,
     canAccessSeniority,
     notDgOrAdg,
     currentTheme,
-    length }) => {
+    length,
+    reloadList }) => {
 
 
     const presentCharge = Charges(charge)
@@ -58,6 +60,7 @@ const Item = ({ id,
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [isCameraModalVisible, setCameraModalVisible] = useState(false);
+    const [isBloodGroupUpdateVisible, setisBloodGroupUpdateVisible] = useState(false);
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -73,6 +76,10 @@ const Item = ({ id,
 
     const toggleCameraModal = (isVisible) => {
         setCameraModalVisible(isVisible);
+    };
+
+    const toggleBloodGroupModal = (isVisible) => {
+        setisBloodGroupUpdateVisible(isVisible);
     };
 
 
@@ -186,11 +193,13 @@ const Item = ({ id,
                 <View style={{
                     justifyContent: 'center',
                     alignContent: 'center',
-                    // backgroundColor:'red'
+                    // backgroundColor: pmisId === id ? `${currentTheme}40` : ''
                 }}>
 
 
-                    <TouchableOpacity onPress={() => (onSelect(id))}
+                    <TouchableOpacity
+                        // style={{ backgroundColor: pmisId === id ? `${currentTheme}40` : '' }}
+                        onPress={() => (onSelect(id))}
 
                         disabled={adminLevel === 'superAdmin' ? false : true}
 
@@ -201,7 +210,7 @@ const Item = ({ id,
 
                                 <View>
                                     <Image style={[styles.logo,
-                                    pmisId === id ? { borderWidth: 1, borderColor: 'red' } : '']}
+                                        pmisId === id ? { borderWidth: 1, borderColor: `${currentTheme}50` } : '']}
                                         source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 </View>
                                 :
@@ -408,7 +417,7 @@ const Item = ({ id,
                                 pmisId === id &&
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
-
+                                    onPress={() => (toggleBloodGroupModal(true))}
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -582,6 +591,17 @@ const Item = ({ id,
             >
 
                 <CameraModalComponent toggleModal={toggleCameraModal} photo={photo} />
+            </Modal>
+
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isBloodGroupUpdateVisible}
+                onRequestClose={() => toggleBloodGroupModal(true)}
+            >
+
+                <UpdateBloodGroupModalComponent id={id} currentGroup={blood} toggleModal={toggleBloodGroupModal} refreshList={reloadList} />
             </Modal>
 
 
