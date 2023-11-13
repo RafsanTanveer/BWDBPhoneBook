@@ -7,7 +7,16 @@ import api from '../../api/api'
 import { insertDataIntoGroupTable } from '../../database/InsertQueries'
 
 import { getAllTableName } from '../../database/SelectQueries'
-let groupTables = []
+let groupTables = [
+    { label: "A+", value: 1 },
+    { label: "A-", value: 2 },
+    { label: "B+", value: 3 },
+    { label: "B-", value: 4 },
+    { label: "AB+", value: 5 },
+    { label: "AB-", value: 6 },
+    { label: "O+", value: 7 },
+    { label: "O-", value: 8 }
+]
 
 const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refreshList }) => {
 
@@ -24,53 +33,26 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
     const updateBloodGrp = async () => {
 
         console.log(currentGroupValue);
-        console.log(groupTables[currentGroupValue - 1].label);
+        // console.log(groupTables[currentGroupValue - 1].label);
 
-        const blggrp = groupTables[currentGroupValue - 1].label
+        const blggrp = typeof currentGroupValue !== 'undefined'? groupTables[currentGroupValue - 1].label:''
 
         console.log('in update blood');
 
-        currentGroupValue?
-        await api.put(`updateBldGrp/${id}/${blggrp}`, { params: { id: id, bloodgroup: '54' } })
-            .then(res => console.log(res.data))
+        typeof currentGroupValue !== 'undefined'?
+        await api.put(`updateBldGrp/${id}/${blggrp}`)
+                .then(res => refreshList())
                 .catch(err => console.log(err))
             :
-            ToastAndroid.show("Please Connect Internet To Update Data", ToastAndroid.LONG, ToastAndroid.TOP)
-
-
-        refreshList()
-    }
-
-
-
-    const getGroupTableNames = async () => {
-        // const tablenames = await getAllTableName()
-
-        // const tableNames = tablenames.map((table) => table.name);
-
-
-        groupTables = [
-            { label: "A+", value: 1 },
-            { label: "A-", value: 2 },
-            { label: "B+", value: 3 },
-            { label: "B-", value: 4 },
-            { label: "AB+", value: 5 },
-            { label: "AB-", value: 6 },
-            { label: "O+", value: 7 },
-            { label: "O-", value: 8 }
-        ]
+            ToastAndroid.show("Please Select Blood Group To Update", ToastAndroid.LONG, ToastAndroid.TOP)
 
 
 
     }
 
-    const insertGroup = async () => {
 
-    }
 
-    useEffect(() => {
-        getGroupTableNames()
-    }, []);
+
 
     return (
         <View style={styles.centeredView}>

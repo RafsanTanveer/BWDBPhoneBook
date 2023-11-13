@@ -11,6 +11,8 @@ import { Camera, CameraType } from 'expo-camera';
 import MakeCallModalComponent from '../component/MakeCallModalComponent';
 import CameraModalComponent from '../component/modalComponents/CameraModalComponent'
 import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateBloodGroupModalComponent'
+import UpdateMobileNumberModalComponent from '../component/modalComponents/UpdateMobileNumberModalComponent'
+import UpdateEmailModalComponent from '../component/modalComponents/UpdateEmailModalComponent'
 import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
@@ -61,6 +63,9 @@ const Item = ({ id,
     const [isModalVisible, setModalVisible] = useState(false);
     const [isCameraModalVisible, setCameraModalVisible] = useState(false);
     const [isBloodGroupUpdateVisible, setisBloodGroupUpdateVisible] = useState(false);
+    const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
+    const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
+
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -81,6 +86,15 @@ const Item = ({ id,
     const toggleBloodGroupModal = (isVisible) => {
         setisBloodGroupUpdateVisible(isVisible);
     };
+
+    const toggleUpdateMobileModal = (isVisible) => {
+        setisMobileUpdateVisible(isVisible);
+    };
+
+    const toggleUpdateEmailModal = (isVisible) => {
+        setisEmailUpdateVisible(isVisible);
+    };
+
 
 
     const contact = {
@@ -373,7 +387,8 @@ const Item = ({ id,
 
                                     pmisId === id &&
                                     <TouchableOpacity
-                                        // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+                                                onPress={() => (toggleUpdateEmailModal(true))}
+
 
                                         style={{
                                             alignItems: 'center',
@@ -476,7 +491,8 @@ const Item = ({ id,
 
                                 {
                                     pmisId === id &&
-                                    <TouchableOpacity
+                                        <TouchableOpacity
+                                                onPress={() => (toggleUpdateMobileModal(true))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
@@ -602,6 +618,27 @@ const Item = ({ id,
             >
 
                 <UpdateBloodGroupModalComponent id={id} currentGroup={blood} toggleModal={toggleBloodGroupModal} refreshList={reloadList} />
+            </Modal>
+
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isMobileUpdateVisible}
+                onRequestClose={() => toggleUpdateMobileModal(true)}
+            >
+
+                <UpdateMobileNumberModalComponent id={id} currentMobileNumber={mobile} toggleModal={toggleUpdateMobileModal} refreshList={reloadList} />
+            </Modal>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isEmailUpdateVisible}
+                onRequestClose={() => toggleUpdateEmailModal(true)}
+            >
+
+                <UpdateEmailModalComponent id={id} currentMobileNumber={email} toggleModal={toggleUpdateEmailModal} refreshList={reloadList} />
             </Modal>
 
 

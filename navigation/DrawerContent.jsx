@@ -61,7 +61,7 @@ const DrawerContent = (props) => {
                     <Text style={{ fontSize: width * .033, marginTop: 3 }}>{officeAddres}</Text>
                 </View>
             </View>
-            <View style={{
+            {/* <View style={{
 
 
                 // left: width * .15,
@@ -86,7 +86,7 @@ const DrawerContent = (props) => {
                     fontSize: txtSizeNormal,
                     // fontFamily: 'imperial-normal',
                 }}>{name}</Text>
-            </View>
+            </View> */}
 
             <DrawerContentScrollView style={{ backgroundColor: "#ffffff",marginTop:10 }} {...props}>
                 <ExpendableDrawer />

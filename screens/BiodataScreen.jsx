@@ -1206,11 +1206,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         delimiter=":"
                                     />
 
-                                    <SingleColumnComponent
-                                        firstHeading="Office Address"
-                                        firstQueryResult={item.officecode}
-                                        delimiter=":"
-                                    />
+                                   
 
 
 
