@@ -206,24 +206,26 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         };
     }, []);
 
+    ////////////////////////////////////////////  For camera permission ///////////////////////////////////////////////////////////////////////////
 
-    const [hasCameraPermission, sethasCameraPermission] = useState();
-    const [hasMicrophonePermission, sethasMicrophonePermission] = useState();
+    // const [hasCameraPermission, sethasCameraPermission] = useState();
+    // const [hasMicrophonePermission, sethasMicrophonePermission] = useState();
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        (async () => {
-            const cameraPermission = await Camera.requestCameraPermissionsAsync()
-            const microphonePermission = await Camera.requestMicrophonePermissionsAsync()
+    //     (async () => {
+    //         const cameraPermission = await Camera.requestCameraPermissionsAsync()
+    //         const microphonePermission = await Camera.requestMicrophonePermissionsAsync()
 
-            sethasCameraPermission(cameraPermission.status === 'granted')
-            sethasMicrophonePermission(microphonePermission.status === 'granted')
+    //         sethasCameraPermission(cameraPermission.status === 'granted')
+    //         sethasMicrophonePermission(microphonePermission.status === 'granted')
 
 
-        })();
+    //     })();
 
-    }, []);
+    // }, []);
 
+    ////////////////////////////////////////////  For camera permission ///////////////////////////////////////////////////////////////////////////
 
 
     let charge = Charges(presentCharge)

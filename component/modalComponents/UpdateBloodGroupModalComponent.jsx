@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, ToastAndroid,Linking, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 
 import { height, width } from '../../utility/ScreenDimensions'
 import DropDownPicker from 'react-native-dropdown-picker';
-
+import api from '../../api/api'
 import { insertDataIntoGroupTable } from '../../database/InsertQueries'
 
 import { getAllTableName } from '../../database/SelectQueries'
@@ -21,16 +21,32 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
     }
 
 
-    const refresh = () => {
+    const updateBloodGrp = async () => {
+
+        console.log(currentGroupValue);
+        console.log(groupTables[currentGroupValue - 1].label);
+
+        const blggrp = groupTables[currentGroupValue - 1].label
+
+        console.log('in update blood');
+
+        currentGroupValue?
+        await api.put(`updateBldGrp/${id}/${blggrp}`, { params: { id: id, bloodgroup: '54' } })
+            .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+            :
+            ToastAndroid.show("Please Connect Internet To Update Data", ToastAndroid.LONG, ToastAndroid.TOP)
+
+
         refreshList()
     }
 
 
 
     const getGroupTableNames = async () => {
-        const tablenames = await getAllTableName()
+        // const tablenames = await getAllTableName()
 
-        const tableNames = tablenames.map((table) => table.name);
+        // const tableNames = tablenames.map((table) => table.name);
 
 
         groupTables = [
@@ -46,7 +62,6 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
 
 
 
-        console.log(groupTables);
     }
 
     const insertGroup = async () => {
@@ -63,7 +78,7 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                        <Text style={{ fontSize: height*.021, fontWeight: 'bold' }}>Update Blood Group</Text>
+                        <Text style={{ fontSize: height * .021, fontWeight: 'bold' }}>Update Blood Group</Text>
                     </View>
 
                     <View style={{ flexDirection: 'row', marginBottom: 6 }}>
@@ -84,7 +99,7 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
                             value={currentGroupValue}
                             setValue={setCurrentGroupValue}
                             maxHeight={450}
-                            placeholder="Groups"
+                            placeholder="Blood Groups"
                         // onChangeValue={() => sortByDistrict()}
                         />
                     </View>
@@ -92,7 +107,7 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
                     <View style={{ flexDirection: 'row' }} >
                         <TouchableOpacity
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => refresh()}>
+                            onPress={() => updateBloodGrp()}>
                             <Text style={styles.textStyle}>Update</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
