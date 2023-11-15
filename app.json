@@ -22,11 +22,7 @@
     "orientation": "portrait",
     "icon": "./assets/BWDBEmpDirLogo.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -41,6 +37,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
       "package": "com.rafsantanveer.bwdbempdir",
       "userInterfaceStyle":"light",
       "permissions": [

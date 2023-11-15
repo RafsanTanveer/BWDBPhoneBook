@@ -12,9 +12,7 @@ import ExpendableDrawer from "./ExpendableDrawer";
 import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 
-const image = 'https://0.academia-photos.com/20936688/5794344/6584685/s200_rafsan.tanveer.jpg';
-const name = 'Arif Ikramul Azim';
-const designation = 'Addl. Director General'
+
 
 const DrawerContent = (props) => {
 
