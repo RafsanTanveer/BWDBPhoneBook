@@ -375,11 +375,12 @@ const Item = ({ id,
                     {
                         email &&
                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-                            <TouchableOpacity style={{}} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                                <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{
+                                <TouchableOpacity style={{
+                                    flex: .1,
                                 // marginHorizontal: width * .02,
                             }}>
                                 {

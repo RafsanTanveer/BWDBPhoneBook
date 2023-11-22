@@ -64,7 +64,7 @@ const UpdateEmailModalComponent = ({ id, currentMobileNumber, toggleModal, refre
                     </View>
 
                     <View style={{ flexDirection: 'row', marginBottom: 6 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Current Mobile Number : </Text>
+                        <Text style={{ fontWeight: 'bold' }}>Current Email : </Text>
                         <Text style={{ fontWeight: 'bold' }}>{currentMobileNumber}</Text>
                     </View>
 
