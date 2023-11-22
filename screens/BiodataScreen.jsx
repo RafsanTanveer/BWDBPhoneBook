@@ -999,7 +999,7 @@ const BiodataScreen = ({ id, navigation }) => {
                             }}>
 
 
-                                <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5, elevation: 5 }}>
+                                <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5,  }}>
                                     <Image style={{ width: 60, height: 60 }} source={Images['bwdLogo']} />
                                 </View>
                                 <View style={{
@@ -1206,7 +1206,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         delimiter=":"
                                     />
 
-                                   
+
 
 
 

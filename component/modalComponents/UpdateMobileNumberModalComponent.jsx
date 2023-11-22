@@ -37,7 +37,7 @@ const UpdateMobileNumberModalComponent = ({ id, currentMobileNumber, toggleModal
         console.log(mobileNumber);
 
 
-       
+
 
         mobileNumber ?
             await api.put(`updateMblNmb/${id}/${mobileNumber}`, { params: { id: id, bloodgroup: '54' } })
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        // elevation: 5,
     },
     button: {
         borderRadius: 10,

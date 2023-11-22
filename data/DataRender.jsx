@@ -1161,7 +1161,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 justifyContent: 'center',
                                 alignContent: 'center',
                                 padding: 2,
-                                elevation: 5
+                                // elevation: 5
                             }}
                         >
                             <Image
@@ -1263,7 +1263,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
                                             width: isReportActive ? 210 : 140,
-                                            elevation: 5
+                                            // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
                                         }}>
