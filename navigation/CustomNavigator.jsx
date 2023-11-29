@@ -14,6 +14,9 @@ import Login from "../screens/Login";
 import { Images } from '../utility/Images';
 import DataRenderOffice from '../data/DataRenderOffice'
 import ReportScreen from '../screens/ReportScreen'
+import SplashScreen from '../screens/SplashScreen'
+import { useState, useEffect } from "react";
+
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -96,22 +99,34 @@ const CustomDrawer = ({ }) => {
 
 const CustomNavigator = () => {
 
-    const { isLogged, isLoading } = useContext(AuthContext);
+    const { isLogged, isLoading, isPreloaing } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 
+    const [isSplashScreenLoading, setSplashScreenLoading] = useState(true);
+    useEffect(() => {
+        // Simulate loading process
+        setTimeout(() => {
+            setSplashScreenLoading(false);
+        }, 6000); // Adjust the time as needed
+    }, []);
 
-
+    //{/* {isLoading ? <SplashScreen /> : <CustomNavigator />} */}
     return (
         <>
             {/* <Login /> */}
             <NavigationContainer>
-                {isLogged ?
-                    <>
-                        <StatusBar animated={true} backgroundColor={currentTheme} />
-                        <CustomDrawer />
-                    </>
-                    :
-                    <Login />
+                {
+                    isLogged ?
+                        <>
+                            {isPreloaing ?
+                                <SplashScreen />
+                                :
+                                <>
+                                    <StatusBar animated={true} backgroundColor={currentTheme} />
+                                    <CustomDrawer />
+                                </>}
+                        </>
+                        : <Login />
                 }
             </NavigationContainer>
         </>

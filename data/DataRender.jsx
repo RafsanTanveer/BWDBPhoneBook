@@ -1255,6 +1255,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                                 {
+                                    false &&
                                     netInfo.isConnected &&
                                     <View
                                         style={{
@@ -1263,7 +1264,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
                                             width: isReportActive ? 210 : 140,
-                                            elevation: 5
+                                            // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
                                         }}>
@@ -1753,13 +1754,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 borderColor: 'white',
                                 borderWidth: 2
                             }}>
-                                <FloatingBtnComponent
-                                    currentTheme={currentTheme}
-                                    icon='groupIcon'
-                                    txt="Group"
-                                    badgeCount={groupIds.length}
-                                    callBackFn={groupHanlder}
-                                />
+                                
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
                                     icon='msglIcon'

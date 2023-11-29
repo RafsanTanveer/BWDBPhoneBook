@@ -21,12 +21,10 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        {/* <DataContext> */}
         <PaperProvider>
           <CustomNavigator />
           {/* {isLoading ? <SplashScreen /> : <CustomNavigator />} */}
         </PaperProvider>
-        {/* </DataContext> */}
       </ThemeProvider>
     </AuthProvider>
   );

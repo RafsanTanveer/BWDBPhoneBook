@@ -52,7 +52,7 @@ const Login = () => {
                         position: 'absolute',
                         width: screenWidth * 1,
                         height: screenHeight * .6,
-                        elevation: 5
+                        // elevation: 5
                     }}
                     source={Images['paniBhaban']}
                 />
@@ -64,7 +64,7 @@ const Login = () => {
                         height: screenHeight * 0.12,
                         marginLeft: screenWidth * .70,
                         marginTop: screenHeight * .42,
-                        elevation: 5
+                        // elevation: 5
                     }}
                     source={Images['bwdLogo']}
                 />
@@ -153,7 +153,7 @@ const Login = () => {
                             style={{
                                 width: screenWidth,
                                 height: screenHeight * .1,
-                                elevation: 5
+                                // elevation: 5
                             }}
                             source={Images['bottom']} />
                     </View>

@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         width: width * (1 / 5.5),
         height: width * (1 / 5.5),
         borderRadius: 100,
-        elevation: 20
+        // elevation: 20
 
 
     },
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         backgroundColor: "pink",
         borderWidth: 1,
         borderColor: '#6750a4',
-        elevation: 5
+        // elevation: 5
 
 
     },
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        // elevation: 5,
     },
     button: {
         borderRadius: 20,

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { DatabaseConnection } from "../data/DbConnection";
 import BiodataScreen from "./BiodataScreen";
+import WelcomeScreen from './WelcomeScreen'
 
 const db = DatabaseConnection.getConnection();
 const Home = ({ navigation }) => {
@@ -13,8 +14,8 @@ const Home = ({ navigation }) => {
   return (
     <>
       {
-        isLogged &&
-        <BiodataScreen id={userInfo[0].id} />
+        userInfo[0].id.length != 4 ?
+          <BiodataScreen id={userInfo[0].id} /> : <WelcomeScreen />
       }
     </>
 

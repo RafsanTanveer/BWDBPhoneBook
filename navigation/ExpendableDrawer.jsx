@@ -76,7 +76,7 @@ const ExpendableDrawer = () => {
         presentOffice,
         presentOfficeCode,
         officelevel1code,
-        adminLevel, name, pmisId } = useContext(AuthContext);
+        adminLevel, name, pmisId, isPreloaing, setisPreloaing } = useContext(AuthContext);
 
     //  ******************************  fetching data ***************************************
 
@@ -157,6 +157,7 @@ const ExpendableDrawer = () => {
 
                 __DEV__ && console.log('desig table not exists [][][][][][][][][][][][][]');
 
+                setisPreloaing(false)
 
 
                 const { data: response } = await api.get("desiglist");
@@ -189,6 +190,7 @@ const ExpendableDrawer = () => {
                 insertDataIntoDesignationListTable('designation', response.rows)
 
 
+                setisPreloaing(false)
 
 
 

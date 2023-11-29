@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
     const [name, setName] = useState()
     const [pmisId, setPmisId] = useState();
     const [isLogged, setisLogged] = useState(false)
+    const [isPreloaing, setisPreloaing] = useState(false);
     const [photo, setphoto] = useState()
     const [presentDesig, setpresentDesig] = useState()
     const [presentOffice, setpresentOffice] = useState()
@@ -88,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
         }
         else {
-
+            console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
             setUserInfo(tempUserInfo);
             setisLogged(true)
 
@@ -268,7 +269,8 @@ export const AuthProvider = ({ children }) => {
                     officelevel1code, setofficelevel1code,
                     adminLevel, setadminLevel,
                     canCallBulk, setcanCallBulk,
-                    canAccessSeniority, setcanAccessSeniority
+                    canAccessSeniority, setcanAccessSeniority,
+                    isPreloaing, setisPreloaing
                 }}>
                 {children}
             </AuthContext.Provider>
