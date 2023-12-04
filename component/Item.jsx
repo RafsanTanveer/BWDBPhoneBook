@@ -2,6 +2,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { memo, useContext, useEffect, useState } from "react";
 import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Contacts from 'expo-contacts';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
@@ -50,6 +51,7 @@ const Item = ({ id,
     length,
     reloadList }) => {
 
+    const netInfo = useNetInfo();
 
     const presentCharge = Charges(charge)
 
@@ -224,7 +226,7 @@ const Item = ({ id,
 
                                 <View>
                                     <Image style={[styles.logo,
-                                        pmisId === id ? { borderWidth: 1, borderColor: `${currentTheme}50` } : '']}
+                                    pmisId === id ? { borderWidth: 1, borderColor: `${currentTheme}50` } : '']}
                                         source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 </View>
                                 :
@@ -361,11 +363,11 @@ const Item = ({ id,
                                 :
                                 charge === 'C' ?
                                     <View style={{ flex: 1, }}>
-                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} N {presentCharge} </Text>
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} {presentCharge} </Text>
                                     </View>
                                     : charge === 'R' ?
                                         <View style={{ flex: 1, }}>
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} N {presentCharge} </Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} {presentCharge} </Text>
                                         </View>
                                         : ''
                         }
@@ -375,12 +377,12 @@ const Item = ({ id,
                     {
                         email &&
                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-                                <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                            <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
                             </TouchableOpacity>
 
-                                <TouchableOpacity style={{
-                                    flex: .1,
+                            <TouchableOpacity style={{
+                                flex: .1,
                                 // marginHorizontal: width * .02,
                             }}>
                                 {
@@ -388,7 +390,7 @@ const Item = ({ id,
 
                                     pmisId === id &&
                                     <TouchableOpacity
-                                                onPress={() => (toggleUpdateEmailModal(true))}
+                                        onPress={() => (toggleUpdateEmailModal(true))}
 
 
                                         style={{
@@ -422,33 +424,35 @@ const Item = ({ id,
                             </TouchableOpacity>
                         </View>
                     }
-                    <View style={{ flexDirection: 'row', }}>
-                        <TouchableOpacity>
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ marginHorizontal: width * .04 }}>
-                            {
+                    {
+                        netInfo.isConnected &&
+                        <View style={{ flexDirection: 'row', }}>
+                            <TouchableOpacity>
+                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ marginHorizontal: width * .04 }}>
+                                {
 
 
-                                pmisId === id &&
-                                <TouchableOpacity
-                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
-                                    onPress={() => (toggleBloodGroupModal(true))}
-                                    style={{
-                                        alignItems: 'center',
-                                        flexDirection: 'row',
-                                        backgroundColor: `${currentTheme}30`,
-                                        borderRadius: height * .005,
-                                        marginHorizontal: 5,
+                                    pmisId === id &&
+                                    <TouchableOpacity
+                                        // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+                                        onPress={() => (toggleBloodGroupModal(true))}
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            backgroundColor: `${currentTheme}30`,
+                                            borderRadius: height * .005,
+                                            marginHorizontal: 5,
 
-                                        paddingVertical: 3,
-                                        paddingHorizontal: 5,
-                                        // elevation: 3
-                                    }}>
-                                    <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
-                                        source={Images['update']} >
-                                    </Image>
-                                    {/* <Text style={{
+                                            paddingVertical: 3,
+                                            paddingHorizontal: 5,
+                                            // elevation: 3
+                                        }}>
+                                        <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
+                                            source={Images['update']} >
+                                        </Image>
+                                        {/* <Text style={{
                                         color: 'black',
                                         height: height * (1 / 40),
                                         fontSize: txtSizeNormal * .8,
@@ -460,12 +464,12 @@ const Item = ({ id,
 
                                         fontWeight: 'bold'
                                     }}>Update</Text> */}
-                                </TouchableOpacity>
-                            }
-                        </TouchableOpacity>
+                                    </TouchableOpacity>
+                                }
+                            </TouchableOpacity>
 
 
-                    </View>
+                        </View>}
 
 
                     <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
@@ -492,8 +496,8 @@ const Item = ({ id,
 
                                 {
                                     pmisId === id &&
-                                        <TouchableOpacity
-                                                onPress={() => (toggleUpdateMobileModal(true))}
+                                    <TouchableOpacity
+                                        onPress={() => (toggleUpdateMobileModal(true))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',

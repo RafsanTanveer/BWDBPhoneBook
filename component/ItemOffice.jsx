@@ -40,7 +40,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
     const navigation = useNavigation();
 
-    const { pmisId } = useContext(AuthContext);
+    const { pmisId,adminLevel } = useContext(AuthContext);
 
 
     const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
@@ -133,7 +133,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         <View style={{ flex: 1, }}>
 
                             {
-                                isAdmin ?
+                                adminLevel === 'superAdmin' ?
                                     <TouchableOpacity onPress={() => {
                                         navigation.navigate('Biodata', { id:  id })
                                     }}>

@@ -129,6 +129,8 @@ const ExpendableDrawer = () => {
             const tableExists = tableNames.includes('designation');
 
             if (tableExists) {
+
+
                 await new Promise((resolve, reject) => {
                     __DEV__ && console.log('desig table  exists [][][][][][][][][][][][][]');
 
@@ -153,11 +155,13 @@ const ExpendableDrawer = () => {
                     }, null, resolve);
 
                 });
+
+
             } else {
 
                 __DEV__ && console.log('desig table not exists [][][][][][][][][][][][][]');
 
-                setisPreloaing(false)
+                // setisPreloaing(true)
 
 
                 const { data: response } = await api.get("desiglist");
@@ -190,7 +194,7 @@ const ExpendableDrawer = () => {
                 insertDataIntoDesignationListTable('designation', response.rows)
 
 
-                setisPreloaing(false)
+                // setisPreloaing(false)
 
 
 
@@ -829,7 +833,7 @@ const ExpendableDrawer = () => {
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
-                                title="Office"
+                                title="Offices"
                                 titleStyle={styles.titlestyle}
 
                                 left={props => <List.Icon {...props} icon={() => (
@@ -1281,7 +1285,7 @@ const ExpendableDrawer = () => {
 
 const styles = StyleSheet.create({
     sectionStyle: {
-        marginVertical: 5,
+        // marginVertical: 5,
         backgroundColor: "white"
     },
     accordingStyle: {

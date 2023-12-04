@@ -19,7 +19,7 @@ const person_photo_placeholder = '../assets/person_photo_placeholder.jpg'
 
 const DataRenderOffice = ({ office_code, navigation }) => {
 
-    const { presentOfficeCode } = useContext(AuthContext);
+    const { presentOfficeCode, adminLevel } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
     const { isAdmin, designationContext } = useContext(AuthContext);
 
@@ -93,95 +93,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     }
 
 
-    const Item = ({ item, index }) => (
-
-
-
-        <View style={{
-            flexDirection: 'row', paddingLeft: 10, paddingRight: 10,
-        }}>
-            {/* <View style={{ elevation: 10,zIndex: 9, }}>
-                <Text style={{color:'black'}} >{index + 1}</Text>
-            </View> */}
-            <View style={{ justifyContent: 'center', alignContent: 'center', }}>
-                <View style={{ borderRadius: 10 }}>
-                    <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
-                </View>
-                {item.photo ?
-                    <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + item.photo }} />
-                    :
-                    <Image style={styles.place_holder_logo} source={Images['placeHolderImg']} ></Image>
-
-                }
-            </View>
-            <View style={{
-                flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
-                borderBottomWidth: StyleSheet.hairlineWidth,
-            }}>
-                <View style={{ flex: 1, }}>
-                    <View style={{ flex: 1, }}>
-
-                        {
-                            presentOfficeCode === 30 ?
-                                <TouchableOpacity onPress={() => {
-                                    navigation.navigate('Biodata', { id: item.id })
-                                }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>{item.id}</Text>
-                                </TouchableOpacity>
-                                : null
-                        }
-
-
-
-                        <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{item.name}  </Text>
-                    </View>
-                    {
-                        item.post ?
-                            <View style={{ flex: 1, }}>
-                                <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {item.post} {item.charge == 'C' ? ', cc' : item.charge == 'A' ? ', Addl.' : ''} </Text>
-                            </View> : ''
-                    }
-
-                    <View style={{ flex: 1, }}>
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: {item.designation} </Text>
-                    </View>
-
-                </View>
-
-                {
-                    item.email &&
-                    <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email}`) }}  >
-                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{item.email} </Text>
-                    </TouchableOpacity>
-                }
-
-                <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
-                    {
-                        item.mobile &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:${item.mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
-                            <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                            <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.mobile} </Text>
-                        </TouchableOpacity>
-                    }
-                    {
-                        item.pabx &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${item.pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
-                            <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                            <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{item.pabx} </Text>
-                        </TouchableOpacity>
-                    }
-                    {
-                        item.mobile &&
-                        <TouchableOpacity onPress={() => (Linking.openURL(`sms:${item.mobile}`))}
-                            style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
-                            <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
-                        </TouchableOpacity>
-                    }
-                </View>
-            </View>
-        </View>
-
-    );
+  
 
 
 

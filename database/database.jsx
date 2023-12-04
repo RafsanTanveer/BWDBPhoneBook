@@ -1,6 +1,6 @@
 import React from 'react'
 import * as SQLite from "expo-sqlite"
 
-const db = SQLite.openDatabase('BWDBEMPDB_01_qw14fdmmg.db')
+const db = SQLite.openDatabase('BWDBEMPDB_01_qg.db')
 
 export default db;
