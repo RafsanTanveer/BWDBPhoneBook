@@ -137,7 +137,7 @@ const OfficeList = ({ lcode }) => {
                                         flex: 10, marginLeft: 3, borderBottomColor: 'gray',
                                         // borderBottomWidth: StyleSheet.hairlineWidth
                                     }}>
-                                        <Text style={{ fontSize: 12 }}>{item.officeName}</Text>
+                                        <Text style={{ fontSize: 12, color: item.isbudgetoffice === 'true' ? 'blue' : 'black' }}>{item.officeId === item.budgetoffice ?'':'  -> '}{item.officeName}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>

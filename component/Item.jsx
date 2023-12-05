@@ -478,8 +478,8 @@ const Item = ({ id,
                             mobile &&
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
-                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
-                                    onPress={() => { Linking.openURL(`tel:${mobile}`) }}
+                                        // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
+                                    onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',

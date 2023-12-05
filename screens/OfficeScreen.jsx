@@ -12,7 +12,7 @@ const OfficeScreen = ({ route, navigation }) => {
     const [value, onChangeText] = React.useState(route.params.title);
 
     const { currentTheme } = useContext(ThemeContext);
-    const { presentOfficeCode } = useContext(AuthContext);
+    const { presentOfficeCode, adminLevel } = useContext(AuthContext);
 
     const [offceEmails, setoffceEmails] = useState([])
 
@@ -59,7 +59,7 @@ const OfficeScreen = ({ route, navigation }) => {
                 borderBottomRightRadius: 15,
 
             }}>
-                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.officeName} {presentOfficeCode === 30 ? ", " + route.params.officeId : null}</Text>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.officeName} {adminLevel === 'superAdmin' ? ", " + route.params.officeId : null}</Text>
                 {offceEmails.map((item, index) => (
                     <View style={{ paddingTop: 5, }} key={index}>
 
