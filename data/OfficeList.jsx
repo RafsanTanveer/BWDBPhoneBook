@@ -1,12 +1,14 @@
-import { View, Text, TextInput, ScrollView, FlatList, ToastAndroid, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, ScrollView, FlatList, ToastAndroid, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import api from '../api/api';
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from '../screens/LoadingScreen';
-import {ThemeContext} from '../context/ThemeContext'
+import { ThemeContext } from '../context/ThemeContext'
+import { FlashList } from "@shopify/flash-list";
 
+import { txtSizeMini, txtSizeBig, txtSizeNormal } from '../utility/Scalling'
 
-
+const rightArrow = '../assets/icons/right.png'
 
 
 
@@ -111,6 +113,8 @@ const OfficeList = ({ lcode }) => {
 
                 />
 
+
+
                 <View style={{ marginTop: 5, flex: 1, marginBottom: 10 }}>
                     {
 
@@ -137,7 +141,23 @@ const OfficeList = ({ lcode }) => {
                                         flex: 10, marginLeft: 3, borderBottomColor: 'gray',
                                         // borderBottomWidth: StyleSheet.hairlineWidth
                                     }}>
-                                        <Text style={{ fontSize: 12, color: item.isbudgetoffice === 'true' ? 'blue' : 'black' }}>{item.officeId === item.budgetoffice ?'':'  -> '}{item.officeName}</Text>
+                                        <View style={{ flexDirection: 'row', marginRight: 10, }} >
+                                            {
+                                                item.officeId === item.budgetoffice ?
+                                                    <Text style={{ fontSize: txtSizeNormal, fontWeight: '500', color: item.isbudgetoffice === 'true' ? 'black' : 'black' }}>{item.officeName}</Text>
+                                                    :
+                                                    <View style={{ flexDirection: 'row', flex: 1 }} >
+
+                                                        <View style={{}} >
+                                                            <Text style={{ textAlign: 'center', fontSize: txtSizeNormal * .8, color: 'blue' }} >   ➥ </Text>
+                                                        </View>
+                                                        <View style={{}} >
+                                                            <Text style={{ fontSize: txtSizeNormal * .9, flexWrap: 'wrap', flexShrink: 1 }}   >{item.officeName}</Text>
+                                                        </View>
+                                                    </View>
+                                            }
+
+                                        </View>
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -146,15 +166,10 @@ const OfficeList = ({ lcode }) => {
                     }
                 </View>
 
-                {/* <ScrollView style={{ height: 300, }}> */}
 
-                {/* <FlatList
-                    data={DATA}
-                    renderItem={Item}
-                    keyExtractor={(item) => item.officeName}
-                /> */}
+               
 
-                {/* </ScrollView> */}
+
             </View >
     )
 }

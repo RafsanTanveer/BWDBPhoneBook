@@ -1754,7 +1754,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 borderColor: 'white',
                                 borderWidth: 2
                             }}>
-                                
+
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
                                     icon='msglIcon'
