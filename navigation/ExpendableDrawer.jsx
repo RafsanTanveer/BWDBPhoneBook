@@ -1178,6 +1178,75 @@ const ExpendableDrawer = () => {
                 }
                 {/*******************************************  Staff List ******************************** */}
 
+                {/*******************************************  Blood Search ******************************** */}
+                {
+                    false ?
+                        <>
+                            <List.Accordion
+                                style={styles.accordingStyleOffice}
+                                title="Staff List"
+                                titleStyle={styles.titlestyle}
+
+                                left={props => <List.Icon {...props} icon={() => (
+                                    <Image
+                                        source={require(staffListIcon)}
+                                        style={styles.iconStyle}
+                                    />
+                                )} />}
+                                expanded={expendedList[staffListStart]}
+                                onPress={() => handlePress(staffListStart)} >
+
+                                <List.Item key={'Individual'}
+
+                                    onPress={() => {
+                                        navigation.navigate('ReportScreen', {
+                                            id: pmisId,
+                                            name: name,
+                                            recStatus: "C",
+                                            officecode: presentOfficeCode,
+                                            individualOrOffice: true
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="INDIAVIDUAL" />
+
+
+                                <List.Item key={'office'}
+
+                                    onPress={() => {
+                                        navigation.navigate('ReportScreen', {
+                                            id: pmisId,
+                                            name: presentOffice,
+                                            recStatus: "C",
+                                            officecode: presentOfficeCode,
+                                            individualOrOffice: false
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="OFFICE" />
+
+
+
+
+
+
+
+                            </List.Accordion>
+                        </>
+                        : ''
+                }
+                { }
+
                 {/*******************************************  Settings ******************************** */}
                 {
                     true ?

@@ -8,6 +8,7 @@ Images['groupIcon'] = require('../assets/icons/group.png')
 Images['filterIcon'] = require('../assets/icons/filter.png')
 Images['downArrowIcon'] = require('../assets/icons/down-arrow.png')
 Images['upArrowIcon'] = require('../assets/icons/up-arrow.png')
+Images['downArrowIconBlack'] = require('../assets/icons/down-arrow-black.png')
 Images['leftArrowIcon'] = require('../assets/icons/left-arrow.png')   // groupEmail
 Images['groupEmail'] = require('../assets/icons/groupEmail.png')
 Images['groupSMS'] = require('../assets/icons/groupSMS.png')

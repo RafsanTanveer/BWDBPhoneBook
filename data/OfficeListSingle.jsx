@@ -1,6 +1,6 @@
 import { View, Text, TextInput, ScrollView, FlatList, ToastAndroid, StyleSheet, TouchableOpacity } from 'react-native'
 import api from '../api/api';
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext,memo } from "react";
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from '../screens/LoadingScreen';
 import { ThemeContext } from '../context/ThemeContext'
@@ -151,3 +151,5 @@ const OfficeListSingle = ({ lcode, officeId }) => {
 }
 
 export default OfficeListSingle
+
+// export default memo(OfficeListSingle);

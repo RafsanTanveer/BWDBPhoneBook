@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ScrollView, FlatList, ToastAndroid, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TextInput, ScrollView, FlatList, ToastAndroid, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import api from '../api/api';
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,8 @@ import { ThemeContext } from '../context/ThemeContext'
 import { FlashList } from "@shopify/flash-list";
 
 import { txtSizeMini, txtSizeBig, txtSizeNormal } from '../utility/Scalling'
+import {heightScreen, widthScreen} from '../utility/ScreenDimensions'
+import ItemOfficeList from '../component/ItemOfficeList';
 
 const rightArrow = '../assets/icons/right.png'
 
@@ -31,6 +33,7 @@ const OfficeList = ({ lcode }) => {
 
     const fetchData = async () => {
         setIsLoading(true);
+        console.log('--------------------start-------------------------------------');
 
         try {
 
@@ -43,6 +46,8 @@ const OfficeList = ({ lcode }) => {
         } catch (error) {
             __DEV__ && console.error(error.message);
         }
+        console.log('--------------------end-------------------------------------');
+
         setIsLoading(false);
     }
 
@@ -99,27 +104,31 @@ const OfficeList = ({ lcode }) => {
     return (
         isLoading ?
             <LoadingScreen /> :
-            <View style={{ marginLeft: 10 }} >
-                <TextInput
-                    style={{ borderRadius: 5, borderWidth: 1, width: '98%', height: 30, paddingLeft: 10 }}
-                    placeholder="Search Office"
-                    value={search}
-                    //underlineColorAndroid='trasparent'
+            <View style={{ marginLeft: 10, flex:1 }} >
+               <View style={{  }} >
+                 <TextInput
+                     style={{ borderRadius: 5, borderWidth: 1, width: '98%', height: 35, paddingLeft: 10 }}
+                     placeholder="Search Office"
+                     value={search}
+                     //underlineColorAndroid='trasparent'
 
-                    textAlign={'left'}
-                    onChangeText={(text) => searchFilter(text)}
-                    mode='outlined'
-
-
-                />
+                     textAlign={'left'}
+                     onChangeText={(text) => searchFilter(text)}
+                     mode='outlined'
 
 
+                 />
 
-                <View style={{ marginTop: 5, flex: 1, marginBottom: 10 }}>
-                    {
+               </View>
 
 
-                        filteredData.map((item, index) => (
+                <View style={{ flex: 1, width: '98%',height:'95%', flexDirection: 'row' }} >
+                  <FlashList
+                        estimatedItemSize={200}
+                        estimatedListSize={{ height: heightScreen*30, width: widthScreen*.7, }}
+                        data={filteredData}
+
+                        renderItem={({ item,index }) =>
                             <TouchableOpacity key={item.officeId}
                                 onPress={() => {
                                     navigation.navigate('OfficeScreen', {
@@ -162,12 +171,10 @@ const OfficeList = ({ lcode }) => {
                                 </View>
                             </TouchableOpacity>
 
-                        ))
                     }
-                </View>
+                  />
 
-
-               
+              </View>
 
 
             </View >
