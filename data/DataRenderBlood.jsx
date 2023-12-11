@@ -389,12 +389,6 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         __DEV__ && console.log('in fetchDataFromDb');
         setIsLoading(true);
 
-        desig_code === '001' || desig_code === '002' ? setnotDgOrAdg(false) : setnotDgOrAdg(true);
-        const desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig";
-        const snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority";
-        setseniorityText(snrTxt);
-
-
         // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
 
 
@@ -415,206 +409,55 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         try {
             setRefreshing(false);
 
-            // check if table exits or not
+            setIsLoading(true);
 
-            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
-                db.transaction((tx) => {
-                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
-                        resolve([tableExistsResult, null]);
-                    });
-                });
+            console.log();
+            console.log('---------------------------------------------------------------------');
+            console.log("---------- UNREACHED BLOCK HAS BEEN REACHED FOR BLOOD SEARCH --------");
+            console.log('---------------------------------------------------------------------');
+
+            console.log('desig_code-----------blood----------' + desig_code);
+            const { data: response } = await api.get('blood', { params: { bldgrp: desig_code } });
+            // console.log('responseURL-------------------+++++ ' + response.config.url);
+            const data = response.rows;
+
+            const dataWithSelected = data.map(item => (
+                item = { ...item, selected: 'false' }
+
+            ))
+
+            // console.log(dataWithSelected);
+
+            setTabelCreationTime(timeStamp())
+
+            setDATA(dataWithSelected);
+            setIsLoading(false);
+
+
+            /////////////////////// district calculation //////////////////////////
+
+
+            const distMap = {};
+            data.forEach(item => {
+                if (distMap[item.officeDistrict]) {
+                    distMap[item.officeDistrict]++;
+                } else {
+                    distMap[item.officeDistrict] = 1;
+                }
             });
 
 
-            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
+            var sortedKeys = Object.keys(distMap).sort();
 
-            const tableExists = tableNames.includes(tablename);
+            tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
 
-            // const vacantTableNames = tableNames.map(it => (it.includes('vacant') ? it : ''))
+            sortedKeys.map(item =>
+                // console.log(item, ' - ', distMap[item])
+                tempDist = [...tempDist, { label: item + ' - ' + distMap[item], value: item }],
 
-            // const vacantTableName = `vacant${tablename}`
+            )
 
-
-
-
-            // console.log(vacantTableName);
-
-
-            if (tableExists) {
-                __DEV__ && console.log(tablename, ' table exists');
-
-                const { rows } = await new Promise((resolve, reject) => {
-                    db.transaction((tx) => {
-                        tx.executeSql(`SELECT * FROM ${tablename};`, [], (_, result) => {
-                            resolve(result);
-                        });
-                    });
-                });
-
-                const data = rows._array;
-
-                // __DEV__ && console.log('data[0] === ', data.length);
-
-                data.length && setTabelCreationTime(data[0].timestamp)
-
-
-                // const dataWithSelected = data.map(item => (
-                //     item = { ...item, selected: 'false' }
-
-                // ))
-
-                // console.log(dataWithSelected);
-
-
-                setDATA(data);
-
-
-
-
-                ////////////////////////////////////////vacant list //////////////////////////////////////
-
-                // const { vacantRows } = await new Promise((resolve, reject) => {
-                //     db.transaction((tx) => {
-                //         tx.executeSql(`SELECT * FROM ${vacantTableName};`, [], (_, result) => {
-                //             resolve(result);
-                //         });
-                //     });
-                // });
-
-                // const vacantData = vacantRows._array;
-
-                ////////////////////////////////////////vacant list //////////////////////////////////////
-
-                /////////////////////// charge calculation //////////////////////////
-
-
-                data.forEach(item => {
-                    if (chargeMap[item.charge]) {
-                        chargeMap[item.charge]++;
-                    } else {
-                        chargeMap[item.charge] = 1;
-                    }
-                });
-
-                // __DEV__ &&  console.log(chargeMap);
-                /////////////////////// charge calculation //////////////////////////
-
-                /////////////////////// post calculation //////////////////////////
-
-
-                data.forEach(item => {
-                    if (postMap[item.post]) {
-                        postMap[item.post]++;
-                    } else {
-                        postMap[item.post] = 1;
-                    }
-                });
-
-                // __DEV__ && console.log(postMap);
-
-                for (const key in postMap) {
-                    __DEV__ && console.log(`${postMap[key]}`);
-                }
-
-                postKeys = Object.keys(postMap);
-
-                /////////////////////// post calculation //////////////////////////
-
-                /////////////////////// district calculation //////////////////////////
-
-                const distMap = {};
-                data.forEach(item => {
-                    if (distMap[item.officeDistrict]) {
-                        distMap[item.officeDistrict]++;
-                    } else {
-                        distMap[item.officeDistrict] = 1;
-                    }
-                });
-                // console.log("distMap =---------------------------", distMap);
-
-                var sortedKeys = Object.keys(distMap).sort();
-
-                tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
-
-                sortedKeys.map(item =>
-                    // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { label: item + ' - ' + distMap[item], value: item }],
-                    // tempLevel = [...tempLevel, {item}],
-                    //tempValue=[...tempValue,{item}]
-                )
-
-                tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
-
-                /////////////////////// district calculation //////////////////////////
-
-            } else {
-
-                //////////////////////////////////////// UNREACHABLE CODE /////////////////////////////////////
-
-                // This block possibly can not be reached due to preload data while installation or first opening the app
-                setIsLoading(true);
-
-                console.log();
-                console.log('---------------------------------------------------------------------');
-                console.log("---------- UNREACHED BLOCK HAS BEEN REACHED FOR BLOOD SEARCH --------");
-                console.log('---------------------------------------------------------------------');
-
-                console.log('desig_code-----------blood----------' + desig_code);
-                const { data: response } = await api.get('blood', { params: { bldgrp: desig_code } });
-                // console.log('responseURL-------------------+++++ ' + response.config.url);
-                const data = response.rows;
-
-                const dataWithSelected = data.map(item => (
-                    item = { ...item, selected: 'false' }
-
-                ))
-
-                // console.log(dataWithSelected);
-
-                setTabelCreationTime(timeStamp())
-
-                setDATA(dataWithSelected);
-                setIsLoading(false);
-
-
-                /////////////////////// district calculation //////////////////////////
-
-
-                const distMap = {};
-                data.forEach(item => {
-                    if (distMap[item.officeDistrict]) {
-                        distMap[item.officeDistrict]++;
-                    } else {
-                        distMap[item.officeDistrict] = 1;
-                    }
-                });
-
-
-                var sortedKeys = Object.keys(distMap).sort();
-
-                tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
-
-                sortedKeys.map(item =>
-                    // console.log(item, ' - ', distMap[item])
-                    tempDist = [...tempDist, { label: item + ' - ' + distMap[item], value: item }],
-
-                )
-
-                tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
-
-
-                /////////////////////// district calculation //////////////////////////
-                // createDesignationTable(tablename)
-
-                // insertDataIntoDesignationTable(tablename, data)
-
-
-                //////////////////////////////////////// UNREACHABLE CODE /////////////////////////////////////
-
-
-            }
+            tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
         } catch (error) {
             __DEV__ && console.error(error);
         }
