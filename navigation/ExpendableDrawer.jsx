@@ -50,6 +50,7 @@ const groupIcon = '../assets/icons/groupIcon.png'
 const requestIcon = '../assets/icons/request.png'
 const aprIcon = '../assets/icons/apr.png'
 const staffListIcon = '../assets/icons/staff-list.png'
+const bloodsearch = '../assets/icons/bloodsearch.png'
 
 //*******************************************icons ********************************************** */
 
@@ -297,11 +298,12 @@ const ExpendableDrawer = () => {
     //  ******************************  fetching data ***************************************
 
 
-    let highestHandlePressNumber = 25
+    let highestHandlePressNumber = 34
     let desigStart = 0;
     let settingsStart = 19
     let aprStart = 24
     let staffListStart = 25
+    let bloodStart = 26
 
     const handlePress = (no) => {
         const arr = []
@@ -1132,7 +1134,7 @@ const ExpendableDrawer = () => {
                                     onPress={() => {
                                         navigation.navigate('ReportScreen', {
                                             id: pmisId,
-                                            name:name,
+                                            name: name,
                                             recStatus: "C",
                                             officecode: presentOfficeCode,
                                             individualOrOffice: true
@@ -1180,60 +1182,142 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  Blood Search ******************************** */}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
-                                title="Staff List"
+                                title="Blood Search"
                                 titleStyle={styles.titlestyle}
 
                                 left={props => <List.Icon {...props} icon={() => (
                                     <Image
-                                        source={require(staffListIcon)}
+                                        source={require(bloodsearch)}
                                         style={styles.iconStyle}
                                     />
                                 )} />}
                                 expanded={expendedList[staffListStart]}
                                 onPress={() => handlePress(staffListStart)} >
 
-                                <List.Item key={'Individual'}
+                                <List.Item key={'A+'}
+                                    onPress={() => {
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'A+',
+                                            desig_code: 'APOS',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
+                                        })
+                                    }}
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={'A+'} />
+
+                                <List.Item key={'A-'}
 
                                     onPress={() => {
-                                        navigation.navigate('ReportScreen', {
-                                            id: pmisId,
-                                            name: name,
-                                            recStatus: "C",
-                                            officecode: presentOfficeCode,
-                                            individualOrOffice: true
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'A-',
+                                            desig_code: 'ANEG',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
                                         })
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="INDIAVIDUAL" />
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, fontWeight:'600' }} title="A-" />
 
-
-                                <List.Item key={'office'}
+                                <List.Item key={'B+'}
 
                                     onPress={() => {
-                                        navigation.navigate('ReportScreen', {
-                                            id: pmisId,
-                                            name: presentOffice,
-                                            recStatus: "C",
-                                            officecode: presentOfficeCode,
-                                            individualOrOffice: false
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'B+',
+                                            desig_code: 'BPOS',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
                                         })
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="OFFICE" />
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="B+" />
+
+                                <List.Item key={'B-'}
+
+                                    onPress={() => {
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'B-',
+                                            desig_code: 'BNEG',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="B-" />
+
+                                <List.Item key={'O+'}
+
+                                    onPress={() => {
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'O+',
+                                            desig_code: 'OPOS',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="O+" />
+
+                                <List.Item key={'O-'}
+
+                                    onPress={() => {
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'O-',
+                                            desig_code: 'ONEG',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="O-" />
+
+                                <List.Item key={'AB+'}
+
+                                    onPress={() => {
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'AB+',
+                                            desig_code: 'ABPOS',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="AB+" />
+
+                                <List.Item key={'AB-'}
+
+                                    onPress={() => {
+                                        navigation.navigate('BloodScreen', {
+                                            designation: 'AB-',
+                                            desig_code: 'ABNEG',
+                                            title: 'Employee List',
+                                            tablename: 'BLOODTABLE'
+                                        })
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16,  }} title="AB-" />
+
+
+
 
 
 

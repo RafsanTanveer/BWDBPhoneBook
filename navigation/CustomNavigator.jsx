@@ -3,6 +3,7 @@ import { NavigationContainer, useNavigation, DrawerActions } from "@react-naviga
 import React, { useContext } from "react";
 import DrawerContent from "../navigation/DrawerContent";
 import DesignationScreen from '../screens/DesignationScreen';
+import BloodScreen from '../screens/BloodScreen'
 import OfficeScreen from "../screens/OfficeScreen";
 import Home from "../screens/Home";
 import { StatusBar, TouchableOpacity, Text, Image, Dimensions } from "react-native";
@@ -87,6 +88,7 @@ const CustomDrawer = ({ }) => {
             <Drawer.Screen name="Home" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Home} />
             <Drawer.Screen name="OfficeScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={OfficeScreen} />
             <Drawer.Screen name="DesignationScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreen} />
+            <Drawer.Screen name="BloodScreen" options={{ headerTitleAlign: "center", title: "BloodScreen", }} component={BloodScreen} />
             <Drawer.Screen name="BiodataScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={BiodataScreen} />
             <Drawer.Screen name="Biodata" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Biodata} />
             <Drawer.Screen name="DataRenderOffice" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DataRenderOffice} />

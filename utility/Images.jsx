@@ -49,6 +49,7 @@ Images['share'] = require('../assets/icons/share.png')
 Images['end-call'] = require('../assets/icons/end-call.png')
 Images['plus'] = require('../assets/icons/plus.png')
 Images['update'] = require('../assets/icons/update.png')
+Images['bloodsearch'] = require('../assets/icons/bloodsearch.png')
 
 
 //  expendable list icon

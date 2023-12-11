@@ -144,7 +144,7 @@ const OfficeList = ({ lcode }) => {
                                     backgroundColor: `${currentTheme}10`, borderRadius: 5
                                 }}>
                                     <View style={{ flex: 1.5 }}>
-                                        <Text style={{ textAlign: 'center' }}>{index + 1}.</Text>
+                                        <Text style={{ textAlign: 'center', fontWeight: '500' }}>{index + 1}.</Text>
                                     </View>
                                     <View style={{
                                         flex: 10, marginLeft: 3, borderBottomColor: 'gray',
