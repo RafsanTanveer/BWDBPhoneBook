@@ -902,7 +902,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                                     paddingLeft: 15,
                                     backgroundColor: 'white'
                                 }}
-                                placeholder="Search Name or Mobile or PABX (3..) or Blood (+..)"
+                                placeholder="Search Name or Mobile or PABX (3..)"
                                 value={search}
                                 //underlineColorAndroid='trasparent'
                                 onChangeText={(text) => { searchFilter(text) }}
@@ -994,196 +994,28 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 }
                 {refreshing ? <ActivityIndicator /> : null}
                 {
-                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity
-                            onPress={() => setIsFilterOn(!isFilterOn)}
-                            style={{
-                                marginLeft: width * .036,
-                                backgroundColor: `${currentTheme}`,
-                                width: width * .23,
-                                flexDirection: 'row',
-                                borderRadius: height * .009,
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                padding: 2,
-                                elevation: 5
-                            }}
-                        >
-                            <Image
-                                source={Images['filterIcon']}
-                                style={{ height: imgSizeMini, width: imgSizeMini }}
-                            />
-                            <Text style={{
-                                color: 'white',
-                                fontSize: width * .037,
-                                fontWeight: '800'
-                            }}>Filter</Text>
-                            {
-                                !isFilterOn ?
-                                    <Image
-                                        source={Images['downArrowIcon']}
-                                        style={{ height: imgSizeMini, width: imgSizeMini }}
-                                    />
-                                    :
-                                    <Image
-                                        source={Images['upArrowIcon']}
-                                        style={{ height: imgSizeMini, width: imgSizeMini }}
-                                    />}
-                        </TouchableOpacity>
-                        {
-                            !isFilterOn &&
-                            <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-                                <Text
-                                    style={{
-                                        marginLeft: 3, color: 'grey', fontSize: height * .015, fontStyle: 'italic'
-                                    }}> {isChecked ? 'Seniority' :
-                                        isrtDateChecked ? 'Retirement Date' :
-                                            isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
-                            </View>
-                        }
-                    </View>
+                    // notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
+
                 }
 
 
                 {
-                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' && isFilterOn ?
+
 
                         <View style={{
 
-                            marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
+                            marginRight: 5, marginLeft: 6, marginBottom: 3, marginTop: 3,
                             flexDirection: 'row',
                             borderRadius: 10,
                             justifyContent: 'space-between',
 
 
                         }}>
-                            <View style={{ flex: 1.25, flexDirection: 'column' }}>
-                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Checkbox
-                                        style={{ height: 18, width: 18 }}
-                                        value={isChecked}
 
-                                        color={isChecked ? `${currentTheme}` : undefined}
-                                    />
-
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => joiningDateUpdate()}
-                                    style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                    <Checkbox
-                                        style={{ height: 18, width: 18 }}
-                                        value={isrtJoiningChecked}
-
-                                        color={isrtJoiningChecked ? `${currentTheme}` : undefined}
-                                    />
-
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => retirementDateUpdate()}
-                                    style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                    <Checkbox
-                                        style={{ height: 18, width: 18 }}
-                                        value={isrtDateChecked}
-
-                                        color={isrtDateChecked ? `${currentTheme}` : undefined}
-                                    />
-
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
-
-                                </TouchableOpacity>
-                                <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
-
-
-
-                                {
-                                    false &&
-                                    netInfo.isConnected &&
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            marginTop: 7,
-                                            backgroundColor: 'white',
-                                            borderRadius: height * .005,
-                                            width: isReportActive ? 210 : 140,
-                                            // elevation: 5
-                                            // borderColor: 'black',
-                                            // borderWidth:1
-                                        }}>
-                                        <TouchableOpacity
-                                            onPress={() => (setIsCurrentActive(true), setIsVacantActive(false), setIsReportActive(false))}
-                                            style={{
-                                                height: 20,
-                                                width: 70,
-                                                backgroundColor: isCurrentActive ? `${currentTheme}` : 'white',
-                                                borderRadius: height * .005,
-                                            }}>
-                                            <Text
-                                                style={{
-                                                    color: isCurrentActive ? 'white' : 'black',
-                                                    height: height * (1 / 40),
-                                                    fontSize: txtSizeNormal,
-                                                    fontFamily: 'serif',
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold'
-                                                }}>Current</Text>
-                                        </TouchableOpacity>
-                                        {
-                                            netInfo.isConnected &&
-                                            <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
-                                                style={{
-                                                    height: 20,
-                                                    width: 70,
-                                                    backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
-                                                    borderRadius: height * .005,
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        color: !isVacantActive ? 'black' : 'white',
-                                                        height: height * (1 / 40),
-                                                        fontSize: txtSizeNormal,
-                                                        fontFamily: 'serif',
-                                                        textAlign: 'center',
-                                                        fontWeight: 'bold'
-                                                    }}>Vacant</Text>
-                                            </TouchableOpacity>
-                                        }
-                                        {
-                                            false &&
-                                            <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
-                                                style={{
-                                                    height: 20,
-                                                    width: 70,
-                                                    backgroundColor: isReportActive ? `${currentTheme}` : 'white',
-                                                    borderRadius: height * .005,
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        color: isReportActive ? 'white' : 'black',
-                                                        height: height * (1 / 40),
-                                                        fontSize: txtSizeNormal,
-                                                        fontFamily: 'serif',
-                                                        textAlign: 'center',
-                                                        fontWeight: 'bold'
-                                                    }}>Report</Text>
-                                            </TouchableOpacity>
-                                        }
-                                    </View>
-                                }
-
-
-
-                            </View>
 
                             <View style={{ flex: 1 }}>
 
-                                <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
+                                <View style={{ width: width * .50, marginRight: 10, marginBottom: 2 }}>
                                     <DropDownPicker
                                         style={{ zIndex: 1000 }}
                                         items={tempDist}
@@ -1196,33 +1028,20 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                                         onChangeValue={() => sortByDistrict()}
                                     />
                                 </View>
-                                <View style={{ width: width * .40, marginRight: 10, }}>
-                                    <DropDownPicker
-                                        style={{ zIndex: 900 }}
-                                        items={charges}
-                                        open={isChargeOpen}
-                                        setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
-                                        value={currentChargeValue}
-                                        setValue={setCurrentChargeValue}
-                                        maxHeight={200}
-                                        placeholder="Select Charge"
-                                        onChangeValue={() => chargeFilter()}
-                                    />
-                                </View>
 
                             </View>
 
 
 
 
-                        </View> : ""
+                        </View>
                 }
 
 
                 {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} Blood Donor {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
                             <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
@@ -1230,7 +1049,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
 
 
-                <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
+
 
 
 
