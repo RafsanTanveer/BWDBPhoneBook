@@ -169,15 +169,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         setisAddModalVisible(isVisible);
     };
 
-    // function camelize(str) {
-    //     return str
-    //         .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) =>
-    //             index === 0
-    //                 ? letter.toLowerCase()
-    //                 : letter.toUpperCase()
-    //         )
-    //         .replace(/\s+/g, '');
-    // }
+
 
     function camelize(string) {
         string = string.toLowerCase()
@@ -206,30 +198,9 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         };
     }, []);
 
-    ////////////////////////////////////////////  For camera permission ///////////////////////////////////////////////////////////////////////////
-
-    // const [hasCameraPermission, sethasCameraPermission] = useState();
-    // const [hasMicrophonePermission, sethasMicrophonePermission] = useState();
-
-    // useEffect(() => {
-
-    //     (async () => {
-    //         const cameraPermission = await Camera.requestCameraPermissionsAsync()
-    //         const microphonePermission = await Camera.requestMicrophonePermissionsAsync()
-
-    //         sethasCameraPermission(cameraPermission.status === 'granted')
-    //         sethasMicrophonePermission(microphonePermission.status === 'granted')
-
-
-    //     })();
-
-    // }, []);
-
-    ////////////////////////////////////////////  For camera permission ///////////////////////////////////////////////////////////////////////////
-
 
     let charge = Charges(presentCharge)
-    console.log(charge);
+    __DEV__ && console.log(charge);
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
@@ -409,12 +380,12 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         try {
             setRefreshing(false);
 
-            setIsLoading(true);
 
-            console.log();
-            console.log('---------------------------------------------------------------------');
-            console.log("---------- UNREACHED BLOCK HAS BEEN REACHED FOR BLOOD SEARCH --------");
-            console.log('---------------------------------------------------------------------');
+
+            __DEV__ && console.log();
+            __DEV__ && console.log('---------------------------------------------------------------------');
+            __DEV__ && console.log("---------- UNREACHED BLOCK HAS BEEN REACHED FOR BLOOD SEARCH --------");
+            __DEV__ && console.log('---------------------------------------------------------------------');
 
             console.log('desig_code-----------blood----------' + desig_code);
             const { data: response } = await api.get('blood', { params: { bldgrp: desig_code } });
@@ -431,7 +402,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setTabelCreationTime(timeStamp())
 
             setDATA(dataWithSelected);
-            setIsLoading(false);
+
 
 
             /////////////////////// district calculation //////////////////////////
@@ -464,96 +435,6 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         setIsLoading(false);
     }
 
-    const fetchVacantDataFromDb = async () => {
-
-        setIsLoading(true);
-
-
-        // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
-
-
-
-        try {
-            setRefreshing(false);
-
-            // check if table exits or not
-
-            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
-                db.transaction((tx) => {
-                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
-                        resolve([tableExistsResult, null]);
-                    });
-                });
-            });
-
-
-            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table number = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
-
-            const tableExists = tableNames.includes(tablename);
-
-            // const vacantTableNames = tableNames.map(it => (it.includes('vacant') ? it : ''))
-
-            const vacantTableName = `VACANT${tablename}`
-
-
-
-
-            console.log(vacantTableName);
-
-            if (tableExists) {
-
-                if (netInfo.isConnected) {
-
-
-
-                    const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
-                    const vacantData = vacantResponse.rows;
-
-                    let totalVacanPost = 0
-                    vacantData.forEach(it => {
-                        totalVacanPost += parseInt(it.postNo)
-                    });
-
-                    setTotalVacantPost(totalVacanPost)
-
-                    console.log('totalVacanPost ' + totalVacanPost);
-
-                    setvacantData(vacantData)
-
-                    console.log("in data render");
-                    // console.log(vacantData);
-                }
-                else {
-                    setTotalVacantPost(0)
-                    setvacantData([])
-                }
-
-                ////////////////////////////////////////vacant list //////////////////////////////////////
-
-                const { vacantRows } = await new Promise((resolve, reject) => {
-                    db.transaction((tx) => {
-                        tx.executeSql(`SELECT * FROM vacantSUBDIVENGCIV;`, [], (_, result) => {
-                            resolve(result);
-                        });
-                    });
-                });
-
-                console.log(vacantRows);
-                // const vacantData = vacantRows._array;
-
-                ////////////////////////////////////////vacant list //////////////////////////////////////
-
-
-
-
-            }
-        } catch (error) {
-            __DEV__ && console.error(error);
-        }
-        setIsLoading(false);
-    }
 
 
 
@@ -651,7 +532,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
         // fetchData();
         fetchDataFromDb();
-        fetchVacantDataFromDb()
+        // fetchVacantDataFromDb()
         setDATA([]);
         setisrtDateChecked(false)
         setisrtJoiningChecked(false)
@@ -1060,9 +941,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                         data={filteredData}
                         estimatedItemSize={200}
                         // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
-                        }
+
                         renderItem={({ item, index }) => (
                             <Item
                                 id={item.id}

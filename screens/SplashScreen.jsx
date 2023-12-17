@@ -1,10 +1,10 @@
 import React, { useRef, useEffect,useContext } from 'react';
-import { Button, StyleSheet, View, Text, StatusBar } from 'react-native';
+import { Button, StyleSheet, View, Text, StatusBar, Image } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { height, width } from '../utility/ScreenDimensions'
 import { ThemeContext } from "../context/ThemeContext";
 
-
+const bwdbLogo = '../assets/bwdb-logo-splscrn.jpg'
 
 const SplashScreen = () => {
 
@@ -20,17 +20,19 @@ const SplashScreen = () => {
   return (
     <View style={styles.animationContainer}>
       <StatusBar animated={true} backgroundColor='white' />
+      <Image style={{ height: width * .7, width: width * .7 }} source={require(bwdbLogo)} ></Image>
       <LottieView
         autoPlay
         ref={animation}
         style={{
-          width: width * .95,
-          height: width * .95,
+          width: width * .25,
+          height: width * .25,
+          margin:5
         }}
         speed={1.25}
         source={require('../assets/lottie/Animation - 1701159542137.json')}
       />
-      <Text style={{ fontSize: 15, fontWeight: '400' }} ></Text>
+      
     </View>
   );
 }

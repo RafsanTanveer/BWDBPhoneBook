@@ -227,8 +227,8 @@ const ExpendableDrawer = () => {
 
 
 
-            console.log('url = ', apiUrl);
-            console.log(`Data stored in  ${tableName} table.`);
+            __DEV__ && console.log('url = ', apiUrl);
+            __DEV__ && console.log(`Data stored in  ${tableName} table.`);
         } catch (error) {
             console.error(`Error storing data in ${tableName} table:`, error);
         }
@@ -246,10 +246,7 @@ const ExpendableDrawer = () => {
 
             // console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
 
-            console.log();
-            // console.log(vacantData);
-            console.log();
-
+           
             // console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
 
 
@@ -1396,19 +1393,23 @@ const ExpendableDrawer = () => {
                                         <TouchableOpacity
                                             style={{
 
-                                                height: width * .1,
-                                                width: width * .35,
+
                                                 backgroundColor: `${currentTheme}`,
-                                                marginRight: 6
+                                                marginRight: 6,
+                                                borderRadius: height * .005,
+                                                alignContent: 'center',
+                                                justifyContent:'center'
                                             }}
                                             onPress={() => { }}
                                         >
                                             <Text
                                                 style={{
+                                                    padding:10,
                                                     color: 'white',
                                                     fontWeight: '600',
-                                                    paddingLeft: width * .015,
-                                                    paddingTop: width * .015,
+                                                    textAlign: 'center',
+                                                    fontSize: width*.036
+
                                                 }}>Update Organogram</Text>
                                         </TouchableOpacity>
 

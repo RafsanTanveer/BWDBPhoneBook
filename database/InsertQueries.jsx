@@ -145,7 +145,7 @@ export const insertDataIntoEmployeeInfoTable = (tableName, data) => {
 
 
             data.forEach((it, index) => {
-                console.log(tableName, '', it);
+                __DEV__ && console.log(tableName, '', it);
 
                 tx.executeSql(
                     `INSERT INTO ${tableName} (

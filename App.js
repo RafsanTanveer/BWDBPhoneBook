@@ -22,8 +22,8 @@ function App() {
     <AuthProvider>
       <ThemeProvider>
         <PaperProvider>
-          <CustomNavigator />
-          {/* {isLoading ? <SplashScreen /> : <CustomNavigator />} */}
+          {/* <CustomNavigator /> */}
+          {isLoading ? <SplashScreen /> : <CustomNavigator />}
         </PaperProvider>
       </ThemeProvider>
     </AuthProvider>

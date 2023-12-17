@@ -1,7 +1,6 @@
 {
   "expo": {
     "plugins": [
-
       [
         "expo-camera",
         {
@@ -22,7 +21,6 @@
     "orientation": "portrait",
     "icon": "./assets/BWDBEmpDirLogo.png",
     "userInterfaceStyle": "light",
-
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -38,12 +36,12 @@
         "backgroundColor": "#FFFFFF"
       },
       "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-      "package": "com.rafsantanveer.bwdbempdir",
-      "userInterfaceStyle":"light",
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.bwdbemployeedir.bwdbemployeedir",
+      "userInterfaceStyle": "light",
       "permissions": [
         "READ_CONTACTS",
         "WRITE_CONTACTS"

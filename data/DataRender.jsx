@@ -229,7 +229,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     let charge = Charges(presentCharge)
-    console.log(charge);
+    __DEV__ && console.log(charge);
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
@@ -555,10 +555,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 // This block possibly can not be reached due to preload data while installation or first opening the app
 
-                console.log();
-                console.log('---------------------------------------------------------------------');
-                console.log("----------------- UNREACHED BLOCK HAS BEEN REACHED ------------------");
-                console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log();
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log("----------------- UNREACHED BLOCK HAS BEEN REACHED ------------------");
+                __DEV__ && console.log('---------------------------------------------------------------------');
 
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
@@ -654,7 +654,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-            console.log(vacantTableName);
+            __DEV__ && console.log(vacantTableName);
 
             if (tableExists) {
 
@@ -672,11 +672,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                     setTotalVacantPost(totalVacanPost)
 
-                    console.log('totalVacanPost ' + totalVacanPost);
+                    __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
 
                     setvacantData(vacantData)
 
-                    console.log("in data render");
+                    __DEV__ && console.log("in data render");
                     // console.log(vacantData);
                 }
                 else {

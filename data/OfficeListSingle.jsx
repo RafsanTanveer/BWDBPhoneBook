@@ -15,7 +15,7 @@ const OfficeListSingle = ({ lcode, officeId }) => {
     const navigation = useNavigation();
 
 
-    console.log('lcode, officeId (((((((((())))))))))))))))))))  '+lcode, officeId);
+    __DEV__ &&  console.log('lcode, officeId (((((((((())))))))))))))))))))  '+lcode, officeId);
 
     //  ******************************  fetching data ***************************************
 

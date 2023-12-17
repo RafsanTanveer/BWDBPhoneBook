@@ -1,6 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { memo, useContext, useEffect, useState } from "react";
-import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import * as Contacts from 'expo-contacts';
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -390,16 +390,13 @@ const Item = ({ id,
 
                                     pmisId === id &&
                                     <TouchableOpacity
-                                        onPress={() => (toggleUpdateEmailModal(true))}
 
-
+                                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
                                             backgroundColor: `${currentTheme}30`,
                                             borderRadius: height * .005,
-                                            // marginHorizontal: 5,
-                                            // marginRight: 5,
                                             paddingVertical: 3,
                                             paddingHorizontal: 5,
                                             // elevation: 3
@@ -407,68 +404,37 @@ const Item = ({ id,
                                         <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
                                             source={Images['update']} >
                                         </Image>
-                                        {/* <Text style={{
-                                            color: 'black',
-                                            height: height * (1 / 40),
-                                            fontSize: txtSizeNormal * .8,
-                                            fontFamily: 'serif',
-                                            fontStyle: 'italic',
 
-                                            alignSelf: 'center',
-                                            textAlignVertical: 'center',
-
-                                            fontWeight: 'bold'
-                                        }}>Update</Text> */}
                                     </TouchableOpacity>
                                 }
                             </TouchableOpacity>
                         </View>
                     }
                     {
-                        netInfo.isConnected &&
+
                         <View style={{ flexDirection: 'row', }}>
-                            <TouchableOpacity>
-                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ marginHorizontal: width * .04 }}>
-                                {
 
-
-                                    pmisId === id &&
-                                    <TouchableOpacity
-                                        // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
-                                        onPress={() => (toggleBloodGroupModal(true))}
-                                        style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}30`,
-                                            borderRadius: height * .005,
-                                            marginHorizontal: 5,
-
-                                            paddingVertical: 3,
-                                            paddingHorizontal: 5,
-                                            // elevation: 3
-                                        }}>
-                                        <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
-                                            source={Images['update']} >
-                                        </Image>
-                                        {/* <Text style={{
-                                        color: 'black',
-                                        height: height * (1 / 40),
-                                        fontSize: txtSizeNormal * .8,
-                                        fontFamily: 'serif',
-                                        fontStyle: 'italic',
-
-                                        alignSelf: 'center',
-                                        textAlignVertical: 'center',
-
-                                        fontWeight: 'bold'
-                                    }}>Update</Text> */}
-                                    </TouchableOpacity>
-                                }
-                            </TouchableOpacity>
-
-
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
+                            {
+                                pmisId === id &&
+                                <TouchableOpacity
+                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
+                                    onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}30`,
+                                        borderRadius: height * .005,
+                                        marginHorizontal: width * .04,
+                                        paddingVertical: 3,
+                                        paddingHorizontal: 5,
+                                        // elevation: 3
+                                    }}>
+                                    <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
+                                        source={Images['update']} >
+                                    </Image>
+                                </TouchableOpacity>
+                            }
                         </View>}
 
 
@@ -478,7 +444,7 @@ const Item = ({ id,
                             mobile &&
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
-                                        // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
+                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
                                     onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
                                     style={{
                                         alignItems: 'center',
@@ -497,7 +463,7 @@ const Item = ({ id,
                                 {
                                     pmisId === id &&
                                     <TouchableOpacity
-                                        onPress={() => (toggleUpdateMobileModal(true))}
+                                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',

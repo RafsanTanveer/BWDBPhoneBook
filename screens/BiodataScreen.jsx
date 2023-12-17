@@ -189,14 +189,14 @@ const BiodataScreen = ({ id, navigation }) => {
         setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
 
 
-        console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
+        __DEV__ && console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
 
 
         personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
         // setisAdmin(false)
         // __DEV__ && console.log(response.rows[0].offceCode);
 
-        console.log("____________________________________________________________" + personalresponse.rows[0].offceCode);
+        __DEV__ && console.log("____________________________________________________________" + personalresponse.rows[0].offceCode);
         //promotion
         const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
         setpromotion(promotionresponse.rows);
@@ -380,6 +380,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 f_name_bn       TEXT,
                                 m_name          TEXT,
                                 m_name_bn       TEXT,
+                                blood           TEXT,
                                 bdate           TEXT,
                                 postGrade       TEXT,
                                 mstatus         TEXT,
@@ -423,6 +424,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    f_name_bn,
                                    m_name,
                                    m_name_bn,
+                                   blood,
                                    bdate,
                                    postGrade,
                                    mstatus,
@@ -452,7 +454,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canAccessSeniority,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?);`,
                         [
                             it.id,
                             it.name,
@@ -461,6 +463,7 @@ const BiodataScreen = ({ id, navigation }) => {
                             it.f_name_bn,
                             it.m_name,
                             it.m_name_bn,
+                            it.blood,
                             it.bdate,
                             it.postGrade,
                             it.mstatus,
@@ -576,7 +579,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 (_, result) => {
                                     __DEV__ && console.log('id exist.........biodata .................................');
                                     const tempBiodata = result.rows._array
-                                    console.log('ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt' + tempBiodata[0].adminLevel);
+                                    __DEV__ && console.log('ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt' + tempBiodata[0].adminLevel);
 
                                     setpersonalData(tempBiodata);
                                     __DEV__ && console.log(tempBiodata[0].id);
@@ -819,6 +822,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    f_name_bn,
                                    m_name,
                                    m_name_bn,
+                                   blood,
                                    bdate,
                                    postGrade,
                                    mstatus,
@@ -848,7 +852,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canAccessSeniority,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?);`,
                                     [
                                         it.id,
                                         it.name,
@@ -857,6 +861,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         it.f_name_bn,
                                         it.m_name,
                                         it.m_name_bn,
+                                        it.blood,
                                         it.bdate,
                                         it.postGrade,
                                         it.mstatus,
@@ -999,7 +1004,7 @@ const BiodataScreen = ({ id, navigation }) => {
                             }}>
 
 
-                                <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5,  }}>
+                                <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5, }}>
                                     <Image style={{ width: 60, height: 60 }} source={Images['bwdLogo']} />
                                 </View>
                                 <View style={{
@@ -1032,7 +1037,9 @@ const BiodataScreen = ({ id, navigation }) => {
                                     </TouchableOpacity> */}
 
                                     <TouchableOpacity
-                                        onPress={() => sharePdf()}
+
+                                        onPress={() => (netInfo.isConnected ? sharePdf() : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+
                                         style={{ flexDirection: 'column', marginLeft: 3 }}
                                     >
                                         <Image
@@ -1096,6 +1103,14 @@ const BiodataScreen = ({ id, navigation }) => {
                                         firstQueryResult={item.gender}
                                         delimiter=":"
                                     />
+                                    <View style={{ flex: 1, }} >
+                                        <SingleColumnComponent
+                                            firstHeading="Blood"
+                                            firstQueryResult={item.blood}
+                                            delimiter=":"
+                                        />
+                                        
+                                    </View>
 
                                     <SingleColumnComponent
                                         firstHeading="Marital Status"

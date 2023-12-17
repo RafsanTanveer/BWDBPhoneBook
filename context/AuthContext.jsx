@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
         }
         else {
-            console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
+            __DEV__ && console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
             setUserInfo(tempUserInfo);
             setisLogged(true)
 
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
 
 
 
-        console.log('login id - ', id);
+        __DEV__ && console.log('login id - ', id);
 
         const tablenames = await getAllTableName()
 
@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
 
         if (tableExists) {
-            console.log("tableExists", tableExists);
+            __DEV__ && console.log("tableExists", tableExists);
             const empInfo = await getEmployeeInfo("employeeInfo")
 
             idCheckAndLogin(empInfo, id)

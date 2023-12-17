@@ -33,7 +33,7 @@ const OfficeList = ({ lcode }) => {
 
     const fetchData = async () => {
         setIsLoading(true);
-        console.log('--------------------start-------------------------------------');
+
 
         try {
 
@@ -46,7 +46,7 @@ const OfficeList = ({ lcode }) => {
         } catch (error) {
             __DEV__ && console.error(error.message);
         }
-        console.log('--------------------end-------------------------------------');
+
 
         setIsLoading(false);
     }

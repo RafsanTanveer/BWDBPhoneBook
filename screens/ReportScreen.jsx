@@ -21,7 +21,7 @@ const ReportScreen = ({ route, navigation }) => {
 
     const fileName = route.params.individualOrOffice ? `${route.params.name} - ${route.params.id}.pdf` : `${route.params.name}.pdf`
 
-    console.log(url);
+    __DEV__ && console.log(url);
 
     useEffect(() => {
         // You can control the ref programmatically, rather than using autoPlay
