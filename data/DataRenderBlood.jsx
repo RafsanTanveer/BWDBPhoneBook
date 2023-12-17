@@ -109,6 +109,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
     const [filteredData, setFilteredData] = useState(DATA)
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
+    const [searchDesig, setSearchDesig] = useState('')
     const [refreshing, setRefreshing] = useState(true);
     const [noInternetConnection, setnoInternetConnection] = useState()
     const [seniorityText, setseniorityText] = useState()
@@ -448,7 +449,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 // setRefreshing(false);
                 // setIsLoading(true);
                 setSearch()
-
+                setSearchDesig()
                 setDATA([])
 
                 deleteDataFromDesignationTable(tablename)
@@ -539,6 +540,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
 
         setSearch('')
+        setSearchDesig('')
         setdistName('')
         tempDist = []
         chargeMap = {};
@@ -683,6 +685,50 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
     }
 
+    const searchFilterDesignation = (text) => {
+
+
+        let firstCharacter = text.charAt(0);
+        __DEV__ && console.log(firstCharacter);
+        let isNameSearch = (/[a-zA-Z]/).test(firstCharacter)
+
+        let isMobileSearch = false
+        let isPabxSearch = false
+        let isBloodSearch = false
+
+        if (firstCharacter === '3')
+            isPabxSearch = true
+        if (firstCharacter === '+')
+            isBloodSearch = true
+        else
+            isMobileSearch = true
+
+        if (text) {
+            const newData = DATA.filter((item) => {
+
+                let itemData
+
+
+                itemData = item.blood ? item.designation.toLocaleLowerCase() : ''
+                if (!(isMobileSearch || isPabxSearch || isNameSearch || isBloodSearch))
+                    itemData = ''
+                const textData = text.toLocaleLowerCase();
+
+
+                    return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData)
+            setSearchDesig(text)
+        }
+        else {
+            setFilteredData(DATA)
+            setSearchDesig(text)
+            setdistName('')
+            setDistrictValue()
+        }
+
+    }
+
 
 
 
@@ -783,10 +829,31 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                                     paddingLeft: 15,
                                     backgroundColor: 'white'
                                 }}
-                                placeholder="Search Name or Mobile or PABX (3..)"
+                                placeholder="Search Name"
                                 value={search}
                                 //underlineColorAndroid='trasparent'
                                 onChangeText={(text) => { searchFilter(text) }}
+                                mode='outlined'
+                            />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <TextInput
+                                selectionColor={'black'}       // for changing curcsor color
+                                style={{
+                                    height: height / 20,
+                                    width: "97%",
+                                    borderRadius: 5,
+                                    marginBottom: 5,
+                                    marginLeft: 5,
+                                    borderColor: `${currentTheme}`,//'#6750a4',
+                                    borderWidth: 2,
+                                    paddingLeft: 15,
+                                    backgroundColor: 'white'
+                                }}
+                                placeholder="Search Designation"
+                                value={searchDesig}
+                                //underlineColorAndroid='trasparent'
+                                onChangeText={(text) => { searchFilterDesignation(text) }}
                                 mode='outlined'
                             />
                         </View>

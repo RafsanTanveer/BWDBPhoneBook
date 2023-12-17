@@ -1105,11 +1105,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                     />
                                     <View style={{ flex: 1, }} >
                                         <SingleColumnComponent
+                                            id={id}
                                             firstHeading="Blood"
                                             firstQueryResult={item.blood}
                                             delimiter=":"
+                                            reloadList={updateBiodata}
                                         />
-                                        
+
                                     </View>
 
                                     <SingleColumnComponent

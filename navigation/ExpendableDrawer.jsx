@@ -246,7 +246,7 @@ const ExpendableDrawer = () => {
 
             // console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
 
-           
+
             // console.log("/////////////////////////////vacantDesigList/////////////////////////////////////////////");
 
 
@@ -852,6 +852,7 @@ const ExpendableDrawer = () => {
                                             <List.Accordion
                                                 style={styles.accordingStyle}
                                                 title="DIRECTOR GENERAL"
+                                                titleStyle={styles.titlestyle}
 
                                                 left={props => <List.Icon {...props} icon={() => (
                                                     <Image
@@ -868,6 +869,8 @@ const ExpendableDrawer = () => {
                                             <List.Accordion
                                                 style={styles.accordingStyle}
                                                 title="ADG(ADMIN)"
+                                                titleStyle={styles.titlestyle}
+
                                                 left={props => <List.Icon {...props} icon={() => (
                                                     <Image
                                                         source={require(rightArrow)}
@@ -884,6 +887,8 @@ const ExpendableDrawer = () => {
                                             <List.Accordion
                                                 style={styles.accordingStyle}
                                                 title="ADG(FIANANCE)"
+                                                titleStyle={styles.titlestyle}
+
                                                 left={props => <List.Icon {...props} icon={() => (
                                                     <Image
                                                         source={require(rightArrow)}
@@ -899,6 +904,8 @@ const ExpendableDrawer = () => {
                                             <List.Accordion
                                                 style={styles.accordingStyle}
                                                 title="ADG(PLANNING)"
+                                                titleStyle={styles.titlestyle}
+
                                                 left={props => <List.Icon {...props} icon={() => (
                                                     <Image
                                                         source={require(rightArrow)}
@@ -1205,8 +1212,9 @@ const ExpendableDrawer = () => {
                                         })
                                     }}
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title={'A+'} />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }}
+                                    titleStyle={{ fontWeight: "bold" }} title={'A+'} />
 
                                 <List.Item key={'A-'}
 
@@ -1220,8 +1228,9 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, fontWeight:'600' }} title="A-" />
+                                        <Text style={{ color: '#000080', }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, fontWeight: '600' }}
+                                    titleStyle={{ fontWeight: "bold" }} title="A-" />
 
                                 <List.Item key={'B+'}
 
@@ -1235,8 +1244,9 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="B+" />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }}
+                                    titleStyle={{ fontWeight: "bold" }} title="B+" />
 
                                 <List.Item key={'B-'}
 
@@ -1250,8 +1260,8 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="B-" />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="B-" />
 
                                 <List.Item key={'O+'}
 
@@ -1265,8 +1275,8 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="O+" />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="O+" />
 
                                 <List.Item key={'O-'}
 
@@ -1280,8 +1290,8 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="O-" />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="O-" />
 
                                 <List.Item key={'AB+'}
 
@@ -1295,8 +1305,8 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="AB+" />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="AB+" />
 
                                 <List.Item key={'AB-'}
 
@@ -1310,8 +1320,8 @@ const ExpendableDrawer = () => {
                                     }}
 
                                     left={props => <List.Icon {...props} icon={() => (
-                                        <Text style={{ color: '#DC143C' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16,  }} title="AB-" />
+                                        <Text style={{ color: '#000080' }} >  ➥</Text>
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="AB-" />
 
 
 
@@ -1334,7 +1344,7 @@ const ExpendableDrawer = () => {
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
-                                title="Setting"
+                                title="Settings"
                                 titleStyle={styles.titlestyle}
                                 left={props => <List.Icon {...props} icon={() => (
                                     <Image
@@ -1398,17 +1408,17 @@ const ExpendableDrawer = () => {
                                                 marginRight: 6,
                                                 borderRadius: height * .005,
                                                 alignContent: 'center',
-                                                justifyContent:'center'
+                                                justifyContent: 'center'
                                             }}
                                             onPress={() => { }}
                                         >
                                             <Text
                                                 style={{
-                                                    padding:10,
+                                                    padding: 10,
                                                     color: 'white',
                                                     fontWeight: '600',
                                                     textAlign: 'center',
-                                                    fontSize: width*.036
+                                                    fontSize: width * .036
 
                                                 }}>Update Organogram</Text>
                                         </TouchableOpacity>
@@ -1461,7 +1471,8 @@ const styles = StyleSheet.create({
     },
     titlestyle: {
         // fontFamily: 'imperial-normal',
-        fontWeight: 'normal'
+        fontWeight: 'normal',
+        fontWeight:"bold"
     },
     themeStyle: {
         height: width * .080,

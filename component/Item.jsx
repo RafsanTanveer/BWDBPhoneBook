@@ -382,7 +382,7 @@ const Item = ({ id,
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{
-                                flex: .1,
+                                flex: .13,
                                 // marginHorizontal: width * .02,
                             }}>
                                 {
@@ -395,15 +395,13 @@ const Item = ({ id,
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}30`,
+                                            backgroundColor: `${currentTheme}`,
                                             borderRadius: height * .005,
-                                            paddingVertical: 3,
+                                            paddingVertical: 2,
                                             paddingHorizontal: 5,
-                                            // elevation: 3
+                                            elevation: 3
                                         }}>
-                                        <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
-                                            source={Images['update']} >
-                                        </Image>
+                                                <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
                                     </TouchableOpacity>
                                 }
@@ -415,26 +413,7 @@ const Item = ({ id,
                         <View style={{ flexDirection: 'row', }}>
 
                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
-                            {
-                                pmisId === id &&
-                                <TouchableOpacity
-                                    // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}
-                                    onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
-                                    style={{
-                                        alignItems: 'center',
-                                        flexDirection: 'row',
-                                        backgroundColor: `${currentTheme}30`,
-                                        borderRadius: height * .005,
-                                        marginHorizontal: width * .04,
-                                        paddingVertical: 3,
-                                        paddingHorizontal: 5,
-                                        // elevation: 3
-                                    }}>
-                                    <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
-                                        source={Images['update']} >
-                                    </Image>
-                                </TouchableOpacity>
-                            }
+                           
                         </View>}
 
 
@@ -467,16 +446,14 @@ const Item = ({ id,
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}30`,
+                                            backgroundColor: `${currentTheme}`,
                                             borderRadius: height * .005,
                                             // marginHorizontal: 5,
                                             paddingVertical: 1,
                                             paddingHorizontal: 5,
-                                            // elevation: 3
+                                            elevation: 3
                                         }}>
-                                        <Image style={{ height: imgSizeMini * .8, width: imgSizeMini * .8, alignSelf: 'center' }}
-                                            source={Images['update']} >
-                                        </Image>
+                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
                                     </TouchableOpacity>
                                 }
                             </View>

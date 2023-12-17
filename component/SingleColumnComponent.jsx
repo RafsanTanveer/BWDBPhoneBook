@@ -1,19 +1,29 @@
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useState, useContext } from "react";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import CorrectionModalComponent from '../component/CorrectionModalComponent'
 import { height, width } from '../utility/ScreenDimensions';
 import { ThemeContext } from "../context/ThemeContext";
+import AuthContext from '../context/AuthContext'
+import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateBloodGroupModalComponent'
 
 
-const SingleColumnComponent = ({ firstHeading, firstQueryResult, delimiter }) => {
+const SingleColumnComponent = ({ id,firstHeading, firstQueryResult, delimiter, reloadList }) => {
 
     const { currentTheme } = useContext(ThemeContext);
+    const netInfo = useNetInfo();
 
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isBloodGroupUpdateVisible, setisBloodGroupUpdateVisible] = useState(false);
+
     const toggleModal = (isVisible) => {
         setModalVisible(isVisible);
+    };
+
+    const toggleBloodGroupModal = (isVisible) => {
+        setisBloodGroupUpdateVisible(isVisible);
     };
 
 
@@ -30,7 +40,8 @@ const SingleColumnComponent = ({ firstHeading, firstQueryResult, delimiter }) =>
                 {
                     (firstHeading === 'Blood' || firstHeading === 'Blood') &&
                     <TouchableOpacity
-                        onPress={() => { }}
+                            onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+
                         style={{
                             alignItems: 'center',
                             flexDirection: 'row',
@@ -54,6 +65,16 @@ const SingleColumnComponent = ({ firstHeading, firstQueryResult, delimiter }) =>
                 onRequestClose={() => toggleModal(true)}
             >
                 <CorrectionModalComponent correctionType={firstHeading} txt={firstQueryResult} toggleModal={toggleModal} />
+            </Modal>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isBloodGroupUpdateVisible}
+                onRequestClose={() => toggleBloodGroupModal(true)}
+            >
+
+                <UpdateBloodGroupModalComponent id={id} currentGroup={firstQueryResult} toggleModal={toggleBloodGroupModal} refreshList={reloadList} />
             </Modal>
 
         </View>
