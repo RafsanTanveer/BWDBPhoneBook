@@ -19,7 +19,7 @@ let groupTables = [
     { label: "O-", value: 8 }
 ]
 
-const UpdatePostModalComponent = ({ officeId, currentGroup, toggleModal }) => {
+const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [currentGroupValue, setCurrentGroupValue] = useState();
@@ -33,8 +33,8 @@ const UpdatePostModalComponent = ({ officeId, currentGroup, toggleModal }) => {
     const [isFocus, setIsFocus] = useState(false);
 
 
-console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-    console.log('officeId'+officeId);
+    console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+    console.log('officeId' + officeId + '  ' + id);
 
     const closeModal = () => {
         toggleModal(false)
@@ -58,7 +58,7 @@ console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
             setposts(response.rows);
             response.rows.map((item, index) => {
                 const idx = index + 1
-                postsList = [...postsList, { label: '(' + idx + ') ' + item.office_name + '\n' + item.post_name + '\n' + item.emp_name, value: item.post_code }]
+                postsList = [...postsList, { label: '(' + idx + ') ' + item.post_name + '\n' + item.office_name + '\n' + item.emp_name, value: item.post_code }]
             }
             )
 
@@ -75,21 +75,23 @@ console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
         setIsLoading(false);
     }
 
-     const updatePost = async () => {
+    const updatePost = async () => {
+
+        console.log(value);
 
         // console.log(currentGroupValue);
         // console.log(groupTables[currentGroupValue - 1].label);
 
-        const blggrp = typeof currentGroupValue !== 'undefined' ? groupTables[currentGroupValue - 1].label : ''
+        // const blggrp = typeof currentGroupValue !== 'undefined' ? groupTables[currentGroupValue - 1].label : ''
 
-        console.log('in update blood');
+        // console.log('in update blood');
 
-        typeof currentGroupValue !== 'undefined' ?
-            await api.put(`updateBldGrp/${id}/${blggrp}`)
-                .then(res => refreshList())
-                .catch(err => console.log(err))
-            :
-            ToastAndroid.show("Please Select Blood Group To Update", ToastAndroid.LONG, ToastAndroid.TOP)
+        // typeof currentGroupValue !== 'undefined' ?
+        //     await api.put(`updateBldGrp/${id}/${blggrp}`)
+        //         .then(res => refreshList())
+        //         .catch(err => console.log(err))
+        //     :
+        //     ToastAndroid.show("Please Select Blood Group To Update", ToastAndroid.LONG, ToastAndroid.TOP)
 
 
 
@@ -139,7 +141,7 @@ console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
                         <TouchableOpacity
                             style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
 
-                            onPress={() => updateBloodGrp()}>
+                            onPress={() => updatePost()}>
                             <Text style={styles.textStyle}>Update</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -161,12 +163,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: height * .3,
+        // marginTop: height * .005,
 
 
     },
     modalView: {
-        height: height * .25,
+        height: height * .3,
         width: width * .95,
         margin: 20,
         backgroundColor: 'white',
@@ -207,10 +209,10 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: 'white',
-        padding: 16,
+        padding: 5,
     },
     dropdown: {
-        height: 50,
+        height: 80,
         borderColor: 'gray',
         borderWidth: 0.5,
         borderRadius: 8,
@@ -230,6 +232,7 @@ const styles = StyleSheet.create({
     },
     placeholderStyle: {
         fontSize: 16,
+
     },
     selectedTextStyle: {
         fontSize: 16,

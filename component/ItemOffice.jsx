@@ -224,7 +224,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 onRequestClose={() => togglePostModal(true)}
             >
 
-                <UpdatePostModalComponent officeId={office} toggleModal={togglePostModal}  />
+                <UpdatePostModalComponent id={id} officeId={office} toggleModal={togglePostModal}  />
             </Modal>
 
 
