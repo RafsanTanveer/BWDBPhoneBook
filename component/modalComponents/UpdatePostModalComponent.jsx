@@ -3,6 +3,7 @@ import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, ToastAndroid, L
 import { ThemeContext } from "../../context/ThemeContext";
 import { height, width } from '../../utility/ScreenDimensions'
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import api from '../../api/api'
 import { insertDataIntoGroupTable } from '../../database/InsertQueries'
 let postsList = []
@@ -28,6 +29,8 @@ const UpdatePostModalComponent = ({ officeId, currentGroup, toggleModal }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(true);
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
 
 
 console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
@@ -55,7 +58,7 @@ console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
             setposts(response.rows);
             response.rows.map((item, index) => {
                 const idx = index + 1
-                postsList = [...postsList, { label: '(' + idx + ') ' + item.office_name + ' ' + item.post_name + ' - ' + item.emp_name, value: item.post_code }]
+                postsList = [...postsList, { label: '(' + idx + ') ' + item.office_name + '\n' + item.post_name + '\n' + item.emp_name, value: item.post_code }]
             }
             )
 
@@ -108,16 +111,27 @@ console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
 
 
                     <View style={{ width: width * .85, marginRight: 10, marginBottom: 2 }}>
-                        <DropDownPicker
-                            style={{ zIndex: 1000 }}
-                            items={postsList}
-                            open={isOpen}
-                            setOpen={() => { setIsOpen(!isOpen) }}
-                            value={currentGroupValue}
-                            setValue={setCurrentGroupValue}
-                            maxHeight={450}
-                            placeholder="Blood Groups"
-                        // onChangeValue={() => sortByDistrict()}
+                        <Dropdown
+                            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={postsList}
+                            search
+                            maxHeight={500}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus ? 'Select Post' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value}
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            onChange={item => {
+                                setValue(item.value);
+                                setIsFocus(false);
+                            }}
+
                         />
                     </View>
 
@@ -147,26 +161,20 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
+        marginTop: height * .3,
 
 
     },
     modalView: {
-        height: height * .35,
-        width: width * .6,
+        height: height * .25,
+        width: width * .95,
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 10,
         paddingHorizontal: 35,
         paddingVertical: 10,
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
+
         elevation: 5,
         // borderWidth:1
 
@@ -197,6 +205,44 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
     },
+    container: {
+        backgroundColor: 'white',
+        padding: 16,
+    },
+    dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
+    icon: {
+        marginRight: 5,
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+
 });
 
 export default UpdatePostModalComponent
