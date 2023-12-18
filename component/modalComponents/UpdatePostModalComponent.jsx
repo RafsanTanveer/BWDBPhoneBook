@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, ToastAndroid,Linking, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, ToastAndroid, Linking, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import { ThemeContext } from "../../context/ThemeContext";
 import { height, width } from '../../utility/ScreenDimensions'
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../../api/api'
 import { insertDataIntoGroupTable } from '../../database/InsertQueries'
-
+let postsList = []
 import { getAllTableName } from '../../database/SelectQueries'
 let groupTables = [
     { label: "A+", value: 1 },
@@ -18,30 +18,71 @@ let groupTables = [
     { label: "O-", value: 8 }
 ]
 
-const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refreshList }) => {
+const UpdatePostModalComponent = ({ officeId, currentGroup, toggleModal }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [currentGroupValue, setCurrentGroupValue] = useState();
     const { currentTheme } = useContext(ThemeContext);
 
+    const [posts, setposts] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(true);
+
+
+console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+    console.log('officeId'+officeId);
 
     const closeModal = () => {
         toggleModal(false)
     }
 
+    useEffect(() => {
+        postsList = []
+        fetchData()
+    }, []);
 
-    const updateBloodGrp = async () => {
+    const fetchData = async () => {
+        setIsLoading(true);
 
-        console.log(currentGroupValue);
+        try {
+            setRefreshing(false);
+            const { data: response } = await api.get("getsuboffice", {
+                params: {
+                    office: officeId
+                }
+            });
+            setposts(response.rows);
+            response.rows.map((item, index) => {
+                const idx = index + 1
+                postsList = [...postsList, { label: '(' + idx + ') ' + item.office_name + ' ' + item.post_name + ' - ' + item.emp_name, value: item.post_code }]
+            }
+            )
+
+            // console.log(postsList);
+        } catch (error) {
+            __DEV__ && console.error(error.message);
+        }
+
+
+
+
+
+
+        setIsLoading(false);
+    }
+
+     const updatePost = async () => {
+
+        // console.log(currentGroupValue);
         // console.log(groupTables[currentGroupValue - 1].label);
 
-        const blggrp = typeof currentGroupValue !== 'undefined'? groupTables[currentGroupValue - 1].label:''
+        const blggrp = typeof currentGroupValue !== 'undefined' ? groupTables[currentGroupValue - 1].label : ''
 
         console.log('in update blood');
 
-        typeof currentGroupValue !== 'undefined'?
-        await api.put(`updateBldGrp/${id}/${blggrp}`)
+        typeof currentGroupValue !== 'undefined' ?
+            await api.put(`updateBldGrp/${id}/${blggrp}`)
                 .then(res => refreshList())
                 .catch(err => console.log(err))
             :
@@ -60,23 +101,16 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
 
             <View style={styles.centeredView}>
                 <View style={{ ...styles.modalView, borderColor: `${currentTheme}` }}>
-                    <View style={{ flexDirection: 'row', paddingVertical: height*.025 }}>
-                        <Text style={{ fontSize: height * .021, fontWeight: 'bold' }}>Update Blood Group</Text>
+                    <View style={{ flexDirection: 'row', paddingVertical: height * .025 }}>
+                        <Text style={{ fontSize: height * .021, fontWeight: 'bold' }}>Update Post</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginBottom: 6 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Current Blood Group : </Text>
-                        <Text style={{ fontWeight: 'bold' }}>{currentGroup}</Text>
-                    </View>
 
-                    <View style={{ flexDirection: 'row', marginBottom: 6 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Blood Group to update: </Text>
-                    </View>
 
-                    <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
+                    <View style={{ width: width * .85, marginRight: 10, marginBottom: 2 }}>
                         <DropDownPicker
                             style={{ zIndex: 1000 }}
-                            items={groupTables}
+                            items={postsList}
                             open={isOpen}
                             setOpen={() => { setIsOpen(!isOpen) }}
                             value={currentGroupValue}
@@ -95,7 +129,7 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
                             <Text style={styles.textStyle}>Update</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={{...styles.button, backgroundColor: `${currentTheme}`, elevation: 5}}
+                            style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
                             onPress={() => closeModal()}>
                             <Text style={{ ...styles.textStyle }}>Cancel</Text>
                         </TouchableOpacity>
@@ -124,7 +158,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         paddingHorizontal: 35,
-        paddingVertical:10,
+        paddingVertical: 10,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -165,4 +199,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default UpdateBloodGroupModalComponent
+export default UpdatePostModalComponent

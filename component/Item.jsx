@@ -63,11 +63,12 @@ const Item = ({ id,
     const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isCallModalVisible, setCallModalVisible] = useState(false);
     const [isCameraModalVisible, setCameraModalVisible] = useState(false);
     const [isBloodGroupUpdateVisible, setisBloodGroupUpdateVisible] = useState(false);
     const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
     const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
-
+    const [phnOrMsg, setphnOrMsg] = useState('phn');
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -77,8 +78,13 @@ const Item = ({ id,
     const [type, setType] = useState(Camera.Constants.Type.back);
 
 
-    const toggleModal = (isVisible) => {
+    const toggleModal = (isVisible, type) => {
+        setphnOrMsg(type)
         setModalVisible(isVisible);
+    };
+
+    const toggleCallModal = (isVisible) => {
+        setCallModalVisible(isVisible);
     };
 
     const toggleCameraModal = (isVisible) => {
@@ -401,7 +407,7 @@ const Item = ({ id,
                                             paddingHorizontal: 5,
                                             elevation: 3
                                         }}>
-                                                <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
                                     </TouchableOpacity>
                                 }
@@ -413,7 +419,7 @@ const Item = ({ id,
                         <View style={{ flexDirection: 'row', }}>
 
                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
-                           
+
                         </View>}
 
 
@@ -424,7 +430,9 @@ const Item = ({ id,
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                    onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
+                                        // onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
+                                        onPress={() => (toggleModal(true, 'phn'))}
+
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -479,7 +487,7 @@ const Item = ({ id,
                             mobile &&
                             <TouchableOpacity
                                 //toggleModal(true)
-                                onPress={() => (toggleModal(true))}
+                                onPress={() => (toggleModal(true,'msg'))}
                                 // onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',
@@ -542,7 +550,7 @@ const Item = ({ id,
                 visible={isModalVisible}
                 onRequestClose={() => toggleModal(true)}
             >
-                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
+                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} />
 
             </Modal>
 

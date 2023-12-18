@@ -285,7 +285,7 @@ const ExpendableDrawer = () => {
             setgeologyDesig(desigList.filter((it) => (it.cadre === '70')))
             seteconomicDesig(desigList.filter((it) => (it.cadre === '80')))
             setcomputerDesig(desigList.filter((it) => (it.cadre === '90')))
-            setmedicalDesig(desigList.filter((it) => (it.cadre === '39')))
+            setmedicalDesig(desigList.filter((it) => (it.cadre === '32')))
         }
 
     }, [desigList]);

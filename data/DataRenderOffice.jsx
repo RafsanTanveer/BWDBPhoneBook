@@ -93,7 +93,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     }
 
 
-  
+
 
 
 
@@ -168,7 +168,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                                 id={item.id}
                                 name={item.name}
                                 designation={item.designation}
-                                office={item.office}
+                                office={office_code}
                                 email={item.email}
                                 mobile={item.mobile}
                                 pabx={item.pabx}

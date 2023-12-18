@@ -20,6 +20,7 @@ import * as Contacts from 'expo-contacts'
 
 import { Picker } from '@react-native-picker/picker';
 import MakeCallModalComponent from '../component/MakeCallModalComponent'
+import UpdatePostModalComponent from '../component/modalComponents/UpdatePostModalComponent'
 import * as SQLite from 'expo-sqlite'
 
 import db from '../database/database'
@@ -40,15 +41,20 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
     const navigation = useNavigation();
 
-    const { pmisId,adminLevel } = useContext(AuthContext);
+    const { pmisId, adminLevel } = useContext(AuthContext);
 
 
     const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isPostUpdateVisible, setisPostUpdateVisible] = useState(false);
 
     const toggleModal = (isVisible) => {
         setModalVisible(isVisible);
+    };
+
+    const togglePostModal = (isVisible) => {
+        setisPostUpdateVisible(isVisible);
     };
 
     useEffect(() => {
@@ -119,9 +125,17 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
                     </View>
                     {photo ?
-                        <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," +  photo }} />
+                        <TouchableOpacity
+                            onPress={() => { togglePostModal(true) }}
+                            style={{}} >
+                            <Image style={styles.logo} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                        </TouchableOpacity>
                         :
-                        <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                        <TouchableOpacity
+                            onPress={() => { togglePostModal(true) }}
+                            style={{}} >
+                            <Image style={styles.place_holder_logo} source={require('../assets/person_photo_placeholder.jpg')} ></Image>
+                        </TouchableOpacity>
 
                     }
                 </View>
@@ -135,7 +149,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                             {
                                 adminLevel === 'superAdmin' ?
                                     <TouchableOpacity onPress={() => {
-                                        navigation.navigate('Biodata', { id:  id })
+                                        navigation.navigate('Biodata', { id: id })
                                     }}>
                                         <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID : {id}</Text>
                                     </TouchableOpacity>
@@ -144,47 +158,47 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
 
 
-                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{ name}  </Text>
+                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{name}  </Text>
                         </View>
                         {
-                             post ?
+                            post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: { post} { charge == 'C' ? ', cc' :  charge == 'A' ? ', Addl.' : ''} </Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {post} {charge == 'C' ? ', cc' : charge == 'A' ? ', Addl.' : ''} </Text>
                                 </View> : ''
                         }
 
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: { designation} </Text>
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: {designation} </Text>
                         </View>
 
                     </View>
 
                     {
-                         email &&
-                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${ email}`) }}  >
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{ email} </Text>
+                        email &&
+                        <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
                         </TouchableOpacity>
                     }
 
                     <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
                         {
-                             mobile &&
-                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:${ mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                            mobile &&
+                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:${mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{ mobile} </Text>
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
                             </TouchableOpacity>
                         }
                         {
-                             pabx &&
-                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${ pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                            pabx &&
+                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{ pabx} </Text>
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
-                             mobile &&
+                            mobile &&
                             <TouchableOpacity
-                                    onPress={() => (toggleModal(true))}
+                                onPress={() => (toggleModal(true))}
                                 style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                             </TouchableOpacity>
@@ -202,6 +216,18 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
             >
                 <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
             </Modal>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isPostUpdateVisible}
+                onRequestClose={() => togglePostModal(true)}
+            >
+
+                <UpdatePostModalComponent officeId={office} toggleModal={togglePostModal}  />
+            </Modal>
+
+
         </TouchableOpacity>
     )
 }

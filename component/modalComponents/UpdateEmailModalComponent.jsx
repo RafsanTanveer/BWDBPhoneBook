@@ -69,7 +69,7 @@ const UpdateEmailModalComponent = ({ id, currentMobileNumber, toggleModal, refre
                     </View>
 
                     <View style={{ flexDirection: 'row', marginBottom: 6 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Mobile Number to update: </Text>
+                        <Text style={{ fontWeight: 'bold' }}>Email to update: </Text>
                     </View>
 
                     <View style={{ width: width * .45, marginRight: 10, marginBottom: 2 }}>
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         height: height * .35,
-        width: width * .85,
+        width: width * .75,
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 10,
@@ -135,7 +135,9 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        // elevation: 5,
+        borderWidth: 1,
+        borderColor: 'blue',
+        elevation:5
     },
     button: {
         borderRadius: 10,

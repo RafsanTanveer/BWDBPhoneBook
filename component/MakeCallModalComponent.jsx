@@ -2,17 +2,16 @@ import React, { useState, useContext } from 'react';
 import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, TouchableOpacity, Dimensions } from 'react-native';
 import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
+import {height, width} from '../utility/ScreenDimensions'
 
 
-
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 
 const phoneCallIcon = '../assets/icons/phoneCall.png'
 const whatsappIcon = '../assets/icons/whatsapp.png'
 
-const MakeCallModalComponent = ({ number, toggleModal }) => {
+const MakeCallModalComponent = ({ number, toggleModal, type }) => {
 
+    __DEV__ && console.log(type);
     const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 //`, ${presentCharge}`
@@ -35,10 +34,29 @@ const MakeCallModalComponent = ({ number, toggleModal }) => {
 
     }
 
+    const callViaWhatsapp = () => {
+
+        const whatsappUrl = `whatsapp://send?phone=+88${number}`
+        Linking.openURL(whatsappUrl)
+        closeModal()
+
+    }
+
     const sendMsgViaSimCard = () => {
         const url = (Platform.OS === 'android')
             ? `sms:${number}?body=${msg}`
             : `sms:/open?addresses=${number}&body=${msg}`;
+
+        Linking.openURL(url)
+        closeModal()
+
+
+    }
+    // `tel:${mobile}`
+    const callViaSimCard = () => {
+        const url = (Platform.OS === 'android')
+            ? `tel:${number}`
+            : `tel:/open?addresses=${number}&body=${msg}`;
 
         Linking.openURL(url)
         closeModal()
@@ -51,14 +69,17 @@ const MakeCallModalComponent = ({ number, toggleModal }) => {
         <View style={styles.centeredView}>
 
             <View style={styles.centeredView}>
-                <View style={styles.modalView}>
+                <View style={{...styles.modalView, borderColor: `${currentTheme}`}}>
+                    {type === 'phn' ? <Text style={{ fontWeight: 'bold', fontSize: height * .025, padding: height * .025, textAlign:'center' }} >Make a Call</Text> : <Text style={{ fontWeight: 'bold', fontSize: height * .02, padding: height * .025 }} >Send a Message</Text>}
                     <TouchableOpacity
                         style={{
                             flexDirection: 'row', borderRadius: 5, margin: 2,
-                            // borderColor: 'blue',
-                            // borderWidth: 1,
+
                         }}
-                        onPress={() => sendMsgViaSimCard()}>
+
+
+                        onPress={() => type === 'phn' ? callViaSimCard() : sendMsgViaSimCard()}>
+
                         <View style={{
                             flex: 1,
                             justifyContent: 'center',
@@ -90,7 +111,7 @@ const MakeCallModalComponent = ({ number, toggleModal }) => {
                             // borderColor: 'blue',
                             // borderWidth: 1,
                         }}
-                        onPress={() => sendMsgViaWhatsapp()}>
+                        onPress={() => type === 'phn' ? callViaWhatsapp(): sendMsgViaWhatsapp()}>
                         <View style={{
                             flex: 1,
                             justifyContent: 'center',
@@ -117,7 +138,7 @@ const MakeCallModalComponent = ({ number, toggleModal }) => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
+                        style={{ ...styles.button, ...styles.buttonClose, backgroundColor:`${currentTheme}`, elevation:5 }}
                         onPress={() => closeModal()}>
                         <Text style={styles.textStyle}>Cancel</Text>
                     </TouchableOpacity>
@@ -137,12 +158,13 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     modalView: {
-        height: height * .25,
+        height: height * .3,
         width: width * .6,
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 10,
-        padding: 35,
+        paddingHorizontal: 35,
+        paddingVertical:10,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -151,15 +173,17 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        // elevation: 5,
+        elevation: 5,
+        borderWidth: 1,
+
     },
     button: {
         borderRadius: 10,
         paddingHorizontal: 15,
         paddingVertical: 5,
-        borderColor: 'blue',
-        borderWidth: 1,
-        marginTop: 15
+
+
+        marginTop: 8
 
     },
     buttonOpen: {
@@ -169,7 +193,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#2196F3',
     },
     textStyle: {
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
     },
