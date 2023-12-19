@@ -19,7 +19,7 @@ let groupTables = [
     { label: "O-", value: 8 }
 ]
 
-const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) => {
+const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal, refreshList }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [currentGroupValue, setCurrentGroupValue] = useState();
@@ -58,7 +58,7 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) =
             setposts(response.rows);
             response.rows.map((item, index) => {
                 const idx = index + 1
-                postsList = [...postsList, { label: '(' + idx + ') ' + item.post_name + '\n' + item.office_name + '\n' + item.emp_name, value: item.post_code }]
+                postsList = [...postsList, { label: '(' + idx + ') ' + item.post_name + '\n' + item.office_name + '\n' + item.emp_name, value: item.post_code + '-' + item.office_code }]
             }
             )
 
@@ -78,6 +78,12 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) =
     const updatePost = async () => {
 
         console.log(value);
+        const params = value.split("-");
+        // console.log(params);
+        const postNo = params[0]
+        const officeNo = params[1]
+
+        console.log(postNo+' '+officeNo);
 
         // console.log(currentGroupValue);
         // console.log(groupTables[currentGroupValue - 1].label);
@@ -87,13 +93,12 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) =
         // console.log('in update blood');
 
         // typeof currentGroupValue !== 'undefined' ?
-        //     await api.put(`updateBldGrp/${id}/${blggrp}`)
-        //         .then(res => refreshList())
-        //         .catch(err => console.log(err))
-        //     :
-        //     ToastAndroid.show("Please Select Blood Group To Update", ToastAndroid.LONG, ToastAndroid.TOP)
+        await api.put(`updatepost/${id}/${postNo}/${officeNo}`)
+            .then(res => refreshList())
+            .catch(err => console.log(err))
+        // :            ToastAndroid.show("Please Select Blood Group To Update", ToastAndroid.LONG, ToastAndroid.TOP)
 
-
+        closeModal()
 
     }
 
@@ -103,15 +108,11 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) =
 
     return (
         <View style={styles.centeredView}>
-
             <View style={styles.centeredView}>
                 <View style={{ ...styles.modalView, borderColor: `${currentTheme}` }}>
                     <View style={{ flexDirection: 'row', paddingVertical: height * .025 }}>
                         <Text style={{ fontSize: height * .021, fontWeight: 'bold' }}>Update Post</Text>
                     </View>
-
-
-
                     <View style={{ width: width * .85, marginRight: 10, marginBottom: 2 }}>
                         <Dropdown
                             style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -140,7 +141,6 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) =
                     <View style={{ flexDirection: 'row' }} >
                         <TouchableOpacity
                             style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
-
                             onPress={() => updatePost()}>
                             <Text style={styles.textStyle}>Update</Text>
                         </TouchableOpacity>
@@ -161,7 +161,7 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal }) =
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
         // marginTop: height * .005,
 

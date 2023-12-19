@@ -37,7 +37,7 @@ let selectedPId = []
 
 
 
-const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, selected, photo, index, post, charge, isAdmin, currentTheme, length }) => {
+const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, selected, photo, index, post, charge, isAdmin, currentTheme, length, reload }) => {
 
     const navigation = useNavigation();
 
@@ -224,7 +224,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 onRequestClose={() => togglePostModal(true)}
             >
 
-                <UpdatePostModalComponent id={id} officeId={office} toggleModal={togglePostModal}  />
+                <UpdatePostModalComponent id={id} officeId={office} toggleModal={togglePostModal} refreshList={reload} />
             </Modal>
 
 

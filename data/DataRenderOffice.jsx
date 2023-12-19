@@ -182,6 +182,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                                 isAdmin={isAdmin}
                                 currentTheme={currentTheme}
                                 length={filteredData.length}
+                                reload={fetchData}
                             />
 
 
