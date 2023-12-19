@@ -120,8 +120,9 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal, ref
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
+                            // itemTextStyle={{ backgroundColor:'red'}}
                             data={postsList}
-                            search
+                            // search
                             maxHeight={500}
                             labelField="label"
                             valueField="value"
@@ -213,10 +214,11 @@ const styles = StyleSheet.create({
     },
     dropdown: {
         height: 80,
-        borderColor: 'gray',
+        borderColor: 'blue',
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
+        backgroundColor:'aquq'
     },
     icon: {
         marginRight: 5,
