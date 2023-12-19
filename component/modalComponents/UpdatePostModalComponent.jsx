@@ -77,13 +77,13 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal, ref
 
     const updatePost = async () => {
 
-        console.log(value);
+        // console.log(value);
         const params = value.split("-");
         // console.log(params);
         const postNo = params[0]
         const officeNo = params[1]
 
-        console.log(postNo+' '+officeNo);
+        // console.log(postNo+' '+officeNo);
 
         // console.log(currentGroupValue);
         // console.log(groupTables[currentGroupValue - 1].label);
@@ -169,9 +169,9 @@ const styles = StyleSheet.create({
 
     },
     modalView: {
-        height: height * .3,
+        height: height * .25,
         width: width * .95,
-        margin: 20,
+        margin: width*.02,
         backgroundColor: 'white',
         borderRadius: 10,
         paddingHorizontal: 35,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     dropdown: {
-        height: 80,
+        height: 60,
         borderColor: 'blue',
         borderWidth: 0.5,
         borderRadius: 8,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
 
     },
     selectedTextStyle: {
-        fontSize: 16,
+        fontSize: 14,
     },
     iconStyle: {
         width: 20,

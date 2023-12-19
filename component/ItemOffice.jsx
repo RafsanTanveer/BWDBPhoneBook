@@ -121,9 +121,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 <Text style={{color:'black'}} >{index + 1}</Text>
             </View> */}
                 <View style={{ justifyContent: 'center', alignContent: 'center', }}>
-                    <View style={{ borderRadius: 10 }}>
-                        <Text style={{ color: 'black', fontWeight: 'bold' }} >{index + 1}</Text>
-                    </View>
+
                     {photo ?
                         <TouchableOpacity
                             onPress={() => { togglePostModal(true) }}
@@ -138,12 +136,19 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         </TouchableOpacity>
 
                     }
+                    <View style={{
+                        elevation: 3,
+                        backgroundColor: `${currentTheme}`,
+                        alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5)
+                    }}>
+                        <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }} >{index + 1}</Text>
+                    </View>
                 </View>
                 <View style={{
                     flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
                     borderBottomWidth: StyleSheet.hairlineWidth,
                 }}>
-                    <View style={{ flex: 1, }}>
+                    <View style={{ flex: 1,paddingVertical:10 }}>
                         <View style={{ flex: 1, }}>
 
                             {
@@ -163,7 +168,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>Po: {post} {charge == 'C' ? ', cc' : charge == 'A' ? ', Addl.' : ''} </Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>Po: {post} {charge == 'C' ? ', cc' : charge == 'A' ? ', Addl.' : ''} </Text>
                                 </View> : ''
                         }
 
