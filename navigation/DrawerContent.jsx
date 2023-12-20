@@ -4,7 +4,7 @@ import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { imgSizeMini, txtSizeNormal, txtSizeBig } from "../utility/Scalling";
-import {useFonts} from 'expo-font'
+import { useFonts } from 'expo-font'
 const { width, height } = Dimensions.get('window');
 import { Images } from '../utility/Images';
 
@@ -37,13 +37,14 @@ const DrawerContent = (props) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
             <View style={{
-                backgroundColor: `${currentTheme}95`, //backgroundColor: `${currentTheme}50`,  for opacity
+                backgroundColor: `${currentTheme}30`,
+                //backgroundColor: `${currentTheme}50`,  for opacity
                 height: 200,
                 flexDirection: 'row',
                 paddingVertical: 15,
                 paddingHorizontal: 5
             }}>
-                <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5 }}>
+                <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5, }}>
                     {
                         photo ?
                             <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
@@ -52,11 +53,14 @@ const DrawerContent = (props) => {
 
                     }
                 </View>
-                <View style={{ flex: 3.5 }}>
-                    <Text style={{ fontSize: width * .04, fontWeight: '600' }}>{name}</Text>
-                    <Text style={{ fontSize: width * .033, marginTop: 3 }}>{presentPost} {presentCharge === 'C' ? ',CC' : ''}</Text>
-                    <Text style={{ fontSize: width * .033, marginTop: 3 }}>{presentOffice}</Text>
-                    <Text style={{ fontSize: width * .033, marginTop: 3 }}>{officeAddres}</Text>
+                <View style={{ flex: 4.2 }}>
+                    <Text style={{ fontSize: width * .045, fontWeight: '700' }}>{name}</Text>
+                    {
+                        presentPost &&
+                        <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentPost} {presentCharge === 'C' ? ', CC' : ''}</Text>
+                    }
+                    <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentOffice}</Text>
+                    <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{officeAddres}</Text>
                 </View>
             </View>
             {/* <View style={{
@@ -86,16 +90,32 @@ const DrawerContent = (props) => {
                 }}>{name}</Text>
             </View> */}
 
-            <DrawerContentScrollView style={{ backgroundColor: "#ffffff",marginTop:10 }} {...props}>
+            <DrawerContentScrollView style={{ backgroundColor: "#ffffff", marginTop: 10 }} {...props}>
                 <ExpendableDrawer />
             </DrawerContentScrollView>
 
             <TouchableOpacity style={{ backgroundColor: '#ffffff' }} onPress={() => {
                 logout();
             }}>
-                <View style={{ margin: 20, backgroundColor: `${currentTheme}95`, height: 30, width: 80, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
+                <View
+                    style={{
+                        // flex:1,
+                        flexDirection:'row',
+                        margin: 20,
+                        backgroundColor: `${currentTheme}99`,
+                        height: 30,
+                        width: width * .25,
+                        borderRadius: height * .005,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                    <View style={{ flex: 1.2, }} >
+                     <Image style={{ height: width * .04, width: width * .04,  marginHorizontal:8 }} source={Images['logout']} />
+                   </View>
 
-                    <Text style={{ fontSize: 15, fontWeight: '600', color: 'white' }}>Logout</Text>
+                    <View style={{ flex: 2.5, }} >
+                        <Text style={{ fontSize: 15, fontWeight: '600', color: 'white' }}>Logout</Text>
+                    </View>
 
                 </View>
             </TouchableOpacity>

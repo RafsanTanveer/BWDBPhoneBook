@@ -146,9 +146,9 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 </View>
                 <View style={{
                     flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
-                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    borderBottomWidth: StyleSheet.hairlineWidth,paddingVertical:10
                 }}>
-                    <View style={{ flex: 1,paddingVertical:10 }}>
+                    <View style={{ flex: 1,}}>
                         <View style={{ flex: 1, }}>
 
                             {
@@ -229,7 +229,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 onRequestClose={() => togglePostModal(true)}
             >
 
-                <UpdatePostModalComponent id={id} officeId={office} toggleModal={togglePostModal} refreshList={reload} />
+                <UpdatePostModalComponent id={id}  name={name} desig={designation} officeId={office} toggleModal={togglePostModal} refreshList={reload} />
             </Modal>
 
 

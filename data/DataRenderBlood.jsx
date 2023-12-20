@@ -715,7 +715,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 const textData = text.toLocaleLowerCase();
 
 
-                    return itemData.indexOf(textData) > -1;
+                return itemData.indexOf(textData) > -1;
             });
             setFilteredData(newData)
             setSearchDesig(text)
@@ -816,46 +816,109 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
                     <View style={{ flex: 10, flexDirection: 'row' }}>
                         <View style={{ flex: 1 }}>
-                            <TextInput
-                                selectionColor={'black'}       // for changing curcsor color
-                                style={{
-                                    height: height / 20,
-                                    width: "97%",
-                                    borderRadius: 5,
-                                    marginBottom: 5,
-                                    marginLeft: 5,
-                                    borderColor: `${currentTheme}`,//'#6750a4',
-                                    borderWidth: 2,
-                                    paddingLeft: 15,
-                                    backgroundColor: 'white'
-                                }}
-                                placeholder="Search Name"
-                                value={search}
-                                //underlineColorAndroid='trasparent'
-                                onChangeText={(text) => { searchFilter(text) }}
-                                mode='outlined'
-                            />
+                           <View style={{  }} >
+                             <TextInput
+                                 selectionColor={'black'}       // for changing curcsor color
+                                 style={{
+                                     height: height / 20,
+                                     width: "97%",
+                                     borderRadius: 5,
+                                     marginBottom: 5,
+                                     marginLeft: 5,
+                                     borderColor: `${currentTheme}`,//'#6750a4',
+                                     borderWidth: 2,
+                                     paddingLeft: 15,
+                                     backgroundColor: 'white'
+                                 }}
+                                 placeholder="Search Name"
+                                 value={search}
+                                 //underlineColorAndroid='trasparent'
+                                 onChangeText={(text) => { searchFilter(text) }}
+                                 mode='outlined'
+                             />
+                            </View>
+                            {search ?
+                                <TouchableOpacity
+                                    style={{
+                                        alignContent: 'center',
+                                        justifyContent: 'center',
+                                        alignSelf: 'flex-end',
+                                        position: 'absolute',
+                                        marginTop: height * .01,
+                                        paddingRight: 5
+
+
+                                    }}
+                                    onPress={() => (
+                                        searchFilter("")
+                                        , setCurrentDistValue(""),
+                                        setdistName(""),
+                                        setCurrentChargeValue("")
+
+                                    )}
+                                >
+                                    <Image
+                                        style={{
+                                            height: 22,
+                                            width: 22,
+                                        }}
+                                        source={Images['close']}
+                                    />
+                                </TouchableOpacity> : ""
+                            }
                         </View>
                         <View style={{ flex: 1 }}>
-                            <TextInput
-                                selectionColor={'black'}       // for changing curcsor color
-                                style={{
-                                    height: height / 20,
-                                    width: "97%",
-                                    borderRadius: 5,
-                                    marginBottom: 5,
-                                    marginLeft: 5,
-                                    borderColor: `${currentTheme}`,//'#6750a4',
-                                    borderWidth: 2,
-                                    paddingLeft: 15,
-                                    backgroundColor: 'white'
-                                }}
-                                placeholder="Search Designation"
-                                value={searchDesig}
-                                //underlineColorAndroid='trasparent'
-                                onChangeText={(text) => { searchFilterDesignation(text) }}
-                                mode='outlined'
-                            />
+                            <View style={{}} >
+                                <TextInput
+                                    selectionColor={'black'}       // for changing curcsor color
+                                    style={{
+                                        height: height / 20,
+                                        width: "97%",
+                                        borderRadius: 5,
+                                        marginBottom: 5,
+                                        marginLeft: 5,
+                                        borderColor: `${currentTheme}`,//'#6750a4',
+                                        borderWidth: 2,
+                                        paddingLeft: 15,
+                                        backgroundColor: 'white'
+                                    }}
+                                    placeholder="Search Designation"
+                                    value={searchDesig}
+                                    //underlineColorAndroid='trasparent'
+                                    onChangeText={(text) => { searchFilterDesignation(text) }}
+                                    mode='outlined'
+                                />
+                            </View>
+                            {searchDesig ?
+                                <TouchableOpacity
+                                    style={{
+                                        alignContent: 'center',
+                                        justifyContent: 'center',
+                                        alignSelf: 'flex-end',
+                                        position: 'absolute',
+                                        marginTop: height * .01,
+                                        paddingRight: 5
+
+
+                                    }}
+                                    onPress={() => (
+                                        searchFilter("")
+                                        , setCurrentDistValue(""),
+                                        setdistName(""),
+                                        setCurrentChargeValue(""),
+                                        setSearchDesig("")
+
+                                    )}
+                                >
+                                    <Image
+                                        style={{
+                                            height: 22,
+                                            width: 22,
+                                        }}
+                                        source={Images['close']}
+                                    />
+                                </TouchableOpacity> : ""
+                            }
                         </View>
                         <View>
 
@@ -911,35 +974,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 </View>
 
 
-                {search ?
-                    <TouchableOpacity
-                        style={{
-                            alignContent: 'center',
-                            justifyContent: 'center',
-                            alignSelf: 'flex-end',
-                            position: 'absolute',
-                            marginTop: height * .01,
-                            paddingRight: canCallBulk === 'true' ? width * .135 : width * .04
 
-
-                        }}
-                        onPress={() => (
-                            searchFilter("")
-                            , setCurrentDistValue(""),
-                            setdistName(""),
-                            setCurrentChargeValue("")
-
-                        )}
-                    >
-                        <Image
-                            style={{
-                                height: 22,
-                                width: 22,
-                            }}
-                            source={Images['close']}
-                        />
-                    </TouchableOpacity> : ""
-                }
                 {refreshing ? <ActivityIndicator /> : null}
                 {
                     // notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
@@ -950,39 +985,39 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 {
 
 
-                        <View style={{
+                    <View style={{
 
-                            marginRight: 5, marginLeft: 6, marginBottom: 3, marginTop: 3,
-                            flexDirection: 'row',
-                            borderRadius: 10,
-                            justifyContent: 'space-between',
-
-
-                        }}>
+                        marginRight: 5, marginLeft: 6, marginBottom: 3, marginTop: 3,
+                        flexDirection: 'row',
+                        borderRadius: 10,
+                        justifyContent: 'space-between',
 
 
-                            <View style={{ flex: 1 }}>
+                    }}>
 
-                                <View style={{ width: width * .50, marginRight: 10, marginBottom: 2 }}>
-                                    <DropDownPicker
-                                        style={{ zIndex: 1000 }}
-                                        items={tempDist}
-                                        open={isOpen}
-                                        setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
-                                        value={currentDistValue}
-                                        setValue={setCurrentDistValue}
-                                        maxHeight={450}
-                                        placeholder="Select Office Location"
-                                        onChangeValue={() => sortByDistrict()}
-                                    />
-                                </View>
 
+                        <View style={{ flex: 1 }}>
+
+                            <View style={{ width: width * .50, marginRight: 10, marginBottom: 2 }}>
+                                <DropDownPicker
+                                    style={{ zIndex: 1000 }}
+                                    items={tempDist}
+                                    open={isOpen}
+                                    setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
+                                    value={currentDistValue}
+                                    setValue={setCurrentDistValue}
+                                    maxHeight={450}
+                                    placeholder="Select Office Location"
+                                    onChangeValue={() => sortByDistrict()}
+                                />
                             </View>
 
-
-
-
                         </View>
+
+
+
+
+                    </View>
                 }
 
 

@@ -437,7 +437,7 @@ const ExpendableDrawer = () => {
                                                         source={require(rightArrow)}
                                                         style={styles.iconStyle}
                                                     />
-                                                )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                                )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                         ))
                                     }
 
@@ -476,7 +476,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -513,7 +513,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -552,7 +552,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
 
                                     ))
                                 }
@@ -590,7 +590,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -628,7 +628,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
                             </List.Accordion>
@@ -663,7 +663,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -699,7 +699,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
                             </List.Accordion>
@@ -735,7 +735,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -771,7 +771,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -809,7 +809,7 @@ const ExpendableDrawer = () => {
                                                     source={require(rightArrow)}
                                                     style={styles.iconStyle}
                                                 />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} title={it.designame} />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
                                     ))
                                 }
 
@@ -1373,7 +1373,7 @@ const ExpendableDrawer = () => {
                                     onPress={() => handlePress(20)}  >
 
                                     {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
-                                    <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 3 }}>
+                                    <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 3, marginLeft: width * .1, }}>
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[0])} style={{ ...styles.themeStyle, backgroundColor: themeColors[0] }} />
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[3])} style={{ ...styles.themeStyle, backgroundColor: themeColors[3] }} />
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[6])} style={{ ...styles.themeStyle, backgroundColor: themeColors[6] }} />
@@ -1405,7 +1405,8 @@ const ExpendableDrawer = () => {
 
 
                                                 backgroundColor: `${currentTheme}`,
-                                                marginRight: 6,
+                                                // marginRight: 6,
+                                                marginLeft:width*.1,
                                                 borderRadius: height * .005,
                                                 alignContent: 'center',
                                                 justifyContent: 'center'
@@ -1471,8 +1472,14 @@ const styles = StyleSheet.create({
     },
     titlestyle: {
         // fontFamily: 'imperial-normal',
-        fontWeight: 'normal',
-        fontWeight:"bold"
+        // fontWeight: 'normal',
+        fontWeight: "bold"
+    },
+    innerTitlestyle: {
+        // fontFamily: 'imperial-normal',
+        // fontWeight: 'normal',
+        fontWeight: "bold",
+        fontSize: width * .036
     },
     themeStyle: {
         height: width * .080,

@@ -51,6 +51,8 @@ const Item = ({ id,
     length,
     reloadList }) => {
 
+    console.log(designation, post);
+
     const netInfo = useNetInfo();
 
     const presentCharge = Charges(charge)
@@ -364,7 +366,7 @@ const Item = ({ id,
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
                                 </View>
                                 :
                                 charge === 'C' ?
@@ -430,8 +432,8 @@ const Item = ({ id,
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                        // onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
-                                        onPress={() => (toggleModal(true, 'phn'))}
+                                    // onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
+                                    onPress={() => (toggleModal(true, 'phn'))}
 
                                     style={{
                                         alignItems: 'center',
@@ -487,7 +489,7 @@ const Item = ({ id,
                             mobile &&
                             <TouchableOpacity
                                 //toggleModal(true)
-                                onPress={() => (toggleModal(true,'msg'))}
+                                onPress={() => (toggleModal(true, 'msg'))}
                                 // onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',

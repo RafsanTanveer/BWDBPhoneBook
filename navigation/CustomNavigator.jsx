@@ -36,7 +36,7 @@ const CustomDrawer = ({ }) => {
             screenOptions={{
                 drawerStyle: {
                     backgroundColor: '#c6cbef',
-                    width: width * .7,
+                    width: width * .78,
                 },
 
                 headerTintColor: 'white',

@@ -19,7 +19,7 @@ let groupTables = [
     { label: "O-", value: 8 }
 ]
 
-const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal, refreshList }) => {
+const UpdatePostModalComponent = ({ id, name, desig, officeId, currentGroup, toggleModal, refreshList }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [currentGroupValue, setCurrentGroupValue] = useState();
@@ -110,8 +110,14 @@ const UpdatePostModalComponent = ({ id, officeId, currentGroup, toggleModal, ref
         <View style={styles.centeredView}>
             <View style={styles.centeredView}>
                 <View style={{ ...styles.modalView, borderColor: `${currentTheme}` }}>
-                    <View style={{ flexDirection: 'row', paddingVertical: height * .025 }}>
-                        <Text style={{ fontSize: height * .021, fontWeight: 'bold' }}>Update Post</Text>
+                    <View style={{ flexDirection: 'column', alignContent: 'center', textAlign: 'center' }}>
+                        <View style={{ paddingVertical: height * .012, }} >
+                         <Text style={{ fontSize: height * .022, fontWeight: 'bold', textAlign: 'center' }}>Update Post</Text>
+                       </View>
+                        <View style={{ paddingBottom: height * .010 }} >
+                         <Text Text style={{ fontSize: height * .019, fontWeight: 'bold', textAlign: 'center' }}>{name}</Text>
+                         <Text Text style={{ fontSize: height * .016, fontWeight: 'bold', textAlign: 'center' }}>{desig}</Text>
+                       </View>
                     </View>
                     <View style={{ width: width * .85, marginRight: 10, marginBottom: 2 }}>
                         <Dropdown
@@ -169,9 +175,9 @@ const styles = StyleSheet.create({
 
     },
     modalView: {
-        height: height * .25,
+        height: height * .3,
         width: width * .95,
-        margin: width*.02,
+        margin: width * .02,
         backgroundColor: 'white',
         borderRadius: 10,
         paddingHorizontal: 35,
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        backgroundColor:'aquq'
+        backgroundColor: 'aquq'
     },
     icon: {
         marginRight: 5,

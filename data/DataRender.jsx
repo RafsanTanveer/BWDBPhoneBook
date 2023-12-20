@@ -410,7 +410,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         setHigherPostForCurrentDesig(higherPost)
 
-        __DEV__ && console.log(designation, '---------higherPost  ---------------------------', higherPost);
+        __DEV__ && console.log(designation, '---------higherPost /////  ---------------------------', higherPost);
 
         try {
             setRefreshing(false);
@@ -563,7 +563,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
-
+                console.log(response.rows);
                 const dataWithSelected = data.map(item => (
                     item = { ...item, selected: 'false' }
 
@@ -768,15 +768,18 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         const desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig";
         const snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority";
         setseniorityText(snrTxt);
+        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
 
         try {
             setRefreshing(false);
 
-
+            console.log('777777777777777777777777777777777777777777777777777777777777777777777777777777777777' + '        ' + desigUrl + '  ' + desig_code);
 
 
             const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
             const data = response.rows;
+
+           
 
             const dataWithSelected = data.map(item => (
                 item = { ...item, selected: 'false' }
