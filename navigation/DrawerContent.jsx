@@ -28,7 +28,7 @@ const DrawerContent = (props) => {
     // }, [fontsLoaded]);
 
     const navigation = useNavigation();
-    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
+    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, pmisId } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 
 
@@ -44,14 +44,21 @@ const DrawerContent = (props) => {
                 paddingVertical: 15,
                 paddingHorizontal: 5
             }}>
-                <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5, }}>
-                    {
-                        photo ?
-                            <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
-                            :
-                            <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={Images['placeHolderImg']} />
+                <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5, alignContent: 'center', justifyContent: 'center', }}>
+                    <View style={{ flex: 1, flexDirection: 'column', }} >
+                        <View style={{ alignContent: 'center', }} >
+                            {
+                                photo ?
+                                    <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                                    :
+                                    <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={Images['placeHolderImg']} />
 
-                    }
+                            }
+                        </View>
+                        {/* <View style={{}} >
+                            <Text style={{ textAlign: 'center', fontSize: width * .035, fontWeight: '700', marginTop: 5 }}>{pmisId}</Text>
+                        </View> */}
+                    </View>
                 </View>
                 <View style={{ flex: 4.2 }}>
                     <Text style={{ fontSize: width * .045, fontWeight: '700' }}>{name}</Text>
@@ -100,7 +107,7 @@ const DrawerContent = (props) => {
                 <View
                     style={{
                         // flex:1,
-                        flexDirection:'row',
+                        flexDirection: 'row',
                         margin: 20,
                         backgroundColor: `${currentTheme}99`,
                         height: 30,
@@ -110,8 +117,8 @@ const DrawerContent = (props) => {
                         justifyContent: 'center'
                     }}>
                     <View style={{ flex: 1.2, }} >
-                     <Image style={{ height: width * .04, width: width * .04,  marginHorizontal:8 }} source={Images['logout']} />
-                   </View>
+                        <Image style={{ height: width * .04, width: width * .04, marginHorizontal: 8 }} source={Images['logout']} />
+                    </View>
 
                     <View style={{ flex: 2.5, }} >
                         <Text style={{ fontSize: 15, fontWeight: '600', color: 'white' }}>Logout</Text>

@@ -229,7 +229,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     let charge = Charges(presentCharge)
-    __DEV__ && console.log(charge);
+    // __DEV__ && console.log(charge);
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
     let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
@@ -563,7 +563,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
-                console.log(response.rows);
+                // console.log(response.rows);
                 const dataWithSelected = data.map(item => (
                     item = { ...item, selected: 'false' }
 
@@ -603,9 +603,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 /////////////////////// district calculation //////////////////////////
-                createDesignationTable(tablename)
+                // createDesignationTable(tablename)
 
-                insertDataIntoDesignationTable(tablename, data)
+                // insertDataIntoDesignationTable(tablename, data)
 
 
                 //////////////////////////////////////// UNREACHABLE CODE /////////////////////////////////////
@@ -779,7 +779,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
             const data = response.rows;
 
-           
+
 
             const dataWithSelected = data.map(item => (
                 item = { ...item, selected: 'false' }

@@ -43,7 +43,7 @@ export const createDesignationListTable = (tableName) => {
      return new Promise((resolve, reject) => {
           db.transaction((tx) => {
                tx.executeSql(
-                    `CREATE TABLE IF NOT EXISTS designation (
+                    `CREATE TABLE IF NOT EXISTS ${tableName} (
                                 cadre       TEXT,
                                 paygrade    TEXT,
                                 desig       TEXT,

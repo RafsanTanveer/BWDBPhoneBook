@@ -16,6 +16,7 @@ import db from '../database/database'
 import Images from '../utility/Images'
 import { useFonts } from 'expo-font'
 import { useNetInfo } from "@react-native-community/netinfo";
+import { getAllInfoFromTable, getAllTableName } from '../database/SelectQueries'
 
 
 
@@ -51,6 +52,7 @@ const requestIcon = '../assets/icons/request.png'
 const aprIcon = '../assets/icons/apr.png'
 const staffListIcon = '../assets/icons/staff-list.png'
 const bloodsearch = '../assets/icons/bloodsearch.png'
+const others = '../assets/icons/others.png'
 
 //*******************************************icons ********************************************** */
 
@@ -84,6 +86,7 @@ const ExpendableDrawer = () => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [desigList, setdesigList] = useState([])
+    const [desigListOthers, setdesigListOthers] = useState([])
     const [refreshing, setRefreshing] = useState(true)
     const [offices, setoffices] = useState()
 
@@ -115,47 +118,43 @@ const ExpendableDrawer = () => {
 
 
 
-            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
-                db.transaction((tx) => {
-                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
-                        resolve([tableExistsResult, null]);
-                    });
-                });
-            });
+            // const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
+            //     db.transaction((tx) => {
+            //         tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
+            //             resolve([tableExistsResult, null]);
+            //         });
+            //     });
+            // });
 
-            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
+
+
+            // const tableNames = tableExistsResult.rows._array.map((table) => table.name);
             // __DEV__ && console.log('Total table = ', tableNames.length);
             // __DEV__ && console.log('Table names:', tableNames);
 
+            // const tableExists = tableNames.includes('designation');
+
+
+
+            const tablenames = await getAllTableName()
+
+            const tableNames = tablenames.map((table) => table.name);
+            // console.log(tableNames);
+
             const tableExists = tableNames.includes('designation');
+
+
 
             if (tableExists) {
 
+                const designationTableContent = await getAllInfoFromTable("designation")
 
-                await new Promise((resolve, reject) => {
-                    __DEV__ && console.log('desig table  exists [][][][][][][][][][][][][]');
+                setdesigList(designationTableContent);
+                setDesignationContext(designationTableContent)
 
-                    db.transaction((tx) => {
+                const desiglistothersTableContent = await getAllInfoFromTable("designationothers")
 
-
-                        tx.executeSql(
-                            `SELECT * FROM designation`,
-                            [],
-                            (_, result) => {
-                                const desig = result.rows._array
-                                // console.log('desig table extist ____________________________________________________',desig);
-                                setdesigList(desig);
-                                setDesignationContext(desig)
-                            },
-                            (_, error) => {
-                                __DEV__ && console.log(error);
-                            }
-                        );
-
-
-                    }, null, resolve);
-
-                });
+                setdesigListOthers(desiglistothersTableContent);
 
 
             } else {
@@ -168,7 +167,7 @@ const ExpendableDrawer = () => {
                 const { data: response } = await api.get("desiglist");
                 setdesigList(response.rows);
                 setDesignationContext(response.rows)
-                // __DEV__ && console.log(response);
+
                 // pre download all data at installatin time
                 if (response.rows != 0) {
                     response.rows.forEach(async (it, index) => {
@@ -193,6 +192,17 @@ const ExpendableDrawer = () => {
                 createDesignationListTable('designation')
 
                 insertDataIntoDesignationListTable('designation', response.rows)
+
+
+
+                const { data: responseOthers } = await api.get("desiglistothers");
+                setdesigListOthers(responseOthers.rows);
+
+
+                createDesignationListTable('designationothers')
+
+                insertDataIntoDesignationListTable('designationothers', responseOthers.rows)
+
 
 
                 // setisPreloaing(false)
@@ -295,8 +305,9 @@ const ExpendableDrawer = () => {
     //  ******************************  fetching data ***************************************
 
 
-    let highestHandlePressNumber = 34
-    let desigStart = 0;
+    let highestHandlePressNumber = 36
+    let lowestHandlePressNumber = 0
+    let desigStart = 1;
     let settingsStart = 19
     let aprStart = 24
     let staffListStart = 25
@@ -305,52 +316,59 @@ const ExpendableDrawer = () => {
     const handlePress = (no) => {
         const arr = []
 
-        if (no == 0) {
-            expendedList[0] ? arr[0] = false : arr[0] = true;
-            for (let i = 1; i <= highestHandlePressNumber; i++) {
-
-                arr[i] = false;
+        if (no == lowestHandlePressNumber) {
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = lowestHandlePressNumber; i <= highestHandlePressNumber; i++) {
+                if (i != no)
+                    arr[i] = false;
             }
         }
         else if (no == 12) {
-            expendedList[12] ? arr[12] = false : arr[12] = true;
-            for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != 12)
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
                     arr[i] = false;
             }
         }
         else if (no == 19) {
-            expendedList[19] ? arr[19] = false : arr[19] = true;
-            for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != 19)
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
                     arr[i] = false;
             }
         }
         else if (no == 22) {
-            expendedList[22] ? arr[22] = false : arr[22] = true;
-            for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != 22)
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
                     arr[i] = false;
             }
         }
         else if (no == 23) {
-            expendedList[23] ? arr[23] = false : arr[23] = true;
-            for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != 23)
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
+                    arr[i] = false;
+            }
+        }
+        else if (no == 35) {
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
                     arr[i] = false;
             }
         }
         else if (no == aprStart) {
-            expendedList[aprStart] ? arr[aprStart] = false : arr[aprStart] = true;
-            for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != aprStart)
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
                     arr[i] = false;
             }
         }
         else if (no == staffListStart) {
-            expendedList[staffListStart] ? arr[staffListStart] = false : arr[staffListStart] = true;
-            for (let i = 0; i <= highestHandlePressNumber; i++) {
-                if (i != staffListStart)
+            expendedList[no] ? arr[no] = false : arr[no] = true;
+            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
+                if (i != no)
                     arr[i] = false;
             }
         }
@@ -795,6 +813,45 @@ const ExpendableDrawer = () => {
 
                                 {
                                     medicalDesig.map((it) => (
+                                        <List.Item key={it.desig}
+                                            onPress={() => {
+                                                navigation.navigate('DesignationScreen', {
+                                                    designation: it.designame,
+                                                    desig_code: it.desig,
+                                                    title: 'Employee List',
+                                                    tablename: it.tablename
+                                                })
+                                            }}
+                                            left={props => <List.Icon {...props} icon={() => (
+                                                <Image
+                                                    source={require(rightArrow)}
+                                                    style={styles.iconStyle}
+                                                />
+                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
+                                    ))
+                                }
+
+
+
+                            </List.Accordion>
+
+                            <List.Accordion
+                                style={styles.accordingStyle}
+                                title="Others"
+                                titleStyle={styles.titlestyle}
+
+                                left={props => <List.Icon {...props} icon={() => (
+                                    <Image
+                                        source={require(others)}
+                                        style={styles.iconStyle}
+                                    />
+                                )} />}
+                                expanded={expendedList[35]}
+                                onPress={() => handlePress(35)}
+                            >
+
+                                {
+                                    desigListOthers.map((it) => (
                                         <List.Item key={it.desig}
                                             onPress={() => {
                                                 navigation.navigate('DesignationScreen', {
@@ -1406,7 +1463,7 @@ const ExpendableDrawer = () => {
 
                                                 backgroundColor: `${currentTheme}`,
                                                 // marginRight: 6,
-                                                marginLeft:width*.1,
+                                                marginLeft: width * .1,
                                                 borderRadius: height * .005,
                                                 alignContent: 'center',
                                                 justifyContent: 'center'

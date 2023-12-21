@@ -1,6 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { memo, useContext, useEffect, useState } from "react";
-import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Contacts from 'expo-contacts';
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -51,8 +51,6 @@ const Item = ({ id,
     length,
     reloadList }) => {
 
-    console.log(designation, post);
-
     const netInfo = useNetInfo();
 
     const presentCharge = Charges(charge)
@@ -65,12 +63,11 @@ const Item = ({ id,
     const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [isCallModalVisible, setCallModalVisible] = useState(false);
     const [isCameraModalVisible, setCameraModalVisible] = useState(false);
     const [isBloodGroupUpdateVisible, setisBloodGroupUpdateVisible] = useState(false);
     const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
     const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
-    const [phnOrMsg, setphnOrMsg] = useState('phn');
+
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -80,13 +77,8 @@ const Item = ({ id,
     const [type, setType] = useState(Camera.Constants.Type.back);
 
 
-    const toggleModal = (isVisible, type) => {
-        setphnOrMsg(type)
+    const toggleModal = (isVisible) => {
         setModalVisible(isVisible);
-    };
-
-    const toggleCallModal = (isVisible) => {
-        setCallModalVisible(isVisible);
     };
 
     const toggleCameraModal = (isVisible) => {
@@ -366,7 +358,7 @@ const Item = ({ id,
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
                                 </View>
                                 :
                                 charge === 'C' ?
@@ -397,30 +389,33 @@ const Item = ({ id,
 
 
                                     pmisId === id &&
-                                    <TouchableOpacity
+                                        <TouchableOpacity
 
-                                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
-                                        style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}`,
-                                            borderRadius: height * .005,
-                                            paddingVertical: 2,
-                                            paddingHorizontal: 5,
-                                            elevation: 3
-                                        }}>
-                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+                                            onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                            style={{
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                                backgroundColor: `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                                paddingVertical: 2,
+                                                paddingHorizontal: 5,
+                                                elevation: 3
+                                            }}>
+                                            <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
-                                    </TouchableOpacity>
+                                        </TouchableOpacity>
                                 }
                             </TouchableOpacity>
                         </View>
                     }
                     {
-
+                        netInfo.isConnected &&
                         <View style={{ flexDirection: 'row', }}>
+                            <TouchableOpacity>
+                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
+                            </TouchableOpacity>
+                            
 
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
 
                         </View>}
 
@@ -432,9 +427,7 @@ const Item = ({ id,
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                    // onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
-                                    onPress={() => (toggleModal(true, 'phn'))}
-
+                                    onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -451,20 +444,20 @@ const Item = ({ id,
 
                                 {
                                     pmisId === id &&
-                                    <TouchableOpacity
-                                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
-                                        style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}`,
-                                            borderRadius: height * .005,
-                                            // marginHorizontal: 5,
-                                            paddingVertical: 1,
-                                            paddingHorizontal: 5,
-                                            elevation: 3
-                                        }}>
-                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
-                                    </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                            style={{
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                                backgroundColor: `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                                // marginHorizontal: 5,
+                                                paddingVertical: 1,
+                                                paddingHorizontal: 5,
+                                                elevation: 3
+                                            }}>
+                                            <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+                                        </TouchableOpacity>
                                 }
                             </View>
                         }
@@ -489,7 +482,7 @@ const Item = ({ id,
                             mobile &&
                             <TouchableOpacity
                                 //toggleModal(true)
-                                onPress={() => (toggleModal(true, 'msg'))}
+                                onPress={() => (toggleModal(true))}
                                 // onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',
@@ -552,7 +545,7 @@ const Item = ({ id,
                 visible={isModalVisible}
                 onRequestClose={() => toggleModal(true)}
             >
-                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} />
+                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
 
             </Modal>
 

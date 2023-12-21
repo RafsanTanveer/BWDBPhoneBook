@@ -153,7 +153,7 @@ const OfficeList = ({ lcode }) => {
                                         <View style={{ flexDirection: 'row', marginRight: 10, }} >
                                             {
                                                 item.officeId === item.budgetoffice ?
-                                                    <Text style={{ fontSize: txtSizeNormal, fontWeight: '500', color: item.isbudgetoffice === 'true' ? 'black' : 'black' }}>{item.officeName}</Text>
+                                                    <Text style={{ fontSize: txtSizeNormal, fontWeight: '700', color: item.isbudgetoffice === 'true' ? 'black' : 'black' , }}>{item.officeName}</Text>
                                                     :
                                                     <View style={{ flexDirection: 'row', flex: 1 }} >
 
@@ -161,7 +161,7 @@ const OfficeList = ({ lcode }) => {
                                                             <Text style={{ textAlign: 'center', fontSize: txtSizeNormal * .8, color: 'blue' }} >   ➥ </Text>
                                                         </View>
                                                         <View style={{}} >
-                                                            <Text style={{ fontSize: txtSizeNormal * .9, flexWrap: 'wrap', flexShrink: 1 }}   >{item.officeName}</Text>
+                                                            <Text style={{ fontSize: txtSizeNormal * .9, flexWrap: 'wrap', flexShrink: 1 , fontWeight:'500'}}   >{item.officeName}</Text>
                                                         </View>
                                                     </View>
                                             }

@@ -74,7 +74,7 @@ export const insertDataIntoDesignationListTable = (tableName, data) => {
 
             data.forEach((it, index) => {
                 tx.executeSql(
-                    `INSERT INTO designation (
+                    `INSERT INTO ${tableName} (
                                     cadre,
                                     paygrade,
                                     desig,

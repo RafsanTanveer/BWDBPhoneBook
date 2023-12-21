@@ -42,3 +42,25 @@ export const getAllTableName = async () => {
         });
     });
 };
+
+
+
+export const getAllInfoFromTable = async (tableName) => {
+    return new Promise((resolve, reject) => {
+
+
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT * FROM ${tableName}`,
+                [],
+                (_, { rows }) => {
+                    resolve(rows._array);
+                },
+                (_, error) => {
+                    reject(error);
+                    return false;
+                }
+            );
+        });
+    });
+};
