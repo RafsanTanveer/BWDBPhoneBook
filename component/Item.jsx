@@ -358,7 +358,7 @@ const Item = ({ id,
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
                                 </View>
                                 :
                                 charge === 'C' ?
@@ -414,7 +414,7 @@ const Item = ({ id,
                             <TouchableOpacity>
                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
                             </TouchableOpacity>
-                            
+
 
 
                         </View>}

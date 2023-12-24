@@ -52,9 +52,10 @@ Images['update'] = require('../assets/icons/update.png')
 Images['bloodsearch'] = require('../assets/icons/bloodsearch.png')
 Images['logout'] = require('../assets/icons/logout.png')
 Images['others'] = require('../assets/icons/others.png')
+Images['fingerprint'] = require('../assets/icons/fingerprint.png')
 
 
-//  expendable list icon
+//  expendable list icon  fingerprint
 
 
 Images['drawerGroupIcon'] = require('../assets/icons/groupIcon.png')

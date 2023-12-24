@@ -561,6 +561,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 __DEV__ && console.log('---------------------------------------------------------------------');
 
 
+                setDATA([])
+
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
                 // console.log(response.rows);

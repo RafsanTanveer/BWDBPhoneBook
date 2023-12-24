@@ -308,19 +308,21 @@ const ExpendableDrawer = () => {
     let highestHandlePressNumber = 36
     let lowestHandlePressNumber = 0
     let desigStart = 1;
+    let desigEnd = 1;
     let settingsStart = 19
     let aprStart = 24
     let staffListStart = 25
     let bloodStart = 26
+    let otherStart = 35
 
     const handlePress = (no) => {
         const arr = []
-
+        console.log('no ' + no);
         if (no == lowestHandlePressNumber) {
             expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = lowestHandlePressNumber; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
+            for (let i = 1; i <= 36; i++) {
+
+                arr[i] = false;
             }
         }
         else if (no == 12) {
@@ -351,7 +353,7 @@ const ExpendableDrawer = () => {
                     arr[i] = false;
             }
         }
-        else if (no == 35) {
+        else if (no == otherStart) {
             expendedList[no] ? arr[no] = false : arr[no] = true;
             for (let i = desigStart; i <= highestHandlePressNumber; i++) {
                 if (i != no)
@@ -1049,7 +1051,7 @@ const ExpendableDrawer = () => {
 
                 {/**************************************** Group Email & SMS *************************************/}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1077,7 +1079,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  Change Request ******************************** */}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1125,7 +1127,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
