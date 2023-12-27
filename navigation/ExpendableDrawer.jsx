@@ -307,13 +307,36 @@ const ExpendableDrawer = () => {
 
     let highestHandlePressNumber = 36
     let lowestHandlePressNumber = 0
-    let desigStart = 1;
-    let desigEnd = 1;
-    let settingsStart = 19
+
+    let desigStart = 0;
+    let desigEnd = 12;
+
+
+
     let aprStart = 24
+    let aprEnd = 24
+
     let staffListStart = 25
+    let staffListEnd = 25
+
     let bloodStart = 26
+    let bloodEnd = 26
+
     let otherStart = 35
+    let otherEnd = 35
+
+    let groupEMStart = 1
+    let groupEMEnd = 1
+
+    let changeReqStart = 1
+    let changeReqEnd = 1
+
+    let settingsStart = 19
+    let settingsEnd = 19
+
+    let officeStart = 13
+    let officeEnd = 20
+
 
     const handlePress = (no) => {
         const arr = []
@@ -381,11 +404,11 @@ const ExpendableDrawer = () => {
                 else arr[i] = false;
             }
         }
-        else if (no > 12 && no <= 18) {
-            arr[12] = true
+        else if (no >= officeStart && no <= officeEnd) {
+            arr[officeStart] = true
             for (let i = 0; i <= highestHandlePressNumber; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
-                else if (i != 12) arr[i] = false;
+                else if (i != officeStart) arr[i] = false;
             }
         }
         else if (no > 19 && no <= highestHandlePressNumber) {
@@ -848,8 +871,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[35]}
-                                onPress={() => handlePress(35)}
+                                expanded={expendedList[12]}
+                                onPress={() => handlePress(12)}
                             >
 
                                 {
@@ -900,8 +923,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[12]}
-                                onPress={() => handlePress(12)} >
+                                expanded={expendedList[13]}
+                                onPress={() => handlePress(13)} >
 
 
                                 {
@@ -919,8 +942,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[13]}
-                                                onPress={() => handlePress(13)}  >
+                                                expanded={expendedList[14]}
+                                                onPress={() => handlePress(14)}  >
 
                                                 <OfficeList lcode='01' />
 
@@ -936,8 +959,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[14]}
-                                                onPress={() => handlePress(14)}  >
+                                                expanded={expendedList[15]}
+                                                onPress={() => handlePress(15)}  >
 
                                                 <OfficeList lcode='02' />
 
@@ -954,8 +977,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[15]}
-                                                onPress={() => handlePress(15)}  >
+                                                expanded={expendedList[16]}
+                                                onPress={() => handlePress(16)}  >
 
                                                 <OfficeList lcode='03' />
 
@@ -971,8 +994,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[16]}
-                                                onPress={() => handlePress(16)}  >
+                                                expanded={expendedList[17]}
+                                                onPress={() => handlePress(17)}  >
 
                                                 <OfficeList lcode='04' />
 
@@ -989,8 +1012,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[17]}
-                                                onPress={() => handlePress(17)}  >
+                                                expanded={expendedList[18]}
+                                                onPress={() => handlePress(18)}  >
 
                                                 <OfficeList lcode='05' />
 
@@ -1007,8 +1030,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[18]}
-                                                onPress={() => handlePress(18)}  >
+                                                expanded={expendedList[19]}
+                                                onPress={() => handlePress(19)}  >
 
                                                 <OfficeList lcode='06' />
                                                 {/* <ADGWEST  /> */}
@@ -1029,8 +1052,8 @@ const ExpendableDrawer = () => {
                                                         style={styles.iconStyle}
                                                     />
                                                 )} />}
-                                                expanded={expendedList[18]}
-                                                onPress={() => handlePress(18)}  >
+                                                expanded={expendedList[20]}
+                                                onPress={() => handlePress(20)}  >
 
                                                 <OfficeListSingle lcode={officelevel1code} officeId={presentOfficeCode} />
                                                 {/* <OfficeListSingle lcode={officelevel1code} officeId={presentOfficeCode}  /> */}
@@ -1064,8 +1087,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[22]}
-                                onPress={() => handlePress(22)} >
+                                expanded={expendedList[21]}
+                                onPress={() => handlePress(21)} >
 
 
 
@@ -1092,8 +1115,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[23]}
-                                onPress={() => handlePress(23)} >
+                                expanded={expendedList[22]}
+                                onPress={() => handlePress(22)} >
 
 
 
@@ -1140,8 +1163,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[aprStart]}
-                                onPress={() => handlePress(aprStart)} >
+                                expanded={expendedList[23]}
+                                onPress={() => handlePress(23)} >
 
 
 
@@ -1189,8 +1212,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[staffListStart]}
-                                onPress={() => handlePress(staffListStart)} >
+                                expanded={expendedList[24]}
+                                onPress={() => handlePress(24)} >
 
                                 <List.Item key={'Individual'}
 
@@ -1258,8 +1281,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[staffListStart]}
-                                onPress={() => handlePress(staffListStart)} >
+                                expanded={expendedList[25]}
+                                onPress={() => handlePress(25)} >
 
                                 <List.Item key={'A+'}
                                     onPress={() => {
@@ -1411,8 +1434,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[19]}
-                                onPress={() => handlePress(19)} >
+                                expanded={expendedList[26]}
+                                onPress={() => handlePress(26)} >
 
 
 
@@ -1428,8 +1451,8 @@ const ExpendableDrawer = () => {
                                             style={styles.iconStyle}
                                         />
                                     )} />}
-                                    expanded={expendedList[20]}
-                                    onPress={() => handlePress(20)}  >
+                                    expanded={expendedList[27]}
+                                    onPress={() => handlePress(27)}  >
 
                                     {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
                                     <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 3, marginLeft: width * .1, }}>
@@ -1455,8 +1478,8 @@ const ExpendableDrawer = () => {
                                             style={styles.iconStyle}
                                         />
                                     )} />}
-                                    expanded={expendedList[21]}
-                                    onPress={() => handlePress(21)}  >
+                                    expanded={expendedList[28]}
+                                    onPress={() => handlePress(28)}  >
 
                                     <View style={{ flexDirection: 'row' }}>
                                         <TouchableOpacity

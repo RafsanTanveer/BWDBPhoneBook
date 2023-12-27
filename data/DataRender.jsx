@@ -563,6 +563,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 setDATA([])
 
+                
+                 setIsLoading(true);
+
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
                 const data = response.rows;
                 // console.log(response.rows);
@@ -602,6 +605,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 )
 
                 tempDist = [...tempDist, { label: "HQ", value: "PANI BHABAN" }]
+
+                setIsLoading(false);
 
 
                 /////////////////////// district calculation //////////////////////////
