@@ -17,7 +17,7 @@ const GroupList = () => {
       <Text
         onLongPress={() => toggleModal(true)}
 
-      >GroupList</Text>
+      ></Text>
 
 
 

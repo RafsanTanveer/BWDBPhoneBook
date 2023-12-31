@@ -3,6 +3,7 @@ import { NavigationContainer, useNavigation, DrawerActions } from "@react-naviga
 import React, { useContext } from "react";
 import DrawerContent from "../navigation/DrawerContent";
 import DesignationScreen from '../screens/DesignationScreen';
+import DesignationScreenOther from '../screens/DesignationScreenOther';
 import BloodScreen from '../screens/BloodScreen'
 import OfficeScreen from "../screens/OfficeScreen";
 import Home from "../screens/Home";
@@ -36,7 +37,7 @@ const CustomDrawer = ({ }) => {
             screenOptions={{
                 drawerStyle: {
                     backgroundColor: '#c6cbef',
-                    width: width * .78,
+                    width: width * .8,
                 },
 
                 headerTintColor: 'white',
@@ -91,7 +92,7 @@ const CustomDrawer = ({ }) => {
             <Drawer.Screen name="BloodScreen" options={{ headerTitleAlign: "center", title: "BloodScreen", }} component={BloodScreen} />
             <Drawer.Screen name="BiodataScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={BiodataScreen} />
             <Drawer.Screen name="Biodata" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Biodata} />
-            <Drawer.Screen name="DataRenderOffice" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DataRenderOffice} />
+            <Drawer.Screen name="DesignationScreenOther" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreenOther} />
             <Drawer.Screen name="ReportScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={ReportScreen} />
 
         </Drawer.Navigator>

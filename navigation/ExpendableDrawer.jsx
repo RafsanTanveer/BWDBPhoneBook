@@ -311,31 +311,26 @@ const ExpendableDrawer = () => {
     let desigStart = 0;
     let desigEnd = 12;
 
-
-
-    let aprStart = 24
-    let aprEnd = 24
-
-    let staffListStart = 25
-    let staffListEnd = 25
-
-    let bloodStart = 26
-    let bloodEnd = 26
-
-    let otherStart = 35
-    let otherEnd = 35
-
-    let groupEMStart = 1
-    let groupEMEnd = 1
-
-    let changeReqStart = 1
-    let changeReqEnd = 1
-
-    let settingsStart = 19
-    let settingsEnd = 19
-
     let officeStart = 13
     let officeEnd = 20
+
+    let groupEMStart = 21
+    let groupEMEnd = 21
+
+    let aprStart = 23
+    let aprEnd = 23
+
+
+    let bloodStart = 25
+    let bloodEnd = 25
+
+
+    let changeReqStart = 22
+    let changeReqEnd = 22
+
+    let settingsStart = 26
+    let settingsEnd = 28
+
 
 
     const handlePress = (no) => {
@@ -348,60 +343,42 @@ const ExpendableDrawer = () => {
                 arr[i] = false;
             }
         }
-        else if (no == 12) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no == 19) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no == 22) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no == 23) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no == otherStart) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no == aprStart) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no == staffListStart) {
-            expendedList[no] ? arr[no] = false : arr[no] = true;
-            for (let i = desigStart; i <= highestHandlePressNumber; i++) {
-                if (i != no)
-                    arr[i] = false;
-            }
-        }
-        else if (no > 0 && no <= 11) {
+        else if (no >= 0 && no <= desigEnd) {
             arr[0] = true
             for (let i = 1; i <= highestHandlePressNumber; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else arr[i] = false;
+            }
+        }
+
+        else if (no >= groupEMStart && no <= groupEMEnd) {
+            arr[no] = true
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != groupEMStart) arr[i] = false;
+            }
+        }
+
+        else if (no >= changeReqStart && no <= changeReqEnd) {
+            arr[no] = true
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != changeReqStart) arr[i] = false;
+            }
+        }
+
+        else if (no >= aprStart && no <= aprEnd) {
+            arr[no] = true
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != aprStart) arr[i] = false;
+            }
+        }
+        else if (no >= bloodStart && no <= bloodEnd) {
+            arr[no] = true
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != bloodStart) arr[i] = false;
             }
         }
         else if (no >= officeStart && no <= officeEnd) {
@@ -411,13 +388,24 @@ const ExpendableDrawer = () => {
                 else if (i != officeStart) arr[i] = false;
             }
         }
-        else if (no > 19 && no <= highestHandlePressNumber) {
-            arr[19] = true
+        else if (no == settingsStart) {
+
             for (let i = 0; i <= highestHandlePressNumber; i++) {
+                expendedList[no] ? arr[no] = false : arr[no] = true;
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
-                else if (i != 19) arr[i] = false;
+                else if (i != settingsStart) arr[i] = false;
             }
         }
+
+        else if (no >= settingsStart+1 && no <= settingsEnd) {
+            arr[settingsStart] = true
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != settingsStart) arr[i] = false;
+            }
+        }
+
+
         setexpendedList(arr);
     }
 
@@ -879,7 +867,7 @@ const ExpendableDrawer = () => {
                                     desigListOthers.map((it) => (
                                         <List.Item key={it.desig}
                                             onPress={() => {
-                                                navigation.navigate('DesignationScreen', {
+                                                navigation.navigate('DesignationScreenOther', {
                                                     designation: it.designame,
                                                     desig_code: it.desig,
                                                     title: 'Employee List',
@@ -1087,8 +1075,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[21]}
-                                onPress={() => handlePress(21)} >
+                                expanded={expendedList[groupEMStart]}
+                                onPress={() => handlePress(groupEMStart)} >
 
 
 
@@ -1115,12 +1103,12 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[22]}
-                                onPress={() => handlePress(22)} >
+                                expanded={expendedList[changeReqStart]}
+                                onPress={() => handlePress(changeReqStart)} >
 
 
-
-                                <View style={{ flexDirection: 'row' }}>
+                                <Text></Text>
+                                {/* <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         style={{
 
@@ -1140,7 +1128,7 @@ const ExpendableDrawer = () => {
                                             }}>Make Change Request</Text>
                                     </TouchableOpacity>
 
-                                </View>
+                                </View> */}
 
                             </List.Accordion>
                         </>
@@ -1163,8 +1151,8 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[23]}
-                                onPress={() => handlePress(23)} >
+                                expanded={expendedList[aprStart]}
+                                onPress={() => handlePress(aprStart)} >
 
 
 
@@ -1189,7 +1177,7 @@ const ExpendableDrawer = () => {
                                     </TouchableOpacity>
 
                                 </View> */}
-                                <Text>Apr</Text>
+                                <Text></Text>
 
                             </List.Accordion>
                         </>

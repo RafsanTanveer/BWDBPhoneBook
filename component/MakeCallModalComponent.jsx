@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
 import {height, width} from '../utility/ScreenDimensions'
 
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const phoneCallIcon = '../assets/icons/phoneCall.png'
@@ -66,7 +67,7 @@ const MakeCallModalComponent = ({ number, toggleModal, type }) => {
 
 
     return (
-        <View style={styles.centeredView}>
+
 
             <View style={styles.centeredView}>
                 <View style={{...styles.modalView, borderColor: `${currentTheme}`}}>
@@ -138,15 +139,22 @@ const MakeCallModalComponent = ({ number, toggleModal, type }) => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{ ...styles.button, ...styles.buttonClose, backgroundColor:`${currentTheme}`, elevation:5 }}
+                        style={{  elevation:5, bottom:0 }}
                         onPress={() => closeModal()}>
-                        <Text style={styles.textStyle}>Cancel</Text>
+                        <LinearGradient
+                            colors={["#27285C", "#27285C", "#27285C",]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                        >
+                            <Text style={styles.textStyle}>Cancel</Text>
+                        </LinearGradient>
+
                     </TouchableOpacity>
                 </View>
             </View>
 
 
-        </View>
+       
     );
 };
 

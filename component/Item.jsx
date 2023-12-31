@@ -68,6 +68,8 @@ const Item = ({ id,
     const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
     const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
 
+    const [phnOrMsg, setphnOrMsg] = useState('phn');
+
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -77,7 +79,8 @@ const Item = ({ id,
     const [type, setType] = useState(Camera.Constants.Type.back);
 
 
-    const toggleModal = (isVisible) => {
+    const toggleModal = (isVisible, type) => {
+        setphnOrMsg(type)
         setModalVisible(isVisible);
     };
 
@@ -427,7 +430,7 @@ const Item = ({ id,
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                    onPress={() => { Linking.openURL(`whatsapp://send?phone=+88${mobile}`) }}
+                                        onPress={() => (toggleModal(true,'phn'))}
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -482,7 +485,7 @@ const Item = ({ id,
                             mobile &&
                             <TouchableOpacity
                                 //toggleModal(true)
-                                onPress={() => (toggleModal(true))}
+                                onPress={() => (toggleModal(true,'msg'))}
                                 // onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',
@@ -545,7 +548,7 @@ const Item = ({ id,
                 visible={isModalVisible}
                 onRequestClose={() => toggleModal(true)}
             >
-                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
+                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} />
 
             </Modal>
 

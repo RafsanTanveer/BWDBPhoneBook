@@ -10,20 +10,20 @@ import { DataContext } from "./context/DataContext";
 import SplashScreen from "./screens/SplashScreen";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    // Simulate loading process
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000); // Adjust the time as needed
-  }, []);
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   // Simulate loading process
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000); // Adjust the time as needed
+  // }, []);
 
   return (
     <AuthProvider>
       <ThemeProvider>
         <PaperProvider>
-          {/* <CustomNavigator /> */}
-          {isLoading ? <SplashScreen /> : <CustomNavigator />}
+          <CustomNavigator />
+          {/* {isLoading ? <SplashScreen /> : <CustomNavigator />} */}
         </PaperProvider>
       </ThemeProvider>
     </AuthProvider>

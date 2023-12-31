@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx b/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx
+index 07bf17b..4eed726 100644
+--- a/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx
++++ b/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx
+@@ -435,6 +435,8 @@ const DropdownComponent: <T>(
+                       styles.textItem,
+                       itemTextStyle,
+                       font(),
++                      !item.label.includes("---") && { backgroundColor: '#7fff0020' },                // edited for highlighting
++                      item.label.includes("---") && { backgroundColor: '#f0808020' }
+                     ])}
+                   >
+                     {_.get(item, labelField)}
+@@ -613,9 +615,9 @@ const DropdownComponent: <T>(
+                       !isTopPosition
+                         ? { paddingTop: extendHeight }
+                         : {
+-                            justifyContent: 'flex-end',
+-                            paddingBottom: extendHeight,
+-                          },
++                          justifyContent: 'flex-end',
++                          paddingBottom: extendHeight,
++                        },
+                       isFull && styles.fullScreen,
+                     ])}
+                   >
