@@ -1062,7 +1062,7 @@ const ExpendableDrawer = () => {
 
                 {/**************************************** Group Email & SMS *************************************/}
                 {
-                    true ?
+                    false ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1090,7 +1090,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  Change Request ******************************** */}
                 {
-                    true ?
+                    false ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1138,7 +1138,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    true ?
+                    false ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
