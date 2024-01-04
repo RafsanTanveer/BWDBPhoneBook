@@ -70,6 +70,8 @@ const Item = ({ id,
 
     const [phnOrMsg, setphnOrMsg] = useState('phn');
 
+    const [modalHeading, setmodalHeading] = useState('');
+
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -79,8 +81,9 @@ const Item = ({ id,
     const [type, setType] = useState(Camera.Constants.Type.back);
 
 
-    const toggleModal = (isVisible, type) => {
+    const toggleModal = (isVisible, type, heading) => {
         setphnOrMsg(type)
+        setmodalHeading(heading)
         setModalVisible(isVisible);
     };
 
@@ -392,21 +395,21 @@ const Item = ({ id,
 
 
                                     pmisId === id &&
-                                        <TouchableOpacity
+                                    <TouchableOpacity
 
-                                            onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
-                                            style={{
-                                                alignItems: 'center',
-                                                flexDirection: 'row',
-                                                backgroundColor: `${currentTheme}`,
-                                                borderRadius: height * .005,
-                                                paddingVertical: 2,
-                                                paddingHorizontal: 5,
-                                                elevation: 3
-                                            }}>
-                                            <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+                                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            backgroundColor: `${currentTheme}`,
+                                            borderRadius: height * .005,
+                                            paddingVertical: 2,
+                                            paddingHorizontal: 5,
+                                            elevation: 3
+                                        }}>
+                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
-                                        </TouchableOpacity>
+                                    </TouchableOpacity>
                                 }
                             </TouchableOpacity>
                         </View>
@@ -430,7 +433,7 @@ const Item = ({ id,
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                        onPress={() => (toggleModal(true,'phn'))}
+                                        onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -447,20 +450,20 @@ const Item = ({ id,
 
                                 {
                                     pmisId === id &&
-                                        <TouchableOpacity
-                                            onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
-                                            style={{
-                                                alignItems: 'center',
-                                                flexDirection: 'row',
-                                                backgroundColor: `${currentTheme}`,
-                                                borderRadius: height * .005,
-                                                // marginHorizontal: 5,
-                                                paddingVertical: 1,
-                                                paddingHorizontal: 5,
-                                                elevation: 3
-                                            }}>
-                                            <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
-                                        </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            backgroundColor: `${currentTheme}`,
+                                            borderRadius: height * .005,
+                                            // marginHorizontal: 5,
+                                            paddingVertical: 1,
+                                            paddingHorizontal: 5,
+                                            elevation: 3
+                                        }}>
+                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+                                    </TouchableOpacity>
                                 }
                             </View>
                         }
@@ -485,7 +488,7 @@ const Item = ({ id,
                             mobile &&
                             <TouchableOpacity
                                 //toggleModal(true)
-                                onPress={() => (toggleModal(true,'msg'))}
+                                onPress={() => (toggleModal(true, 'msg', 'Send a Message'))}
                                 // onPress={() => (Linking.openURL(`sms:${mobile}`))}
                                 style={{
                                     alignItems: 'center',
@@ -548,7 +551,7 @@ const Item = ({ id,
                 visible={isModalVisible}
                 onRequestClose={() => toggleModal(true)}
             >
-                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} />
+                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} heading={modalHeading} />
 
             </Modal>
 

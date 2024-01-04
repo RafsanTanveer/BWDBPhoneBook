@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, TouchableOpacity, Dimensions } from 'react-native';
 import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../context/ThemeContext";
-import {height, width} from '../utility/ScreenDimensions'
+import { height, width } from '../utility/ScreenDimensions'
 
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -10,16 +10,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 const phoneCallIcon = '../assets/icons/phoneCall.png'
 const whatsappIcon = '../assets/icons/whatsapp.png'
 
-const MakeCallModalComponent = ({ number, toggleModal, type }) => {
+const MakeCallModalComponent = ({ number, toggleModal, type, heading }) => {
 
     __DEV__ && console.log(type);
     const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
-//`, ${presentCharge}`
+    //`, ${presentCharge}`
     let charge = presentCharge === 'R' ? '' :
         presentCharge === 'C' ? ',CC' :
             presentCharge === 'A' ? ',Addl.' :
-                presentCharge === 'I'?',Incharge':''
+                presentCharge === 'I' ? ',Incharge' : ''
 
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB`
 
@@ -69,110 +69,74 @@ const MakeCallModalComponent = ({ number, toggleModal, type }) => {
     return (
 
 
-            <View style={styles.centeredView}>
-                <View style={{...styles.modalView, borderColor: `${currentTheme}`}}>
-                    {type === 'phn' ? <Text style={{ fontWeight: 'bold', fontSize: height * .025, padding: height * .025, textAlign:'center' }} >Make a Call</Text> : <Text style={{ fontWeight: 'bold', fontSize: height * .02, padding: height * .025 }} >Send a Message</Text>}
-                    <TouchableOpacity
-                        style={{
-                            flexDirection: 'row', borderRadius: 5, margin: 2,
-
-                        }}
-
-
-                        onPress={() => type === 'phn' ? callViaSimCard() : sendMsgViaSimCard()}>
-
-                        <View style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            paddingLeft: 25,
-
-                            // backgroundColor: 'aqua'
-                        }}>
-                            <Image
-                                source={require(phoneCallIcon)}
-                                style={{ width: 30, height: 30 }}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                flex: 4,
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                paddingHorizontal: 20,
-
-                                // backgroundColor: 'blue'
-                            }}>
-                            <Text style={{ fontSize: width * .045, fontWeight: '500' }}>Sim Card</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            flexDirection: 'row', borderRadius: 5, margin: 2,
-                            // borderColor: 'blue',
-                            // borderWidth: 1,
-                        }}
-                        onPress={() => type === 'phn' ? callViaWhatsapp(): sendMsgViaWhatsapp()}>
-                        <View style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            paddingLeft: 25,
-
-                            // backgroundColor: 'aqua'
-                        }}>
-                            <Image
-                                source={require(whatsappIcon)}
-                                style={{ width: 30, height: 30 }}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                flex: 4,
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                paddingHorizontal: 15,
-                                paddingVertical: 15,
-                                // backgroundColor: 'blue'
-                            }}>
-                            <Text style={{ fontSize: width * .045, fontWeight: '500' }}>Whatsapp</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{  elevation:5, bottom:0 }}
-                        onPress={() => closeModal()}>
-                        <LinearGradient
-                            colors={["#27285C", "#27285C", "#27285C",]}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                        >
-                            <Text style={styles.textStyle}>Cancel</Text>
-                        </LinearGradient>
-
-                    </TouchableOpacity>
-                </View>
+        <View style={styles.centeredView}>
+            <View style={{ flex: 1, backgroundColor: `${currentTheme}5`, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: height * .015, borderTopRightRadius: height * .015,  }} >
+                <Text style={{ fontWeight: 'bold', fontSize: width * .048, color: 'Black' }} >{heading}</Text>
+            </View>
+            <View style={{ flex: 2, alignItems: 'center', }} >
+                <TouchableOpacity
+                    onPress={() => type === 'phn' ? callViaSimCard() : sendMsgViaSimCard()}
+                    style={{ flex: 1, flexDirection: 'row',  alignItems: 'center', }} >
+                    <Image
+                        source={require(phoneCallIcon)}
+                        style={{ width: 30, height: 30 }}
+                    />
+                    <Text style={{ fontSize: width * .045, fontWeight: '500', margin: 10 }}>Sim Card</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => type === 'phn' ? callViaWhatsapp() : sendMsgViaWhatsapp()}
+                    style={{  flex: 1, flexDirection: 'row', alignItems: 'center', }} >
+                    <Image
+                        source={require(whatsappIcon)}
+                        style={{ width: 30, height: 30 }}
+                    />
+                    <Text style={{ fontSize: width * .045, fontWeight: '500' , margin:10}}>Whatsapp</Text>
+                </TouchableOpacity>
             </View>
 
+            <View
 
-       
+                style={{ flex: 1,  justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: height * .015, borderBottomEndRadius: height * .015 }} >
+               <TouchableOpacity
+                    onPress={() => closeModal()}
+                    style={{
+                        backgroundColor: `${currentTheme}`,
+                        paddingVertical: 5,
+                        paddingHorizontal:10,
+                        borderRadius: height * .009
+                        , elevation: 5
+                    }} >
+                 <Text style={{ fontWeight: '600', fontSize: width * .04,color:'white'}} >Cancel</Text>
+               </TouchableOpacity>
+            </View>
+        </View>
+
+
+
     );
 };
 
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        marginVertical: height * .35,
+        marginHorizontal: width * .20,
+        backgroundColor: 'white',
+        borderRadius: height * .015,
+        elevation: 5,
+        paddingVertical:15
     },
     modalView: {
+
         height: height * .3,
         width: width * .6,
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 10,
         paddingHorizontal: 35,
-        paddingVertical:10,
+        paddingVertical: 10,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {

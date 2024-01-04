@@ -194,3 +194,23 @@ export const createBiodataTable = (tableName) => {
           });
      });
 };
+
+
+export const createELastLoginTable = (tableName) => {
+     return new Promise((resolve, reject) => {
+          db.transaction((tx) => {
+               tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS ${tableName} (
+                                id          TEXT,
+                                timestamp   TEXT);`,
+                    [],
+                    (_, result) => {
+                         resolve(result);
+                    },
+                    (_, error) => {
+                         reject(error);
+                    }
+               );
+          });
+     });
+};

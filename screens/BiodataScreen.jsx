@@ -12,7 +12,7 @@ import db from '../database/database'
 import { Images } from '../utility/Images'
 import { timeStamp } from '../utility/Time'
 import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utility/Scalling'
-
+import BiodataHeader from '../component/BiodataHeader'
 import { height, width } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
 
@@ -997,25 +997,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
                         <View style={{ flex: 1 }} key={item.id + Math.floor((Math.random() * 100) + 1)}>
 
-
-                            <View style={{
-                                flexDirection: 'row', borderBottomColor: '#0080FF',
-                                borderBottomWidth: 1
-                            }}>
-
-
-                                <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5, }}>
-                                    <Image style={{ width: 60, height: 60 }} source={Images['bwdLogo']} />
-                                </View>
-                                <View style={{
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, marginBottom: 2 }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
-                                    <Text style={{ color: '#008023', fontWeight: '500', fontSize: 15, marginBottom: 2 }} >Human Resource Data Management (HRDM)</Text>
-                                    <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, }} >BIODATA</Text>
-
-                                </View>
-                            </View>
+                            <BiodataHeader />
 
                             <View style={{ flexDirection: 'row', margin: 9, justifyContent: 'space-between', alignItems: 'center', }}>
                                 <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>

@@ -13,6 +13,9 @@ import api from '../api/api';
 import { AuthContext } from '../context/AuthContext';
 import { Images } from '../utility/Images'
 
+import { height, width } from '../utility/ScreenDimensions'
+import BiodataHeader from '../component/BiodataHeader';
+
 
 
 
@@ -71,25 +74,7 @@ const Biodata = ({ id, navigation, route }) => {
 
                     <View style={{ flex: 1 }} key={item.id + Math.floor((Math.random() * 100) + 1)}>
 
-
-                        <View style={{
-                            flexDirection: 'row', borderBottomColor: '#0080FF',
-                            borderBottomWidth: 1
-                        }}>
-
-
-                            <View style={{ justifyContent: 'center', alignContent: 'center', marginHorizontal: 5 }}>
-                                <Image style={{ width: 60, height: 60 }} source={Images['bwdLogo']} />
-                            </View>
-                            <View style={{
-                                alignItems: 'center',
-                            }}>
-                                <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, marginBottom: 2 }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
-                                <Text style={{ color: '#008023', fontWeight: '500', fontSize: 15, marginBottom: 2 }} >Human Resource Data Management (HRDM)</Text>
-                                <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: 15, }} >BIODATA</Text>
-
-                            </View>
-                        </View>
+                        <BiodataHeader />
                         <ScrollView >
                             <View style={{ flex: 1, marginTop: 20, marginHorizontal: 10 }}>
 
