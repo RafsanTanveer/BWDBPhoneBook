@@ -12,6 +12,7 @@ export const createDesignationTable = (tableName) => {
                                 blood       TEXT,
                                 charge      TEXT,
                                 seniority   INTEGER,
+                                officeid      TEXT,
                                 office      TEXT,
                                 officeAddress  TEXT,
                                 officeDistrict  TEXT,
@@ -196,7 +197,7 @@ export const createBiodataTable = (tableName) => {
 };
 
 
-export const createELastLoginTable = (tableName) => {
+export const createLoginHistoryTable = (tableName) => {
      return new Promise((resolve, reject) => {
           db.transaction((tx) => {
                tx.executeSql(

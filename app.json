@@ -13,6 +13,12 @@
         {
           "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
         }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
       ]
     ],
     "name": "BWDB Employee Directory",

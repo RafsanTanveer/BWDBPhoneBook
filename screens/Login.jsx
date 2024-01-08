@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useColorScheme, Dimensions, Alert, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Images } from '../utility/Images'
 // import TouchID from "react-native-touch-id";
 import GradientText from '../component/GradientText'
+import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
 
 const paniBhaban = '../assets/paniBhaban.png'
 const botom = '../assets/botom.png'
@@ -17,8 +18,7 @@ const screenHeight = Dimensions.get('screen').height;
 const width = Dimensions.get('window').width;
 const screenWidth = Dimensions.get('screen').width;
 
-
-
+import * as LocalAuthentication from 'expo-local-authentication';
 
 
 
@@ -30,6 +30,11 @@ const Login = () => {
     const [pmisId, setpmisId] = useState()
     const [password, setPassword] = useState();
     const { isLoading, login, setUserInfo, setisLogged } = useContext(AuthContext);
+    const [fingerprintAvailable, setFingerprintAvailable] = useState(false);
+    const [fingerLoading, setfingerLoading] = useState(false);
+
+    const [result, setResult] = useState('');
+
 
     const handleSubmit = ({ pid }) => {
         setId(pmisId)
@@ -37,6 +42,61 @@ const Login = () => {
             ToastAndroid.SHORT,
             ToastAndroid.CENTER)
     }
+
+
+    const checkSupportedAuthentication = async () => {
+        const types = await LocalAuthentication.supportedAuthenticationTypesAsync();
+        if (types && types.length) {
+            // setFacialRecognitionAvailable(types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION));
+            setFingerprintAvailable(types.includes(LocalAuthentication.AuthenticationType.FINGERPRINT));
+            // setIrisAvailable(types.includes(LocalAuthentication.AuthenticationType.IRIS));
+        }
+    };
+
+
+    useEffect(() => {
+        checkSupportedAuthentication();
+    }, []);
+
+
+    const authenticate = async () => {
+        if (fingerLoading) {
+            return;
+        }
+
+        setfingerLoading(true);
+
+        try {
+            const results = await LocalAuthentication.authenticateAsync();
+
+            console.log(results);
+            const empInfo = await getEmployeeInfo("loginHistory")
+            console.log(empInfo[empInfo.length-1].id + '/////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  ' + empInfo.length);
+            //login(pmisId, password)
+
+            if (results.success) {
+                login(empInfo[empInfo.length - 1].id, password)
+            }
+
+            // if (results.success) {   const empInfo = await getEmployeeInfo("employeeInfo")
+            //     setResult(EResult.SUCCESS);
+            // } else if (results.error === 'unknown') {
+            //     setResult(EResult.DISABLED);
+            // } else if (
+            //     results.error === 'user_cancel' ||
+            //     results.error === 'system_cancel' ||
+            //     results.error === 'app_cancel'
+            // ) {
+            //     setResult(EResult.CANCELLED);
+            // }
+        } catch (error) {
+            setResult('');
+        }
+
+        setfingerLoading(false);
+    };
+
+
 
     // const handleAuth = () => {
     //     TouchID.isSupported().then((biometryType) => {
@@ -161,10 +221,10 @@ const Login = () => {
                             </TouchableOpacity>
                         </View>
                         {
-                            true &&
+                            true && fingerprintAvailable &&
                             <TouchableOpacity
                                 style={{ flex: .1, }}
-                                // onPress={() => { handleAuth() }}
+                                onPress={() =>  authenticate() }
                             >
                                 <Image
                                     style={{

@@ -21,6 +21,7 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
                                       blood,
                                       charge,
                                       seniority,
+                                      officeid,
                                       office,
                                       officeAddress,
                                       officeDistrict,
@@ -32,7 +33,7 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
                                       photo,
                                       selected,
                                       timestamp)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?);`,
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?);`,
                     [
                         it.id,
                         it.name,
@@ -41,6 +42,7 @@ export const insertDataIntoDesignationTable = (tableName, data) => {
                         it.blood,
                         it.charge,
                         it.seniority,
+                        it.officeid,
                         it.office,
                         it.officeAddress,
                         it.officeDistrict,
@@ -305,6 +307,37 @@ export const insertDataIntoBiodataTable = (tableName, data) => {
                         it.canAccessSeniority,
                         timeStamp(),
                         it.photo
+                    ]
+                );
+            });
+
+
+
+        });
+    });
+};
+
+
+export const insertLoginHistoryTable = (tableName, data) => {
+
+
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+
+            data.forEach((it, index) => {
+                console.log(it.id + ' >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> in history');
+                tx.executeSql(
+                    `INSERT INTO ${tableName} (
+                                     id,
+                                     timestamp
+                                     )
+               VALUES (?, ?);`,
+                    [
+                        it.id,
+                        timeStamp()
                     ]
                 );
             });

@@ -3,8 +3,8 @@ import React, { createContext, useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 import api from '../api/api';
 import db from '../database/database'
-import { createEmployeeInfoTable } from '../database/CreateQueries'
-import { insertDataIntoEmployeeInfoTable } from '../database/InsertQueries'
+import { createEmployeeInfoTable, createLoginHistoryTable } from '../database/CreateQueries'
+import { insertDataIntoEmployeeInfoTable, insertLoginHistoryTable } from '../database/InsertQueries'
 import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
 
 let tempUserInfo = []
@@ -90,6 +90,11 @@ export const AuthProvider = ({ children }) => {
         }
         else {
             __DEV__ && console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
+
+            createLoginHistoryTable('loginHistory')
+            insertLoginHistoryTable('loginHistory',tempUserInfo)
+
+
             setUserInfo(tempUserInfo);
             setisLogged(true)
 

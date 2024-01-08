@@ -18,6 +18,7 @@ import { Charges } from '../utility/Charges';
 
 import { height, width } from '../utility/ScreenDimensions';
 import { imgSizeMini, txtSizeNormal, txtSizeBig } from "../utility/Scalling";
+import UpdatePostModalComponent from './modalComponents/UpdatePostModalComponent';
 
 let selectedPId = []
 let selectedGroupIds = []
@@ -27,6 +28,7 @@ let selectedGroupIds = []
 
 const Item = ({ id,
     name,
+    officeid,
     office,
     email,
     mobile,
@@ -67,7 +69,7 @@ const Item = ({ id,
     const [isBloodGroupUpdateVisible, setisBloodGroupUpdateVisible] = useState(false);
     const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
     const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
-
+    const [isUpdatePostModalVisible, setisUpdatePostModalVisible] = useState(false);
     const [phnOrMsg, setphnOrMsg] = useState('phn');
 
     const [modalHeading, setmodalHeading] = useState('');
@@ -101,6 +103,11 @@ const Item = ({ id,
 
     const toggleUpdateEmailModal = (isVisible) => {
         setisEmailUpdateVisible(isVisible);
+    };
+
+
+    const togglePostModal = (isVisible) => {
+        setisUpdatePostModalVisible(isVisible);
     };
 
 
@@ -220,8 +227,9 @@ const Item = ({ id,
 
 
                     <TouchableOpacity
-                        // style={{ backgroundColor: pmisId === id ? `${currentTheme}40` : '' }}
-                        onPress={() => (onSelect(id))}
+                        // style={{ backgroundColor: pmisId === id ? `${currentTheme}40` : '' }}  togglePostModal
+                        // onPress={() => (onSelect(id))}
+                        onPress={() => (togglePostModal(true))}
 
                         disabled={adminLevel === 'superAdmin' ? false : true}
 
@@ -359,7 +367,7 @@ const Item = ({ id,
                         </View>
 
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'grey', }}>{office} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'grey', }}>{office} {officeid} </Text>
                         </View>
                         {
                             post ?
@@ -433,7 +441,7 @@ const Item = ({ id,
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
-                                        onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
+                                    onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
                                     style={{
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -596,6 +604,17 @@ const Item = ({ id,
             >
 
                 <UpdateEmailModalComponent id={id} currentMobileNumber={email} toggleModal={toggleUpdateEmailModal} refreshList={reloadList} />
+            </Modal>
+
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isUpdatePostModalVisible}
+                onRequestClose={() => togglePostModal(true)}
+            >
+
+                <UpdatePostModalComponent id={id} name={name} desig={designation} officeId={officeid} toggleModal={togglePostModal} refreshList={reloadList} />
             </Modal>
 
 

@@ -563,7 +563,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 setDATA([])
 
-                
+
                  setIsLoading(true);
 
                 const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
@@ -1158,6 +1158,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 }
                 {refreshing ? <ActivityIndicator /> : null}
                 {
+
                     notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity
@@ -1196,7 +1197,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     />}
                         </TouchableOpacity>
                         {
-                            !isFilterOn &&
+                                !isFilterOn && notDgOrAdg &&
                             <View style={{ alignContent: 'center', justifyContent: 'center' }}>
                                 <Text
                                     style={{
@@ -1412,6 +1413,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             <Item
                                 id={item.id}
                                 name={item.name}
+                                officeid={item.officeid}
                                 office={item.office}
                                 email={item.email}
                                 mobile={item.mobile}
