@@ -53,6 +53,8 @@ Images['bloodsearch'] = require('../assets/icons/bloodsearch.png')
 Images['logout'] = require('../assets/icons/logout.png')
 Images['others'] = require('../assets/icons/others.png')
 Images['fingerprint'] = require('../assets/icons/fingerprint.png')
+Images['plus-green'] = require('../assets/icons/plus-green.png')
+Images['plus-gray'] = require('../assets/icons/plus-gray.png')
 
 
 //  expendable list icon  fingerprint

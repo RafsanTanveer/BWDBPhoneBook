@@ -1,5 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState, useRef } from "react";
 import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Contacts from 'expo-contacts';
 import { useNetInfo } from "@react-native-community/netinfo";
@@ -71,9 +71,9 @@ const Item = ({ id,
     const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
     const [isUpdatePostModalVisible, setisUpdatePostModalVisible] = useState(false);
     const [phnOrMsg, setphnOrMsg] = useState('phn');
-
+    const lastTapTimeRef = useRef(null);
     const [modalHeading, setmodalHeading] = useState('');
-
+    const [isPlaying, setPlaying] = useState(false);
     const [isDataEditModalVisible, setisDataEditModalVisible] = useState(false);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -112,13 +112,24 @@ const Item = ({ id,
 
 
 
-    const contact = {
-        [Contacts.Fields.FirstName]: 'Bird',
-        [Contacts.Fields.LastName]: 'Man',
-        [Contacts.Fields.Company]: 'Young Money',
-    };
 
 
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Contacts.requestPermissionsAsync();
+            if (status === 'granted') {
+                const { data } = await Contacts.getContactsAsync({
+                    fields: [Contacts.Fields.Emails],
+                });
+
+                if (data.length > 0) {
+                    const contact = data[0];
+                    // console.log(contact);
+                }
+            }
+        })();
+    }, []);
 
     // useEffect(() => {
     //     (async () => {
@@ -188,10 +199,30 @@ const Item = ({ id,
 
 
 
+    const handleTap = () => {
+        const now = new Date().getTime();
+        const DOUBLE_TAP_DELAY = 1000; // Adjust as needed for your use case (in milliseconds)
+
+        if (now - lastTapTimeRef.current < DOUBLE_TAP_DELAY) {
+            // Double tap detected
+            console.log('Double tap!');
+            togglePostModal(true)
+        } else {
+            // Single tap detected
+            console.log('Single tap!');
+            // Toggle play/pause video
+            onSelect(id)
+            setPlaying(!isPlaying);
+        }
+
+        lastTapTimeRef.current = now;
+    };
+
+
     return (
 
         <TouchableOpacity
-            disabled={true}
+            // disabled={true}
             style={{ marginBottom: adminLevel != 'superAdmin' ? height * .02 : 0 }}
             onPress={() => (onSelect(id))}
         >
@@ -228,8 +259,10 @@ const Item = ({ id,
 
                     <TouchableOpacity
                         // style={{ backgroundColor: pmisId === id ? `${currentTheme}40` : '' }}  togglePostModal
-                        // onPress={() => (onSelect(id))}
+                        // onPress={() => (onSelect(id))}   handleTap
+                        // onPress={() => (handleTap())}
                         onPress={() => (togglePostModal(true))}
+
 
                         disabled={adminLevel === 'superAdmin' ? false : true}
 
@@ -239,12 +272,100 @@ const Item = ({ id,
                             photo ?
 
                                 <View>
+                                    <TouchableOpacity
+                                        onPress={async () => {
+
+                                            const contact = {
+                                                [Contacts.Fields.FirstName]: name,
+                                                [Contacts.Fields.LastName]: '',
+                                                [Contacts.Fields.Company]: 'BWDB',
+                                                [Contacts.Fields.PhoneNumbers]: [
+                                                    {
+                                                        number: mobile,
+                                                        isPrimary: true,
+                                                        digits: "1234567890",
+                                                        countryCode: "880",
+                                                        id: id,
+                                                        label: "mobile",
+
+                                                    },
+                                                ],
+                                                [Contacts.Fields.Emails]: [
+                                                    {
+                                                        email: email,
+                                                        isPrimary: true,
+                                                        id: id,
+                                                        label: "mobile",
+                                                    },
+                                                ],
+                                            };
+
+
+                                            await Contacts.addContactAsync(contact)
+                                                .then((contactId) => {
+                                                    alert("contactId --- " + contactId);
+                                                })
+                                                .catch((err) => {
+                                                    alert(err);
+                                                    __DEV__ && console.log(err);
+                                                });
+                                        }}
+
+                                        style={{ position:'absolute', zIndex:100, }} >
+                                        <Image
+                                            style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                            source={Images['plus-green']} />
+                                    </TouchableOpacity>
                                     <Image style={[styles.logo,
                                     pmisId === id ? { borderWidth: 1, borderColor: `${currentTheme}50` } : '']}
                                         source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 </View>
                                 :
                                 <View>
+                                    <TouchableOpacity
+                                        onPress={async () => {
+
+                                            const contact = {
+                                                [Contacts.Fields.FirstName]: name,
+                                                [Contacts.Fields.LastName]: '',
+                                                [Contacts.Fields.Company]: 'BWDB',
+                                                [Contacts.Fields.PhoneNumbers]: [
+                                                    {
+                                                        number: mobile,
+                                                        isPrimary: true,
+                                                        digits: "1234567890",
+                                                        countryCode: "880",
+                                                        id: 'mob-'+id,
+                                                        label: "mobile",
+
+                                                    },
+                                                ],
+                                                [Contacts.Fields.Emails]: [
+                                                    {
+                                                        email: email,
+                                                        isPrimary: true,
+                                                        id: 'emil-' + id,
+                                                        label: "mobile",
+                                                    },
+                                                ],
+                                            };
+
+
+                                            await Contacts.addContactAsync(contact)
+                                                .then((contactId) => {
+                                                    alert("contactId --- " + contactId);
+                                                })
+                                                .catch((err) => {
+                                                    alert(err);
+                                                    __DEV__ && console.log(err);
+                                                });
+                                        }}
+
+                                        style={{ position: 'absolute', zIndex: 100, }} >
+                                        <Image
+                                            style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                            source={Images['plus-green']} />
+                                    </TouchableOpacity>
                                     <Image style={styles.place_holder_logo}
                                         source={Images['placeHolderImg']} >
                                     </Image>
@@ -341,7 +462,53 @@ const Item = ({ id,
 
                         </View>
 
-                        <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                      <View style={{ flex:1, flexDirection:'row', justifyContent:'space-between' }} >
+                            <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                            {/* <TouchableOpacity
+                                onPress={async () => {
+
+                                    const contact = {
+                                        [Contacts.Fields.FirstName]: name,
+                                        [Contacts.Fields.LastName]: '',
+                                        [Contacts.Fields.Company]: 'BWDB',
+                                        [Contacts.Fields.PhoneNumbers]: [
+                                            {
+                                                number: mobile,
+                                                isPrimary: true,
+                                                digits: "1234567890",
+                                                countryCode: "880",
+                                                id: 'mob-' + id,
+                                                label: "mobile",
+
+                                            },
+                                        ],
+                                        [Contacts.Fields.Emails]: [
+                                            {
+                                                email: email,
+                                                isPrimary: true,
+                                                id: 'emil-' + id,
+                                                label: "mobile",
+                                            },
+                                        ],
+                                    };
+
+
+                                    await Contacts.addContactAsync(contact)
+                                        .then((contactId) => {
+                                            alert("contactId --- " + contactId);
+                                        })
+                                        .catch((err) => {
+                                            alert(err);
+                                            __DEV__ && console.log(err);
+                                        });
+                                }}
+
+                                style={{  zIndex: 100, }} >
+                                <Image
+                                    style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                    source={Images['plus-green']} />
+                            </TouchableOpacity> */}
+                      </View>
                         <View style={{}} >
                             <Image
 
@@ -367,7 +534,7 @@ const Item = ({ id,
                         </View>
 
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'grey', }}>{office} {officeid} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'grey', }}>{office}</Text>
                         </View>
                         {
                             post ?
@@ -519,6 +686,31 @@ const Item = ({ id,
                             <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
 
                                     onPress={async () => {
+
+                                        const contact = {
+                                            [Contacts.Fields.FirstName]: name,
+                                            [Contacts.Fields.LastName]: '',
+                                            [Contacts.Fields.Company]: 'BWDB',
+                                            [Contacts.Fields.PhoneNumbers]: [
+                                                {
+                                                    number: mobile,
+                                                    isPrimary: true,
+                                                    digits: "1234567890",
+                                                    countryCode: "880",
+                                                    id: id,
+                                                    label: "mobile",
+
+                                                },
+                                            ],
+                                            [Contacts.Fields.Emails]: [
+                                                {
+                                                    email: email,
+                                                    isPrimary: true,
+                                                    id: id,
+                                                    label: "mobile",
+                                                },
+                                            ],
+                                        };
 
 
                                         await Contacts.addContactAsync(contact)

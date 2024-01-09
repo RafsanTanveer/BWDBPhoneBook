@@ -127,7 +127,11 @@ export const AuthProvider = ({ children }) => {
 
         }
         else {
-            const { data: response } = await api.get("allEmpInfo");
+            const { data: response } = await api.get("allEmpInfo", {
+                params: {
+                    id: id
+                }
+            });
             const empData = response.rows
 
             console.log("in not exits employeeInfo table");

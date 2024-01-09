@@ -32,6 +32,7 @@ const Login = () => {
     const { isLoading, login, setUserInfo, setisLogged } = useContext(AuthContext);
     const [fingerprintAvailable, setFingerprintAvailable] = useState(false);
     const [fingerLoading, setfingerLoading] = useState(false);
+    const [isLoginHistoryAvaiable, setisLoginHistoryAvaiable] = useState(false);
 
     const [result, setResult] = useState('');
 
@@ -43,6 +44,20 @@ const Login = () => {
             ToastAndroid.CENTER)
     }
 
+
+    const checkIsLoginHistoryAvaiable = async () => {
+
+        try {
+            const empInfo = await getEmployeeInfo("loginHistory")
+
+            empInfo.length ? setisLoginHistoryAvaiable(true) : setisLoginHistoryAvaiable(false)
+
+        } catch (error) {
+
+        }
+
+
+    }
 
     const checkSupportedAuthentication = async () => {
         const types = await LocalAuthentication.supportedAuthenticationTypesAsync();
@@ -56,6 +71,7 @@ const Login = () => {
 
     useEffect(() => {
         checkSupportedAuthentication();
+        checkIsLoginHistoryAvaiable();
     }, []);
 
 
@@ -221,7 +237,7 @@ const Login = () => {
                             </TouchableOpacity>
                         </View>
                         {
-                            true && fingerprintAvailable &&
+                            true && fingerprintAvailable && isLoginHistoryAvaiable &&
                             <TouchableOpacity
                                 style={{ flex: .1, }}
                                 onPress={() =>  authenticate() }
