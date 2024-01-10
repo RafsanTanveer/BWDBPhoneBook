@@ -2,10 +2,10 @@ import React, { useRef, useEffect } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
+import {height, width} from '../utility/ScreenDimensions'
 
 
-
-const NoDataFoundScreen = () => {
+const NoDataFoundScreen = ({designation}) => {
     const animation = useRef(null);
     useEffect(() => {
         // You can control the ref programmatically, rather than using autoPlay
@@ -14,17 +14,17 @@ const NoDataFoundScreen = () => {
 
     return (
         <View style={styles.animationContainer}>
-            <LottieView
+            {/* <LottieView
                 autoPlay
                 ref={animation}
                 style={{
-                    width: 200,
-                    height: 200,
+                    width: width * .4,
+                    height: width * .4,
                 }}
                 speed={1.5}
                 source={require('../assets/lottie/107420-no-data-loader.json')}
-            />
-            <Text style={{ fontSize: 20, fontWeight: '400' }} >No Data Found</Text>
+            /> */}
+            <Text style={{ fontSize: width * .045, fontWeight: '600', color: 'gray', textAlign: 'center' }} >No one is posted as {'\n'} {designation} {'\n'}yet</Text>
         </View>
     );
 }
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     buttonContainer: {
-        paddingTop: 20,
+        paddingTop: 10,
     },
 });
 

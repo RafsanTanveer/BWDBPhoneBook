@@ -111,6 +111,30 @@ const Item = ({ id,
     };
 
 
+    const contact = {
+        [Contacts.Fields.FirstName]: name,
+        [Contacts.Fields.LastName]: '',
+        [Contacts.Fields.Company]: 'BWDB',
+        [Contacts.Fields.PhoneNumbers]: [
+            {
+                number: mobile,
+                isPrimary: true,
+                digits: "1234567890",
+                countryCode: "880",
+                id: null,
+                label: "mobile",
+
+            },
+        ],
+        [Contacts.Fields.Emails]: [
+            {
+                email: email,
+                isPrimary: true,
+                id: null,
+                label: "mobile",
+            },
+        ],
+    };
 
 
 
@@ -272,33 +296,9 @@ const Item = ({ id,
                             photo ?
 
                                 <View>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={async () => {
 
-                                            const contact = {
-                                                [Contacts.Fields.FirstName]: name,
-                                                [Contacts.Fields.LastName]: '',
-                                                [Contacts.Fields.Company]: 'BWDB',
-                                                [Contacts.Fields.PhoneNumbers]: [
-                                                    {
-                                                        number: mobile,
-                                                        isPrimary: true,
-                                                        digits: "1234567890",
-                                                        countryCode: "880",
-                                                        id: null,
-                                                        label: "mobile",
-
-                                                    },
-                                                ],
-                                                [Contacts.Fields.Emails]: [
-                                                    {
-                                                        email: email,
-                                                        isPrimary: true,
-                                                        id: null,
-                                                        label: "mobile",
-                                                    },
-                                                ],
-                                            };
 
 
                                             await Contacts.addContactAsync(contact)
@@ -315,40 +315,16 @@ const Item = ({ id,
                                         <Image
                                             style={{ height: width * .05, width: width * .05, elevation: 15 }}
                                             source={Images['plus-green']} />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                     <Image style={[styles.logo,
                                     pmisId === id ? { borderWidth: 1, borderColor: `${currentTheme}50` } : '']}
                                         source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 </View>
                                 :
                                 <View>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={async () => {
 
-                                            const contact = {
-                                                [Contacts.Fields.FirstName]: name,
-                                                [Contacts.Fields.LastName]: '',
-                                                [Contacts.Fields.Company]: 'BWDB',
-                                                [Contacts.Fields.PhoneNumbers]: [
-                                                    {
-                                                        number: mobile,
-                                                        isPrimary: true,
-                                                        digits: "1234567890",
-                                                        countryCode: "880",
-                                                        id: null,
-                                                        label: "mobile",
-
-                                                    },
-                                                ],
-                                                [Contacts.Fields.Emails]: [
-                                                    {
-                                                        email: email,
-                                                        isPrimary: true,
-                                                        id: null,
-                                                        label: "mobile",
-                                                    },
-                                                ],
-                                            };
 
 
                                             await Contacts.addContactAsync(contact)
@@ -365,7 +341,7 @@ const Item = ({ id,
                                         <Image
                                             style={{ height: width * .05, width: width * .05, elevation: 15 }}
                                             source={Images['plus-green']} />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                     <Image style={styles.place_holder_logo}
                                         source={Images['placeHolderImg']} >
                                     </Image>
@@ -393,7 +369,10 @@ const Item = ({ id,
 
                         {
                             true && mobile &&
-                            <View style={{ position: adminLevel === 'superAdmin' && canAccessSeniority === 'true' ? 'absolute' : 'relative', justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2 }}>
+                            <View style={{
+                                position: adminLevel === 'superAdmin' && canAccessSeniority === 'true' ? 'absolute' : 'relative',
+                                justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2
+                            }}>
                                 <View style={{ flex: 1 }}></View>
 
 
@@ -559,7 +538,7 @@ const Item = ({ id,
                         email &&
                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
                             <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} ✉️</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{
@@ -681,63 +660,29 @@ const Item = ({ id,
 
 
 
-                        {/* {
+                        {
                             mobile &&
-                            <TouchableOpacity onLongPress={() => __DEV__ && console.warn('STARTED LONG PRESS')}
-
-                                    onPress={async () => {
-
-                                        const contact = {
-                                            [Contacts.Fields.FirstName]: name,
-                                            [Contacts.Fields.LastName]: '',
-                                            [Contacts.Fields.Company]: 'BWDB',
-                                            [Contacts.Fields.PhoneNumbers]: [
-                                                {
-                                                    number: mobile,
-                                                    isPrimary: true,
-                                                    digits: "1234567890",
-                                                    countryCode: "880",
-                                                    id: id,
-                                                    label: "mobile",
-
-                                                },
-                                            ],
-                                            [Contacts.Fields.Emails]: [
-                                                {
-                                                    email: email,
-                                                    isPrimary: true,
-                                                    id: id,
-                                                    label: "mobile",
-                                                },
-                                            ],
-                                        };
+                            <TouchableOpacity
+                                        onPress={async () => {
 
 
-                                        await Contacts.addContactAsync(contact)
-                                            .then((contactId) => {
-                                                alert("contactId --- " + contactId);
-                                            })
-                                            .catch((err) => {
-                                                alert(err);
-                                                __DEV__ && console.log(err);
-                                            });
-                                    }}
 
-                                style={{
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    backgroundColor: `${currentTheme}`,
-                                    borderRadius: height * .005,
-                                    marginHorizontal: 5,
-                                    paddingVertical: 1,
-                                    paddingHorizontal: 5
-                                }}>
-                                    <Image
-                                        source={Images['plus']}
-                                        style={{ height: imgSizeMini*.6 , width: imgSizeMini*.6  }}
-                                    />
-                            </TouchableOpacity>
-                        } */}
+                                            await Contacts.addContactAsync(contact)
+                                                .then((contactId) => {
+                                                    ToastAndroid.show(name + " has been successfully added to your phone contact", ToastAndroid.LONG, ToastAndroid.TOP);
+                                                })
+                                                .catch((err) => {
+                                                    alert(err);
+                                                    __DEV__ && console.log(err);
+                                                });
+                                        }}
+
+                                        style={{  zIndex: 100, justifyContent:'center'}} >
+                                        <Image
+                                            style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                            source={Images['plus-green']} />
+                                    </TouchableOpacity>
+                        }
                     </View>
                 </View>
             </View>

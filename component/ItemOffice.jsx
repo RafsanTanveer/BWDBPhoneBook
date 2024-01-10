@@ -13,7 +13,7 @@ import BiodataScreen from '../screens/BiodataScreen';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../context/ThemeContext';
 import Checkbox from 'expo-checkbox';
-
+import { Images } from '../utility/Images';
 // import { FAB } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import * as Contacts from 'expo-contacts'
@@ -92,7 +92,46 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
     }
 
+    const contact = {
+        [Contacts.Fields.FirstName]: name,
+        [Contacts.Fields.LastName]: '',
+        [Contacts.Fields.Company]: 'BWDB',
+        [Contacts.Fields.PhoneNumbers]: [
+            {
+                number: mobile,
+                isPrimary: true,
+                digits: "1234567890",
+                countryCode: "880",
+                id: null,
+                label: "mobile",
 
+            },
+        ],
+        [Contacts.Fields.Emails]: [
+            {
+                email: email,
+                isPrimary: true,
+                id: null,
+                label: "mobile",
+            },
+        ],
+    };
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Contacts.requestPermissionsAsync();
+            if (status === 'granted') {
+                const { data } = await Contacts.getContactsAsync({
+                    fields: [Contacts.Fields.Emails],
+                });
+
+                if (data.length > 0) {
+                    const contact = data[0];
+                    // console.log(contact);
+                }
+            }
+        })();
+    }, []);
 
     return (
 
@@ -117,7 +156,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
                     }
             }>
-                {/* <View style={{ elevation: 10,zIndex: 9, }}>
+                {/* <View style={{ elevation: 10,zIndex: 9, }}> ⩥
                 <Text style={{color:'black'}} >{index + 1}</Text>
             </View> */}
                 <View style={{ justifyContent: 'center', alignContent: 'center', }}>
@@ -206,6 +245,29 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                                 onPress={() => (toggleModal(true))}
                                 style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
+                            </TouchableOpacity>
+                        }
+                        {
+                            mobile &&
+                            <TouchableOpacity
+                                onPress={async () => {
+
+
+
+                                    await Contacts.addContactAsync(contact)
+                                        .then((contactId) => {
+                                            ToastAndroid.show(name + " has been successfully added to your phone contact", ToastAndroid.LONG, ToastAndroid.TOP);
+                                        })
+                                        .catch((err) => {
+                                            alert(err);
+                                            __DEV__ && console.log(err);
+                                        });
+                                }}
+
+                                style={{ zIndex: 100, justifyContent: 'center' }} >
+                                <Image
+                                    style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                    source={Images['plus-green']} />
                             </TouchableOpacity>
                         }
                     </View>
