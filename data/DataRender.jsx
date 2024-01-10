@@ -19,6 +19,7 @@ import { Images } from '../utility/Images';
 import { height, width } from '../utility/ScreenDimensions';
 import { timeStamp } from '../utility/Time';
 import { Charges } from '../utility/Charges';
+import {Camelize} from '../utility/Camelize'
 import db from '../database/database';
 import { imgSizeMini, txtSizeNormal } from '../utility/Scalling'
 import NoDataFoundScreen from '../screens/NoDataFoundScreen'
@@ -170,20 +171,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setisAddModalVisible(isVisible);
     };
 
-    // function camelize(str) {
-    //     return str
-    //         .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) =>
-    //             index === 0
-    //                 ? letter.toLowerCase()
-    //                 : letter.toUpperCase()
-    //         )
-    //         .replace(/\s+/g, '');
-    // }
 
-    function camelize(string) {
-        string = string.toLowerCase()
-        return string.replace(/(?:)([a-z])/g, (match, group1) => group1.toUpperCase())
-    }
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -969,7 +957,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-
+    console.log('ccccc    --  ' + Camelize(designation));
 
     const groupHanlder = () => {
         setGroupMenu(!groupMenu)
@@ -1044,7 +1032,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         isLoading ?
             <LoadingScreen /> :
-            DATA.length == 0 ? <NoDataFoundScreen designation={designation}/> :
+            DATA.length == 0 ? <NoDataFoundScreen designation={Camelize(designation)}/> :
                 <SafeAreaView style={styles.container}>
                     <View style={{
                         flexDirection: 'row',
@@ -1197,8 +1185,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             style={{ height: imgSizeMini, width: imgSizeMini }}
                                         />}
                             </TouchableOpacity>
-                            {
-                                !isFilterOn && notDgOrAdg &&
+                                {
+
+                                !isFilterOn &&
                                 <View style={{ alignContent: 'center', justifyContent: 'center' }}>
                                     <Text
                                         style={{
@@ -1389,7 +1378,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                         !search && DATA ?
                             <View style={{ flexDirection: 'row', alignContent: 'center' }} >
                                 <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
-                                <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
+                                <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{notDgOrAdg && canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                             </View>
                             : ""
                     }
@@ -1579,7 +1568,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                 marginRight: height * .02,
                                                 fontWeight: '600'
                                             }}>
-                                            {chargeMap['C'] ? `${camelize(higherPost)}, CC             = ${chargeMap['C']}` : ''}
+                                                    {chargeMap['C'] ? `${Camelize(higherPost)}, CC             = ${chargeMap['C']}` : ''}
                                         </Text>
                                     </View>
                                 }

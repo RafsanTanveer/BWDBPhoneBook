@@ -24,7 +24,7 @@ const NoDataFoundScreen = ({designation}) => {
                 speed={1.5}
                 source={require('../assets/lottie/107420-no-data-loader.json')}
             /> */}
-            <Text style={{ fontSize: width * .045, fontWeight: '600', color: 'gray', textAlign: 'center' }} >No one is posted as {'\n'} {designation} {'\n'}yet</Text>
+            <Text style={{ fontSize: width * .045, fontWeight: '600', color: 'gray', textAlign: 'center' }} >No one has been appointed as {'\n'} {designation} {'\n'}yet</Text>
         </View>
     );
 }
