@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, ToastAndroid, Linking, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { ThemeContext } from "../../context/ThemeContext";
 
 import { height, width } from '../../utility/ScreenDimensions'
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -26,13 +27,14 @@ const UpdateMobileNumberModalComponent = ({ id, currentMobileNumber, toggleModal
     const [mobileNumber, setmobileNumber] = useState();
 
 
+    const { currentTheme } = useContext(ThemeContext);
 
     const closeModal = () => {
         toggleModal(false)
     }
 
 
-    const updateBloodGrp = async () => {
+    const updateMblNm = async () => {
 
         console.log(mobileNumber);
 
@@ -95,14 +97,15 @@ const UpdateMobileNumberModalComponent = ({ id, currentMobileNumber, toggleModal
 
                     <View style={{ flexDirection: 'row' }} >
                         <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => updateBloodGrp()}>
+                            style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
+
+                            onPress={() => updateMblNm()}>
                             <Text style={styles.textStyle}>Update</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
+                            style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
                             onPress={() => closeModal()}>
-                            <Text style={styles.textStyle}>Cancel</Text>
+                            <Text style={{ ...styles.textStyle }}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -144,10 +147,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 15,
         paddingVertical: 5,
-        borderColor: 'blue',
-        borderWidth: 1,
-        marginTop: 15,
-        marginRight: 5
+
+
+        marginTop: 20,
+        marginRight: 5,
 
     },
     buttonOpen: {
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#2196F3',
     },
     textStyle: {
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
     },

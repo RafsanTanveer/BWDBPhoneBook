@@ -957,8 +957,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-    console.log('ccccc    --  ' + Camelize(designation));
-
     const groupHanlder = () => {
         setGroupMenu(!groupMenu)
         console.log('groupHanlder');
