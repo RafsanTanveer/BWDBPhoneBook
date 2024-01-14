@@ -1,6 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { memo, useContext, useEffect, useState, useRef } from "react";
-import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import * as Contacts from 'expo-contacts';
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -539,6 +539,7 @@ const Item = ({ id,
                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
                             <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
                                     <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} ✉️</Text>
+                                    
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{

@@ -1032,7 +1032,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         isLoading ?
             <LoadingScreen /> :
-            DATA.length == 0 ? <NoDataFoundScreen designation={Camelize(designation)}/> :
+            // DATA.length == 0 ? <NoDataFoundScreen designation={Camelize(designation)}/> :
                 <SafeAreaView style={styles.container}>
                     <View style={{
                         flexDirection: 'row',
@@ -1399,7 +1399,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             refreshControl={
                                 <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                             }
-
+                        ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
                             renderItem={({ item, index }) => (
                                 <Item
                                     id={item.id}

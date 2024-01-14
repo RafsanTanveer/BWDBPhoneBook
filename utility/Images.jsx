@@ -42,24 +42,17 @@ Images['addGroup'] = require('../assets/icons/addGroup.png')
 Images['creatGroup'] = require('../assets/icons/creatGroup.png')
 Images['clearGroup'] = require('../assets/icons/clearGroup.png')
 Images['bottom'] = require('../assets/botom.png')
-Images['download'] = require('../assets/icons/download.png')
 Images['video-call'] = require('../assets/icons/video-call.png')
 Images['chat'] = require('../assets/icons/chat.png')
 Images['share'] = require('../assets/icons/share.png')
 Images['end-call'] = require('../assets/icons/end-call.png')
 Images['plus'] = require('../assets/icons/plus.png')
-Images['update'] = require('../assets/icons/update.png')
 Images['bloodsearch'] = require('../assets/icons/bloodsearch.png')
 Images['logout'] = require('../assets/icons/logout.png')
 Images['others'] = require('../assets/icons/others.png')
 Images['fingerprint'] = require('../assets/icons/fingerprint.png')
 Images['plus-green'] = require('../assets/icons/plus-green.png')
 Images['plus-gray'] = require('../assets/icons/plus-gray.png')
-
-
-//  expendable list icon  fingerprint
-
-
 Images['drawerGroupIcon'] = require('../assets/icons/groupIcon.png')
 Images['rightArrow'] = require('../assets/icons/right.png')
 Images['dg'] = require('../assets/icons/dg.png')
@@ -73,7 +66,6 @@ Images['medical'] = require('../assets/icons/medical.png')
 Images['settings'] = require('../assets/icons/settings.png')
 
 
-//clearGroup
 
 
 
