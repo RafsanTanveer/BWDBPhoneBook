@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
             __DEV__ && console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
 
             createLoginHistoryTable('loginHistory')
-            insertLoginHistoryTable('loginHistory',tempUserInfo)
+            insertLoginHistoryTable('loginHistory', tempUserInfo)
 
 
             setUserInfo(tempUserInfo);
@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (id, password) => {
         setIsLoading(true);
 
-
+        console.log(id, password);
 
         __DEV__ && console.log('login id - ', id);
 
