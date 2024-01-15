@@ -7,12 +7,16 @@ import { createEmployeeInfoTable, createLoginHistoryTable } from '../database/Cr
 import { insertDataIntoEmployeeInfoTable, insertLoginHistoryTable } from '../database/InsertQueries'
 import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
 import { isTableAvailable } from '../utility/CheckTableAvailableorNot';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 let tempUserInfo = []
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
+    const netInfo = useNetInfo();
+
     const [userInfo, setUserInfo] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -66,8 +70,59 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
+    const getEmpInfoFromApi = async (id, password) => {
+
+        console.log('::::: in getusercredential');
+        const { data: response } = await api.get("getusercredential", {
+            params: {
+                id: id,
+                pass: password
+            }
+        });
+        const empData = response.rows
+        console.log('::::::::::::::::: in getusercredential  ' + empData);
+        return empData
+    }
 
 
+    const checkCredential = (empInfo, id, password) => {
+
+        empInfo.map((emp) => {
+            if (emp.id === id && emp.password === password) {
+                tempUserInfo.push(emp)
+            }
+        })
+
+        if (tempUserInfo.length === 0) {
+            ToastAndroid.show('PMIS ID or PASSWORD IS NOT CORRECT. ', ToastAndroid.SHORT);
+            return false
+        }
+
+        return true
+
+    }
+
+    const checkAndLogin = (empInfo, id, password) => {
+
+        if (checkCredential(empInfo, id, password)) {
+            setUserInfo(tempUserInfo);
+            setisLogged(true)
+        }
+        else {
+            const data = getEmpInfoFromApi(id, password)
+        }
+    }
+
+    const logIn_Unsuccessful = () => {
+        setisLogged(false)
+        setUserInfo([])
+    }
+
+    const logIn_Successful = (userInfo) => {
+        setUserInfo(userInfo);
+        setisLogged(true)
+
+    }
 
     const idCheckAndLogin = (empInfo, id) => {
 
@@ -93,7 +148,7 @@ export const AuthProvider = ({ children }) => {
             __DEV__ && console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
 
             createLoginHistoryTable('loginHistory')
-            insertLoginHistoryTable('loginHistory',tempUserInfo)
+            insertLoginHistoryTable('loginHistory', tempUserInfo)
 
 
             setUserInfo(tempUserInfo);
@@ -105,37 +160,106 @@ export const AuthProvider = ({ children }) => {
 
     }
 
+    const getDataAndLogin = async (id, password) => {
+
+
+        // const tempData = getEmpInfoFromApi(id, password)
+
+
+        console.log('::::: in getusercredential');
+        const { data: response } = await api.get("getusercredential", {
+            params: {
+                id: id,
+                pass: password
+            }
+        });
+        const tempData = response.rows
+
+        console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData);
+        if (tempData) {
+
+
+            if (tempData[0].rec_status === 'I') {
+                ToastAndroid.show('RETIRED', ToastAndroid.LONG,);
+                logIn_Unsuccessful()
+            }
+            else {
+                insertLoginHistoryTable('loginHistory', tempData)
+                logIn_Successful(tempData)
+            }
+
+        }
+        else {
+            ToastAndroid.show('PMIS ID or PASSWORD IS NOT CORRECT. ', ToastAndroid.SHORT);
+            logIn_Unsuccessful()
+        }
+    }
+
     const login = async (id, password) => {
         setIsLoading(true);
 
+        console.log('***************************************************************************************************************************');
 
+        //////////********************************************** New Login ********************************************* */
+
+        console.log(' in new log in ' + id, password);
+
+        if (await isTableAvailable('loginHistory')) {
+            console.log('loginHistory exsits :::::::::::::::::::::::::::::::::');
+
+            const empInfo = await getEmployeeInfo("loginHistory")
+
+            if (checkCredential(empInfo, id, password)) {
+                logIn_Successful(tempUserInfo)
+            } else {
+
+                netInfo.isConnected && getDataAndLogin(id, password)
+            }
+
+        }
+        else {
+            console.log('loginHistory not exsits :::::::::::::::::::::::::::::::::');
+
+            createLoginHistoryTable('loginHistory')
+            getDataAndLogin(id, password)
+        }
+
+
+
+
+
+        //////////********************************************** New Login ********************************************* */
 
         __DEV__ && console.log('login id - ', id);
 
 
-        if (await isTableAvailable('employeeInfo')) {
-            
-            const empInfo = await getEmployeeInfo("employeeInfo")
+        // if (await isTableAvailable('employeeInfo')) {
 
-            idCheckAndLogin(empInfo, id)
+        //     const empInfo = await getEmployeeInfo("employeeInfo")
 
-        }
-        else {
-            const { data: response } = await api.get("allEmpInfo", {
-                params: {
-                    id: id
-                }
-            });
-            const empData = response.rows
+        //     idCheckAndLogin(empInfo, id)
 
-            console.log("in not exits employeeInfo table");
+        // }
+        // else {
+        //     const { data: response } = await api.get("allEmpInfo", {
+        //         params: {
+        //             id: id
+        //         }
+        //     });
+        //     const empData = response.rows
 
-            createEmployeeInfoTable("employeeInfo")
-            insertDataIntoEmployeeInfoTable("employeeInfo", empData)
+        //     console.log("in not exits employeeInfo table");
 
-            idCheckAndLogin(empData, id)
+        //     createEmployeeInfoTable("employeeInfo")
+        //     insertDataIntoEmployeeInfoTable("employeeInfo", empData)
 
-        }
+        //     idCheckAndLogin(empData, id)
+
+        // }
+
+
+
+
 
         await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
 
