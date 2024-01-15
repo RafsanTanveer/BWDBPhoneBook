@@ -332,11 +332,15 @@ export const insertLoginHistoryTable = (tableName, data) => {
                 tx.executeSql(
                     `INSERT INTO ${tableName} (
                                      id,
+                                     password,
+                                     rec_status,
                                      timestamp
                                      )
-               VALUES (?, ?);`,
+               VALUES (?, ?,?,?);`,
                     [
                         it.id,
+                        it.password,
+                        it.rec_status,
                         timeStamp()
                     ]
                 );

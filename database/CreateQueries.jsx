@@ -203,6 +203,8 @@ export const createLoginHistoryTable = (tableName) => {
                tx.executeSql(
                     `CREATE TABLE IF NOT EXISTS ${tableName} (
                                 id          TEXT,
+                                password    TEXT,
+                                rec_status  TEXT,
                                 timestamp   TEXT);`,
                     [],
                     (_, result) => {

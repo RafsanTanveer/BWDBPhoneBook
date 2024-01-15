@@ -6,6 +6,7 @@ import db from '../database/database'
 import { createEmployeeInfoTable, createLoginHistoryTable } from '../database/CreateQueries'
 import { insertDataIntoEmployeeInfoTable, insertLoginHistoryTable } from '../database/InsertQueries'
 import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
+import { isTableAvailable } from '../utility/CheckTableAvailableorNot';
 
 let tempUserInfo = []
 
@@ -92,7 +93,7 @@ export const AuthProvider = ({ children }) => {
             __DEV__ && console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
 
             createLoginHistoryTable('loginHistory')
-            insertLoginHistoryTable('loginHistory', tempUserInfo)
+            insertLoginHistoryTable('loginHistory',tempUserInfo)
 
 
             setUserInfo(tempUserInfo);
@@ -107,20 +108,13 @@ export const AuthProvider = ({ children }) => {
     const login = async (id, password) => {
         setIsLoading(true);
 
-        console.log(id, password);
+
 
         __DEV__ && console.log('login id - ', id);
 
-        const tablenames = await getAllTableName()
 
-        const tableNames = tablenames.map((table) => table.name);
-        // console.log(tableNames);
-
-        const tableExists = tableNames.includes('employeeInfo');
-
-
-        if (tableExists) {
-            __DEV__ && console.log("tableExists", tableExists);
+        if (await isTableAvailable('employeeInfo')) {
+            
             const empInfo = await getEmployeeInfo("employeeInfo")
 
             idCheckAndLogin(empInfo, id)

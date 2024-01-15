@@ -237,7 +237,7 @@ const Login = () => {
                             </TouchableOpacity>
                         </View>
                         {
-                            true && fingerprintAvailable && isLoginHistoryAvaiable &&
+                            false && fingerprintAvailable && isLoginHistoryAvaiable &&
                             <TouchableOpacity
                                 style={{ flex: .1, }}
                                 onPress={() =>  authenticate() }
