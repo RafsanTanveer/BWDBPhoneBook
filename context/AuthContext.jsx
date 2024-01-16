@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, Platform } from 'react-native';
 import api from '../api/api';
 import db from '../database/database'
 import { createEmployeeInfoTable, createLoginHistoryTable } from '../database/CreateQueries'
@@ -8,6 +8,7 @@ import { insertDataIntoEmployeeInfoTable, insertLoginHistoryTable } from '../dat
 import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
 import { isTableAvailable } from '../utility/CheckTableAvailableorNot';
 import { useNetInfo } from "@react-native-community/netinfo";
+import { ToastOrAlert } from '../utility/ToastOrAlert';
 
 let tempUserInfo = []
 
@@ -70,19 +71,7 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
-    const getEmpInfoFromApi = async (id, password) => {
 
-        console.log('::::: in getusercredential');
-        const { data: response } = await api.get("getusercredential", {
-            params: {
-                id: id,
-                pass: password
-            }
-        });
-        const empData = response.rows
-        console.log('::::::::::::::::: in getusercredential  ' + empData);
-        return empData
-    }
 
 
     const checkCredential = (empInfo, id, password) => {
@@ -94,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         })
 
         if (tempUserInfo.length === 0) {
-            ToastAndroid.show('PMIS ID or PASSWORD IS NOT CORRECT. ', ToastAndroid.SHORT);
+            ToastOrAlert('PMIS ID or PASSWORD IS NOT CORRECT.')
             return false
         }
 
@@ -102,16 +91,7 @@ export const AuthProvider = ({ children }) => {
 
     }
 
-    const checkAndLogin = (empInfo, id, password) => {
 
-        if (checkCredential(empInfo, id, password)) {
-            setUserInfo(tempUserInfo);
-            setisLogged(true)
-        }
-        else {
-            const data = getEmpInfoFromApi(id, password)
-        }
-    }
 
     const logIn_Unsuccessful = () => {
         setisLogged(false)
@@ -124,41 +104,6 @@ export const AuthProvider = ({ children }) => {
 
     }
 
-    const idCheckAndLogin = (empInfo, id) => {
-
-
-        empInfo.map((emp) => {
-            if (emp.id === id) {
-                tempUserInfo.push(emp)
-            }
-        })
-
-        if (tempUserInfo.length === 0) {
-            ToastAndroid.show('PMIS ID IS NOT CORRECT', ToastAndroid.SHORT);
-            setisLogged(false)
-            setUserInfo([])
-        } else if (tempUserInfo[0].status === 'I') {
-
-            ToastAndroid.show('RETIRED', ToastAndroid.LONG,);
-            setisLogged(false)
-            setUserInfo([])
-
-        }
-        else {
-            __DEV__ && console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm---------------------', id);
-
-            createLoginHistoryTable('loginHistory')
-            insertLoginHistoryTable('loginHistory', tempUserInfo)
-
-
-            setUserInfo(tempUserInfo);
-            setisLogged(true)
-
-
-        }
-
-
-    }
 
     const getDataAndLogin = async (id, password) => {
 
@@ -180,7 +125,7 @@ export const AuthProvider = ({ children }) => {
 
 
             if (tempData[0].rec_status === 'I') {
-                ToastAndroid.show('RETIRED', ToastAndroid.LONG,);
+                ToastOrAlert('RETIRED')
                 logIn_Unsuccessful()
             }
             else {
@@ -190,7 +135,7 @@ export const AuthProvider = ({ children }) => {
 
         }
         else {
-            ToastAndroid.show('PMIS ID or PASSWORD IS NOT CORRECT. ', ToastAndroid.SHORT);
+            ToastOrAlert('PMIS ID or PASSWORD')
             logIn_Unsuccessful()
         }
     }

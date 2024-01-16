@@ -1,9 +1,9 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { memo, useContext, useEffect, useState, useRef } from "react";
-import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from "react-native";
+import { Image, Linking, Modal, StyleSheet, Text, TouchableOpacity, View, Platform } from "react-native";
 import * as Contacts from 'expo-contacts';
 import { useNetInfo } from "@react-native-community/netinfo";
-
+import { ToastOrAlert } from '../utility/ToastOrAlert';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -412,7 +412,7 @@ const Item = ({ id,
                                             <TouchableOpacity onPress={() => {
                                                 navigation.navigate('Biodata', { id: id })
                                             }}>
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>PMIS ID   : {id}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android"?'serif':null, color: '#40696A', }}>PMIS ID   : {id}</Text>
 
 
                                             </TouchableOpacity>
@@ -426,11 +426,11 @@ const Item = ({ id,
                                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {
                                                 bwdbJoiningDt &&
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942',}}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
                                             }
                                             {
                                                 retiredate &&
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#EF867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#EF867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
                                             }
                                             {/*bwdbJoiningDt <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
@@ -442,7 +442,7 @@ const Item = ({ id,
                         </View>
 
                       <View style={{ flex:1, flexDirection:'row', justifyContent:'space-between' }} >
-                            <Text style={{ fontSize: txtSizeBig, fontFamily: 'serif', fontWeight: 'bold' }} >{name} </Text>
+                            <Text style={{ fontSize: txtSizeBig, fontFamily: Platform.OS === "android" ? 'serif' : null, fontWeight: 'bold' }} >{name} </Text>
                             {/* <TouchableOpacity
                                 onPress={async () => {
 
@@ -509,25 +509,25 @@ const Item = ({ id,
                             </Image>
                         </View>
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
                         </View>
 
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'grey', }}>{office}</Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'grey', }}>{office}</Text>
                         </View>
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#f08080', fontWeight: '600' }}>PO: {post} {presentCharge} </Text>
                                 </View>
                                 :
                                 charge === 'C' ?
                                     <View style={{ flex: 1, }}>
-                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {higherPost} {presentCharge} </Text>
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'orange', fontWeight: '600' }}>PO: {higherPost} {presentCharge} </Text>
                                     </View>
                                     : charge === 'R' ?
                                         <View style={{ flex: 1, }}>
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: 'orange', fontWeight: '600' }}>PO: {designation} {presentCharge} </Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'orange', fontWeight: '600' }}>PO: {designation} {presentCharge} </Text>
                                         </View>
                                         : ''
                         }
@@ -538,8 +538,8 @@ const Item = ({ id,
                         email &&
                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
                             <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#5f9ea0', }}>{email} ✉️</Text>
-                                    
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
+
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{
@@ -552,7 +552,7 @@ const Item = ({ id,
                                     pmisId === id &&
                                     <TouchableOpacity
 
-                                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                            onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection') )}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
@@ -573,7 +573,7 @@ const Item = ({ id,
                         netInfo.isConnected &&
                         <View style={{ flexDirection: 'row', }}>
                             <TouchableOpacity>
-                                <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#A80000', }} >Blood Group : {blood}</Text>
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#A80000', }} >Blood Group : {blood}</Text>
                             </TouchableOpacity>
 
 
@@ -600,13 +600,13 @@ const Item = ({ id,
                                         elevation: 3
                                     }}>
                                     <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>{mobile} </Text>
+                                        <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{mobile} </Text>
                                 </TouchableOpacity>
 
                                 {
                                     pmisId === id &&
                                     <TouchableOpacity
-                                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                                onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
@@ -636,7 +636,7 @@ const Item = ({ id,
                                     elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: 'serif', }}>{pabx} </Text>
+                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -667,10 +667,10 @@ const Item = ({ id,
                                         onPress={async () => {
 
 
-
+                                        //
                                             await Contacts.addContactAsync(contact)
                                                 .then((contactId) => {
-                                                    ToastAndroid.show(name + " has been successfully added to your phone contact", ToastAndroid.LONG, ToastAndroid.TOP);
+                                                    ToastOrAlert(name + " has been successfully added to your phone contact")
                                                 })
                                                 .catch((err) => {
                                                     alert(err);

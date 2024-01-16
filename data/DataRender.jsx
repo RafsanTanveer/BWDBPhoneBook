@@ -5,7 +5,7 @@ import Checkbox from 'expo-checkbox';
 import * as Contacts from 'expo-contacts';
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
-import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View,Platform } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
@@ -1280,7 +1280,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                         color: isCurrentActive ? 'white' : 'black',
                                                         height: height * (1 / 40),
                                                         fontSize: txtSizeNormal,
-                                                        fontFamily: 'serif',
+                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                         textAlign: 'center',
                                                         fontWeight: 'bold'
                                                     }}>Current</Text>
@@ -1300,7 +1300,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                             color: !isVacantActive ? 'black' : 'white',
                                                             height: height * (1 / 40),
                                                             fontSize: txtSizeNormal,
-                                                            fontFamily: 'serif',
+                                                                fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                             textAlign: 'center',
                                                             fontWeight: 'bold'
                                                         }}>Vacant</Text>
@@ -1321,7 +1321,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                             color: isReportActive ? 'white' : 'black',
                                                             height: height * (1 / 40),
                                                             fontSize: txtSizeNormal,
-                                                            fontFamily: 'serif',
+                                                                fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                             textAlign: 'center',
                                                             fontWeight: 'bold'
                                                         }}>Report</Text>

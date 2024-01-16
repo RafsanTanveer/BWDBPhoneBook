@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useColorScheme, Dimensions, Alert, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar } from 'react-native';
+import { useColorScheme, Dimensions, Alert, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar, Platform } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -173,6 +173,7 @@ const Login = () => {
                 <View style={{
                     marginTop: screenHeight * .6,
                     alignItems: 'center',
+                    zIndex:200
                 }}>
 
                     <GradientText style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory </GradientText>
