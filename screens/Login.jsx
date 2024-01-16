@@ -332,7 +332,9 @@ const Login = () => {
 
 
 
-                <View style={{ height: keyboardHeight*3 }} >
+                <View style={{
+                    height: keyboardHeight * 3.6
+                }} >
 
                 </View>
             </View>
