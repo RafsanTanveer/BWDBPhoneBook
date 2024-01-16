@@ -91,7 +91,7 @@ const Login = () => {
             //login(pmisId, password)
 
             if (results.success) {
-                login(empInfo[empInfo.length - 1].id, password)
+                login(empInfo[empInfo.length - 1].id, empInfo[empInfo.length - 1].password)
             }
 
             // if (results.success) {   const empInfo = await getEmployeeInfo("employeeInfo")
@@ -238,7 +238,7 @@ const Login = () => {
                             </TouchableOpacity>
                         </View>
                         {
-                            false && fingerprintAvailable && isLoginHistoryAvaiable &&
+                            true && fingerprintAvailable && isLoginHistoryAvaiable &&
                             <TouchableOpacity
                                 style={{ flex: .1, }}
                                 onPress={() =>  authenticate() }

@@ -11,6 +11,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { ToastOrAlert } from '../utility/ToastOrAlert';
 
 let tempUserInfo = []
+let msgBetweenFn = false
 
 export const AuthContext = createContext();
 
@@ -76,18 +77,33 @@ export const AuthProvider = ({ children }) => {
 
     const checkCredential = (empInfo, id, password) => {
 
+        const temp = []
+
         empInfo.map((emp) => {
-            if (emp.id === id && emp.password === password) {
-                tempUserInfo.push(emp)
+            if (emp.id === id) {
+                temp.push(emp)
             }
         })
 
-        if (tempUserInfo.length === 0) {
-            ToastOrAlert('PMIS ID or PASSWORD IS NOT CORRECT.')
+        if (temp.length != 0) {
+            empInfo.map((emp) => {
+                if (emp.id === id && emp.password === password) {
+                    tempUserInfo.push(emp)
+                }
+            })
+
+            if (tempUserInfo.length === 0) {
+                ToastOrAlert('PASSWORD IS NOT CORRECT.')
+                msgBetweenFn = true
+                return false
+            }
+            else {
+                return true
+            }
+        }
+        else {
             return false
         }
-
-        return true
 
     }
 
@@ -98,8 +114,9 @@ export const AuthProvider = ({ children }) => {
         setUserInfo([])
     }
 
-    const logIn_Successful = (userInfo) => {
+    const logIn_Successful =async (userInfo) => {
         setUserInfo(userInfo);
+        await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
         setisLogged(true)
 
     }
@@ -135,7 +152,7 @@ export const AuthProvider = ({ children }) => {
 
         }
         else {
-            ToastOrAlert('PMIS ID or PASSWORD')
+            !msgBetweenFn && ToastOrAlert('PMIS ID or PASSWORD IS NOT CORRECT.')
             logIn_Unsuccessful()
         }
     }
@@ -206,7 +223,7 @@ export const AuthProvider = ({ children }) => {
 
 
 
-        await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
+
 
 
 
