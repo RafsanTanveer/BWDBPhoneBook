@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useColorScheme, Dimensions, Alert, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar, Platform } from 'react-native';
+import { useColorScheme, Dimensions, Alert, Image, Text, TextInput, ToastAndroid, TouchableOpacity, View, StatusBar, Keyboard, Platform, KeyboardAvoidingView } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import db from '../database/database'
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -19,6 +19,7 @@ const width = Dimensions.get('window').width;
 const screenWidth = Dimensions.get('screen').width;
 
 import * as LocalAuthentication from 'expo-local-authentication';
+import useKeyboardHeight from '../utility/KeyboardHeight';
 
 
 
@@ -27,12 +28,14 @@ const Login = () => {
 
     // const systemTheme = useColorScheme();
     // alert("your color scheme is: " + systemTheme);
+    const keyboardHight = useKeyboardHeight()
     const [pmisId, setpmisId] = useState()
     const [password, setPassword] = useState();
     const { isLoading, login, setUserInfo, setisLogged } = useContext(AuthContext);
     const [fingerprintAvailable, setFingerprintAvailable] = useState(false);
     const [fingerLoading, setfingerLoading] = useState(false);
     const [isLoginHistoryAvaiable, setisLoginHistoryAvaiable] = useState(false);
+    const [keyboardHeight, setkeyboardHeight] = useState(0);
 
     const [result, setResult] = useState('');
 
@@ -72,6 +75,30 @@ const Login = () => {
     useEffect(() => {
         checkSupportedAuthentication();
         checkIsLoginHistoryAvaiable();
+        // console.log(keyboardHight);
+    }, []);
+
+
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            (event) => {
+                console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height);
+                setkeyboardHeight(event.endCoordinates.height)
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setkeyboardHeight(0)
+            }
+        );
+
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
     }, []);
 
 
@@ -87,7 +114,7 @@ const Login = () => {
 
             console.log(results);
             const empInfo = await getEmployeeInfo("loginHistory")
-            console.log(empInfo[empInfo.length-1].id + '/////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  ' + empInfo.length);
+            console.log(empInfo[empInfo.length - 1].id + '/////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  ' + empInfo.length);
             //login(pmisId, password)
 
             if (results.success) {
@@ -138,164 +165,179 @@ const Login = () => {
 
     return (
         //  this view works as a keyboard avoiding view
-        <View
-            style={{
-                flex: 1,
-                flexDirection: 'column-reverse',
-                height: screenHeight,
-                backgroundColor: 'white',
+        // <View
+        //     style={{
+        //         flex: 1,
+        //         // flexDirection: 'column-reverse',
+        //         height: screenHeight,
+        //         backgroundColor: 'white',
 
-            }}>
+
+        //     }}
+        // >
+        <>
             <StatusBar hidden />
-            <View style={{ height: screenHeight, }}>
-                <Image
-                    style={{
-                        resizeMode: 'stretch',
-                        position: 'absolute',
-                        width: screenWidth * 1,
-                        height: screenHeight * .6,
-                        elevation: 5
-                    }}
-                    source={Images['paniBhaban']}
-                />
-                <Image
-                    style={{
-                        resizeMode: 'stretch',
-                        position: 'absolute',
-                        width: screenHeight * 0.12,
-                        height: screenHeight * 0.12,
-                        marginLeft: screenWidth * .70,
-                        marginTop: screenHeight * .42,
-                        elevation: 5
-                    }}
-                    source={Images['bwdLogo']}
-                />
-                <View style={{
-                    marginTop: screenHeight * .6,
-                    alignItems: 'center',
-                    zIndex:200
-                }}>
-
-                    <GradientText style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory </GradientText>
-                    <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</GradientText>
-                    <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</GradientText>
-                    <TextInput
-                        maxLength={9}                  // set maximum string length to 9
-                        keyboardType={"decimal-pad"}   // set keyboard type
-                        selectionColor={'black'}       // for changing curcsor color
-                        onChangeText={(txt) => setpmisId(txt)}
+            <View style={{ flex:1, justifyContent:'space-around',}}>
+                <View style={{}} >
+                    <Image
                         style={{
-                            paddingLeft: 15,
-                            marginTop: 10,
-                            borderWidth: 1,
-                            borderColor: 'purple',
-                            height: height / 20,
-                            width: "70%",
-                            borderRadius: 10,
-                            marginBottom: 5,
-                            fontWeight: '700',
+                            resizeMode: 'stretch',
+                            position: 'absolute',
+                            width: screenWidth * 1,
+                            height: screenHeight * .6,
+                            elevation: 5
                         }}
-                        placeholder='BWDB PMIS ID'>
-                    </TextInput>
-                    <TextInput
-                        secureTextEntry={true}
-
-                        // keyboardType={"decimal-pad"}   // set keyboard type
-                        selectionColor={'black'}       // for changing curcsor color
-                        onChangeText={(txt) => setPassword(txt)}
+                        source={Images['paniBhaban']}
+                    />
+                    <Image
                         style={{
-                            paddingLeft: 15,
-                            marginTop: 2,
-                            borderWidth: 1,
-                            borderColor: 'purple',
-                            height: height / 20,
-                            width: "70%",
-                            borderRadius: 10,
-                            marginBottom: 5,
-                            fontWeight: '700',
+                            resizeMode: 'stretch',
+                            position: 'absolute',
+                            width: screenHeight * 0.12,
+                            height: screenHeight * 0.12,
+                            marginLeft: screenWidth * .70,
+                            marginTop: screenHeight * .42,
+                            elevation: 5
                         }}
-                        placeholder='PASSWORD'>
-                    </TextInput>
-                    <View style={{ width: "70%", flexDirection: 'row' }} >
-                        <View style={{ flex: 1000 }} >
-                            <TouchableOpacity
-                                style={{
-                                    height: height / 20,
+                        source={Images['bwdLogo']}
+                    />
+                    <View style={{
+                        marginTop: screenHeight * .6,
+                        alignItems: 'center',
+                        zIndex: 200
+                    }}>
 
-                                    borderRadius: 10,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: '#FF0000',
-                                    elevation: 10
-                                }}
-                                onPress={() => {
+                        <GradientText style={{ fontWeight: '900', fontSize: height * .04 }}>Employee Directory </GradientText>
+                        <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .025 }}>Bangladesh Water Development Board</GradientText>
+                        <GradientText style={{ fontWeight: '700', marginTop: 5, fontSize: height * .022 }}>(BWDB)</GradientText>
+                        <TextInput
+                            maxLength={9}                  // set maximum string length to 9
+                            keyboardType={"decimal-pad"}   // set keyboard type
+                            selectionColor={'black'}       // for changing curcsor color
+                            onChangeText={(txt) => setpmisId(txt)}
+                            style={{
+                                paddingLeft: 15,
+                                marginTop: 10,
+                                borderWidth: 1,
+                                borderColor: 'purple',
+                                height: height / 20,
+                                width: "70%",
+                                borderRadius: 10,
+                                marginBottom: 5,
+                                fontWeight: '700',
+                            }}
+                            placeholder='BWDB PMIS ID'>
+                        </TextInput>
+                        <TextInput
+                            secureTextEntry={true}
 
-
-                                    login(pmisId, password);
-                                }}
-                            >
-                                <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>
-                            </TouchableOpacity>
-                        </View>
-                        {
-                            true && fingerprintAvailable && isLoginHistoryAvaiable &&
-                            <TouchableOpacity
-                                style={{ flex: .1, }}
-                                onPress={() =>  authenticate() }
-                            >
-                                <Image
+                            // keyboardType={"decimal-pad"}   // set keyboard type
+                            selectionColor={'black'}       // for changing curcsor color
+                            onChangeText={(txt) => setPassword(txt)}
+                            style={{
+                                paddingLeft: 15,
+                                marginTop: 2,
+                                borderWidth: 1,
+                                borderColor: 'purple',
+                                height: height / 20,
+                                width: "70%",
+                                borderRadius: 10,
+                                marginBottom: 5,
+                                fontWeight: '700',
+                            }}
+                            placeholder='PASSWORD'>
+                        </TextInput>
+                        <View style={{ width: "70%", flexDirection: 'row' }} >
+                            <View style={{ flex: 1000 }} >
+                                <TouchableOpacity
                                     style={{
+                                        height: height / 20,
 
-                                        width: screenHeight * 0.07,
-                                        height: screenHeight * 0.045,
-                                        zIndex: 100,
-                                        elevation: 5
+                                        borderRadius: 10,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        backgroundColor: '#FF0000',
+                                        elevation: 10
                                     }}
-                                    source={Images['fingerprint']}
-                                />
-                            </TouchableOpacity>
-                        }
+                                    onPress={() => {
+
+
+                                        login(pmisId, password);
+                                    }}
+                                >
+                                    <Text style={{ fontSize: screenHeight * .02, fontWeight: '700', color: 'white' }}>Signin</Text>
+                                </TouchableOpacity>
+                            </View>
+                            {
+                                true && fingerprintAvailable && isLoginHistoryAvaiable &&
+                                <TouchableOpacity
+                                    style={{ flex: .1, }}
+                                    onPress={() => authenticate()}
+                                >
+                                    <Image
+                                        style={{
+
+                                            width: screenHeight * 0.07,
+                                            height: screenHeight * 0.045,
+                                            zIndex: 100,
+                                            elevation: 5
+                                        }}
+                                        source={Images['fingerprint']}
+                                    />
+                                </TouchableOpacity>
+                            }
+
+                        </View>
+                        <TouchableOpacity
+                            style={{
+                                height: height / 20,
+                                width: "70%",
+                                borderRadius: 10,
+                                alignItems: 'flex-end',
+                                justifyContent: 'center',
+                                zIndex: 100,
+                            }}
+                            onPress={() => { }}
+                        >
+                            <Text style={{
+                                textAlign: 'right',
+                                fontStyle: 'italic',
+                                textAlign: 'right',
+                                fontWeight: 'bold',
+                                color: '#D74826'
+                            }}>Forgot Password ?</Text>
+                        </TouchableOpacity>
 
                     </View>
-                    <TouchableOpacity
-                        style={{
-                            height: height / 20,
-                            width: "70%",
-                            borderRadius: 10,
-                            alignItems: 'flex-end',
-                            justifyContent: 'center',
-                            zIndex: 100,
-                        }}
-                        onPress={() => { }}
-                    >
-                        <Text style={{
-                            textAlign: 'right',
-                            fontStyle: 'italic',
-                            textAlign: 'right',
-                            fontWeight: 'bold',
-                            color: '#D74826'
-                        }}>Forgot Password ?</Text>
-                    </TouchableOpacity>
+                    <View style={{
+                        width: screenWidth,
+                        height: screenHeight * .1,
+                        // position: 'absolute', //Here is the trick
+                        // bottom: 0, //Here is the trick
 
+                    }}>
+                        <View style={{
+                            // justifyContent: 'flex-end'
+                        }}>
+                            <Image
+                                style={{
+                                    width: screenWidth,
+                                    height: screenHeight * .1,
+                                    elevation: 5
+                                }}
+                                source={Images['bottom']} />
+                        </View>
+                    </View>
                 </View>
 
-                <View style={{
-                    width: screenWidth, height: screenHeight * .1, position: 'absolute', //Here is the trick
-                    bottom: 0, //Here is the trick
 
-                }}>
-                    <View style={{ justifyContent: 'flex-end' }}>
-                        <Image
-                            style={{
-                                width: screenWidth,
-                                height: screenHeight * .1,
-                                elevation: 5
-                            }}
-                            source={Images['bottom']} />
-                    </View>
+
+                <View style={{ height: keyboardHeight*3 }} >
+
                 </View>
             </View>
-        </View>
+        </>
+        // </View>
     )
 }
 
