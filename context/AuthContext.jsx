@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
 
     const logIn_Successful =async (userInfo) => {
         setUserInfo(userInfo);
-        await AsyncStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         setisLogged(true)
 
     }
