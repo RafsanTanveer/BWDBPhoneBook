@@ -64,6 +64,7 @@ Images['water'] = require('../assets/icons/water.png')
 Images['office'] = require('../assets/icons/office.png')
 Images['medical'] = require('../assets/icons/medical.png')
 Images['settings'] = require('../assets/icons/settings.png')
+Images['bdgovlogo'] = require('../assets/icons/bdgovlogo.png')
 
 
 

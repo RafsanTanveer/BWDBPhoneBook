@@ -37,7 +37,7 @@ let selectedPId = []
 
 
 
-const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, selected, photo, index, post, charge, isAdmin, currentTheme, length, reload }) => {
+const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, selected, photo, index, post, charge, isAdmin, currentTheme, length, reload, officeHead }) => {
 
     const navigation = useNavigation();
 

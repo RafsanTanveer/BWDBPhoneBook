@@ -13,7 +13,7 @@ const Home = ({ navigation }) => {
 
   const { userInfo, splashLoading, name, isLogged } = useContext(AuthContext);
 
-  console.log("in home --- ", userInfo);
+  // console.log("in home --- ", userInfo);
   return (
     <>
       {

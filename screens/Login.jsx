@@ -84,7 +84,7 @@ const Login = () => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {
-                console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height);
+                // console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height);
                 setkeyboardHeight(event.endCoordinates.height)
             }
         );
@@ -189,6 +189,8 @@ const Login = () => {
                         }}
                         source={Images['paniBhaban']}
                     />
+
+                   
                     <Image
                         style={{
                             resizeMode: 'stretch',
@@ -269,7 +271,7 @@ const Login = () => {
                                 </TouchableOpacity>
                             </View>
                             {
-                                true && fingerprintAvailable && isLoginHistoryAvaiable &&
+                                false && fingerprintAvailable && isLoginHistoryAvaiable &&
                                 <TouchableOpacity
                                     style={{ flex: .1, }}
                                     onPress={() => authenticate()}

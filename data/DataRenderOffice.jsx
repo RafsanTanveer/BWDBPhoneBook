@@ -10,18 +10,21 @@ import { ThemeContext } from '../context/ThemeContext';
 import LoadingScreen from "../screens/LoadingScreen";
 import NoDataFoundScreen from '../screens/NoDataFoundScreen';
 import { Images } from '../utility/Images';
+import FloatingBtnComponent from '../component/FloatingBtnComponent';
 
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 const person_photo_placeholder = '../assets/person_photo_placeholder.jpg'
+let officeHead = ''
+const selectAllInactive = '../assets/icons/select-all-inactive.png'
 
 
 const DataRenderOffice = ({ office_code, navigation }) => {
 
-    const { presentOfficeCode, adminLevel } = useContext(AuthContext);
-    const { currentTheme } = useContext(ThemeContext);
-    const { isAdmin, designationContext } = useContext(AuthContext);
+
+    const { currentTheme, currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
+    const { isAdmin, designationContext, pmisId } = useContext(AuthContext);
 
 
 
@@ -30,6 +33,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     const [selectedId, setSelectedId] = useState(null);
     const [search, setSearch] = useState('')
     const [refreshing, setRefreshing] = useState(true);
+    const [isFloatingBtnExteded, setIsFloatingBtnExteded] = useState(false);
 
 
     //  ******************************  fetching data ***************************************
@@ -51,6 +55,8 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                 }
             });
             setDATA(response.rows);
+            officeHead = response.rows[0].id
+            console.log(officeHead, ' ', pmisId);
         } catch (error) {
             __DEV__ && console.error(error.message);
         }
@@ -92,6 +98,65 @@ const DataRenderOffice = ({ office_code, navigation }) => {
 
     }
 
+    const bulkEmail = () => {
+
+
+        if (currentSelectedIds.length === 0)
+            ToastAndroid.show(toastMsg, ToastAndroid.LONG, ToastAndroid.TOP)
+        else {
+            let numbers = [];
+
+            currentSelectedIds.map((itemId) => (
+                filteredData.map((itemData) => {
+                    if (itemId === itemData.id)
+                        numbers += `${itemData.email};`; //mobileNoList.push(itemData.mobile)
+                })
+            ))
+
+            numbers = numbers.slice(0, -1);
+            __DEV__ && console.log(numbers);
+
+            const url = (Platform.OS === 'android')
+                ? `mailto:${numbers}?body=${msg}`
+                : `mailto:/open?addresses=${numbers}&body=${msg}`;
+
+            Linking.openURL(url)
+        }
+    }
+
+
+    const bulkSMS = () => {
+
+        if (currentSelectedIds.length === 0)
+            ToastAndroid.show(toastMsg, ToastAndroid.LONG, ToastAndroid.TOP)
+        else {
+            let numbers = [];
+
+            currentSelectedIds.map((itemId) => (
+                filteredData.map((itemData) => {
+                    if (itemId === itemData.id)
+                        numbers += `${itemData.mobile};`; //mobileNoList.push(itemData.mobile)
+                })
+            ))
+
+            numbers = numbers.slice(0, -1);
+            __DEV__ && console.log(numbers);
+
+            const url = (Platform.OS === 'android')
+                ? `sms:${numbers}?body=${msg}`
+                : `sms:/open?addresses=${numbers}&body=${msg}`;
+
+            Linking.openURL(url)
+        }
+
+    }
+
+    const selectAll = () => {
+
+        const allId = filteredData.map((item) => (item.id))
+
+        currentSelectedIds.length === 0 ? setCurrentSelectedIds(allId) : setCurrentSelectedIds([])
+    }
 
 
 
@@ -100,108 +165,223 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     return (
         isLoading ?
             <LoadingScreen /> :
-          //  DATA.length == 0 ? <NoDataFoundScreen /> :
-                <SafeAreaView style={styles.container}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
+            //  DATA.length == 0 ? <NoDataFoundScreen /> :
+            <SafeAreaView style={styles.container}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
 
-                        <TextInput
-                            selectionColor={'black'}       // for changing curcsor color
-                            style={{
-                                height: height / 20,
-                                width: "98%",
-                                borderRadius: 5,
-                                marginBottom: 5,
-                                borderColor: `${currentTheme}`,
-                                borderWidth: 2,
-                                paddingLeft: 15,
+                    <View style={{ flex: 10, }} >
+                     <TextInput
+                         selectionColor={'black'}       // for changing curcsor color
+                         style={{
+                             height: height / 20,
+                             width: "98%",
+                             borderRadius: 5,
+                             marginBottom: 5,
+                             borderColor: `${currentTheme}`,
+                             borderWidth: 2,
+                             paddingLeft: 15,
+                             marginHorizontal:5,
 
-                            }}
-                            placeholder="Search"
-                            value={search}
-                            //underlineColorAndroid='trasparent'
-                            onChangeText={(text) => searchFilter(text)}
-                            mode='outlined'
-
-
-                        />
-                    </View>
-                    {search ?
-                        <TouchableOpacity
-                            style={{
-                                alignContent: 'center',
-                                justifyContent: 'center',
-                                alignSelf: 'flex-end',
-                                position: 'absolute',
-                                marginTop: height * .015,
-                                paddingRight: width * .025,
+                         }}
+                         placeholder="Search"
+                         value={search}
+                         //underlineColorAndroid='trasparent'
+                         onChangeText={(text) => searchFilter(text)}
+                         mode='outlined'
 
 
-                            }}
-                            onPress={() => searchFilter("")}
-                        >
-                            <Image
-                                style={{
-                                    height: height * .03,
-                                    width: height * .03,
-                                }}
-                                source={require("../assets/close.png")}
-                            />
-                        </TouchableOpacity> : ""
-                    }
+                     />
+                   </View>
                     {
-                        !search ?
-                            DATA &&
-                            <Text style={{ marginBottom: 2, marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total Employee : {DATA.length}</Text>
-                            : ""
+                        officeHead===pmisId &&
+                        true &&
+                        <TouchableOpacity style={{
+
+                            height: height / 20,
+                            flex: 1,
+                            borderRadius: 5,
+                            marginBottom: 5,
+                            // marginLeft: 5,
+                            marginRight: 5,
+                            // borderColor: `${currentTheme}`,//'#6750a4',
+                            // borderWidth: 2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+
+                        }}
+                            onPress={() => { selectAll() }}
+                        >
+                            {
+                                currentSelectedIds.length === 0 ?
+                                    <Image
+                                        source={require(selectAllInactive)}
+                                        style={styles.select_all_icon}
+                                    />
+                                    : currentTheme === '#6750a4' ?
+                                        <Image
+                                            source={Images['selectAll_0']}
+                                            style={styles.select_all_icon}
+                                        /> : currentTheme === '#048BB3' ?
+                                            <Image
+                                                source={Images['selectAll_3']}
+                                                style={styles.select_all_icon}
+                                            /> : currentTheme === '#0089E3' ?
+                                                <Image
+                                                    source={Images['selectAll_6']}
+                                                    style={styles.select_all_icon}
+                                                /> : currentTheme === '#0069C4' ?
+                                                    <Image
+                                                        source={Images['selectAll_9']}
+                                                        style={styles.select_all_icon}
+                                                    /> : ''
+                            }
+
+                        </TouchableOpacity>
+                    }
+                </View>
+                {search ?
+                    <TouchableOpacity
+                        style={{
+                            alignContent: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'flex-end',
+                            position: 'absolute',
+                            marginTop: height * .015,
+                            paddingRight: width * .025,
+
+
+                        }}
+                        onPress={() => searchFilter("")}
+                    >
+                        <Image
+                            style={{
+                                height: height * .03,
+                                width: height * .03,
+                            }}
+                            source={require("../assets/close.png")}
+                        />
+                    </TouchableOpacity> : ""
+                }
+                {
+                    !search ?
+                        DATA &&
+                        <Text style={{ marginBottom: 2, marginLeft: 12, color: 'black', fontSize: height * .01505, marginRight: height * .02, fontWeight: 'bold' }}>Total Employee : {DATA.length}</Text>
+                        : ""
+                }
+
+
+                {refreshing ? <ActivityIndicator /> : null}
+
+                <FlashList
+                    estimatedItemSize={200}
+
+                    data={filteredData}
+
+                    renderItem={({ item, index }) => (
+                        <ItemOffice
+                            id={item.id}
+                            name={item.name}
+                            designation={item.designation}
+                            office={office_code}
+                            email={item.email}
+                            mobile={item.mobile}
+                            pabx={item.pabx}
+                            selected={item.selected}
+                            photo={item.photo}
+                            index={index}
+
+                            post={item.post}
+
+                            charge={item.charge}
+                            isAdmin={isAdmin}
+                            currentTheme={currentTheme}
+                            length={filteredData.length}
+                            reload={fetchData}
+                            officeHead={officeHead}
+                        />
+
+
+                    )}
+
+                    keyExtractor={(item) => item.id}
+                    extraData={selectedId}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
                     }
 
+                />
 
-                    {refreshing ? <ActivityIndicator /> : null}
-
-                    <FlashList
-                        estimatedItemSize={200}
-
-                        data={filteredData}
-
-                        renderItem={({ item, index }) => (
-                            <ItemOffice
-                                id={item.id}
-                                name={item.name}
-                                designation={item.designation}
-                                office={office_code}
-                                email={item.email}
-                                mobile={item.mobile}
-                                pabx={item.pabx}
-                                selected={item.selected}
-                                photo={item.photo}
-                                index={index}
-
-                                post={item.post}
-
-                                charge={item.charge}
-                                isAdmin={isAdmin}
-                                currentTheme={currentTheme}
-                                length={filteredData.length}
-                                reload={fetchData}
-                            />
-
-
-                        )}
-
-                        keyExtractor={(item) => item.id}
-                        extraData={selectedId}
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-                        }
-
-                    />
-
-                    {/* <Portal.Host>
+                {/* <Portal.Host>
                         <FABComponent />
                     </Portal.Host> */}
+                {
+                    officeHead === pmisId &&
+                    <View
+                        // activeOpacity={0.5}
+
+                        style={{
+                            flexDirection: 'row-reverse',
+                            position: 'absolute',
+                            // width: width * .1,
+                            // height: width * .1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            right: 0,
+                            bottom: height * .35,
+                            //  backgroundColor: `${currentTheme}`,
+
+                            elevation: 10
+
+                        }}>
+                        <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded) }}>
+                            <Image
+                                source={Images['leftArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: width * .1,
+                                    height: width * .1,
+                                    marginTop: 0
+
+                                }}
+                            />
+                        </TouchableOpacity>
+
+                        {
+
+                            isFloatingBtnExteded &&
+                            <View style={{
+                                backgroundColor: `${currentTheme}`,
+                                flexDirection: 'row',
+                                borderRadius: height * .005,
+                                borderColor: 'white',
+                                borderWidth: 2
+                            }}>
+
+                                <FloatingBtnComponent
+                                    currentTheme={currentTheme}
+                                    icon='msglIcon'
+                                    txt="SMS"
+                                    badgeCount={currentSelectedIds.length}
+                                    callBackFn={bulkSMS}
+                                />
+
+                                <FloatingBtnComponent
+                                    currentTheme={currentTheme}
+                                    icon='emailIcon'
+                                    txt="Email"
+                                    badgeCount={currentSelectedIds.length}
+                                    callBackFn={bulkEmail}
+                                />
+
+                            </View>
+                        }
+
+                    </View>
 
 
-                </SafeAreaView>
+                }
+
+            </SafeAreaView>
     )
 }
 
@@ -228,6 +408,10 @@ const styles = StyleSheet.create({
         borderRadius: 100,
 
 
+    },
+    select_all_icon: {
+        height: height * .055,
+        width: height * .055,
     },
     place_holder_logo: {
         width: width * (1 / 5.5),
