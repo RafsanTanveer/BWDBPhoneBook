@@ -14,6 +14,7 @@ import { createDesignationTable, createDesignationListTable, createVacantDesigna
 import { insertDataIntoDesignationTable, insertDataIntoDesignationListTable, insertDataIntoVacantTable } from '../database/InsertQueries'
 import db from '../database/database'
 import Images from '../utility/Images'
+import { DownloadStafflist } from '../utility/DownloadStafflist'
 import { useFonts } from 'expo-font'
 import { useNetInfo } from "@react-native-community/netinfo";
 import { getAllInfoFromTable, getAllTableName } from '../database/SelectQueries'
@@ -331,6 +332,9 @@ const ExpendableDrawer = () => {
     let settingsStart = 26
     let settingsEnd = 28
 
+    let staffStart = 29
+    let staffEnd = 31
+
 
 
     const handlePress = (no) => {
@@ -397,11 +401,19 @@ const ExpendableDrawer = () => {
             }
         }
 
-        else if (no >= settingsStart+1 && no <= settingsEnd) {
+        else if (no >= settingsStart + 1 && no <= settingsEnd) {
             arr[settingsStart] = true
             for (let i = 0; i <= highestHandlePressNumber; i++) {
                 if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
                 else if (i != settingsStart) arr[i] = false;
+            }
+        }
+
+        else if (no >= staffStart && no <= staffEnd) {
+            arr[no] = true
+            for (let i = 0; i <= highestHandlePressNumber; i++) {
+                if (i == no) expendedList[no] ? arr[i] = false : arr[i] = true;
+                else if (i != staffStart) arr[i] = false;
             }
         }
 
@@ -1187,11 +1199,11 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  Staff List ******************************** */}
                 {
-                    false ?
+                    true ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
-                                title="Staff List"
+                                title="Download Staff List"
                                 titleStyle={styles.titlestyle}
 
                                 left={props => <List.Icon {...props} icon={() => (
@@ -1200,47 +1212,32 @@ const ExpendableDrawer = () => {
                                         style={styles.iconStyle}
                                     />
                                 )} />}
-                                expanded={expendedList[24]}
-                                onPress={() => handlePress(24)} >
+                                expanded={expendedList[staffStart]}
+                                onPress={() => handlePress(staffStart)} >
 
                                 <List.Item key={'Individual'}
 
-                                    onPress={() => {
-                                        navigation.navigate('ReportScreen', {
-                                            id: pmisId,
-                                            name: name,
-                                            recStatus: "C",
-                                            officecode: presentOfficeCode,
-                                            individualOrOffice: true
-                                        })
-                                    }}
+                                    // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                                    onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Image
                                             source={require(rightArrow)}
                                             style={styles.iconStyle}
                                         />
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="INDIAVIDUAL" />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.titlestyle} title="INDIAVIDUAL" />
 
 
                                 <List.Item key={'office'}
+                                    onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", false)}
 
-                                    onPress={() => {
-                                        navigation.navigate('ReportScreen', {
-                                            id: pmisId,
-                                            name: presentOffice,
-                                            recStatus: "C",
-                                            officecode: presentOfficeCode,
-                                            individualOrOffice: false
-                                        })
-                                    }}
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Image
                                             source={require(rightArrow)}
                                             style={styles.iconStyle}
                                         />
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} title="OFFICE" />
+                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.titlestyle} title="OFFICE" />
 
 
 
