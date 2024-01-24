@@ -65,6 +65,8 @@ Images['office'] = require('../assets/icons/office.png')
 Images['medical'] = require('../assets/icons/medical.png')
 Images['settings'] = require('../assets/icons/settings.png')
 Images['bdgovlogo'] = require('../assets/icons/bdgovlogo.png')
+Images['show'] = require('../assets/icons/show-password.png')
+Images['hide'] = require('../assets/icons/hide-password.png')
 
 
 

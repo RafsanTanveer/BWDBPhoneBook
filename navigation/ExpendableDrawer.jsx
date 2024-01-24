@@ -1225,7 +1225,7 @@ const ExpendableDrawer = () => {
                                             source={require(rightArrow)}
                                             style={styles.iconStyle}
                                         />
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.titlestyle} title="INDIAVIDUAL" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="INDIAVIDUAL" />
 
 
                                 <List.Item key={'office'}
@@ -1237,7 +1237,7 @@ const ExpendableDrawer = () => {
                                             source={require(rightArrow)}
                                             style={styles.iconStyle}
                                         />
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.titlestyle} title="OFFICE" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="OFFICE" />
 
 
 
@@ -1280,7 +1280,7 @@ const ExpendableDrawer = () => {
                                     }}
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }}
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }}
                                     titleStyle={{ fontWeight: "bold" }} title={'A+'} />
 
                                 <List.Item key={'A-'}
@@ -1296,7 +1296,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080', }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, fontWeight: '600' }}
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, fontWeight: '600' }}
                                     titleStyle={{ fontWeight: "bold" }} title="A-" />
 
                                 <List.Item key={'B+'}
@@ -1312,7 +1312,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }}
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }}
                                     titleStyle={{ fontWeight: "bold" }} title="B+" />
 
                                 <List.Item key={'B-'}
@@ -1328,7 +1328,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="B-" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="B-" />
 
                                 <List.Item key={'O+'}
 
@@ -1343,7 +1343,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="O+" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="O+" />
 
                                 <List.Item key={'O-'}
 
@@ -1358,7 +1358,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="O-" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="O-" />
 
                                 <List.Item key={'AB+'}
 
@@ -1373,7 +1373,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="AB+" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="AB+" />
 
                                 <List.Item key={'AB-'}
 
@@ -1388,7 +1388,7 @@ const ExpendableDrawer = () => {
 
                                     left={props => <List.Icon {...props} icon={() => (
                                         <Text style={{ color: '#000080' }} >  ➥</Text>
-                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="AB-" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={{ fontWeight: "bold" }} title="AB-" />
 
 
 
@@ -1405,7 +1405,7 @@ const ExpendableDrawer = () => {
                 }
                 { }
 
-                {/*******************************************  Settings ******************************** */}
+                {/*******************************************  Settings ******************************marginLeft: width * .03,** */}
                 {
                     true ?
                         <>
@@ -1421,6 +1421,21 @@ const ExpendableDrawer = () => {
                                 )} />}
                                 expanded={expendedList[26]}
                                 onPress={() => handlePress(26)} >
+
+
+                                <List.Item key={'password'}
+
+                                    // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                                    onPress={() => {
+                                        navigation.navigate('ChangePasswordScreen')
+                                    }}
+
+                                    left={props => <List.Icon {...props} icon={() => (
+                                        <Image
+                                            source={require(rightArrow)}
+                                            style={styles.iconStyle}
+                                        />
+                                    )} />} style={{ marginLeft: width * .031, marginTop: -16, }} titleStyle={styles.titlestyle} title="Change Password" />
 
 
 
@@ -1440,7 +1455,7 @@ const ExpendableDrawer = () => {
                                     onPress={() => handlePress(27)}  >
 
                                     {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
-                                    <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 3, marginLeft: width * .1, }}>
+                                    <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 0, marginLeft: width * .1,margin:1 }}>
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[0])} style={{ ...styles.themeStyle, backgroundColor: themeColors[0] }} />
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[3])} style={{ ...styles.themeStyle, backgroundColor: themeColors[3] }} />
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[6])} style={{ ...styles.themeStyle, backgroundColor: themeColors[6] }} />
@@ -1501,6 +1516,7 @@ const ExpendableDrawer = () => {
 
 
 
+
                             </List.Accordion>
                         </> : ''
                 }
@@ -1521,8 +1537,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white"
     },
     accordingStyle: {
-        marginVertical: -6,
-        marginHorizontal: 10,
+        marginVertical: -8,
+        marginHorizontal: width * .03,
         backgroundColor: "white"
     },
     accordingStyleOffice: {

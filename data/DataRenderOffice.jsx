@@ -13,6 +13,7 @@ import { Images } from '../utility/Images';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
 
 
+
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 const person_photo_placeholder = '../assets/person_photo_placeholder.jpg'
@@ -55,7 +56,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                 }
             });
             setDATA(response.rows);
-            officeHead = response.rows[0].id
+            if (response.rows.length!=0) officeHead = response.rows[0].id
             console.log(officeHead, ' ', pmisId);
         } catch (error) {
             __DEV__ && console.error(error.message);
@@ -165,35 +166,35 @@ const DataRenderOffice = ({ office_code, navigation }) => {
     return (
         isLoading ?
             <LoadingScreen /> :
-            //  DATA.length == 0 ? <NoDataFoundScreen /> :
+              DATA.length == 0 ? <NoDataFoundScreen /> :
             <SafeAreaView style={styles.container}>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
 
                     <View style={{ flex: 10, }} >
-                     <TextInput
-                         selectionColor={'black'}       // for changing curcsor color
-                         style={{
-                             height: height / 20,
-                             width: "98%",
-                             borderRadius: 5,
-                             marginBottom: 5,
-                             borderColor: `${currentTheme}`,
-                             borderWidth: 2,
-                             paddingLeft: 15,
-                             marginHorizontal:5,
+                        <TextInput
+                            selectionColor={'black'}       // for changing curcsor color
+                            style={{
+                                height: height / 20,
+                                width: "98%",
+                                borderRadius: 5,
+                                marginBottom: 5,
+                                borderColor: `${currentTheme}`,
+                                borderWidth: 2,
+                                paddingLeft: 15,
+                                marginHorizontal: 5,
 
-                         }}
-                         placeholder="Search"
-                         value={search}
-                         //underlineColorAndroid='trasparent'
-                         onChangeText={(text) => searchFilter(text)}
-                         mode='outlined'
+                            }}
+                            placeholder="Search"
+                            value={search}
+                            //underlineColorAndroid='trasparent'
+                            onChangeText={(text) => searchFilter(text)}
+                            mode='outlined'
 
 
-                     />
-                   </View>
+                        />
+                    </View>
                     {
-                        officeHead===pmisId &&
+                        officeHead === pmisId &&
                         true &&
                         <TouchableOpacity style={{
 

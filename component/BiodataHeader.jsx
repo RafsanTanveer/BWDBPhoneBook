@@ -3,7 +3,7 @@ import React from 'react'
 import { height, width } from '../utility/ScreenDimensions'
 import { Images } from '../utility/Images'
 
-const BiodataHeader = () => {
+const BiodataHeader = ({ heading ="BIODATA"}) => {
     return (
         <View style={{
             flexDirection: 'row', borderBottomColor: '#0080FF',
@@ -19,7 +19,7 @@ const BiodataHeader = () => {
             }}>
                 <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: width * .038, marginBottom: 2 }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
                 <Text style={{ color: '#008023', fontWeight: '500', fontSize: width * .0369, marginBottom: 2 }} >Human Resource Data Management (HRDM)</Text>
-                <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: width * .0375, }} >BIODATA</Text>
+                <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: width * .0375, }} >{heading}</Text>
 
             </View>
         </View>
