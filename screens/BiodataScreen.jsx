@@ -15,7 +15,7 @@ import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utili
 import BiodataHeader from '../component/BiodataHeader'
 import { height, width, widthScreen } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
-
+import * as ImagePicker from 'expo-image-picker';
 import { printAsync, printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
@@ -33,6 +33,17 @@ const officeLevel = [
     "Others"
 
 ]
+
+const imgDir = FileSystem.documentDirectory + 'images/';
+
+const ensureDirExists = async () => {
+    console.log('jjhhgggff');
+    console.log('imgDir-', imgDir);
+    const dirInfo = await FileSystem.getInfoAsync(imgDir);
+    if (!dirInfo.exists) {
+        await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
+    }
+};
 
 
 const BiodataScreen = ({ id, navigation }) => {
@@ -78,6 +89,8 @@ const BiodataScreen = ({ id, navigation }) => {
     const [experience, setexperience] = useState([])
     const [training, settraining] = useState([])
 
+    const [uploading, setUploading] = useState(false);
+    const [images, setImages] = useState ();
 
     // ********************************  Internet Connection checked *************************************
 
@@ -86,6 +99,45 @@ const BiodataScreen = ({ id, navigation }) => {
 
     // ********************************  Internet Connection checked *************************************
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    const loadImages = async () => {
+        console.log('ininjjjin');
+        await ensureDirExists();
+        const files = await FileSystem.readDirectoryAsync(imgDir);
+        if (files.length > 0) {
+            setImages(files.map((f) => imgDir + f));
+        }
+    };
+
+
+    const selectImage = async (useLibrary) => {
+        let result;
+        const options = {
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.75
+        };
+
+        if (useLibrary) {
+            result = await ImagePicker.launchImageLibraryAsync(options);
+        } else {
+            await ImagePicker.requestCameraPermissionsAsync();
+            result = await ImagePicker.launchCameraAsync(options);
+        }
+
+        // Save image if not cancelled
+        if (!result.canceled) {
+            saveImage(result.assets[0].uri);
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     const updateBiodata = () => {
         if (netInfo.isConnected) {
 
@@ -1060,14 +1112,15 @@ const BiodataScreen = ({ id, navigation }) => {
                                             {/* <RowComponent headingText="" queryText={item.m_name_bn} /> */}
                                             {/* <RowComponent headingText='Home District' queryText={item.homeDist} /> */}
                                         </View>
-                                        <View style={{ flexDirection:'column-reverse'}} >
+                                        <View style={{ flexDirection: 'column-reverse' }} >
                                             {
                                                 item.photo ?
                                                     <Image style={{ height: width * .3, width: width * .25 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
                                                     <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
                                             <TouchableOpacity
-                                                onPress={() => { }}
+                                                // onPress={() => { selectImage ()}}
+                                                onPress={() => { loadImages  ()}}
                                                 style={{ position: "absolute", bottom: -10, left: -10 }} >
                                                 <Image style={{ height: width * .06, width: width * .06, }} source={Images['cngPh']} ></Image>
                                             </TouchableOpacity>
