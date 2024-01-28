@@ -13,7 +13,7 @@ import { Images } from '../utility/Images'
 import { timeStamp } from '../utility/Time'
 import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utility/Scalling'
 import BiodataHeader from '../component/BiodataHeader'
-import { height, width } from '../utility/ScreenDimensions'
+import { height, width, widthScreen } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
 
 import { printAsync, printToFileAsync } from 'expo-print';
@@ -1057,19 +1057,34 @@ const BiodataScreen = ({ id, navigation }) => {
                                             <RowComponent headingText="Father's Name" queryText={item.f_name} />
                                             <RowComponent headingText="" queryText={item.f_name_bn} />
                                             <RowComponent headingText="Mother's Name" queryText={item.m_name} />
-                                            <RowComponent headingText="" queryText={item.m_name_bn} />
-                                            <RowComponent headingText='Home District' queryText={item.homeDist} />
+                                            {/* <RowComponent headingText="" queryText={item.m_name_bn} /> */}
+                                            {/* <RowComponent headingText='Home District' queryText={item.homeDist} /> */}
                                         </View>
-                                        <View >
+                                        <View style={{ flexDirection:'column-reverse'}} >
                                             {
                                                 item.photo ?
-                                                    <Image style={{ height: 100, width: 90 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
+                                                    <Image style={{ height: width * .3, width: width * .25 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
                                                     <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
+                                            <TouchableOpacity
+                                                onPress={() => { }}
+                                                style={{ position: "absolute", bottom: -10, left: -10 }} >
+                                                <Image style={{ height: width * .06, width: width * .06, }} source={Images['cngPh']} ></Image>
+                                            </TouchableOpacity>
 
 
                                         </View>
                                     </View>
+                                    <SingleColumnComponent
+                                        firstHeading=""
+                                        firstQueryResult={item.m_name_bn}
+                                        delimiter=":"
+                                    />
+                                    <SingleColumnComponent
+                                        firstHeading="Home District"
+                                        firstQueryResult={item.homeDist}
+                                        delimiter=":"
+                                    />
                                     <SingleColumnComponent
                                         firstHeading="Religion"
                                         firstQueryResult={item.religion}
