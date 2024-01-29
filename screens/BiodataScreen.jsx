@@ -1,6 +1,6 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Image, ScrollView, Modal, StyleSheet, Text, View, RefreshControl, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native';
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -19,6 +19,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { printAsync, printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
+// import MakeCallModalComponent from '../component/MakeCallModalComponent';
+import CameraOrGalleryModal from '../component/modalComponents/CameraOrGalleryModal'
 
 
 const officeLevel = [
@@ -88,9 +90,10 @@ const BiodataScreen = ({ id, navigation }) => {
     const [edu, setEdu] = useState([])
     const [experience, setexperience] = useState([])
     const [training, settraining] = useState([])
+    const [isModalVisible, setModalVisible] = useState(false);
 
     const [uploading, setUploading] = useState(false);
-    const [images, setImages] = useState ();
+    const [images, setImages] = useState();
 
     // ********************************  Internet Connection checked *************************************
 
@@ -98,7 +101,11 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
     // ********************************  Internet Connection checked *************************************
-
+    const toggleModal = (isVisible, type, heading) => {
+        setphnOrMsg(type)
+        setmodalHeading(heading)
+        setModalVisible(isVisible);
+    };
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -114,13 +121,26 @@ const BiodataScreen = ({ id, navigation }) => {
         }
     };
 
+    const uploadImage = async (uri) => {
+        console.log('i  ll   ',uri);
+        // setUploading(true);
+
+        // await FileSystem.uploadAsync('http://192.168.1.52:8888/upload.php', uri, {
+        //     httpMethod: 'POST',
+        //     uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        //     fieldName: 'file'
+        // });
+
+        setUploading(false);
+    };
+
 
     const selectImage = async (useLibrary) => {
         let result;
         const options = {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [3, 4],
             quality: 0.75
         };
 
@@ -133,7 +153,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
         // Save image if not cancelled
         if (!result.canceled) {
-            saveImage(result.assets[0].uri);
+            console.log(result.assets[0].uri);
+            uploadImage(result.assets[0].uri);
         }
     };
 
@@ -1042,7 +1063,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
         <>
             {
-                isLoading ?
+                (isLoading || uploading) ?
                     <LoadingScreen />
                     :
                     personalData.map((item) => (
@@ -1119,8 +1140,8 @@ const BiodataScreen = ({ id, navigation }) => {
                                                     <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
                                             <TouchableOpacity
-                                                // onPress={() => { selectImage ()}}
-                                                onPress={() => { loadImages  ()}}
+                                                onPress={() => { selectImage() }}
+                                                // onPress={() => { loadImages  ()}}
                                                 style={{ position: "absolute", bottom: -10, left: -10 }} >
                                                 <Image style={{ height: width * .06, width: width * .06, }} source={Images['cngPh']} ></Image>
                                             </TouchableOpacity>
@@ -1526,6 +1547,15 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                 </View>
                             </ScrollView >
+                            <Modal
+                                transparent={true}
+                                animationType="fade"
+                                visible={isModalVisible}
+                                onRequestClose={() => toggleModal(true)}
+                            >
+                                <CameraOrGalleryModal number={''} toggleModal={toggleModal} type={''} heading={''} />
+
+                            </Modal>
 
 
                         </View >
