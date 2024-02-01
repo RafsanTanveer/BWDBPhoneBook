@@ -1,6 +1,7 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Image, ScrollView, Modal, StyleSheet, Text, View, RefreshControl, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Image, ScrollView, Modal, StyleSheet, Text, View, RefreshControl, ActivityIndicator, ToastAndroid, TouchableOpacity, Platform } from 'react-native';
+import { ToastOrAlert } from '../utility/ToastOrAlert'
 import api from '../api/api';
 import RowComponent from '../component/RowComponent';
 import SingleColumnComponent from '../component/SingleColumnComponent';
@@ -16,11 +17,13 @@ import BiodataHeader from '../component/BiodataHeader'
 import { height, width, widthScreen } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
 import * as ImagePicker from 'expo-image-picker';
+import { ImageManipulator } from 'expo'
 import { printAsync, printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
 // import MakeCallModalComponent from '../component/MakeCallModalComponent';
 import CameraOrGalleryModal from '../component/modalComponents/CameraOrGalleryModal'
+import mime from "mime";
 
 
 const officeLevel = [
@@ -122,16 +125,63 @@ const BiodataScreen = ({ id, navigation }) => {
     };
 
     const uploadImage = async (uri) => {
-        console.log('i  ll   ',uri);
-        // setUploading(true);
 
-        // await FileSystem.uploadAsync('http://192.168.1.52:8888/upload.php', uri, {
-        //     httpMethod: 'POST',
-        //     uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        //     fieldName: 'file'
-        // });
+        // const manipResult = await ImageManipulator.manipulate(
+        //     uri.localUri || uri.uri,
+        //     [{ resize: { width: 640, height: 480 } }],
+        //     { compress: .5, }
 
-        setUploading(false);
+        // );
+        const imgUri = uri.uri
+        const imgHeight = uri.height
+        const imgWidth = uri.width
+
+        console.log(imgUri, '  ', imgHeight, ' ', imgWidth);
+
+        console.log('uri ++++++++++++++  =>  ', imgUri);
+        console.log('----------------------', mime.getType(imgUri));
+        const formData = new FormData()
+
+
+        formData.append("pmisId", pmisId)
+        formData.append('image', {
+            name: 'image.jpg',
+            type: mime.getType(imgUri),
+            uri:
+                Platform.OS === 'android'
+                    ? imgUri
+                    : imgUri.replace('file://', ''),
+        });
+
+
+
+
+
+
+
+
+
+        // await api.post('postPhoto', formData), {
+        //     headers: { 'Content-Type': 'multipart/form-data' },
+        // }
+        //     .then(res => ToastOrAlert('Photo successfully updated'))
+        //     .catch(err => console.log(err))
+
+
+
+
+        fetch('http://192.168.16.40:5000/postPhoto', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+
+
+
+        // setUploading(false);
     };
 
 
@@ -141,7 +191,9 @@ const BiodataScreen = ({ id, navigation }) => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [3, 4],
-            quality: 0.75
+            quality: 0,
+            maxHeight: 300,
+            maxWidth: 300
         };
 
         if (useLibrary) {
@@ -153,8 +205,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
         // Save image if not cancelled
         if (!result.canceled) {
-            console.log(result.assets[0].uri);
-            uploadImage(result.assets[0].uri);
+            // console.log(result.assets[0]);
+            uploadImage(result.assets[0]);
         }
     };
 
@@ -1140,10 +1192,10 @@ const BiodataScreen = ({ id, navigation }) => {
                                                     <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
                                             <TouchableOpacity
-                                                onPress={() => { selectImage() }}
+                                                onPress={() => { selectImage(true) }}
                                                 // onPress={() => { loadImages  ()}}
-                                                style={{ position: "absolute", bottom: -10, left: -10 }} >
-                                                <Image style={{ height: width * .06, width: width * .06, }} source={Images['cngPh']} ></Image>
+                                                style={{ position: "absolute", bottom: 0, left: 0, margin:3 }} >
+                                                <Image style={{ height: width * .05, width: width * .05, }} source={Images['cngPh']} ></Image>
                                             </TouchableOpacity>
 
 

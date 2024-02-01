@@ -1225,10 +1225,10 @@ const ExpendableDrawer = () => {
                                             source={require(rightArrow)}
                                             style={styles.iconStyle}
                                         />
-                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="INDIAVIDUAL" />
+                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="DOWNLOAD" />
 
 
-                                <List.Item key={'office'}
+                                {/* <List.Item key={'office'}
                                     onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", false)}
 
 
@@ -1238,12 +1238,7 @@ const ExpendableDrawer = () => {
                                             style={styles.iconStyle}
                                         />
                                     )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="OFFICE" />
-
-
-
-
-
-
+ */}
 
                             </List.Accordion>
                         </>

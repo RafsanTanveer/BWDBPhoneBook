@@ -190,7 +190,7 @@ const Login = () => {
                         source={Images['paniBhaban']}
                     />
 
-                   
+
                     <Image
                         style={{
                             resizeMode: 'stretch',
@@ -271,7 +271,7 @@ const Login = () => {
                                 </TouchableOpacity>
                             </View>
                             {
-                                false && fingerprintAvailable && isLoginHistoryAvaiable &&
+                                true && fingerprintAvailable && isLoginHistoryAvaiable &&
                                 <TouchableOpacity
                                     style={{ flex: .1, }}
                                     onPress={() => authenticate()}
