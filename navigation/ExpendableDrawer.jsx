@@ -218,7 +218,7 @@ const ExpendableDrawer = () => {
             __DEV__ && console.error(error.message);
         }
 
-
+        __DEV__ && console.log('in expendable fetch  try.......end....');
         setIsLoading(false);
     }
 

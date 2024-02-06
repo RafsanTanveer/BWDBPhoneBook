@@ -19,9 +19,10 @@ import ExperienceScreen from '../component/ExperienceScreen'
 import * as ImagePicker from 'expo-image-picker';
 import { ImageManipulator } from 'expo'
 import { printAsync, printToFileAsync } from 'expo-print';
+import { Asset } from 'expo-asset';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system'
-// import MakeCallModalComponent from '../component/MakeCallModalComponent';
+import { serverAddress } from '../api/ServerAddress'
 import CameraOrGalleryModal from '../component/modalComponents/CameraOrGalleryModal'
 import mime from "mime";
 
@@ -126,57 +127,62 @@ const BiodataScreen = ({ id, navigation }) => {
 
     const uploadImage = async (uri) => {
 
-        // const manipResult = await ImageManipulator.manipulate(
-        //     uri.localUri || uri.uri,
-        //     [{ resize: { width: 640, height: 480 } }],
-        //     { compress: .5, }
-
-        // );
-        const imgUri = uri.uri
-        const imgHeight = uri.height
-        const imgWidth = uri.width
-
-        console.log(imgUri, '  ', imgHeight, ' ', imgWidth);
-
-        console.log('uri ++++++++++++++  =>  ', imgUri);
-        console.log('----------------------', mime.getType(imgUri));
-        const formData = new FormData()
+        try {
 
 
-        formData.append("pmisId", pmisId)
-        formData.append('image', {
-            name: 'image.jpg',
-            type: mime.getType(imgUri),
-            uri:
-                Platform.OS === 'android'
-                    ? imgUri
-                    : imgUri.replace('file://', ''),
-        });
+            // const image = Asset.fromModule(require('../ assets/icons/bdgovlogo.png'));
+            // await image.downloadAsync();
+
+            const imgUri = uri.uri
+            const imgHeight = uri.height
+            const imgWidth = uri.width
+
+
+            // const manipResult = await ImageManipulator.manipulateAsync(
+            //     image.localUri || image.uri,
+            //     [{ resize: { width: 640, height: 480 } }],
+            //     { compress: .5, }
+
+            // );
+
+
+            console.log(uri.fileSize, '  ', imgHeight, ' ', imgWidth);
+
+            // console.log('manipResult -----------------9999999999000000000   ', manipResult);
 
 
 
+            const formData = new FormData()
+
+
+            formData.append("pmisId", pmisId)
+            formData.append("imgHeight", imgHeight)
+            formData.append("imgWidth", imgWidth)
+            formData.append('empphoto', {
+                name: 'image.jpg',
+                type: mime.getType(imgUri),
+                uri:
+                    Platform.OS === 'android'
+                        ? imgUri
+                        : imgUri.replace('file://', ''),
+            });
 
 
 
 
+            fetch(`${serverAddress}postPhoto`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
 
-        // await api.post('postPhoto', formData), {
-        //     headers: { 'Content-Type': 'multipart/form-data' },
-        // }
-        //     .then(res => ToastOrAlert('Photo successfully updated'))
-        //     .catch(err => console.log(err))
 
-
-
-
-        fetch('http://192.168.16.40:5000/postPhoto', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        } catch (error) {
+            console.log(error);
+        }
 
 
 
@@ -191,9 +197,10 @@ const BiodataScreen = ({ id, navigation }) => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [3, 4],
-            quality: 0,
-            maxHeight: 300,
-            maxWidth: 300
+            quality: 1,
+            maxWidth: 200,
+            maxHeight: 200
+
         };
 
         if (useLibrary) {
@@ -205,7 +212,6 @@ const BiodataScreen = ({ id, navigation }) => {
 
         // Save image if not cancelled
         if (!result.canceled) {
-            // console.log(result.assets[0]);
             uploadImage(result.assets[0]);
         }
     };
@@ -1182,30 +1188,30 @@ const BiodataScreen = ({ id, navigation }) => {
                                             <RowComponent headingText="Father's Name" queryText={item.f_name} />
                                             <RowComponent headingText="" queryText={item.f_name_bn} />
                                             <RowComponent headingText="Mother's Name" queryText={item.m_name} />
-                                            {/* <RowComponent headingText="" queryText={item.m_name_bn} /> */}
+                                            <RowComponent headingText="" queryText={item.m_name_bn} />
                                             {/* <RowComponent headingText='Home District' queryText={item.homeDist} /> */}
                                         </View>
                                         <View style={{ flexDirection: 'column-reverse' }} >
                                             {
                                                 item.photo ?
-                                                    <Image style={{ height: width * .3, width: width * .25 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
+                                                    <Image style={{ height: width * .35, width: width * .25 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
                                                     <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
                                             <TouchableOpacity
                                                 onPress={() => { selectImage(true) }}
                                                 // onPress={() => { loadImages  ()}}
-                                                style={{ position: "absolute", bottom: 0, left: 0, margin:3 }} >
+                                                style={{ position: "absolute", bottom: 0, left: 0, margin: 3 }} >
                                                 <Image style={{ height: width * .05, width: width * .05, }} source={Images['cngPh']} ></Image>
                                             </TouchableOpacity>
 
 
                                         </View>
                                     </View>
-                                    <SingleColumnComponent
+                                    {/* <SingleColumnComponent
                                         firstHeading=""
                                         firstQueryResult={item.m_name_bn}
                                         delimiter=":"
-                                    />
+                                    /> */}
                                     <SingleColumnComponent
                                         firstHeading="Home District"
                                         firstQueryResult={item.homeDist}

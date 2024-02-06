@@ -172,6 +172,7 @@ export const AuthProvider = ({ children }) => {
             const empInfo = await getEmployeeInfo("loginHistory")
 
             if (checkCredential(empInfo, id, password)) {
+                console.log('succes MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM');
                 logIn_Successful(tempUserInfo)
             } else {
 
