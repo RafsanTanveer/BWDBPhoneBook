@@ -135,12 +135,28 @@ const BiodataScreen = ({ id, navigation }) => {
             const imgWidth = uri.width
 
             console.log('file : ');
-            const file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 0.25 });
+
+            let file;
+            let thumnailImg;
+
+            if (imgHeight > 1000 || imgWidth > 1000) {
+
+                file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: .25 });
+                thumnailImg = await ImageManipulator.manipulateAsync(imgUri, [], { compress: .25 });
+
+            }
+            else {
+
+                file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 1 });
+                thumnailImg = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 1 });
+
+            }
+
 
 
             console.log(file);
 
-            imgUri=file.uri
+            imgUri = file.uri
             // const manipResult = await ImageManipulator.manipulateAsync(
             //     image.localUri || image.uri,
             //     [{ resize: { width: 640, height: 480 } }],
@@ -149,7 +165,7 @@ const BiodataScreen = ({ id, navigation }) => {
             // );
 
 
-            console.log(uri.fileSize, '  ', imgHeight, ' ', imgWidth);
+            console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
 
             // console.log('manipResult -----------------9999999999000000000   ', manipResult);
 
