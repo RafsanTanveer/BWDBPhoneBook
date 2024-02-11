@@ -217,3 +217,23 @@ export const createLoginHistoryTable = (tableName) => {
           });
      });
 };
+
+
+export const createEmpPhotoTable = (tableName) => {
+     return new Promise((resolve, reject) => {
+          db.transaction((tx) => {
+               tx.executeSql(
+                    `CREATE TABLE IF NOT EXISTS ${tableName} (
+                                id          TEXT,
+                                photo       BLOB;`,
+                    [],
+                    (_, result) => {
+                         resolve(result);
+                    },
+                    (_, error) => {
+                         reject(error);
+                    }
+               );
+          });
+     });
+};

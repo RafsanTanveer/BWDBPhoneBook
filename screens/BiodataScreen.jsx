@@ -17,7 +17,8 @@ import BiodataHeader from '../component/BiodataHeader'
 import { height, width, widthScreen } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
 import * as ImagePicker from 'expo-image-picker';
-import { ImageManipulator } from 'expo'
+import * as ImageManipulator from 'expo-image-manipulator';
+
 import { printAsync, printToFileAsync } from 'expo-print';
 import { Asset } from 'expo-asset';
 import { shareAsync } from 'expo-sharing';
@@ -129,15 +130,17 @@ const BiodataScreen = ({ id, navigation }) => {
 
         try {
 
-
-            // const image = Asset.fromModule(require('../ assets/icons/bdgovlogo.png'));
-            // await image.downloadAsync();
-
-            const imgUri = uri.uri
+            let imgUri = uri.uri
             const imgHeight = uri.height
             const imgWidth = uri.width
 
+            console.log('file : ');
+            const file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 0.25 });
 
+
+            console.log(file);
+
+            imgUri=file.uri
             // const manipResult = await ImageManipulator.manipulateAsync(
             //     image.localUri || image.uri,
             //     [{ resize: { width: 640, height: 480 } }],
@@ -178,6 +181,8 @@ const BiodataScreen = ({ id, navigation }) => {
                 },
             });
 
+            updateBiodata()
+
 
 
         } catch (error) {
@@ -197,9 +202,10 @@ const BiodataScreen = ({ id, navigation }) => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [3, 4],
-            quality: 1,
-            maxWidth: 200,
-            maxHeight: 200
+            quality: .5,
+            maxWidth: 100,
+            maxHeight: 100,
+
 
         };
 
