@@ -3,17 +3,22 @@ import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, Toucha
 // import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../../context/ThemeContext";
 import { height, width } from '../../utility/ScreenDimensions'
-import AuthContext from '../../context/AuthContext'
+import {AuthContext} from '../../context/AuthContext'
+import * as FileSystem from 'expo-file-system'
+import { serverAddress } from '../../api/ServerAddress'
 import { LinearGradient } from 'expo-linear-gradient';
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
+import { Images } from '../../utility/Images'
+import mime from "mime";
 
 
-const phoneCallIcon = '../../assets/icons/phoneCall.png'
-const whatsappIcon = '../../assets/icons/whatsapp.png'
 
-const CameraOrGalleryModal = ({ number, toggleModal, type, heading }) => {
+
+const CameraOrGalleryModal = ({ number, toggleModal, type, heading, refreshList }) => {
 
     __DEV__ && console.log(type);
-    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge } = useContext(AuthContext);
+    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, pmisId } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
     //`, ${presentCharge}`
     let charge = presentCharge === 'R' ? '' :
@@ -27,43 +32,123 @@ const CameraOrGalleryModal = ({ number, toggleModal, type, heading }) => {
         toggleModal(false)
     }
 
-    const sendMsgViaWhatsapp = () => {
 
-        const whatsappUrl = `whatsapp://send?text=${msg}&phone=+88${number}`
-        Linking.openURL(whatsappUrl)
-        closeModal()
+    const uploadImage = async (uri) => {
 
-    }
+        try {
 
-    const callViaWhatsapp = () => {
+            let imgUri = uri.uri
+            const imgHeight = uri.height
+            const imgWidth = uri.width
 
-        const whatsappUrl = `whatsapp://send?phone=+88${number}`
-        Linking.openURL(whatsappUrl)
-        closeModal()
+            console.log('file : ');
 
-    }
+            let file;
+            let thumnailImg;
 
-    const sendMsgViaSimCard = () => {
-        const url = (Platform.OS === 'android')
-            ? `sms:${number}?body=${msg}`
-            : `sms:/open?addresses=${number}&body=${msg}`;
+            if (imgHeight > 1000 || imgWidth > 1000) {
 
-        Linking.openURL(url)
-        closeModal()
+                file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: .25 });
+                thumnailImg = await ImageManipulator.manipulateAsync(imgUri, [], { compress: .25 });
 
+            }
+            else {
 
-    }
-    // `tel:${mobile}`
-    const callViaSimCard = () => {
-        const url = (Platform.OS === 'android')
-            ? `tel:${number}`
-            : `tel:/open?addresses=${number}&body=${msg}`;
+                file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 1 });
+                thumnailImg = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 1 });
 
-        Linking.openURL(url)
-        closeModal()
+            }
 
 
-    }
+
+            console.log(file);
+
+            imgUri = file.uri
+            // const manipResult = await ImageManipulator.manipulateAsync(
+            //     image.localUri || image.uri,
+            //     [{ resize: { width: 640, height: 480 } }],
+            //     { compress: .5, }
+
+            // );
+
+
+            console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
+
+            // console.log('manipResult -----------------9999999999000000000   ', manipResult);
+
+
+
+            const formData = new FormData()
+
+
+            formData.append("pmisId", pmisId)
+            formData.append("imgHeight", imgHeight)
+            formData.append("imgWidth", imgWidth)
+            formData.append('empphoto', {
+                name: 'image.jpg',
+                type: mime.getType(imgUri),
+                uri:
+                    Platform.OS === 'android'
+                        ? imgUri
+                        : imgUri.replace('file://', ''),
+            });
+
+
+
+
+            fetch(`${serverAddress}postPhoto`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(() => {
+                closeModal()
+                refreshList()
+            });
+
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
+
+        // setUploading(false);
+    };
+
+
+    const selectImage = async (useLibrary) => {
+        let result;
+        const options = {
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [3, 4],
+            quality: .5,
+            maxWidth: 100,
+            maxHeight: 100,
+
+
+        };
+
+        if (useLibrary) {
+            result = await ImagePicker.launchImageLibraryAsync(options);
+        } else {
+            await ImagePicker.requestCameraPermissionsAsync();
+            result = await ImagePicker.launchCameraAsync(options);
+        }
+
+        // Save image if not cancelled
+        if (!result.canceled) {
+            uploadImage(result.assets[0]);
+        }
+    };
+
+
+
 
 
     return (
@@ -75,22 +160,22 @@ const CameraOrGalleryModal = ({ number, toggleModal, type, heading }) => {
             </View>
             <View style={{ flex: 2, alignItems: 'center', }} >
                 <TouchableOpacity
-                    onPress={() => type === 'phn' ? callViaSimCard() : sendMsgViaSimCard()}
+                    onPress={() => selectImage(true)}
                     style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }} >
                     <Image
-                        source={require(phoneCallIcon)}
+                        source={Images['gallery']}
                         style={{ width: 30, height: 30 }}
                     />
-                    <Text style={{ fontSize: width * .045, fontWeight: '500', margin: 10 }}>Sim Card</Text>
+                    <Text style={{ fontSize: width * .045, fontWeight: '500', margin: 10 }}>Gallery</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => type === 'phn' ? callViaWhatsapp() : sendMsgViaWhatsapp()}
+                    onPress={() => selectImage(false)}
                     style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }} >
                     <Image
-                        source={require(whatsappIcon)}
+                        source={Images['camera']}
                         style={{ width: 30, height: 30 }}
                     />
-                    <Text style={{ fontSize: width * .045, fontWeight: '500', margin: 10 }}>Whatsapp</Text>
+                    <Text style={{ fontSize: width * .045, fontWeight: '500', margin: 10 }}>Camera</Text>
                 </TouchableOpacity>
             </View>
 

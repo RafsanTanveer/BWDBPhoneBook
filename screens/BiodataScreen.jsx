@@ -107,8 +107,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
     // ********************************  Internet Connection checked *************************************
     const toggleModal = (isVisible, type, heading) => {
-        setphnOrMsg(type)
-        setmodalHeading(heading)
+        // setphnOrMsg(type)
+        // setmodalHeading(heading)
         setModalVisible(isVisible);
     };
 
@@ -1220,10 +1220,10 @@ const BiodataScreen = ({ id, navigation }) => {
                                                     <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
                                             }
                                             <TouchableOpacity
-                                                onPress={() => { selectImage(true) }}
-                                                // onPress={() => { loadImages  ()}}
+                                                // onPress={() => { selectImage(true) }}
+                                                onPress={() => { toggleModal  (true)}}
                                                 style={{ position: "absolute", bottom: 0, left: 0, margin: 3 }} >
-                                                <Image style={{ height: width * .05, width: width * .05, }} source={Images['cngPh']} ></Image>
+                                                <Image style={{ height: width * .045, width: width * .045, }} source={Images['cngPh']} ></Image>
                                             </TouchableOpacity>
 
 
@@ -1336,12 +1336,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                         delimiter=":"
                                     />
                                     {
-                                        item.gpf ?
-                                            <SingleColumnComponent
-                                                firstHeading="GPF File No"
-                                                firstQueryResult={item.gpf}
-                                                delimiter=":"
-                                            /> : ''
+                                        true &&
+                                        <SingleColumnComponent
+                                            firstHeading="GPF File No"
+                                            firstQueryResult={item.gpf}
+                                            delimiter=":"
+                                        />
                                     }
 
                                     {
@@ -1627,15 +1627,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
                                 </View>
                             </ScrollView >
-                            <Modal
-                                transparent={true}
-                                animationType="fade"
-                                visible={isModalVisible}
-                                onRequestClose={() => toggleModal(true)}
-                            >
-                                <CameraOrGalleryModal number={''} toggleModal={toggleModal} type={''} heading={''} />
 
-                            </Modal>
 
 
                         </View >
@@ -1644,7 +1636,15 @@ const BiodataScreen = ({ id, navigation }) => {
 
             {/* <FlatList style={{height:2, width:2}}/> */}
 
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isModalVisible}
+                onRequestClose={() => toggleModal(true)}
+            >
+                <CameraOrGalleryModal number={''} toggleModal={toggleModal} type={''} heading={'Select Photo'} refreshList={updateBiodata} />
 
+            </Modal>
         </>
 
 

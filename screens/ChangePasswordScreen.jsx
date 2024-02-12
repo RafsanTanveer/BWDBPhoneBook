@@ -61,7 +61,7 @@ const ChangePasswordScreen = () => {
 
     return (
         <View style={{ flex: 1, }}>
-            <BiodataHeader heading='Change Your Password' />
+            {/* <BiodataHeader heading='Change Your Password' /> */}
             <View style={{ paddingTop: width * .03, paddingHorizontal: width * .03 }} >
                 <Text style={{ fontSize: width * .035, fontWeight: 'bold' }}>Your new password must be different from previous password</Text>
             </View>

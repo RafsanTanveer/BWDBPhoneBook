@@ -9,7 +9,8 @@ import AuthContext from '../context/AuthContext'
 import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateBloodGroupModalComponent'
 
 
-const SingleColumnComponent = ({ id,firstHeading, firstQueryResult, delimiter, reloadList }) => {
+
+const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, reloadList }) => {
 
     const { currentTheme } = useContext(ThemeContext);
     const netInfo = useNetInfo();
@@ -26,21 +27,26 @@ const SingleColumnComponent = ({ id,firstHeading, firstQueryResult, delimiter, r
         setisBloodGroupUpdateVisible(isVisible);
     };
 
+    const updateTxt = firstQueryResult? "Edit":'Update'
 
     return (
         <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: .3088, }}>
-                <Text style={styles.textStyle} onLongPress={() => toggleModal(true)}>{firstHeading}</Text>
+                <Text style={styles.textStyle}
+                // onLongPress={() => toggleModal(true)}
+                >{firstHeading}</Text>
             </View>
             <View style={{ flex: .01, }}>
                 <Text style={styles.textStyle}>{delimiter}</Text>
             </View>
             <View style={{ flex: .7, alignItems: 'flex-start', flexDirection: 'row' }}>
-                <Text style={styles.queryTextStyle} onLongPress={() => toggleModal(true)}>{firstQueryResult}</Text>
+                <Text style={styles.queryTextStyle}
+                // onLongPress={() => toggleModal(true)}
+                >{firstQueryResult}</Text>
                 {
-                    (firstHeading === 'Blood' || firstHeading === 'Blood') &&
+                    (firstHeading === 'Blood') &&
                     <TouchableOpacity
-                            onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                        onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
 
                         style={{
                             alignItems: 'center',
@@ -50,9 +56,27 @@ const SingleColumnComponent = ({ id,firstHeading, firstQueryResult, delimiter, r
                             marginHorizontal: 5,
                             paddingVertical: .5,
                             paddingHorizontal: 5,
-                            elevation:2
+                            elevation: 2
                         }} >
-                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle:'italic' }} >Edit</Text>
+                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
+                    </TouchableOpacity>
+                }
+                {
+                    (firstHeading === 'GPF File No') &&
+                    <TouchableOpacity
+                        onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+
+                        style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            backgroundColor: `${currentTheme}`,
+                            borderRadius: height * .005,
+                            marginHorizontal: 5,
+                            paddingVertical: .5,
+                            paddingHorizontal: 5,
+                            elevation: 2
+                        }} >
+                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
                 }
             </View>
