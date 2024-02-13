@@ -7,7 +7,9 @@ import { AuthContext } from '../context/AuthContext'
 import { Images } from '../utility/Images'
 import { ToastOrAlert } from '../utility/ToastOrAlert'
 import api from '../api/api'
-
+import { updatePassword } from '../database/UpdateQueries'
+import { deleteDataFromLoginHistoryTable } from '../database/DeleteQueries'
+import { getAllInfoFromTable } from '../database/SelectQueries'
 const ChangePasswordScreen = () => {
 
     const { currentTheme, } = useContext(ThemeContext);
@@ -24,14 +26,21 @@ const ChangePasswordScreen = () => {
 
 
     const changePassword = async () => {
-        console.log(pmisId, '', newPass);
+        // console.log(pmisId, '', newPass);
+
+
 
         currentPass === '' ?
             newPass ?
                 confirmNewPass ?
                     newPass === confirmNewPass ?
                         await api.put(`updatePass/${pmisId}/${newPass}`)
-                            .then(res => ToastOrAlert('password successfully updated'))
+                            .then(res => {
+                                // deleteDataFromLoginHistoryTable(pmisId, 'loginHistory')
+                                updatePassword(pmisId, newPass, 'loginHistory')
+                                ToastOrAlert('password successfully updated')
+
+                            })
                             .catch(err => console.log(err))
                         :
                         ToastOrAlert('New password and confirm password does not match')
@@ -41,6 +50,14 @@ const ChangePasswordScreen = () => {
                 ToastOrAlert('Please enter new password')
             :
             ToastOrAlert('Current passord does not match')
+
+
+        const loginHistory = await getAllInfoFromTable('loginHistory')
+
+
+        console.log('loginHistory');
+
+        loginHistory.map((history) => console.log(history.id, history.password, history.rec_status, history.timestamp))
 
     }
 

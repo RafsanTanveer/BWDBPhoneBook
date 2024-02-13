@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }) => {
         setUserInfo([])
     }
 
-    const logIn_Successful =async (userInfo) => {
+    const logIn_Successful = async (userInfo) => {
         setUserInfo(userInfo);
         await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         setisLogged(true)
@@ -127,34 +127,39 @@ export const AuthProvider = ({ children }) => {
 
         // const tempData = getEmpInfoFromApi(id, password)
 
+        try {
+            console.log('::::: in getusercredential');
+            const { data: response } = await api.get("getusercredential", {
+                params: {
+                    id: id,
+                    pass: password
+                }
+            });
+            const tempData = response.rows
 
-        console.log('::::: in getusercredential');
-        const { data: response } = await api.get("getusercredential", {
-            params: {
-                id: id,
-                pass: password
-            }
-        });
-        const tempData = response.rows
-
-        console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData);
-        if (tempData) {
+            console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData);
+            if (tempData) {
 
 
-            if (tempData[0].rec_status === 'I') {
-                ToastOrAlert('RETIRED')
-                logIn_Unsuccessful()
+                if (tempData[0].rec_status === 'I') {
+                    ToastOrAlert('RETIRED')
+                    logIn_Unsuccessful()
+                }
+                else {
+                    insertLoginHistoryTable('loginHistory', tempData)
+                    logIn_Successful(tempData)
+                }
+
             }
             else {
-                insertLoginHistoryTable('loginHistory', tempData)
-                logIn_Successful(tempData)
+                !msgBetweenFn && ToastOrAlert('PMIS ID or PASSWORD IS NOT CORRECT.')
+                logIn_Unsuccessful()
             }
+        } catch (error) {
+            console.log(error);
+        }
 
-        }
-        else {
-            !msgBetweenFn && ToastOrAlert('PMIS ID or PASSWORD IS NOT CORRECT.')
-            logIn_Unsuccessful()
-        }
+
     }
 
     const login = async (id, password) => {
