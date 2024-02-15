@@ -64,3 +64,26 @@ export const getAllInfoFromTable = async (tableName) => {
         });
     });
 };
+
+
+
+
+export const getCurrentPassword = async (id, tableName) => {
+    return new Promise((resolve, reject) => {
+
+
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT password FROM ${tableName} WHERE id=${id}`,
+                [],
+                (_, { rows }) => {
+                    resolve(rows._array);
+                },
+                (_, error) => {
+                    reject(error);
+                    return false;
+                }
+            );
+        });
+    });
+};

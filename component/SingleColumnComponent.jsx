@@ -61,7 +61,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
                 }
-                {
+                {/* {
                     (firstHeading === 'GPF File No') &&
                     <TouchableOpacity
                         onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
@@ -78,7 +78,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                         }} >
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
-                }
+                } */}
             </View>
 
 

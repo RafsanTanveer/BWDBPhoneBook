@@ -9,7 +9,7 @@ import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, Saf
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
-import Item from '../component/Item';
+import ItemBlood from '../component/ItemBlood';
 import ItemVacant from '../component/ItemVacant'
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -40,6 +40,17 @@ let selectedPId = []
 let chargeMap = {};
 let tempDist = []
 let postMap = {}
+let ageMap = [
+    { label: "Below 20", value: "below 20" },
+    { label: "21-25", value: "21-25" },
+    { label: "26-30", value: "26-30" },
+    { label: "31-35", value: "31-35" },
+    { label: "36-40", value: "36-40" },
+    { label: "41-45", value: "41-45" },
+    { label: "46-50", value: "46-50" },
+    { label: "51-55", value: "51-55" },
+    { label: "56-59", value: "56-59" },
+]
 let postKeys
 let tempDropVal = [
     { label: "All DISTRICT", value: 0 },
@@ -65,10 +76,6 @@ const selectAllActive = '../assets/icons/select-all-active.png'
 const selectAllInactive = '../assets/icons/select-all-inactive.png'
 
 //selectAll-theme-9
-const selectAll_9 = '../assets/icons/selectAll-theme-9.png'
-const selectAll_0 = '../assets/icons/selectAll-theme-0.png'
-const selectAll_3 = '../assets/icons/selectAll-theme-3.png'
-const selectAll_6 = '../assets/icons/selectAll-theme-6.png'
 
 let higherPost = ''
 
@@ -142,7 +149,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
     const [notDgOrAdg, setnotDgOrAdg] = useState(false)
 
     const [isOpen, setIsOpen] = useState(false);
-    const [isChargeOpen, setIsChargeOpen] = useState(false);
+    const [isAgeOpen, setIsAgeOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
 
@@ -150,6 +157,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
     const [totalNBSPost, setTotalNBSPost] = useState('');
 
     const [currentDistValue, setCurrentDistValue] = useState();
+    const [currentAge, setcurrentAge] = useState();
     const [currentChargeValue, setCurrentChargeValue] = useState();
     const [distName, setdistName] = useState();
 
@@ -298,6 +306,93 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
 
     }
+
+
+
+    const sortByAge = () => {
+
+        setisrtDateChecked(false)
+        setChecked(false)
+        setisrtJoiningChecked(false)
+
+        __DEV__ && console.log('sortByDistrict', currentDistValue);
+
+        if (currentDistValue === 'All DISTRICT') {
+            setdistName('')
+            setFilteredData(DATA)
+        }
+        else if (currentDistValue === 'PANI BHABAN') {
+            setdistName('in HEADQUARTER')
+            const newDataDhakaDist = DATA.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = "DHAKA".toLocaleLowerCase();
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newDataPaniBhaban = newDataDhakaDist.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? 'PANI BHABAN'.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newDataHydrologyBuilding = newDataDhakaDist.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? 'Hydro'.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newData = [...newDataPaniBhaban, ...newDataHydrologyBuilding]
+
+            setFilteredData(newData)
+        }
+        else {
+            setdistName("in " + currentDistValue)
+            const newData = DATA.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? currentDistValue.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData)
+        }
+
+
+        // if (distValue != 0 && distValue != 65) {
+
+        //     distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
+        //     distValue && setdistName("in " + district[distValue].label)
+        //     const newData = DATA.filter((item) => {
+        //         const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
+        //         return itemData.indexOf(textData) > -1;
+        //     });
+        //     setFilteredData(newData)
+        //     // console.log('newData.length', newData.length, 'DATA', DATA.length);
+
+        // }
+        // else if (distValue == 65) {
+
+        //     distValue && setdistName("in " + district[distValue].label)
+        //     const newData = DATA.filter((item) => {
+        //         const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
+
+
+        //         return itemData.indexOf(textData) > -1;
+        //     });
+        //     setFilteredData(newData)
+
+
+        // }
+        // else {
+        //     setFilteredData(DATA)
+        //     setdistName("")
+        // }
+
+
+
+
+    }
+
 
     const chargeFilter = () => {
 
@@ -466,9 +561,10 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 setdistName('')
                 setDistrictValue()
                 setCurrentDistValue()
+                setcurrentAge()
                 setCurrentChargeValue()
                 setIsOpen(false)
-                setIsChargeOpen(false)
+                setIsAgeOpen(false)
 
                 // setIsLoading(false);
 
@@ -550,12 +646,13 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         setIsReportActive(false)
         setIsCurrentActive(true)
         setCurrentDistValue() // for reseting dropdown picker
+        setcurrentAge()
         setCurrentChargeValue()
         setItems(tempDist)
         setCurrentSelectedIds([])
         setIsFilterOn(false)
         setIsOpen(false)
-        setIsChargeOpen(false)
+        setIsAgeOpen(false)
         setIsFloatingBtnExteded(false)
         setGroupMenu(false)
 
@@ -816,26 +913,26 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
                     <View style={{ flex: 10, flexDirection: 'row' }}>
                         <View style={{ flex: 1 }}>
-                           <View style={{  }} >
-                             <TextInput
-                                 selectionColor={'black'}       // for changing curcsor color
-                                 style={{
-                                     height: height / 20,
-                                     width: "97%",
-                                     borderRadius: 5,
-                                     marginBottom: 5,
-                                     marginLeft: 5,
-                                     borderColor: `${currentTheme}`,//'#6750a4',
-                                     borderWidth: 2,
-                                     paddingLeft: 15,
-                                     backgroundColor: 'white'
-                                 }}
-                                 placeholder="Search Name"
-                                 value={search}
-                                 //underlineColorAndroid='trasparent'
-                                 onChangeText={(text) => { searchFilter(text) }}
-                                 mode='outlined'
-                             />
+                            <View style={{}} >
+                                <TextInput
+                                    selectionColor={'black'}       // for changing curcsor color
+                                    style={{
+                                        height: height / 20,
+                                        width: "97%",
+                                        borderRadius: 5,
+                                        marginBottom: 5,
+                                        marginLeft: 5,
+                                        borderColor: `${currentTheme}`,//'#6750a4',
+                                        borderWidth: 2,
+                                        paddingLeft: 15,
+                                        backgroundColor: 'white'
+                                    }}
+                                    placeholder="Search Name"
+                                    value={search}
+                                    //underlineColorAndroid='trasparent'
+                                    onChangeText={(text) => { searchFilter(text) }}
+                                    mode='outlined'
+                                />
                             </View>
                             {search ?
                                 <TouchableOpacity
@@ -853,7 +950,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                                         searchFilter("")
                                         , setCurrentDistValue(""),
                                         setdistName(""),
-                                        setCurrentChargeValue("")
+                                        setCurrentChargeValue(""),
+                                        setcurrentAge("")
 
                                     )}
                                 >
@@ -906,7 +1004,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                                         , setCurrentDistValue(""),
                                         setdistName(""),
                                         setCurrentChargeValue(""),
-                                        setSearchDesig("")
+                                        setSearchDesig(""),
+                                        setcurrentAge("")
 
                                     )}
                                 >
@@ -996,19 +1095,33 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                     }}>
 
 
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={{ width: width * .50, marginRight: 10, marginBottom: 2 }}>
+                            <View style={{ flex: 1.5, width: width * .50, marginRight: 10, marginBottom: 2 }}>
                                 <DropDownPicker
                                     style={{ zIndex: 1000 }}
                                     items={tempDist}
                                     open={isOpen}
-                                    setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
+                                    setOpen={() => { setIsOpen(!isOpen), setIsAgeOpen(false) }}
                                     value={currentDistValue}
                                     setValue={setCurrentDistValue}
                                     maxHeight={450}
                                     placeholder="Select Office Location"
                                     onChangeValue={() => sortByDistrict()}
+                                />
+                            </View>
+
+                            <View style={{ flex: 1, width: width * .50, marginRight: 10, marginBottom: 2 }}>
+                                <DropDownPicker
+                                    style={{ zIndex: 1000 }}
+                                    items={ageMap}
+                                    open={isAgeOpen}
+                                    setOpen={() => { setIsAgeOpen(!isAgeOpen), setIsOpen(false) }}
+                                    value={currentAge}
+                                    setValue={setcurrentAge}
+                                    maxHeight={450}
+                                    placeholder="Age Range"
+                                    onChangeValue={() => sortByAge()}
                                 />
                             </View>
 
@@ -1045,9 +1158,10 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                         // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
 
                         renderItem={({ item, index }) => (
-                            <Item
+                            <ItemBlood
                                 id={item.id}
                                 name={item.name}
+                                age={item.age}
                                 office={item.office}
                                 email={item.email}
                                 mobile={item.mobile}
