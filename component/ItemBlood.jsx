@@ -29,6 +29,7 @@ let selectedGroupIds = []
 const ItemBlood = ({ id,
     name,
     age,
+    ageYear,
     officeid,
     office,
     email,
@@ -445,7 +446,7 @@ const ItemBlood = ({ id,
                         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }} >
 
                             <Text style={{ fontSize: txtSizeBig, fontFamily: Platform.OS === "android" ? 'serif' : null, fontWeight: 'bold' }} >{name} </Text>
-                            <Text style={{ fontSize: txtSizeBig, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'green', fontWeight: '700' }} >{age} </Text>
+                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'green', fontWeight: '700' }} >{age} </Text>
 
                         </View>
                         <View style={{}} >

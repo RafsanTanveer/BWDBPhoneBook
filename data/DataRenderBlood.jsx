@@ -41,6 +41,7 @@ let chargeMap = {};
 let tempDist = []
 let postMap = {}
 let ageMap = [
+    { label: "All Age", value: "all" },
     { label: "Below 20", value: "below 20" },
     { label: "21-25", value: "21-25" },
     { label: "26-30", value: "26-30" },
@@ -160,6 +161,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
     const [currentAge, setcurrentAge] = useState();
     const [currentChargeValue, setCurrentChargeValue] = useState();
     const [distName, setdistName] = useState();
+    const [ageVlue, setageVlue] = useState();
 
     const [distForDropDown, setDistForDropDown] = useState();
 
@@ -270,38 +272,6 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         }
 
 
-        // if (distValue != 0 && distValue != 65) {
-
-        //     distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
-        //     distValue && setdistName("in " + district[distValue].label)
-        //     const newData = DATA.filter((item) => {
-        //         const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
-        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-        //         return itemData.indexOf(textData) > -1;
-        //     });
-        //     setFilteredData(newData)
-        //     // console.log('newData.length', newData.length, 'DATA', DATA.length);
-
-        // }
-        // else if (distValue == 65) {
-
-        //     distValue && setdistName("in " + district[distValue].label)
-        //     const newData = DATA.filter((item) => {
-        //         const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
-        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-
-
-        //         return itemData.indexOf(textData) > -1;
-        //     });
-        //     setFilteredData(newData)
-
-
-        // }
-        // else {
-        //     setFilteredData(DATA)
-        //     setdistName("")
-        // }
-
 
 
 
@@ -315,78 +285,150 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         setChecked(false)
         setisrtJoiningChecked(false)
 
-        __DEV__ && console.log('sortByDistrict', currentDistValue);
+        __DEV__ && console.log('sortByDistrict', currentAge);
 
-        if (currentDistValue === 'All DISTRICT') {
-            setdistName('')
+        if (currentAge === 'All Age') {
+            setageVlue('')
             setFilteredData(DATA)
         }
-        else if (currentDistValue === 'PANI BHABAN') {
-            setdistName('in HEADQUARTER')
-            const newDataDhakaDist = DATA.filter((item) => {
-                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
-                const textData = "DHAKA".toLocaleLowerCase();
-                return itemData.indexOf(textData) > -1;
+        else if (currentAge === 'below 20') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
+
+                console.log(Number(itemData));
+                if (Number(itemData) <= 20 )
+                    return true
+                else
+                    return false
+
             });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '21-25') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
 
-            const newDataPaniBhaban = newDataDhakaDist.filter((item) => {
-                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
-                const textData = currentDistValue ? 'PANI BHABAN'.toLocaleLowerCase() : '';
-                return itemData.indexOf(textData) > -1;
+                console.log(Number(itemData));
+                if (Number(itemData) > 21 && Number(itemData) <= 25)
+                    return true
+                else
+                    return false
+
             });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '26-30') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
 
-            const newDataHydrologyBuilding = newDataDhakaDist.filter((item) => {
-                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
-                const textData = currentDistValue ? 'Hydro'.toLocaleLowerCase() : '';
-                return itemData.indexOf(textData) > -1;
+                console.log(Number(itemData));
+                if (Number(itemData) >= 26 && Number(itemData) <= 30)
+                    return true
+                else
+                    return false
+
             });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '31-35') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
 
-            const newData = [...newDataPaniBhaban, ...newDataHydrologyBuilding]
+                console.log(Number(itemData));
+                if (Number(itemData) >= 31 && Number(itemData) <= 35)
+                    return true
+                else
+                    return false
 
+            });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '26-40') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
+
+                console.log(Number(itemData));
+                if (Number(itemData) >= 36 && Number(itemData) <= 40)
+                    return true
+                else
+                    return false
+
+            });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '41-45') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
+
+                console.log(Number(itemData));
+                if (Number(itemData) >= 41 && Number(itemData) <= 45)
+                    return true
+                else
+                    return false
+
+            });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '46-50') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
+
+                console.log(Number(itemData));
+                if (Number(itemData) >= 46 && Number(itemData) <= 50)
+                    return true
+                else
+                    return false
+
+            });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '51-55') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
+
+                console.log(Number(itemData));
+                if (Number(itemData) >= 51 && Number(itemData) <= 55)
+                    return true
+                else
+                    return false
+
+            });
+            setFilteredData(newData)
+        }
+        else if (currentAge === '56-59') {
+            setageVlue(' ' + currentAge)
+            const newData = filteredData.filter((item) => {
+                const itemData = item.ageYear ? item.ageYear : ''
+
+                console.log(Number(itemData));
+                if (Number(itemData) >= 56 && Number(itemData) <= 59)
+                    return true
+                else
+                    return false
+
+            });
             setFilteredData(newData)
         }
         else {
             setdistName("in " + currentDistValue)
-            const newData = DATA.filter((item) => {
+            const newData = filteredData.filter((item) => {
                 const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
-                const textData = currentDistValue ? currentDistValue.toLocaleLowerCase() : '';
+                const textData = currentAge ? currentAge.toLocaleLowerCase() : '';
                 return itemData.indexOf(textData) > -1;
             });
             setFilteredData(newData)
         }
 
 
-        // if (distValue != 0 && distValue != 65) {
 
-        //     distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
-        //     distValue && setdistName("in " + district[distValue].label)
-        //     const newData = DATA.filter((item) => {
-        //         const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
-        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-        //         return itemData.indexOf(textData) > -1;
-        //     });
-        //     setFilteredData(newData)
-        //     // console.log('newData.length', newData.length, 'DATA', DATA.length);
-
-        // }
-        // else if (distValue == 65) {
-
-        //     distValue && setdistName("in " + district[distValue].label)
-        //     const newData = DATA.filter((item) => {
-        //         const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
-        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-
-
-        //         return itemData.indexOf(textData) > -1;
-        //     });
-        //     setFilteredData(newData)
-
-
-        // }
-        // else {
-        //     setFilteredData(DATA)
-        //     setdistName("")
-        // }
 
 
 
@@ -1137,7 +1179,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} Blood Donor {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} Blood Donor {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length} ({currentAge}) </Text>
                             <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
@@ -1162,6 +1204,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                                 id={item.id}
                                 name={item.name}
                                 age={item.age}
+                                ageYear={item.ageYear}
                                 office={item.office}
                                 email={item.email}
                                 mobile={item.mobile}
