@@ -326,90 +326,93 @@ const BiodataScreen = ({ id, navigation }) => {
 
     const fetchDataAndInsertintoDatabase = async () => {
         //biodata
-        const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
-        setpersonalData(personalresponse.rows);
+        setIsLoading(true)
+        try {
 
-        setPmisId(personalresponse.rows[0].id)
-        setName(personalresponse.rows[0].name)  // setpostGrade
-        setpostGrade(personalresponse.rows[0].postGrade)
-        setphoto(personalresponse.rows[0].photo)
-        setofficeAddres(personalresponse.rows[0].officeAddress)
-        setpresentOfficeCode(personalresponse.rows[0].offceCode)
-        setofficelevel1code(personalresponse.rows[0].officelevel1code)
+            const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
+            setpersonalData(personalresponse.rows);
 
-        setadminLevel(personalresponse.rows[0].adminLevel)
-        setcanCallBulk(personalresponse.rows[0].canCallBulk)
-        setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
+            setPmisId(personalresponse.rows[0].id)
+            setName(personalresponse.rows[0].name)  // setpostGrade
+            setpostGrade(personalresponse.rows[0].postGrade)
+            setphoto(personalresponse.rows[0].photo)
+            setofficeAddres(personalresponse.rows[0].officeAddress)
+            setpresentOfficeCode(personalresponse.rows[0].offceCode)
+            setofficelevel1code(personalresponse.rows[0].officelevel1code)
 
-
-        __DEV__ && console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
-
-
-        personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
-        // setisAdmin(false)
-        // __DEV__ && console.log(response.rows[0].offceCode);
-
-        __DEV__ && console.log("____________________________________________________________" + personalresponse.rows[0].offceCode);
-        //promotion
-        const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
-        setpromotion(promotionresponse.rows);
+            setadminLevel(personalresponse.rows[0].adminLevel)
+            setcanCallBulk(personalresponse.rows[0].canCallBulk)
+            setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
 
 
+            __DEV__ && console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
 
 
-        //edu
-        const { data: eduresponse } = await api.get("edu", { params: { id: id } });
-        setEdu(eduresponse.rows);
+            personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
+            // setisAdmin(false)
+            // __DEV__ && console.log(response.rows[0].offceCode);
 
-        //exp
-        const { data: expresponse } = await api.get("exp", { params: { id: id } });
-        setexperience(expresponse.rows);
-
-        setpresentOffice(expresponse.rows[0].office)
-        setpresentDesig(expresponse.rows[0].desig)
-        setpresentPost(expresponse.rows[0].post);
-        setpresentCharge(expresponse.rows[0].charge)
-
-        //training
-        const { data: trainingresponse } = await api.get("training", { params: { id: id } });
-        settraining(trainingresponse.rows);
+            __DEV__ && console.log("____________________________________________________________" + personalresponse.rows[0].offceCode);
+            //promotion
+            const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
+            setpromotion(promotionresponse.rows);
 
 
 
-        await new Promise((resolve, reject) => {
-            db.transaction((tx) => {
 
-                tx.executeSql(
-                    `CREATE TABLE IF NOT EXISTS promotion (
+            //edu
+            const { data: eduresponse } = await api.get("edu", { params: { id: id } });
+            setEdu(eduresponse.rows);
+
+            //exp
+            const { data: expresponse } = await api.get("exp", { params: { id: id } });
+            setexperience(expresponse.rows);
+
+            setpresentOffice(expresponse.rows[0].office)
+            setpresentDesig(expresponse.rows[0].desig)
+            setpresentPost(expresponse.rows[0].post);
+            setpresentCharge(expresponse.rows[0].charge)
+
+            //training
+            const { data: trainingresponse } = await api.get("training", { params: { id: id } });
+            settraining(trainingresponse.rows);
+
+
+
+            await new Promise((resolve, reject) => {
+                db.transaction((tx) => {
+
+                    tx.executeSql(
+                        `CREATE TABLE IF NOT EXISTS promotion (
                                 id             TEXT,
                                 desig          TEXT,
                                 joinDate       TEXT,
                                 postingDate    TEXT
                                                  );`
-                );
+                    );
 
 
 
-                promotionresponse.rows.forEach((it) => {
-                    tx.executeSql(
-                        `INSERT INTO promotion (
+                    promotionresponse.rows.forEach((it) => {
+                        tx.executeSql(
+                            `INSERT INTO promotion (
                                     id,
                                     desig,
                                     joinDate,
                                     postingDate)
                VALUES (  ?, ?, ?, ?);`,
-                        [
-                            it.id,
-                            it.desig,
-                            it.joinDate,
-                            it.postingDate
-                        ]
-                    );
-                });
+                            [
+                                it.id,
+                                it.desig,
+                                it.joinDate,
+                                it.postingDate
+                            ]
+                        );
+                    });
 
 
-                tx.executeSql(
-                    `CREATE TABLE IF NOT EXISTS experience (
+                    tx.executeSql(
+                        `CREATE TABLE IF NOT EXISTS experience (
                                 id              TEXT,
                                 office          TEXT,
                                 post            TEXT,
@@ -418,12 +421,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                 joinDate        TEXT,
                                 releaseDate     TEXT
                                                  );`
-                );
+                    );
 
 
-                expresponse.rows.forEach((it) => {
-                    tx.executeSql(
-                        `INSERT INTO experience (
+                    expresponse.rows.forEach((it) => {
+                        tx.executeSql(
+                            `INSERT INTO experience (
                                     id,
                                     office,
                                     post,
@@ -432,21 +435,21 @@ const BiodataScreen = ({ id, navigation }) => {
                                     joinDate,
                                     releaseDate)
                VALUES (  ?, ?, ?, ?, ?, ?, ?);`,
-                        [
-                            it.id,
-                            it.office,
-                            it.post,
-                            it.charge,
-                            it.desig,
-                            it.joinDate,
-                            it.releaseDate
-                        ]
-                    );
-                });
+                            [
+                                it.id,
+                                it.office,
+                                it.post,
+                                it.charge,
+                                it.desig,
+                                it.joinDate,
+                                it.releaseDate
+                            ]
+                        );
+                    });
 
 
-                tx.executeSql(
-                    `CREATE TABLE IF NOT EXISTS training (
+                    tx.executeSql(
+                        `CREATE TABLE IF NOT EXISTS training (
                                 id              TEXT,
                                 title           TEXT,
                                 subject         TEXT,
@@ -456,11 +459,11 @@ const BiodataScreen = ({ id, navigation }) => {
                                 startDate       TEXT,
                                 days            TEXT
                                                  );`
-                );
+                    );
 
-                trainingresponse.rows.forEach((it) => {
-                    tx.executeSql(
-                        `INSERT INTO training (
+                    trainingresponse.rows.forEach((it) => {
+                        tx.executeSql(
+                            `INSERT INTO training (
                                     id,
                                     title,
                                     subject,
@@ -470,21 +473,21 @@ const BiodataScreen = ({ id, navigation }) => {
                                     startDate,
                                     days)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?);`,
-                        [
-                            id,
-                            it.title,
-                            it.subject,
-                            it.institute,
-                            it.country,
-                            it.year,
-                            it.startDate,
-                            it.days
-                        ]
-                    );
-                });
+                            [
+                                id,
+                                it.title,
+                                it.subject,
+                                it.institute,
+                                it.country,
+                                it.year,
+                                it.startDate,
+                                it.days
+                            ]
+                        );
+                    });
 
-                tx.executeSql(
-                    `CREATE TABLE IF NOT EXISTS education (
+                    tx.executeSql(
+                        `CREATE TABLE IF NOT EXISTS education (
                               id                TEXT,
                               passingYear       TEXT,
                               qualification     TEXT,
@@ -495,11 +498,11 @@ const BiodataScreen = ({ id, navigation }) => {
                               scale             TEXT,
                               remarks           TEXT
                                                  );`
-                );
+                    );
 
-                eduresponse.rows.forEach((it) => {
-                    tx.executeSql(
-                        `INSERT INTO education (
+                    eduresponse.rows.forEach((it) => {
+                        tx.executeSql(
+                            `INSERT INTO education (
                                     id,
                                     passingYear,
                                     qualification,
@@ -510,22 +513,22 @@ const BiodataScreen = ({ id, navigation }) => {
                                     scale,
                                     remarks)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?,?);`,
-                        [
-                            it.id,
-                            it.passingYear,
-                            it.qualification,
-                            it.discipline,
-                            it.institute,
-                            it.marks,
-                            it.result,
-                            it.scale,
-                            it.remarks
-                        ]
-                    );
-                });
+                            [
+                                it.id,
+                                it.passingYear,
+                                it.qualification,
+                                it.discipline,
+                                it.institute,
+                                it.marks,
+                                it.result,
+                                it.scale,
+                                it.remarks
+                            ]
+                        );
+                    });
 
-                tx.executeSql(
-                    `CREATE TABLE IF NOT EXISTS biodata (
+                    tx.executeSql(
+                        `CREATE TABLE IF NOT EXISTS biodata (
                                 id              TEXT,
                                 name            TEXT,
                                 namebn          TEXT,
@@ -564,12 +567,12 @@ const BiodataScreen = ({ id, navigation }) => {
                                 timestamp       TEXT,
                                 photo           BLOB
                                                  );`
-                );
+                    );
 
 
-                personalresponse.rows.forEach((it) => {
-                    tx.executeSql(
-                        `INSERT INTO biodata (
+                    personalresponse.rows.forEach((it) => {
+                        tx.executeSql(
+                            `INSERT INTO biodata (
                                    id,
                                    name,
                                    namebn,
@@ -608,54 +611,62 @@ const BiodataScreen = ({ id, navigation }) => {
                                    timestamp,
                                    photo)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?);`,
-                        [
-                            it.id,
-                            it.name,
-                            it.namebn,
-                            it.f_name,
-                            it.f_name_bn,
-                            it.m_name,
-                            it.m_name_bn,
-                            it.blood,
-                            it.bdate,
-                            it.postGrade,
-                            it.mstatus,
-                            it.gender,
-                            it.religion,
-                            it.gpf,
-                            it.accountsid,
-                            it.retireDate,
-                            it.homeDist,
-                            it.homeAddress,
-                            it.postalCode,
-                            it.upazila,
-                            it.village,
-                            it.officelevel1code,
-                            it.cadre,
-                            it.accfile,
-                            it.joinDesig,
-                            it.joinDate,
-                            it.regularDate,
-                            it.officeAddress,
-                            it.offceCode,
-                            it.officeLevel,
-                            it.officeLevel1,
-                            it.officeLevel2,
-                            it.adminLevel,
-                            it.canCallBulk,
-                            it.canAccessSeniority,
-                            timeStamp(),
-                            it.photo
-                        ]
-                    );
-                });
+                            [
+                                it.id,
+                                it.name,
+                                it.namebn,
+                                it.f_name,
+                                it.f_name_bn,
+                                it.m_name,
+                                it.m_name_bn,
+                                it.blood,
+                                it.bdate,
+                                it.postGrade,
+                                it.mstatus,
+                                it.gender,
+                                it.religion,
+                                it.gpf,
+                                it.accountsid,
+                                it.retireDate,
+                                it.homeDist,
+                                it.homeAddress,
+                                it.postalCode,
+                                it.upazila,
+                                it.village,
+                                it.officelevel1code,
+                                it.cadre,
+                                it.accfile,
+                                it.joinDesig,
+                                it.joinDate,
+                                it.regularDate,
+                                it.officeAddress,
+                                it.offceCode,
+                                it.officeLevel,
+                                it.officeLevel1,
+                                it.officeLevel2,
+                                it.adminLevel,
+                                it.canCallBulk,
+                                it.canAccessSeniority,
+                                timeStamp(),
+                                it.photo
+                            ]
+                        );
+                    });
 
 
 
 
 
-            }, null, resolve);
-        });
+                }, null, resolve);
+            });
+
+
+
+        } catch (error) {
+            console.error();
+        }
+
+        setIsLoading(false)
 
 
     }
@@ -822,6 +833,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
                 } else {
                     __DEV__ && console.log(id, 'does not exist');
+
 
                     //biodata
                     const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
@@ -1155,21 +1167,6 @@ const BiodataScreen = ({ id, navigation }) => {
                             <View style={{ flexDirection: 'row', margin: 9, justifyContent: 'space-between', alignItems: 'center', }}>
                                 <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
                                 <View style={{ flexDirection: 'row' }}>
-                                    {/* <TouchableOpacity
-                                        onPress={() => downloadPdf()}
-                                        style={{ flexDirection: 'column', }}
-                                    >
-                                        <Image
-                                            source={Images['download']}
-                                            style={{ height: imgSizeMidium, width: imgSizeMidium, alignSelf: 'center' }}
-                                        />
-                                        <Text style={{
-                                            fontWeight: 'bold',
-                                            color: 'black',
-                                            fontSize: txtSizeMini * 1.1,
-                                            textAlign: 'center'
-                                        }}>Download</Text>
-                                    </TouchableOpacity> */}
 
                                     <TouchableOpacity
 
@@ -1221,7 +1218,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             }
                                             <TouchableOpacity
                                                 // onPress={() => { selectImage(true) }}
-                                                onPress={() => { toggleModal  (true)}}
+                                                onPress={() => { toggleModal(true) }}
                                                 style={{ position: "absolute", bottom: 0, left: 0, margin: 3 }} >
                                                 <Image style={{ height: width * .045, width: width * .045, }} source={Images['cngPh']} ></Image>
                                             </TouchableOpacity>

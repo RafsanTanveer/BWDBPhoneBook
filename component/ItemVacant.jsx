@@ -61,7 +61,7 @@ const ItemVacant = ({ index, office, officeName, postNo, postType }) => {
                 flex: 8, borderWidth: 1,
                 borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
 
-                <Text style={{ textAlign: 'center' }}>{officeText}</Text>
+                <Text style={{ textAlign: 'center' }}>{officeText} { office}</Text>
             </View>
 
             <View style={{

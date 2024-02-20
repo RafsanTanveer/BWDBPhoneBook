@@ -123,6 +123,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
     const [seniorityText, setseniorityText] = useState()
     const [isCreateModalVisible, setisCreateModalVisible] = useState(false);
     const [isAddModalVisible, setisAddModalVisible] = useState(false);
+    const [distTempData, setdistTempData] = useState([]);
 
     const { presentOfficeCode } = useContext(AuthContext);
     const { photo,
@@ -161,7 +162,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
     const [currentAge, setcurrentAge] = useState();
     const [currentChargeValue, setCurrentChargeValue] = useState();
     const [distName, setdistName] = useState();
-    const [ageVlue, setageVlue] = useState();
+    const [ageValue, setAgeValue] = useState();
 
     const [distForDropDown, setDistForDropDown] = useState();
 
@@ -230,12 +231,14 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
         setisrtDateChecked(false)
         setChecked(false)
         setisrtJoiningChecked(false)
+        setcurrentAge("")
 
         __DEV__ && console.log('sortByDistrict', currentDistValue);
 
         if (currentDistValue === 'All DISTRICT') {
             setdistName('')
             setFilteredData(DATA)
+            setdistTempData(DATA)
         }
         else if (currentDistValue === 'PANI BHABAN') {
             setdistName('in HEADQUARTER')
@@ -260,6 +263,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = [...newDataPaniBhaban, ...newDataHydrologyBuilding]
 
             setFilteredData(newData)
+            setdistTempData(newData)
+
         }
         else {
             setdistName("in " + currentDistValue)
@@ -269,6 +274,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 return itemData.indexOf(textData) > -1;
             });
             setFilteredData(newData)
+            setdistTempData(newData)
+
         }
 
 
@@ -287,17 +294,17 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
         __DEV__ && console.log('sortByDistrict', currentAge);
 
-        if (currentAge === 'All Age') {
-            setageVlue('')
-            setFilteredData(DATA)
+        if (currentAge === 'all') {
+            setAgeValue('')
+            setFilteredData(distTempData)
         }
         else if (currentAge === 'below 20') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
-                if (Number(itemData) <= 20 )
+                if (Number(itemData) <= 20)
                     return true
                 else
                     return false
@@ -306,8 +313,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '21-25') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -320,8 +327,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '26-30') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -334,8 +341,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '31-35') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -347,9 +354,9 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             });
             setFilteredData(newData)
         }
-        else if (currentAge === '26-40') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+        else if (currentAge === '36-40') {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -362,8 +369,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '41-45') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -376,8 +383,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '46-50') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -390,8 +397,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '51-55') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -404,8 +411,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else if (currentAge === '56-59') {
-            setageVlue(' ' + currentAge)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
                 console.log(Number(itemData));
@@ -418,8 +425,8 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             setFilteredData(newData)
         }
         else {
-            setdistName("in " + currentDistValue)
-            const newData = filteredData.filter((item) => {
+            setAgeValue('(' + currentAge + ')')
+            const newData = distTempData.filter((item) => {
                 const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
                 const textData = currentAge ? currentAge.toLocaleLowerCase() : '';
                 return itemData.indexOf(textData) > -1;
@@ -1179,7 +1186,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
                 {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} Blood Donor {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length} ({currentAge}) </Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} Blood Donor {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length} {currentAge ? ageValue : ''} </Text>
                             <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""

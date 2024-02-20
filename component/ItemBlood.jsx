@@ -287,10 +287,10 @@ const ItemBlood = ({ id,
                         // style={{ backgroundColor: pmisId === id ? `${currentTheme}40` : '' }}  togglePostModal
                         // onPress={() => (onSelect(id))}   handleTap
                         // onPress={() => (handleTap())}
-                        onPress={() => (togglePostModal(true))}
+                        // onPress={() => (togglePostModal(true))}
 
 
-                        disabled={adminLevel === 'superAdmin' ? false : true}
+                        // disabled={adminLevel === 'superAdmin' ? false : true}
 
                     >
                         {
@@ -298,52 +298,14 @@ const ItemBlood = ({ id,
                             photo ?
 
                                 <View>
-                                    {/* <TouchableOpacity
-                                        onPress={async () => {
 
-
-
-                                            await Contacts.addContactAsync(contact)
-                                                .then((contactId) => {
-                                                    alert("contactId --- " + contactId);
-                                                })
-                                                .catch((err) => {
-                                                    alert(err);
-                                                    __DEV__ && console.log(err);
-                                                });
-                                        }}
-
-                                        style={{ position:'absolute', zIndex:100, }} >
-                                        <Image
-                                            style={{ height: width * .05, width: width * .05, elevation: 15 }}
-                                            source={Images['plus-green']} />
-                                    </TouchableOpacity> */}
                                     <Image style={[styles.logo,
                                     pmisId === id ? { borderWidth: 1, borderColor: `${currentTheme}50` } : '']}
                                         source={{ uri: "data:image/jpeg;base64," + photo }} />
                                 </View>
                                 :
                                 <View>
-                                    {/* <TouchableOpacity
-                                        onPress={async () => {
 
-
-
-                                            await Contacts.addContactAsync(contact)
-                                                .then((contactId) => {
-                                                    alert("contactId --- " + contactId);
-                                                })
-                                                .catch((err) => {
-                                                    alert(err);
-                                                    __DEV__ && console.log(err);
-                                                });
-                                        }}
-
-                                        style={{ position: 'absolute', zIndex: 100, }} >
-                                        <Image
-                                            style={{ height: width * .05, width: width * .05, elevation: 15 }}
-                                            source={Images['plus-green']} />
-                                    </TouchableOpacity> */}
                                     <Image style={styles.place_holder_logo}
                                         source={Images['placeHolderImg']} >
                                     </Image>

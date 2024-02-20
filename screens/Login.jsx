@@ -84,8 +84,8 @@ const Login = () => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {
-                // console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height);
-                setkeyboardHeight(event.endCoordinates.height)
+                console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height);
+                setkeyboardHeight(event.endCoordinates.height )
             }
         );
         const keyboardDidHideListener = Keyboard.addListener(
@@ -141,27 +141,7 @@ const Login = () => {
 
 
 
-    // const handleAuth = () => {
-    //     TouchID.isSupported().then((biometryType) => {
-    //         if (biometryType === "FaceID") {
-    //             TouchID.authenticate("")
-    //                 .then((success) => {
-    //                     navigation.replace("ProtectedScreen");
-    //                 })
-    //                 .catch((error) => {
-    //                     Alert.alert("Authentication Failed", error.message);
-    //                 });
-    //         } else {
-    //             TouchID.authenticate("")
-    //                 .then((success) => {
-    //                     navigation.replace("ProtectedScreen");
-    //                 })
-    //                 .catch((error) => {
-    //                     Alert.alert("Authentication Failed", error.message);
-    //                 });
-    //         }
-    //     });
-    // };
+
 
     return (
         //  this view works as a keyboard avoiding view
@@ -177,7 +157,7 @@ const Login = () => {
         // >
         <>
             <StatusBar hidden />
-            <View style={{ flex:1, justifyContent:'space-around',}}>
+            <View style={{ flex: 1, justifyContent: 'space-around', }}>
                 <View style={{}} >
                     <Image
                         style={{
@@ -335,7 +315,8 @@ const Login = () => {
 
 
                 <View style={{
-                    height: keyboardHeight * 3.6
+                    backgroundColor:'white',
+                    height: keyboardHeight * 4
                 }} >
 
                 </View>
