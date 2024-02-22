@@ -26,6 +26,7 @@ import * as FileSystem from 'expo-file-system'
 import { serverAddress } from '../api/ServerAddress'
 import CameraOrGalleryModal from '../component/modalComponents/CameraOrGalleryModal'
 import mime from "mime";
+import Photo from "../component/Photo";
 
 
 const officeLevel = [
@@ -1208,34 +1209,22 @@ const BiodataScreen = ({ id, navigation }) => {
                                             <RowComponent headingText="" queryText={item.f_name_bn} />
                                             <RowComponent headingText="Mother's Name" queryText={item.m_name} />
                                             <RowComponent headingText="" queryText={item.m_name_bn} />
-                                            {/* <RowComponent headingText='Home District' queryText={item.homeDist} /> */}
+                                            <RowComponent headingText='Home District' queryText={item.homeDist} />
                                         </View>
-                                        <View style={{ flexDirection: 'column-reverse' }} >
-                                            {
-                                                item.photo ?
-                                                    <Image style={{ height: width * .35, width: width * .25 }} source={{ uri: "data:image/jpeg;base64," + item.photo }} /> :
-                                                    <Image style={{ height: 100, width: 90, borderColor: 'purple', borderWidth: 1 }} source={Images['placeHolderImg']} ></Image>
-                                            }
-                                            <TouchableOpacity
-                                                // onPress={() => { selectImage(true) }}
-                                                onPress={() => { toggleModal(true) }}
-                                                style={{ position: "absolute", bottom: 0, left: 0, margin: 3 }} >
-                                                <Image style={{ height: width * .045, width: width * .045, }} source={Images['cngPh']} ></Image>
-                                            </TouchableOpacity>
+                                        <Photo pht={item.photo} updateBiodata={updateBiodata} />
+                                        
 
-
-                                        </View>
                                     </View>
                                     {/* <SingleColumnComponent
                                         firstHeading=""
                                         firstQueryResult={item.m_name_bn}
                                         delimiter=":"
                                     /> */}
-                                    <SingleColumnComponent
+                                    {/* <SingleColumnComponent
                                         firstHeading="Home District"
                                         firstQueryResult={item.homeDist}
                                         delimiter=":"
-                                    />
+                                    /> */}
                                     <SingleColumnComponent
                                         firstHeading="Religion"
                                         firstQueryResult={item.religion}
