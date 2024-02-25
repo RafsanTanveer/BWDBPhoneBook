@@ -412,7 +412,7 @@ const Item = ({ id,
                                             <TouchableOpacity onPress={() => {
                                                 navigation.navigate('Biodata', { id: id })
                                             }}>
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android"?'serif':null, color: '#40696A', }}>PMIS ID   : {id}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#40696A', }}>PMIS ID   : {id}</Text>
 
 
                                             </TouchableOpacity>
@@ -426,7 +426,7 @@ const Item = ({ id,
                                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {
                                                 bwdbJoiningDt &&
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942',}}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
                                             }
                                             {
                                                 retiredate &&
@@ -441,7 +441,7 @@ const Item = ({ id,
 
                         </View>
 
-                      <View style={{ flex:1, flexDirection:'row', justifyContent:'space-between' }} >
+                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} >
                             <Text style={{ fontSize: txtSizeBig, fontFamily: Platform.OS === "android" ? 'serif' : null, fontWeight: 'bold' }} >{name} </Text>
                             {/* <TouchableOpacity
                                 onPress={async () => {
@@ -487,7 +487,7 @@ const Item = ({ id,
                                     style={{ height: width * .05, width: width * .05, elevation: 15 }}
                                     source={Images['plus-green']} />
                             </TouchableOpacity> */}
-                      </View>
+                        </View>
                         <View style={{}} >
                             <Image
 
@@ -509,7 +509,12 @@ const Item = ({ id,
                             </Image>
                         </View>
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
+                            {
+                                name === 'SULTAN AHAMMED' && designation === 'PRINCIPAL EXTENSION OFFICER (CD)' ?
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE : SR. SOIL SCIENTIST (R)</Text>
+                                    :
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
+                            }
                         </View>
 
                         <View style={{ flex: 1, }}>
@@ -538,7 +543,7 @@ const Item = ({ id,
                         email &&
                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
                             <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
+                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
 
                             </TouchableOpacity>
 
@@ -552,7 +557,7 @@ const Item = ({ id,
                                     pmisId === id &&
                                     <TouchableOpacity
 
-                                            onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection') )}
+                                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
@@ -573,7 +578,7 @@ const Item = ({ id,
                         netInfo.isConnected &&
                         <View style={{ flexDirection: 'row', }}>
                             <TouchableOpacity>
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#A80000', }} >Blood Group : {blood}</Text>
+                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#A80000', }} >Blood Group : {blood}</Text>
                             </TouchableOpacity>
 
 
@@ -600,13 +605,13 @@ const Item = ({ id,
                                         elevation: 3
                                     }}>
                                     <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                        <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{mobile} </Text>
+                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{mobile} </Text>
                                 </TouchableOpacity>
 
                                 {
                                     pmisId === id &&
                                     <TouchableOpacity
-                                                onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
+                                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
                                         style={{
                                             alignItems: 'center',
                                             flexDirection: 'row',
@@ -636,7 +641,7 @@ const Item = ({ id,
                                     elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -664,25 +669,25 @@ const Item = ({ id,
                         {
                             mobile &&
                             <TouchableOpacity
-                                        onPress={async () => {
+                                onPress={async () => {
 
 
-                                        //
-                                            await Contacts.addContactAsync(contact)
-                                                .then((contactId) => {
-                                                    ToastOrAlert(name + " has been successfully added to your phone contact")
-                                                })
-                                                .catch((err) => {
-                                                    alert(err);
-                                                    __DEV__ && console.log(err);
-                                                });
-                                        }}
+                                    //
+                                    await Contacts.addContactAsync(contact)
+                                        .then((contactId) => {
+                                            ToastOrAlert(name + " has been successfully added to your phone contact")
+                                        })
+                                        .catch((err) => {
+                                            alert(err);
+                                            __DEV__ && console.log(err);
+                                        });
+                                }}
 
-                                        style={{  zIndex: 100, justifyContent:'center'}} >
-                                        <Image
-                                            style={{ height: width * .05, width: width * .05, elevation: 15 }}
-                                            source={Images['plus-green']} />
-                                    </TouchableOpacity>
+                                style={{ zIndex: 100, justifyContent: 'center' }} >
+                                <Image
+                                    style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                    source={Images['plus-green']} />
+                            </TouchableOpacity>
                         }
                     </View>
                 </View>
