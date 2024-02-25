@@ -510,7 +510,7 @@ const Item = ({ id,
                         </View>
                         <View style={{ flex: 1, }}>
                             {
-                                name === 'SULTAN AHAMMED' && designation === 'PRINCIPAL EXTENSION OFFICER (CD)' ?
+                                name === 'DR. SULTAN AHAMMED' && designation === 'PRINCIPAL EXTENSION OFFICER (CD)' ?
                                     <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE : SR. SOIL SCIENTIST (R)</Text>
                                     :
                                     <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
