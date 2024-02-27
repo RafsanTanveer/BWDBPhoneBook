@@ -3,7 +3,7 @@ import { Alert, Modal, Image, StyleSheet, Text, Pressable, View, Linking, Toucha
 // import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../../context/ThemeContext";
 import { height, width } from '../../utility/ScreenDimensions'
-import {AuthContext} from '../../context/AuthContext'
+import { AuthContext } from '../../context/AuthContext'
 import * as FileSystem from 'expo-file-system'
 import { serverAddress } from '../../api/ServerAddress'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,115 +11,26 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { Images } from '../../utility/Images'
 import mime from "mime";
+import ShowPhotoModalComponent from './ShowPhotoModalComponent';
 
 
-
+let photoUrl = ''
 
 const CameraOrGalleryModal = ({ number, toggleModal, type, heading, refreshList }) => {
 
     __DEV__ && console.log(type);
-    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, pmisId } = useContext(AuthContext);
+    const { pmisId } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
-    //`, ${presentCharge}`
-    let charge = presentCharge === 'R' ? '' :
-        presentCharge === 'C' ? ',CC' :
-            presentCharge === 'A' ? ',Addl.' :
-                presentCharge === 'I' ? ',Incharge' : ''
+    const [isShowPhotoModalVisible, setisShowPhotoModalVisible] = useState(false);
 
-    let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB`
+
 
     const closeModal = () => {
         toggleModal(false)
     }
 
 
-    const uploadImage = async (uri) => {
-
-        try {
-
-            let imgUri = uri.uri
-            const imgHeight = uri.height
-            const imgWidth = uri.width
-
-            console.log('file : ');
-
-            let file;
-            let thumnailImg;
-
-            if (imgHeight > 1000 || imgWidth > 1000) {
-
-                file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: .25 });
-                thumnailImg = await ImageManipulator.manipulateAsync(imgUri, [], { compress: .25 });
-
-            }
-            else {
-
-                file = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 1 });
-                thumnailImg = await ImageManipulator.manipulateAsync(imgUri, [], { compress: 1 });
-
-            }
-
-
-
-            console.log(file);
-
-            imgUri = file.uri
-            // const manipResult = await ImageManipulator.manipulateAsync(
-            //     image.localUri || image.uri,
-            //     [{ resize: { width: 640, height: 480 } }],
-            //     { compress: .5, }
-
-            // );
-
-
-            console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
-
-            // console.log('manipResult -----------------9999999999000000000   ', manipResult);
-
-
-
-            const formData = new FormData()
-
-
-            formData.append("pmisId", pmisId)
-            formData.append("imgHeight", imgHeight)
-            formData.append("imgWidth", imgWidth)
-            formData.append('empphoto', {
-                name: 'image.jpg',
-                type: mime.getType(imgUri),
-                uri:
-                    Platform.OS === 'android'
-                        ? imgUri
-                        : imgUri.replace('file://', ''),
-            });
-
-
-
-
-            fetch(`${serverAddress}postPhoto`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }).then(() => {
-                closeModal()
-                refreshList()
-            });
-
-
-
-
-        } catch (error) {
-            console.log(error);
-        }
-
-
-
-
-        // setUploading(false);
-    };
-
+   
 
     const selectImage = async (useLibrary) => {
         let result;
@@ -143,7 +54,11 @@ const CameraOrGalleryModal = ({ number, toggleModal, type, heading, refreshList 
 
         // Save image if not cancelled
         if (!result.canceled) {
-            uploadImage(result.assets[0]);
+
+            photoUrl = result.assets[0]
+            setisShowPhotoModalVisible(true)
+
+
         }
     };
 
@@ -194,6 +109,23 @@ const CameraOrGalleryModal = ({ number, toggleModal, type, heading, refreshList 
                     <Text style={{ fontWeight: '600', fontSize: width * .04, color: 'white' }} >Cancel</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isShowPhotoModalVisible}
+                onRequestClose={() => toggleModal(true)}
+            >
+                <ShowPhotoModalComponent
+
+                    toggleModal={toggleModal}
+                    heading={'Photo Upload'}
+                    refreshList={refreshList}
+                    uri={photoUrl}
+                />
+
+            </Modal>
+
         </View>
 
 

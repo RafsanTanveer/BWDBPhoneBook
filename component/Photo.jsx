@@ -46,7 +46,7 @@ const Photo = ({ pht, updateBiodata }) => {
                       justifyContent:'center'
                   }} >
                   {/* <Image style={{ height: width * .045, width: width * .045, }} source={Images['cngPh']} ></Image> */}
-                  <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Update</Text>
+                  <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Update Photo</Text>
 
               </TouchableOpacity>
 

@@ -107,11 +107,11 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
     // ********************************  Internet Connection checked *************************************
-    const toggleModal = (isVisible, type, heading) => {
-        // setphnOrMsg(type)
-        // setmodalHeading(heading)
-        setModalVisible(isVisible);
-    };
+    // const toggleModal = (isVisible, type, heading) => {
+    //     // setphnOrMsg(type)
+    //     // setmodalHeading(heading)
+    //     setModalVisible(isVisible);
+    // };
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1212,7 +1212,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             <RowComponent headingText='Home District' queryText={item.homeDist} />
                                         </View>
                                         <Photo pht={item.photo} updateBiodata={updateBiodata} />
-                                        
+
 
                                     </View>
                                     {/* <SingleColumnComponent
@@ -1622,7 +1622,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
             {/* <FlatList style={{height:2, width:2}}/> */}
 
-            <Modal
+            {/* <Modal
                 transparent={true}
                 animationType="fade"
                 visible={isModalVisible}
@@ -1630,7 +1630,7 @@ const BiodataScreen = ({ id, navigation }) => {
             >
                 <CameraOrGalleryModal number={''} toggleModal={toggleModal} type={''} heading={'Select Photo'} refreshList={updateBiodata} />
 
-            </Modal>
+            </Modal> */}
         </>
 
 
