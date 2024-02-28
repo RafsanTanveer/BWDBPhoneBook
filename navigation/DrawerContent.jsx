@@ -28,7 +28,7 @@ const DrawerContent = (props) => {
     // }, [fontsLoaded]);
 
     const navigation = useNavigation();
-    const { photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, pmisId } = useContext(AuthContext);
+    const { userInfo, photo, officeAddres, presentOffice, name, logout, presentPost, presentCharge, pmisId } = useContext(AuthContext);
     const { currentTheme } = useContext(ThemeContext);
 
 
@@ -36,40 +36,44 @@ const DrawerContent = (props) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-            <View style={{
-                backgroundColor: `${currentTheme}30`,
-                //backgroundColor: `${currentTheme}50`,  for opacity
-                height: 200,
-                flexDirection: 'row',
-                paddingVertical: 15,
-                paddingHorizontal: 5
-            }}>
-                <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5, alignContent: 'center', justifyContent: 'center', }}>
-                    <View style={{ flex: 1, flexDirection: 'column', }} >
-                        <View style={{ alignContent: 'center', }} >
-                            {
-                                photo ?
-                                    <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
-                                    :
-                                    <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={Images['placeHolderImg']} />
+            {
+                userInfo.length != 0 &&
+                userInfo[0].int_ext != 'E' &&
+                <View style={{
+                    backgroundColor: `${currentTheme}30`,
+                    //backgroundColor: `${currentTheme}50`,  for opacity
+                    height: 200,
+                    flexDirection: 'row',
+                    paddingVertical: 15,
+                    paddingHorizontal: 5
+                }}>
+                    <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5, alignContent: 'center', justifyContent: 'center', }}>
+                        <View style={{ flex: 1, flexDirection: 'column', }} >
+                            <View style={{ alignContent: 'center', }} >
+                                {
+                                    photo ?
+                                        <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={{ uri: "data:image/jpeg;base64," + photo }} />
+                                        :
+                                        <Image style={{ height: width * .22, width: width * .22, borderRadius: 70 }} source={Images['placeHolderImg']} />
 
-                            }
-                        </View>
-                        {/* <View style={{}} >
+                                }
+                            </View>
+                            {/* <View style={{}} >
                             <Text style={{ textAlign: 'center', fontSize: width * .035, fontWeight: '700', marginTop: 5 }}>{pmisId}</Text>
                         </View> */}
+                        </View>
+                    </View>
+                    <View style={{ flex: 4.2 }}>
+                        <Text style={{ fontSize: width * .045, fontWeight: '700' }}>{name}</Text>
+                        {
+                            presentPost &&
+                            <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentPost} {presentCharge === 'C' ? ', CC' : ''}</Text>
+                        }
+                        <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentOffice}</Text>
+                        <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{officeAddres}</Text>
                     </View>
                 </View>
-                <View style={{ flex: 4.2 }}>
-                    <Text style={{ fontSize: width * .045, fontWeight: '700' }}>{name}</Text>
-                    {
-                        presentPost &&
-                        <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentPost} {presentCharge === 'C' ? ', CC' : ''}</Text>
-                    }
-                    <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentOffice}</Text>
-                    <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{officeAddres}</Text>
-                </View>
-            </View>
+            }
             {/* <View style={{
 
 

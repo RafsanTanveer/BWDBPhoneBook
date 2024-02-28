@@ -18,9 +18,9 @@ const Home = ({ navigation }) => {
     <>
       {
        userInfo.length!=0 &&
-          userInfo[0].id.length != 4 ?
-          // <BiodataScreen id={userInfo[0].id} /> : <WelcomeScreen />
-        <BiodataScreen id={userInfo[0].id} /> : <BiodataScreen id={userInfo[0].id} />
+          userInfo[0].int_ext != 'E' ?
+          <BiodataScreen id={userInfo[0].id} /> : <WelcomeScreen />
+        // <BiodataScreen id={userInfo[0].id} /> : <BiodataScreen id={userInfo[0].id} />
       }
     </>
 

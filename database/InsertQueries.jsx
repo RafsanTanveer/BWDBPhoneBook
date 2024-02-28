@@ -334,14 +334,16 @@ export const insertLoginHistoryTable = (tableName, data) => {
                                      id,
                                      password,
                                      rec_status,
-                                     timestamp
+                                     timestamp,
+                                     int_ext
                                      )
-               VALUES (?, ?,?,?);`,
+               VALUES (?, ?,?,?,?);`,
                     [
                         it.id,
                         it.password,
                         it.rec_status,
-                        timeStamp()
+                        timeStamp(),
+                        it.int_ext
                     ]
                 );
             });
