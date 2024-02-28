@@ -48,8 +48,12 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [isPostUpdateVisible, setisPostUpdateVisible] = useState(false);
+    const [modalHeading, setmodalHeading] = useState('');
+    const [phnOrMsg, setphnOrMsg] = useState('phn');
 
-    const toggleModal = (isVisible) => {
+    const toggleModal = (isVisible, type, heading) => {
+        setphnOrMsg(type)
+        setmodalHeading(heading)
         setModalVisible(isVisible);
     };
 
@@ -185,9 +189,9 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 </View>
                 <View style={{
                     flex: 2, paddingHorizontal: 9, paddingVertical: 6, borderBottomColor: 'grey',
-                    borderBottomWidth: StyleSheet.hairlineWidth,paddingVertical:10
+                    borderBottomWidth: StyleSheet.hairlineWidth, paddingVertical: 10
                 }}>
-                    <View style={{ flex: 1,}}>
+                    <View style={{ flex: 1, }}>
                         <View style={{ flex: 1, }}>
 
                             {
@@ -227,7 +231,9 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                     <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
                         {
                             mobile &&
-                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:${mobile}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                            <TouchableOpacity
+                                    onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
+                                    style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
                                 <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
                             </TouchableOpacity>
@@ -242,7 +248,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         {
                             mobile &&
                             <TouchableOpacity
-                                onPress={() => (toggleModal(true))}
+                                    onPress={() => (toggleModal(true, 'msg', 'Send a Message'))}
                                 style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                             </TouchableOpacity>
@@ -281,9 +287,9 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 visible={isModalVisible}
                 onRequestClose={() => toggleModal(true)}
             >
-                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} />
-            </Modal>
+                <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} heading={modalHeading} />
 
+            </Modal>
             <Modal
                 transparent={true}
                 animationType="fade"
@@ -291,7 +297,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                 onRequestClose={() => togglePostModal(true)}
             >
 
-                <UpdatePostModalComponent id={id}  name={name} desig={designation} officeId={office} toggleModal={togglePostModal} refreshList={reload} />
+                <UpdatePostModalComponent id={id} name={name} desig={designation} officeId={office} toggleModal={togglePostModal} refreshList={reload} />
             </Modal>
 
 

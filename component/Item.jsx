@@ -371,7 +371,7 @@ const Item = ({ id,
                             true && mobile &&
                             <View style={{
                                 position: adminLevel === 'superAdmin' && canAccessSeniority === 'true' ? 'absolute' : 'relative',
-                                justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', margin: 2
+                                justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 2
                             }}>
                                 <View style={{ flex: 1 }}></View>
 

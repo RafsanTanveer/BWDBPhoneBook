@@ -60,18 +60,9 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
             console.log(file);
 
             imgUri = file.uri
-            // const manipResult = await ImageManipulator.manipulateAsync(
-            //     image.localUri || image.uri,
-            //     [{ resize: { width: 640, height: 480 } }],
-            //     { compress: .5, }
-
-            // );
 
 
             console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
-
-            // console.log('manipResult -----------------9999999999000000000   ', manipResult);
-
 
 
             const formData = new FormData()
@@ -110,10 +101,6 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
             console.log(error);
         }
 
-
-
-
-        // setUploading(false);
     };
 
 
@@ -126,19 +113,22 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
 
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                        <Text style={{ fontSize: height * .021, fontWeight: 'bold' }}>{heading}</Text>
+                    <View style={{ flexDirection: 'row', marginBottom: height * .03 }}>
+                        <Text style={{ fontSize: height * .023, fontWeight: '700' }}>{heading}</Text>
                     </View>
 
 
-                    <View style={{}} >
-                        <Image source={{ width: width * .5, height: height * .35, uri: uri.uri }} />
+                    <View  >
+                        <Image
+                            source={{ width: width * .5, height: height * .35, uri: uri.uri }}
+
+                        />
                     </View>
 
 
 
 
-                    <View style={{ flexDirection: 'row' }} >
+                    <View style={{ flexDirection: 'row', }} >
                         <TouchableOpacity
                             style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
 
