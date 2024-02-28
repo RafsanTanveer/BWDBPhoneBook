@@ -102,12 +102,12 @@ const UpdatePostModalComponent = ({ id, name, desig, officeId, currentGroup, tog
                 <View style={{ ...styles.modalView, borderColor: `${currentTheme}` }}>
                     <View style={{ flexDirection: 'column', alignContent: 'center', textAlign: 'center' }}>
                         <View style={{ paddingVertical: height * .012, }} >
-                         <Text style={{ fontSize: height * .022, fontWeight: 'bold', textAlign: 'center' }}>Update Post</Text>
-                       </View>
+                            <Text style={{ fontSize: height * .022, fontWeight: 'bold', textAlign: 'center' }}>Update Post</Text>
+                        </View>
                         <View style={{ paddingBottom: height * .010 }} >
-                         <Text Text style={{ fontSize: height * .019, fontWeight: 'bold', textAlign: 'center' }}>{name}</Text>
-                         <Text Text style={{ fontSize: height * .016, fontWeight: 'bold', textAlign: 'center' }}>{desig}</Text>
-                       </View>
+                            <Text Text style={{ fontSize: height * .019, fontWeight: 'bold', textAlign: 'center' }}>{name}</Text>
+                            <Text Text style={{ fontSize: height * .016, fontWeight: 'bold', textAlign: 'center' }}>{desig}</Text>
+                        </View>
                     </View>
                     <View style={{ width: width * .85, marginRight: 10, marginBottom: 2 }}>
                         <Dropdown
@@ -119,6 +119,10 @@ const UpdatePostModalComponent = ({ id, name, desig, officeId, currentGroup, tog
                             // itemTextStyle={{ backgroundColor:'red'}}
                             data={postsList}
                             // search
+                            conditionalText='OCCUPIED'
+                            conditionMatchColor='#FFCCCC'
+                            conditionMismatchColor='#D1FFBD'
+                            
                             maxHeight={500}
                             labelField="label"
                             valueField="value"

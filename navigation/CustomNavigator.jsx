@@ -24,13 +24,16 @@ import { useState, useEffect } from "react";
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
+let homeScreenTitle = ''
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = ({ }) => {
     const { currentTheme } = useContext(ThemeContext);
     const navigation = useNavigation();
-    const { photo } = useContext(AuthContext);
+    const { userInfo, photo } = useContext(AuthContext);
+
+    homeScreenTitle = userInfo.length != 0 && userInfo[0].int_ext != 'E' ? 'Bio-data' : 'Welcome to BWDB'
 
     return (
         <Drawer.Navigator
@@ -87,7 +90,7 @@ const CustomDrawer = ({ }) => {
 
             drawerContent={(props) => <DrawerContent {...props} />}>
 
-            <Drawer.Screen name="Home" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Home} />
+            <Drawer.Screen name="Home" options={{ headerTitleAlign: "center", title: homeScreenTitle, }} component={Home} />
             <Drawer.Screen name="OfficeScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={OfficeScreen} />
             <Drawer.Screen name="DesignationScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreen} />
             <Drawer.Screen name="BloodScreen" options={{ headerTitleAlign: "center", title: "BloodScreen", }} component={BloodScreen} />
