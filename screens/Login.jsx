@@ -84,8 +84,9 @@ const Login = () => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {
-                console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height);
-                setkeyboardHeight(event.endCoordinates.height )
+                console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height, height/3);
+                // setkeyboardHeight(event.endCoordinates.height)
+                setkeyboardHeight(height /3)
             }
         );
         const keyboardDidHideListener = Keyboard.addListener(
@@ -316,7 +317,7 @@ const Login = () => {
 
                 <View style={{
                     backgroundColor:'white',
-                    height: keyboardHeight * 4
+                    height: keyboardHeight*4
                 }} >
 
                 </View>

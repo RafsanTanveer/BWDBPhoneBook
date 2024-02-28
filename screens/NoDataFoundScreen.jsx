@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
-        height:500
+        paddingTop: height/4.5
+        // height:500
     },
     buttonContainer: {
         paddingTop: 10,

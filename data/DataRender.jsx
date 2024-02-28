@@ -5,7 +5,7 @@ import Checkbox from 'expo-checkbox';
 import * as Contacts from 'expo-contacts';
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
-import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View,Platform } from "react-native";
+import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View, Platform } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
@@ -19,7 +19,7 @@ import { Images } from '../utility/Images';
 import { height, width } from '../utility/ScreenDimensions';
 import { timeStamp } from '../utility/Time';
 import { Charges } from '../utility/Charges';
-import {Camelize} from '../utility/Camelize'
+import { Camelize } from '../utility/Camelize'
 import db from '../database/database';
 import { imgSizeMini, txtSizeNormal } from '../utility/Scalling'
 import NoDataFoundScreen from '../screens/NoDataFoundScreen'
@@ -764,12 +764,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         const desigUrl = desig_code === '001' ? "dg" : desig_code === '002' ? "adg" : "desig";
         const snrTxt = desig_code === '001' ? "" : desig_code === '' ? "" : "* not according to seniority";
         setseniorityText(snrTxt);
-        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+        __DEV__ && console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
 
         try {
             setRefreshing(false);
 
-            console.log('777777777777777777777777777777777777777777777777777777777777777777777777777777777777' + '        ' + desigUrl + '  ' + desig_code);
+            __DEV__ && console.log('777777777777777777777777777777777777777777777777777777777777777777777777777777777777' + '        ' + desigUrl + '  ' + desig_code);
 
 
             const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
@@ -1031,403 +1031,487 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         isLoading ?
             <LoadingScreen /> :
             // DATA.length == 0 ? <NoDataFoundScreen designation={Camelize(designation)}/> :
-                <SafeAreaView style={styles.container}>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        // backgroundColor: `${currentTheme}`
-                    }}>
+            <SafeAreaView style={styles.container}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    // backgroundColor: `${currentTheme}`
+                }}>
 
-                        <View style={{ flex: 10, flexDirection: 'row' }}>
-                            <View style={{ flex: 1 }}>
-                                <TextInput
-                                    selectionColor={'black'}       // for changing curcsor color
-                                    style={{
-                                        height: height / 20,
-                                        width: "97%",
-                                        borderRadius: 5,
-                                        marginBottom: 5,
-                                        marginLeft: 5,
-                                        borderColor: `${currentTheme}`,//'#6750a4',
-                                        borderWidth: 2,
-                                        paddingLeft: 15,
-                                        backgroundColor: 'white'
-                                    }}
-                                    placeholder="Search Name or Mobile or PABX (3..) or Blood (+..)"
-                                    value={search}
-                                    //underlineColorAndroid='trasparent'
-                                    onChangeText={(text) => { searchFilter(text) }}
-                                    mode='outlined'
-                                />
-                            </View>
-                            <View>
-
-                            </View>
+                    <View style={{ flex: 10, flexDirection: 'row' }}>
+                        <View style={{ flex: 1 }}>
+                            <TextInput
+                                selectionColor={'black'}       // for changing curcsor color
+                                style={{
+                                    height: height / 20,
+                                    width: "97%",
+                                    borderRadius: 5,
+                                    marginBottom: 5,
+                                    marginLeft: 5,
+                                    borderColor: `${currentTheme}`,//'#6750a4',
+                                    borderWidth: 2,
+                                    paddingLeft: 15,
+                                    backgroundColor: 'white'
+                                }}
+                                placeholder="Search Name or Mobile or PABX (3..) or Blood (+..)"
+                                value={search}
+                                //underlineColorAndroid='trasparent'
+                                onChangeText={(text) => { searchFilter(text) }}
+                                mode='outlined'
+                            />
                         </View>
+                        <View>
 
-
-                        {
-                            canCallBulk === 'true' && adminLevel === 'superAdmin' &&
-                            <TouchableOpacity style={{
-
-                                height: height / 20,
-                                flex: 1,
-                                borderRadius: 5,
-                                marginBottom: 5,
-                                // marginLeft: 5,
-                                marginRight: 5,
-                                // borderColor: `${currentTheme}`,//'#6750a4',
-                                // borderWidth: 2,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-
-                            }}
-                                onPress={() => { selectAll() }}
-                            >
-                                {
-                                    currentSelectedIds.length === 0 ?
-                                        <Image
-                                            source={require(selectAllInactive)}
-                                            style={styles.select_all_icon}
-                                        />
-                                        : currentTheme === '#6750a4' ?
-                                            <Image
-                                                source={Images['selectAll_0']}
-                                                style={styles.select_all_icon}
-                                            /> : currentTheme === '#048BB3' ?
-                                                <Image
-                                                    source={Images['selectAll_3']}
-                                                    style={styles.select_all_icon}
-                                                /> : currentTheme === '#0089E3' ?
-                                                    <Image
-                                                        source={Images['selectAll_6']}
-                                                        style={styles.select_all_icon}
-                                                    /> : currentTheme === '#0069C4' ?
-                                                        <Image
-                                                            source={Images['selectAll_9']}
-                                                            style={styles.select_all_icon}
-                                                        /> : ''
-                                }
-
-                            </TouchableOpacity>
-                        }
+                        </View>
                     </View>
 
 
-                    {search ?
-                        <TouchableOpacity
+                    {
+                        canCallBulk === 'true' && adminLevel === 'superAdmin' &&
+                        <TouchableOpacity style={{
+
+                            height: height / 20,
+                            flex: 1,
+                            borderRadius: 5,
+                            marginBottom: 5,
+                            // marginLeft: 5,
+                            marginRight: 5,
+                            // borderColor: `${currentTheme}`,//'#6750a4',
+                            // borderWidth: 2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+
+                        }}
+                            onPress={() => { selectAll() }}
+                        >
+                            {
+                                currentSelectedIds.length === 0 ?
+                                    <Image
+                                        source={require(selectAllInactive)}
+                                        style={styles.select_all_icon}
+                                    />
+                                    : currentTheme === '#6750a4' ?
+                                        <Image
+                                            source={Images['selectAll_0']}
+                                            style={styles.select_all_icon}
+                                        /> : currentTheme === '#048BB3' ?
+                                            <Image
+                                                source={Images['selectAll_3']}
+                                                style={styles.select_all_icon}
+                                            /> : currentTheme === '#0089E3' ?
+                                                <Image
+                                                    source={Images['selectAll_6']}
+                                                    style={styles.select_all_icon}
+                                                /> : currentTheme === '#0069C4' ?
+                                                    <Image
+                                                        source={Images['selectAll_9']}
+                                                        style={styles.select_all_icon}
+                                                    /> : ''
+                            }
+
+                        </TouchableOpacity>
+                    }
+                </View>
+
+
+                {search ?
+                    <TouchableOpacity
+                        style={{
+                            alignContent: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'flex-end',
+                            position: 'absolute',
+                            marginTop: height * .01,
+                            paddingRight: canCallBulk === 'true' ? width * .135 : width * .04
+
+
+                        }}
+                        onPress={() => (
+                            searchFilter("")
+                            , setCurrentDistValue(""),
+                            setdistName(""),
+                            setCurrentChargeValue("")
+
+                        )}
+                    >
+                        <Image
                             style={{
-                                alignContent: 'center',
-                                justifyContent: 'center',
-                                alignSelf: 'flex-end',
-                                position: 'absolute',
-                                marginTop: height * .01,
-                                paddingRight: canCallBulk === 'true' ? width * .135 : width * .04
-
-
+                                height: 22,
+                                width: 22,
                             }}
-                            onPress={() => (
-                                searchFilter("")
-                                , setCurrentDistValue(""),
-                                setdistName(""),
-                                setCurrentChargeValue("")
+                            source={Images['close']}
+                        />
+                    </TouchableOpacity> : ""
+                }
+                {refreshing ? <ActivityIndicator /> : null}
+                {
 
-                            )}
+                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                            onPress={() => setIsFilterOn(!isFilterOn)}
+                            style={{
+                                marginLeft: width * .036,
+                                backgroundColor: `${currentTheme}`,
+                                width: width * .23,
+                                flexDirection: 'row',
+                                borderRadius: height * .009,
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                padding: 2,
+                                elevation: 5
+                            }}
                         >
                             <Image
-                                style={{
-                                    height: 22,
-                                    width: 22,
-                                }}
-                                source={Images['close']}
+                                source={Images['filterIcon']}
+                                style={{ height: imgSizeMini, width: imgSizeMini }}
                             />
-                        </TouchableOpacity> : ""
-                    }
-                    {refreshing ? <ActivityIndicator /> : null}
-                    {
+                            <Text style={{
+                                color: 'white',
+                                fontSize: width * .037,
+                                fontWeight: '800'
+                            }}>Filter</Text>
+                            {
+                                !isFilterOn ?
+                                    <Image
+                                        source={Images['downArrowIcon']}
+                                        style={{ height: imgSizeMini, width: imgSizeMini }}
+                                    />
+                                    :
+                                    <Image
+                                        source={Images['upArrowIcon']}
+                                        style={{ height: imgSizeMini, width: imgSizeMini }}
+                                    />}
+                        </TouchableOpacity>
+                        {
 
-                        notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
-                        <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity
-                                onPress={() => setIsFilterOn(!isFilterOn)}
-                                style={{
-                                    marginLeft: width * .036,
-                                    backgroundColor: `${currentTheme}`,
-                                    width: width * .23,
-                                    flexDirection: 'row',
-                                    borderRadius: height * .009,
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    padding: 2,
-                                    elevation: 5
-                                }}
-                            >
-                                <Image
-                                    source={Images['filterIcon']}
-                                    style={{ height: imgSizeMini, width: imgSizeMini }}
-                                />
-                                <Text style={{
-                                    color: 'white',
-                                    fontSize: width * .037,
-                                    fontWeight: '800'
-                                }}>Filter</Text>
-                                {
-                                    !isFilterOn ?
-                                        <Image
-                                            source={Images['downArrowIcon']}
-                                            style={{ height: imgSizeMini, width: imgSizeMini }}
-                                        />
-                                        :
-                                        <Image
-                                            source={Images['upArrowIcon']}
-                                            style={{ height: imgSizeMini, width: imgSizeMini }}
-                                        />}
-                            </TouchableOpacity>
-                                {
+                            !isFilterOn &&
+                            <View style={{ alignContent: 'center', justifyContent: 'center' }}>
+                                <Text
+                                    style={{
+                                        marginLeft: 3, color: 'grey', fontSize: height * .015, fontStyle: 'italic'
+                                    }}> {isChecked ? 'Seniority' :
+                                        isrtDateChecked ? 'Retirement Date' :
+                                            isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
+                            </View>
+                        }
+                    </View>
+                }
 
-                                !isFilterOn &&
-                                <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-                                    <Text
+
+                {
+                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' && isFilterOn ?
+
+                        <View style={{
+
+                            marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
+                            flexDirection: 'row',
+                            borderRadius: 10,
+                            justifyContent: 'space-between',
+
+
+                        }}>
+                            <View style={{ flex: 1.25, flexDirection: 'column' }}>
+                                <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isChecked}
+
+                                        color={isChecked ? `${currentTheme}` : undefined}
+                                    />
+
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => joiningDateUpdate()}
+                                    style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isrtJoiningChecked}
+
+                                        color={isrtJoiningChecked ? `${currentTheme}` : undefined}
+                                    />
+
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
+
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => retirementDateUpdate()}
+                                    style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                    <Checkbox
+                                        style={{ height: 18, width: 18 }}
+                                        value={isrtDateChecked}
+
+                                        color={isrtDateChecked ? `${currentTheme}` : undefined}
+                                    />
+
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
+
+                                </TouchableOpacity>
+                                <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
+
+
+
+                                {
+                                    true &&
+                                    netInfo.isConnected &&
+                                    <View
                                         style={{
-                                            marginLeft: 3, color: 'grey', fontSize: height * .015, fontStyle: 'italic'
-                                        }}> {isChecked ? 'Seniority' :
-                                            isrtDateChecked ? 'Retirement Date' :
-                                                isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
-                                </View>
-                            }
-                        </View>
-                    }
-
-
-                    {
-                        notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' && isFilterOn ?
-
-                            <View style={{
-
-                                marginRight: 5, marginLeft: 20, marginBottom: 10, marginTop: 10,
-                                flexDirection: 'row',
-                                borderRadius: 10,
-                                justifyContent: 'space-between',
-
-
-                            }}>
-                                <View style={{ flex: 1.25, flexDirection: 'column' }}>
-                                    <TouchableOpacity onPress={() => seniorityUpdate()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isChecked}
-
-                                            color={isChecked ? `${currentTheme}` : undefined}
-                                        />
-
-                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
-
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => joiningDateUpdate()}
-                                        style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                        <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isrtJoiningChecked}
-
-                                            color={isrtJoiningChecked ? `${currentTheme}` : undefined}
-                                        />
-
-                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
-
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => retirementDateUpdate()}
-                                        style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                        <Checkbox
-                                            style={{ height: 18, width: 18 }}
-                                            value={isrtDateChecked}
-
-                                            color={isrtDateChecked ? `${currentTheme}` : undefined}
-                                        />
-
-                                        <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
-
-                                    </TouchableOpacity>
-                                    <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
-
-
-
-                                    {
-                                        false &&
-                                        netInfo.isConnected &&
-                                        <View
+                                            flexDirection: 'row',
+                                            marginTop: 7,
+                                            backgroundColor: 'white',
+                                            borderRadius: height * .005,
+                                            width: isReportActive ? 210 : 140,
+                                            // elevation: 5
+                                            // borderColor: 'black',
+                                            // borderWidth:1
+                                        }}>
+                                        <TouchableOpacity
+                                            onPress={() => (setIsCurrentActive(true), setIsVacantActive(false), setIsReportActive(false))}
                                             style={{
-                                                flexDirection: 'row',
-                                                marginTop: 7,
-                                                backgroundColor: 'white',
+                                                height: 20,
+                                                width: 70,
+                                                backgroundColor: isCurrentActive ? `${currentTheme}` : 'white',
                                                 borderRadius: height * .005,
-                                                width: isReportActive ? 210 : 140,
-                                                // elevation: 5
-                                                // borderColor: 'black',
-                                                // borderWidth:1
                                             }}>
+                                            <Text
+                                                style={{
+                                                    color: isCurrentActive ? 'white' : 'black',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>Current</Text>
+                                        </TouchableOpacity>
+                                        {
+                                            netInfo.isConnected &&
                                             <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(true), setIsVacantActive(false), setIsReportActive(false))}
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
                                                 style={{
                                                     height: 20,
                                                     width: 70,
-                                                    backgroundColor: isCurrentActive ? `${currentTheme}` : 'white',
+                                                    backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
                                                     borderRadius: height * .005,
                                                 }}>
                                                 <Text
                                                     style={{
-                                                        color: isCurrentActive ? 'white' : 'black',
+                                                        color: !isVacantActive ? 'black' : 'white',
                                                         height: height * (1 / 40),
                                                         fontSize: txtSizeNormal,
                                                         fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                         textAlign: 'center',
                                                         fontWeight: 'bold'
-                                                    }}>Current</Text>
+                                                    }}>Vacant</Text>
                                             </TouchableOpacity>
-                                            {
-                                                netInfo.isConnected &&
-                                                <TouchableOpacity
-                                                    onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
+                                        }
+                                        {
+                                            false &&
+                                            <TouchableOpacity
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
+                                                style={{
+                                                    height: 20,
+                                                    width: 70,
+                                                    backgroundColor: isReportActive ? `${currentTheme}` : 'white',
+                                                    borderRadius: height * .005,
+                                                }}>
+                                                <Text
                                                     style={{
-                                                        height: 20,
-                                                        width: 70,
-                                                        backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
-                                                        borderRadius: height * .005,
-                                                    }}>
-                                                    <Text
-                                                        style={{
-                                                            color: !isVacantActive ? 'black' : 'white',
-                                                            height: height * (1 / 40),
-                                                            fontSize: txtSizeNormal,
-                                                                fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                                            textAlign: 'center',
-                                                            fontWeight: 'bold'
-                                                        }}>Vacant</Text>
-                                                </TouchableOpacity>
-                                            }
-                                            {
-                                                false &&
-                                                <TouchableOpacity
-                                                    onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
-                                                    style={{
-                                                        height: 20,
-                                                        width: 70,
-                                                        backgroundColor: isReportActive ? `${currentTheme}` : 'white',
-                                                        borderRadius: height * .005,
-                                                    }}>
-                                                    <Text
-                                                        style={{
-                                                            color: isReportActive ? 'white' : 'black',
-                                                            height: height * (1 / 40),
-                                                            fontSize: txtSizeNormal,
-                                                                fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                                            textAlign: 'center',
-                                                            fontWeight: 'bold'
-                                                        }}>Report</Text>
-                                                </TouchableOpacity>
-                                            }
-                                        </View>
-                                    }
-
-
-
-                                </View>
-
-                                <View style={{ flex: 1 }}>
-
-                                    <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
-                                        <DropDownPicker
-                                            style={{ zIndex: 1000 }}
-                                            items={tempDist}
-                                            open={isOpen}
-                                            setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
-                                            value={currentDistValue}
-                                            setValue={setCurrentDistValue}
-                                            maxHeight={450}
-                                            placeholder="Select Office Location"
-                                            onChangeValue={() => sortByDistrict()}
-                                        />
+                                                        color: isReportActive ? 'white' : 'black',
+                                                        height: height * (1 / 40),
+                                                        fontSize: txtSizeNormal,
+                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold'
+                                                    }}>Report</Text>
+                                            </TouchableOpacity>
+                                        }
                                     </View>
-                                    <View style={{ width: width * .40, marginRight: 10, }}>
-                                        <DropDownPicker
-                                            style={{ zIndex: 900 }}
-                                            items={charges}
-                                            open={isChargeOpen}
-                                            setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
-                                            value={currentChargeValue}
-                                            setValue={setCurrentChargeValue}
-                                            maxHeight={200}
-                                            placeholder="Select Charge"
-                                            onChangeValue={() => chargeFilter()}
-                                        />
-                                    </View>
-
-                                </View>
+                                }
 
 
 
-
-                            </View> : ""
-                    }
-
-
-                    {
-                        !search && DATA ?
-                            <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                                <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
-                                <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{notDgOrAdg && canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                             </View>
-                            : ""
-                    }
+
+                            <View style={{ flex: 1 }}>
+
+                                <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
+                                    <DropDownPicker
+                                        style={{ zIndex: 1000 }}
+                                        items={tempDist}
+                                        open={isOpen}
+                                        setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
+                                        value={currentDistValue}
+                                        setValue={setCurrentDistValue}
+                                        maxHeight={450}
+                                        placeholder="Select Office Location"
+                                        onChangeValue={() => sortByDistrict()}
+                                    />
+                                </View>
+                                <View style={{ width: width * .40, marginRight: 10, }}>
+                                    <DropDownPicker
+                                        style={{ zIndex: 900 }}
+                                        items={charges}
+                                        open={isChargeOpen}
+                                        setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
+                                        value={currentChargeValue}
+                                        setValue={setCurrentChargeValue}
+                                        maxHeight={200}
+                                        placeholder="Select Charge"
+                                        onChangeValue={() => chargeFilter()}
+                                    />
+                                </View>
+
+                            </View>
 
 
 
-                    <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
+
+                        </View> : ""
+                }
+
+
+                {
+                    !search && DATA ?
+                        <View style={{ flexDirection: 'row', alignContent: 'center' }} >
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
+                            <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{notDgOrAdg && canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
+                        </View>
+                        : ""
+                }
+
+
+
+                <Text style={{ marginLeft: width * .035, color: 'grey', fontStyle: 'italic', fontSize: height * .014, marginRight: height * .02, fontWeight: 'bold' }}>Last Update Taken : {tabelCreationTime}</Text>
 
 
 
 
-                    {
-                        isCurrentActive &&
+                {
+                    isCurrentActive &&
+                    <FlashList
+                        data={filteredData}
+                        estimatedItemSize={200}
+                        // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+                        }
+                        ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
+                        renderItem={({ item, index }) => (
+                            <Item
+                                id={item.id}
+                                name={item.name}
+                                officeid={item.officeid}
+                                office={item.office}
+                                email={item.email}
+                                mobile={item.mobile}
+                                blood={item.blood}
+                                seniority={item.seniority}
+                                retiredate={item.retiredate}
+                                bwdbJoiningDt={item.bwdbJoiningDt}
+                                pabx={item.pabx}
+                                selected={item.selected}
+                                photo={item.photo}
+                                index={index}
+                                designation={designation}
+                                post={item.post}
+                                higherPost={higherPostForCurrentDesig}
+                                charge={item.charge}
+                                isAdmin={isAdmin}
+                                adminLevel={adminLevel}
+                                canCallBulk={canCallBulk}
+                                canAccessSeniority={canAccessSeniority}
+                                notDgOrAdg={notDgOrAdg}
+                                currentTheme={currentTheme}
+                                length={filteredData.length}
+                                reloadList={refreshData}
+                            />
+
+
+                        )}
+                        ref={(ref) => {
+                            listViewRef = ref;
+                        }}
+
+                    />
+                }
+
+
+
+                {
+                    isVacantActive &&
+                    <>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            margin: 5,
+
+                        }}>
+
+                            <View style={{
+                                flex: 1, backgroundColor: `${currentTheme}50`,
+                                borderTopLeftRadius: height * .005,
+                                justifyContent: 'center',
+                                padding: 5
+
+
+                            }}>
+
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>No.</Text>
+                            </View>
+
+
+
+                            <View style={{
+                                flex: 8, backgroundColor: `${currentTheme}50`,
+                                justifyContent: 'center', padding: 5
+
+                            }}>
+
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Office Name</Text>
+                            </View>
+
+                            <View style={{
+                                flex: 2, backgroundColor: `${currentTheme}50`,
+
+                                justifyContent: 'center', padding: 5
+
+                            }}>
+
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant Post</Text>
+                            </View>
+                            <View style={{
+                                flex: 2,
+                                backgroundColor: `${currentTheme}50`,
+                                justifyContent: 'center',
+                                padding: 5,
+                                borderTopRightRadius: height * .005,
+
+                            }}>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Post Type</Text>
+                            </View>
+                        </View>
+
                         <FlashList
-                            data={filteredData}
+                            data={vacantData}
                             estimatedItemSize={200}
                             // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
                             refreshControl={
                                 <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                             }
-                        ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
+                            ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
                             renderItem={({ item, index }) => (
-                                <Item
-                                    id={item.id}
-                                    name={item.name}
-                                    officeid={item.officeid}
-                                    office={item.office}
-                                    email={item.email}
-                                    mobile={item.mobile}
-                                    blood={item.blood}
-                                    seniority={item.seniority}
-                                    retiredate={item.retiredate}
-                                    bwdbJoiningDt={item.bwdbJoiningDt}
-                                    pabx={item.pabx}
-                                    selected={item.selected}
-                                    photo={item.photo}
-                                    index={index}
-                                    designation={designation}
-                                    post={item.post}
-                                    higherPost={higherPostForCurrentDesig}
-                                    charge={item.charge}
-                                    isAdmin={isAdmin}
-                                    adminLevel={adminLevel}
-                                    canCallBulk={canCallBulk}
-                                    canAccessSeniority={canAccessSeniority}
-                                    notDgOrAdg={notDgOrAdg}
-                                    currentTheme={currentTheme}
-                                    length={filteredData.length}
-                                    reloadList={refreshData}
-                                />
+                                <ItemVacant
 
+                                    index={index + 1}
+                                    office={item.office}
+                                    officeName={item.officeName}
+                                    postNo={item.postNo}
+                                    postType={item.postType}
+
+                                />
 
                             )}
                             ref={(ref) => {
@@ -1435,375 +1519,239 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}
 
                         />
-                    }
+                    </>
+                }
 
 
+                {
+                    isReportActive &&
+                    <View style={{
+                        margin: 10,
+                        borderColor: 'black',
+                        borderWidth: .5,
+                        height: !isFilterOn ? height * .73 : height * .522,
+                        // borderRadius: 5
+                    }} >
 
-                    {
-                        isVacantActive &&
-                        <>
+                        <View style={{ margin: 5 }} >
+                            <Text style={{ color: '#0080FF', textAlign: 'center', fontWeight: 'bold' }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
+                            <Text style={{ color: '#008023', textAlign: 'center', fontWeight: 'bold' }} >Designation Occupency Report</Text>
+                            <Text style={{ color: '#0080FF', textAlign: 'center', fontWeight: '500', fontSize: 12 }} >{designation}</Text>
+                        </View>
 
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                margin: 5,
-
-                            }}>
-
-                                <View style={{
-                                    flex: 1, backgroundColor: `${currentTheme}50`,
-                                    borderTopLeftRadius: height * .005,
-                                    justifyContent: 'center',
-                                    padding: 5
-
-
-                                }}>
-
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>No.</Text>
-                                </View>
-
-
-
-                                <View style={{
-                                    flex: 8, backgroundColor: `${currentTheme}50`,
-                                    justifyContent: 'center', padding: 5
-
-                                }}>
-
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Office Name</Text>
-                                </View>
-
-                                <View style={{
-                                    flex: 2, backgroundColor: `${currentTheme}50`,
-
-                                    justifyContent: 'center', padding: 5
-
-                                }}>
-
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant Post</Text>
-                                </View>
-                                <View style={{
-                                    flex: 2,
-                                    backgroundColor: `${currentTheme}50`,
-                                    justifyContent: 'center',
-                                    padding: 5,
-                                    borderTopRightRadius: height * .005,
-
-                                }}>
-                                    <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Post Type</Text>
-                                </View>
-                            </View>
-
-                            <FlashList
-                                data={vacantData}
-                                estimatedItemSize={200}
-                                // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
-                                refreshControl={
-                                    <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
-                                }
-                                renderItem={({ item, index }) => (
-                                    <ItemVacant
-
-                                        index={index + 1}
-                                        office={item.office}
-                                        officeName={item.officeName}
-                                        postNo={item.postNo}
-                                        postType={item.postType}
-
-                                    />
-
-                                )}
-                                ref={(ref) => {
-                                    listViewRef = ref;
-                                }}
-
-                            />
-                        </>
-                    }
-
-
-                    {
-                        isReportActive &&
-                        <View style={{
-                            margin: 10,
-                            borderColor: 'black',
-                            borderWidth: .5,
-                            height: !isFilterOn ? height * .73 : height * .522,
-                            // borderRadius: 5
-                        }} >
-
-                            <View style={{ margin: 5 }} >
-                                <Text style={{ color: '#0080FF', textAlign: 'center', fontWeight: 'bold' }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
-                                <Text style={{ color: '#008023', textAlign: 'center', fontWeight: 'bold' }} >Designation Occupency Report</Text>
-                                <Text style={{ color: '#0080FF', textAlign: 'center', fontWeight: '500', fontSize: 12 }} >{designation}</Text>
-                            </View>
-
-                            <View style={{}} >
-                                {
-                                    <View style={{ paddingLeft: width * .035 }} >
-                                        <Text
-                                            style={{
-                                                marginLeft: width * .035,
-                                                color: 'black',
-                                                fontStyle: 'italic',
-                                                fontSize: height * .014,
-                                                marginRight: height * .02,
-                                                fontWeight: '600'
-                                            }}>
-                                            Reguler = {chargeMap['R'] ? `${chargeMap['R']}` : ''}
-                                        </Text>
-                                    </View>
-                                }
-                                {
-                                    chargeMap['C'] &&
-                                    <View style={{ paddingLeft: width * .035 }} >
-                                        <Text
-                                            style={{
-                                                marginLeft: width * .035,
-                                                color: 'black',
-                                                fontStyle: 'italic',
-                                                fontSize: height * .014,
-                                                marginRight: height * .02,
-                                                fontWeight: '600'
-                                            }}>
-                                                    {chargeMap['C'] ? `${Camelize(higherPost)}, CC             = ${chargeMap['C']}` : ''}
-                                        </Text>
-                                    </View>
-                                }
-
-                                {
-                                    chargeMap['A'] &&
-                                    <View style={{ paddingLeft: width * .035 }} >
-                                        <Text
-                                            style={{
-                                                marginLeft: width * .035,
-                                                color: 'black',
-                                                fontStyle: 'italic',
-                                                fontSize: height * .014,
-                                                marginRight: height * .02,
-                                                fontWeight: '600'
-                                            }}>
-                                            {chargeMap['A'] ? `${higherPost}, Addl.         = ${chargeMap['A']}` : ''}
-                                        </Text>
-                                    </View>
-                                }
-                                {
-                                    chargeMap['I'] &&
-                                    <View style={{ paddingLeft: width * .035 }} >
-                                        <Text
-                                            style={{
-                                                marginLeft: width * .035,
-                                                color: 'black',
-                                                fontStyle: 'italic',
-                                                fontSize: height * .014,
-                                                marginRight: height * .02,
-                                                fontWeight: '600'
-                                            }}>
-                                            {chargeMap['I'] ? `${higherPost}, Incharge   = ${chargeMap['I']}` : ''}
-                                        </Text>
-                                    </View>
-                                }
-                                {
-                                    chargeMap['I'] &&
-                                    <View style={{ paddingLeft: width * .035 }} >
-                                        <Text
-                                            style={{
-                                                marginLeft: width * .035,
-                                                color: 'black',
-                                                fontStyle: 'italic',
-                                                fontSize: height * .014,
-                                                marginRight: height * .02,
-                                                fontWeight: '600'
-                                            }}>
-                                            {chargeMap['N'] ? `Without Post = ${chargeMap['N']}` : ''}
-                                        </Text>
-                                    </View>
-                                }
-                            </View>
-
-
+                        <View style={{}} >
                             {
-                                postKeys &&
-                                <View style={{ marginTop: 10 }} >
-                                    {
-                                        postKeys.map((key) =>
-
-                                            <View key={key} style={{ paddingLeft: width * .035 }} >
-                                                <Text
-                                                    style={{
-                                                        marginLeft: width * .035,
-                                                        color: 'black',
-                                                        fontStyle: 'italic',
-                                                        fontSize: height * .014,
-                                                        marginRight: height * .02,
-                                                        fontWeight: '600'
-                                                    }}>
-                                                    {key}: {postMap[key]}
-                                                </Text>
-                                            </View>
-                                        )
-                                    }
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        Reguler = {chargeMap['R'] ? `${chargeMap['R']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                            {
+                                chargeMap['C'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['C'] ? `${Camelize(higherPost)}, CC             = ${chargeMap['C']}` : ''}
+                                    </Text>
                                 </View>
                             }
 
+                            {
+                                chargeMap['A'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['A'] ? `${higherPost}, Addl.         = ${chargeMap['A']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                            {
+                                chargeMap['I'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['I'] ? `${higherPost}, Incharge   = ${chargeMap['I']}` : ''}
+                                    </Text>
+                                </View>
+                            }
+                            {
+                                chargeMap['I'] &&
+                                <View style={{ paddingLeft: width * .035 }} >
+                                    <Text
+                                        style={{
+                                            marginLeft: width * .035,
+                                            color: 'black',
+                                            fontStyle: 'italic',
+                                            fontSize: height * .014,
+                                            marginRight: height * .02,
+                                            fontWeight: '600'
+                                        }}>
+                                        {chargeMap['N'] ? `Without Post = ${chargeMap['N']}` : ''}
+                                    </Text>
+                                </View>
+                            }
                         </View>
-                    }
 
 
-                    {
-                        isCurrentActive &&
-                        <>
-                            <TouchableOpacity
-                                activeOpacity={0.5}
-                                onPress={downButtonHandler}
-                                style={{
-                                    position: 'absolute',
-                                    width: width * .1,
-                                    height: width * .1,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    right: width * .0598,
-                                    bottom: height * .069,
-                                    backgroundColor: `${currentTheme}`,
-                                    borderTopRightRadius: height * .005,
-                                    borderBottomEndRadius: height * .005,
-                                    elevation: 2
+                        {
+                            postKeys &&
+                            <View style={{ marginTop: 10 }} >
+                                {
+                                    postKeys.map((key) =>
+
+                                        <View key={key} style={{ paddingLeft: width * .035 }} >
+                                            <Text
+                                                style={{
+                                                    marginLeft: width * .035,
+                                                    color: 'black',
+                                                    fontStyle: 'italic',
+                                                    fontSize: height * .014,
+                                                    marginRight: height * .02,
+                                                    fontWeight: '600'
+                                                }}>
+                                                {key}: {postMap[key]}
+                                            </Text>
+                                        </View>
+                                    )
+                                }
+                            </View>
+                        }
+
+                    </View>
+                }
 
 
-                                }}>
-                                <Image
-                                    source={Images['downArrowIcon']}
-                                    style={{
-                                        resizeMode: 'contain',
-                                        width: 50,
-                                        height: 30,
-                                        marginTop: 2
-                                    }}
-                                />
-
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                activeOpacity={0.5}
-                                onPress={upButtonHandler}
-                                style={{
-                                    position: 'absolute',
-                                    width: width * .1,
-                                    height: width * .1,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    right: width * .163,
-                                    bottom: height * .069,
-                                    backgroundColor: `${currentTheme}`,
-                                    borderTopLeftRadius: height * .005,
-                                    borderBottomStartRadius: height * .005,
-                                    elevation: 2
-
-                                }}>
-                                <Image
-                                    source={Images['upArrowIcon']}
-                                    style={{
-                                        resizeMode: 'contain',
-                                        width: 55,
-                                        height: 30,
-                                        marginTop: 0
-                                    }}
-                                />
-
-                            </TouchableOpacity>
-                        </>
-                    }
-
-                    {
-                        !isKeyboardVisible && isCurrentActive && adminLevel === 'superAdmin' && canCallBulk === 'true' &&
-                        <View
-                            // activeOpacity={0.5}
-
+                {
+                    isCurrentActive &&
+                    <>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={downButtonHandler}
                             style={{
-                                flexDirection: 'row-reverse',
                                 position: 'absolute',
-                                // width: width * .1,
-                                // height: width * .1,
+                                width: width * .1,
+                                height: width * .1,
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                right: 0,
-                                bottom: height * .35,
-                                //  backgroundColor: `${currentTheme}`,
+                                right: width * .0598,
+                                bottom: height * .069,
+                                backgroundColor: `${currentTheme}`,
+                                borderTopRightRadius: height * .005,
+                                borderBottomEndRadius: height * .005,
+                                elevation: 2
 
-                                elevation: 10
 
                             }}>
-                            <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded), setGroupMenu(false), setIsFilterOn(false) }}>
-                                <Image
-                                    source={Images['leftArrowIcon']}
-                                    style={{
-                                        resizeMode: 'contain',
-                                        width: width * .1,
-                                        height: width * .1,
-                                        marginTop: 0
+                            <Image
+                                source={Images['downArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: 50,
+                                    height: 30,
+                                    marginTop: 2
+                                }}
+                            />
 
-                                    }}
-                                />
-                            </TouchableOpacity>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={upButtonHandler}
+                            style={{
+                                position: 'absolute',
+                                width: width * .1,
+                                height: width * .1,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: width * .163,
+                                bottom: height * .069,
+                                backgroundColor: `${currentTheme}`,
+                                borderTopLeftRadius: height * .005,
+                                borderBottomStartRadius: height * .005,
+                                elevation: 2
 
-                            {
+                            }}>
+                            <Image
+                                source={Images['upArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: 55,
+                                    height: 30,
+                                    marginTop: 0
+                                }}
+                            />
 
-                                isFloatingBtnExteded &&
-                                <View style={{
-                                    backgroundColor: `${currentTheme}`,
-                                    flexDirection: 'row',
-                                    borderRadius: height * .005,
-                                    borderColor: 'white',
-                                    borderWidth: 2
-                                }}>
+                        </TouchableOpacity>
+                    </>
+                }
 
-                                    <FloatingBtnComponent
-                                        currentTheme={currentTheme}
-                                        icon='msglIcon'
-                                        txt="SMS"
-                                        badgeCount={currentSelectedIds.length}
-                                        callBackFn={bulkSMS}
-                                    />
-
-                                    <FloatingBtnComponent
-                                        currentTheme={currentTheme}
-                                        icon='emailIcon'
-                                        txt="Email"
-                                        badgeCount={currentSelectedIds.length}
-                                        callBackFn={bulkEmail}
-                                    />
-
-                                </View>
-                            }
-
-                        </View>
-
-
-                    }
-
-
+                {
+                    !isKeyboardVisible && isCurrentActive && adminLevel === 'superAdmin' && canCallBulk === 'true' &&
                     <View
                         // activeOpacity={0.5}
 
                         style={{
-                            flexDirection: 'column',
+                            flexDirection: 'row-reverse',
                             position: 'absolute',
                             // width: width * .1,
                             // height: width * .1,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            right: width * .40,
-                            bottom: height * .46,
+                            right: 0,
+                            bottom: height * .35,
                             //  backgroundColor: `${currentTheme}`,
-                            zIndex: 1200,
+
                             elevation: 10
 
                         }}>
+                        <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded), setGroupMenu(false), setIsFilterOn(false) }}>
+                            <Image
+                                source={Images['leftArrowIcon']}
+                                style={{
+                                    resizeMode: 'contain',
+                                    width: width * .1,
+                                    height: width * .1,
+                                    marginTop: 0
+
+                                }}
+                            />
+                        </TouchableOpacity>
 
                         {
-                            !isKeyboardVisible && groupMenu &&
+
+                            isFloatingBtnExteded &&
                             <View style={{
                                 backgroundColor: `${currentTheme}`,
-                                flexDirection: 'column',
+                                flexDirection: 'row',
                                 borderRadius: height * .005,
                                 borderColor: 'white',
                                 borderWidth: 2
@@ -1811,24 +1759,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
-                                    icon='creatGroup'
-                                    txt="Create"
+                                    icon='msglIcon'
+                                    txt="SMS"
                                     badgeCount={currentSelectedIds.length}
-                                    callBackFn={setisCreateModalVisible}
+                                    callBackFn={bulkSMS}
                                 />
 
                                 <FloatingBtnComponent
                                     currentTheme={currentTheme}
-                                    icon='addGroup'
-                                    txt="Add"
-                                    badgeCount={currentSelectedIds.length}
-                                    callBackFn={setisAddModalVisible}
-                                />
-
-                                <FloatingBtnComponent
-                                    currentTheme={currentTheme}
-                                    icon='clearGroup'
-                                    txt="Clear"
+                                    icon='emailIcon'
+                                    txt="Email"
                                     badgeCount={currentSelectedIds.length}
                                     callBackFn={bulkEmail}
                                 />
@@ -1839,25 +1779,86 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     </View>
 
 
-                    <Modal
-                        transparent={true}
-                        animationType="fade"
-                        visible={isCreateModalVisible}
-                        onRequestClose={() => toggleCreateModal(true)}
-                    >
-                        <CreateGroupModalComponent number={'mobile'} toggleModal={toggleCreateModal} />
-                    </Modal>
+                }
 
-                    <Modal
-                        transparent={true}
-                        animationType="fade"
-                        visible={isAddModalVisible}
-                        onRequestClose={() => toggleAddModal(true)}
-                    >
-                        <AddGroupModalComponent number={'mobile'} toggleModal={toggleAddModal} />
-                    </Modal>
 
-                </SafeAreaView>
+                <View
+                    // activeOpacity={0.5}
+
+                    style={{
+                        flexDirection: 'column',
+                        position: 'absolute',
+                        // width: width * .1,
+                        // height: width * .1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        right: width * .40,
+                        bottom: height * .46,
+                        //  backgroundColor: `${currentTheme}`,
+                        zIndex: 1200,
+                        elevation: 10
+
+                    }}>
+
+                    {
+                        !isKeyboardVisible && groupMenu &&
+                        <View style={{
+                            backgroundColor: `${currentTheme}`,
+                            flexDirection: 'column',
+                            borderRadius: height * .005,
+                            borderColor: 'white',
+                            borderWidth: 2
+                        }}>
+
+                            <FloatingBtnComponent
+                                currentTheme={currentTheme}
+                                icon='creatGroup'
+                                txt="Create"
+                                badgeCount={currentSelectedIds.length}
+                                callBackFn={setisCreateModalVisible}
+                            />
+
+                            <FloatingBtnComponent
+                                currentTheme={currentTheme}
+                                icon='addGroup'
+                                txt="Add"
+                                badgeCount={currentSelectedIds.length}
+                                callBackFn={setisAddModalVisible}
+                            />
+
+                            <FloatingBtnComponent
+                                currentTheme={currentTheme}
+                                icon='clearGroup'
+                                txt="Clear"
+                                badgeCount={currentSelectedIds.length}
+                                callBackFn={bulkEmail}
+                            />
+
+                        </View>
+                    }
+
+                </View>
+
+
+                <Modal
+                    transparent={true}
+                    animationType="fade"
+                    visible={isCreateModalVisible}
+                    onRequestClose={() => toggleCreateModal(true)}
+                >
+                    <CreateGroupModalComponent number={'mobile'} toggleModal={toggleCreateModal} />
+                </Modal>
+
+                <Modal
+                    transparent={true}
+                    animationType="fade"
+                    visible={isAddModalVisible}
+                    onRequestClose={() => toggleAddModal(true)}
+                >
+                    <AddGroupModalComponent number={'mobile'} toggleModal={toggleAddModal} />
+                </Modal>
+
+            </SafeAreaView>
     )
 }
 
