@@ -60,11 +60,13 @@ const CustomDrawer = ({ }) => {
                     <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
 
                         {
+
                             photo ?
                                 <Image
                                     style={{ height: width * .1, width: width * .1, borderRadius: 70, marginRight: 10 }}
                                     source={{ uri: "data:image/jpeg;base64," + photo }}
                                 /> :
+                                userInfo.length != 0 && userInfo[0].int_ext != 'E' &&
                                 <Image
                                     style={{ height: width * .1, width: width * .1, borderRadius: 70, marginRight: 10 }}
                                     source={Images['placeHolderImg']}

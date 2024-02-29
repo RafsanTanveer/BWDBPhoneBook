@@ -122,7 +122,7 @@ const UpdatePostModalComponent = ({ id, name, desig, officeId, currentGroup, tog
                             conditionalText='OCCUPIED'
                             conditionMatchColor='#FFCCCC'
                             conditionMismatchColor='#D1FFBD'
-                            
+
                             maxHeight={500}
                             labelField="label"
                             valueField="value"

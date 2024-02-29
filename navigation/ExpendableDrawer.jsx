@@ -80,7 +80,7 @@ const ExpendableDrawer = () => {
         presentOffice,
         presentOfficeCode,
         officelevel1code,
-        adminLevel, name, pmisId, isPreloaing, setisPreloaing } = useContext(AuthContext);
+        adminLevel, name, pmisId, isPreloaing, setisPreloaing, userInfo } = useContext(AuthContext);
 
     //  ******************************  fetching data ***************************************
 
@@ -1198,7 +1198,8 @@ const ExpendableDrawer = () => {
                 {/*******************************************  APR ******************************** */}
 
                 {/*******************************************  Staff List ******************************** */}
-                {
+                {userInfo.length != 0 &&
+                    userInfo[0].int_ext != 'E' &&
                     true ?
                         <>
                             <List.Accordion
