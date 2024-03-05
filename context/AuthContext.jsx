@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }) => {
         // const tempData = getEmpInfoFromApi(id, password)
 
         try {
-            console.log('::::: in getusercredential');
+            __DEV__ && console.log('::::: in getusercredential');
             const { data: response } = await api.get("getusercredential", {
                 params: {
                     id: id,
@@ -137,7 +137,7 @@ export const AuthProvider = ({ children }) => {
             });
             const tempData = response.rows
 
-            console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData);
+            __DEV__ && console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData);
             if (tempData) {
 
 
@@ -156,7 +156,7 @@ export const AuthProvider = ({ children }) => {
                 logIn_Unsuccessful()
             }
         } catch (error) {
-            console.log(error);
+            __DEV__ && console.log(error);
         }
 
 
@@ -165,21 +165,27 @@ export const AuthProvider = ({ children }) => {
     const login = async (id, password) => {
         setIsLoading(true);
 
-        console.log('***************************************************************************************************************************');
+        __DEV__ && console.log('***************************************************************************************************************************');
 
         //////////********************************************** New Login ********************************************* */
 
         console.log(' in new log in ' + id, password);
 
         if (await isTableAvailable('loginHistory')) {
-            console.log('loginHistory exsits :::::::::::::::::::::::::::::::::');
+            __DEV__ && console.log('loginHistory exsits :::::::::::::::::::::::::::::::::');
 
             const empInfo = await getEmployeeInfo("loginHistory")
-
+            __DEV__ && console.log('empInfo --- ',empInfo);
             if (checkCredential(empInfo, id, password)) {
-                console.log('succes MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM');
-                logIn_Successful(tempUserInfo)
+               __DEV__ && console.log('-------------------------------------------------------------------------');
+               __DEV__ && console.log('------------------------------login from table---------------------------');
+               __DEV__ && console.log('-------------------------------------------------------------------------');
+               __DEV__ && logIn_Successful(tempUserInfo)
             } else {
+
+                __DEV__ && console.log('-------------------------------------------------------------------------');
+                __DEV__ && console.log('------------------------------login from server---------------------------');
+                __DEV__ && console.log('-------------------------------------------------------------------------');
 
                 netInfo.isConnected && getDataAndLogin(id, password)
             }

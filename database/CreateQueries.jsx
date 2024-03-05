@@ -205,7 +205,8 @@ export const createLoginHistoryTable = (tableName) => {
                                 id          TEXT,
                                 password    TEXT,
                                 rec_status  TEXT,
-                                timestamp   TEXT);`,
+                                timestamp   TEXT,
+                                int_ext     TEXT);`,
                     [],
                     (_, result) => {
                          resolve(result);
