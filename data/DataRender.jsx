@@ -34,6 +34,7 @@ import CreateGroupModalComponent from '../component/modalComponents/CreateGroupM
 
 
 import AddGroupModalComponent from '../component/modalComponents/AddGroupModalComponent'
+import { back } from "react-native/Libraries/Animated/Easing";
 
 
 
@@ -1146,59 +1147,84 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     </TouchableOpacity> : ""
                 }
                 {refreshing ? <ActivityIndicator /> : null}
-                {
+                <View style={{ flexDirection: 'row', justifyContent:'space-between' }} >
+                    {
 
-                    notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity
-                            onPress={() => setIsFilterOn(!isFilterOn)}
-                            style={{
-                                marginLeft: width * .036,
-                                backgroundColor: `${currentTheme}`,
-                                width: width * .23,
-                                flexDirection: 'row',
-                                borderRadius: height * .009,
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                padding: 2,
-                                elevation: 5
-                            }}
-                        >
-                            <Image
-                                source={Images['filterIcon']}
-                                style={{ height: imgSizeMini, width: imgSizeMini }}
-                            />
-                            <Text style={{
-                                color: 'white',
-                                fontSize: width * .037,
-                                fontWeight: '800'
-                            }}>Filter</Text>
+                        notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                onPress={() => setIsFilterOn(!isFilterOn)}
+                                style={{
+                                    marginLeft: width * .036,
+                                    backgroundColor: `${currentTheme}`,
+                                    width: width * .23,
+                                    flexDirection: 'row',
+                                    borderRadius: height * .009,
+                                    justifyContent: 'center',
+                                    alignContent: 'center',
+                                    padding: 2,
+                                    elevation: 5
+                                }}
+                            >
+                                <Image
+                                    source={Images['filterIcon']}
+                                    style={{ height: imgSizeMini, width: imgSizeMini }}
+                                />
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: width * .037,
+                                    fontWeight: '800'
+                                }}>Filter</Text>
+                                {
+                                    !isFilterOn ?
+                                        <Image
+                                            source={Images['downArrowIcon']}
+                                            style={{ height: imgSizeMini, width: imgSizeMini }}
+                                        />
+                                        :
+                                        <Image
+                                            source={Images['upArrowIcon']}
+                                            style={{ height: imgSizeMini, width: imgSizeMini }}
+                                        />}
+                            </TouchableOpacity>
+
                             {
-                                !isFilterOn ?
-                                    <Image
-                                        source={Images['downArrowIcon']}
-                                        style={{ height: imgSizeMini, width: imgSizeMini }}
-                                    />
-                                    :
-                                    <Image
-                                        source={Images['upArrowIcon']}
-                                        style={{ height: imgSizeMini, width: imgSizeMini }}
-                                    />}
-                        </TouchableOpacity>
-                        {
 
-                            !isFilterOn &&
-                            <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-                                <Text
-                                    style={{
-                                        marginLeft: 3, color: 'grey', fontSize: height * .015, fontStyle: 'italic'
-                                    }}> {isChecked ? 'Seniority' :
-                                        isrtDateChecked ? 'Retirement Date' :
-                                            isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
-                            </View>
-                        }
+                                !isFilterOn &&
+                                <View style={{ alignContent: 'center', justifyContent: 'center' }}>
+                                    <Text
+                                        style={{
+                                            marginLeft: 3, color: 'grey', fontSize: height * .015, fontStyle: 'italic'
+                                        }}> {isChecked ? 'Seniority' :
+                                            isrtDateChecked ? 'Retirement Date' :
+                                                isrtJoiningChecked ? 'Joining Date' : 'Alphabetically'}</Text>
+                                </View>
+                            }
+
+                        </View>
+
+                    }
+                    <View style={{}} >
+                        <TouchableOpacity
+                            onPress={() => { refreshData ()}}
+                            style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                borderRadius: height * .005,
+                                marginHorizontal: width * .022,
+                                paddingVertical: 1,
+                                paddingHorizontal: 5,
+                                backgroundColor: `${currentTheme}`,
+                                justifyContent: 'center',
+                                elevation: 5,
+                                marginLeft: width * .025,
+                                width: width * .25
+                            }} >
+                            <Text style={{ color: 'white', fontSize: height * .017, fontStyle: 'italic', fontWeight: '700', textAlign: 'center' }} >Update</Text>
+                        </TouchableOpacity>
                     </View>
-                }
+                </View>
+
 
 
                 {

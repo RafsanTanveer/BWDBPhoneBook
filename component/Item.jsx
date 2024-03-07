@@ -60,8 +60,7 @@ const Item = ({ id,
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
-    console.log(charge);
-
+    
     const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);

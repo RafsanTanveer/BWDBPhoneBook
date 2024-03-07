@@ -1165,8 +1165,30 @@ const BiodataScreen = ({ id, navigation }) => {
 
                             <BiodataHeader />
 
+
                             <View style={{ flexDirection: 'row', margin: 9, justifyContent: 'space-between', alignItems: 'center', }}>
-                                <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
+                                <View style={{}} >
+                                    <TouchableOpacity
+                                        onPress={() => { updateBiodata() }}
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            borderRadius: height * .005,
+                                            //marginHorizontal: 5,
+                                            marginBottom: height * .005,
+                                            paddingVertical: 1,
+                                            paddingHorizontal: 5,
+                                            backgroundColor: `${currentTheme}`,
+                                            justifyContent: 'center',
+                                            elevation: 5,
+                                            width: width * .25
+                                            //marginLeft: width * .025
+                                        }} >
+                                        <Text style={{ color: 'white', fontSize: height * .017, fontStyle: 'italic', fontWeight: '700', textAlign: 'center' }} >Update</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ fontStyle: 'italic', fontSize: height * .014, color: 'grey' }}>Last Update Taken : {tabelCreationTime}</Text>
+
+                                </View>
                                 <View style={{ flexDirection: 'row' }}>
 
                                     <TouchableOpacity
