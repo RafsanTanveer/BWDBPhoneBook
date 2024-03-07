@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
 
     const getDataAndLogin = async (id, password) => {
 
-
+        console.log(id, password)
         // const tempData = getEmpInfoFromApi(id, password)
 
         try {

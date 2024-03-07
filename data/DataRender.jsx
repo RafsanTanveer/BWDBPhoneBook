@@ -80,6 +80,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
+    console.log(designation, url, desig_code, tablename);
+
     let listViewRef;
     const navigation = useNavigation();
     // const { currentSelectedIds, setCurrentSelectedIds } = useContext(DataContext);

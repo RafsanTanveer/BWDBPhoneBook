@@ -60,7 +60,7 @@ const Item = ({ id,
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
-
+    console.log(charge);
 
     const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
@@ -510,11 +510,19 @@ const Item = ({ id,
                         </View>
                         <View style={{ flex: 1, }}>
                             {
-                                name === 'DR. SULTAN AHAMMED' && designation === 'PRINCIPAL EXTENSION OFFICER (CD)' ?
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE : SR. SOIL SCIENTIST (R)</Text>
+
+                                charge === 'C' && designation === 'DIRECTOR GENERAL' ?
+                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE : Addl. DIRECTOR GENERAL</Text>
                                     :
-                                    <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
+                                    name === 'DR. SULTAN AHAMMED' && designation === 'PRINCIPAL EXTENSION OFFICER (CD)' ?
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE : SR. SOIL SCIENTIST (R)</Text>
+                                        :
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'black', fontWeight: '600' }}>DE: {designation} </Text>
+
+
                             }
+
+
                         </View>
 
                         <View style={{ flex: 1, }}>
