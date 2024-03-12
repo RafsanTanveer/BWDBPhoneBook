@@ -7,6 +7,7 @@ import DesignationScreenOther from '../screens/DesignationScreenOther';
 import BloodScreen from '../screens/BloodScreen'
 import OfficeScreen from "../screens/OfficeScreen";
 import ChangePasswordScreen from '../screens/ChangePasswordScreen'
+import AboutScreen from '../screens/AboutScreen'
 import Home from "../screens/Home";
 import { StatusBar, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 import { AuthContext } from "../context/AuthContext";
@@ -101,6 +102,7 @@ const CustomDrawer = ({ }) => {
             <Drawer.Screen name="DesignationScreenOther" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreenOther} />
             <Drawer.Screen name="ReportScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={ReportScreen} />
             <Drawer.Screen name="ChangePasswordScreen" options={{ headerTitleAlign: "center", title: "Change Password", }} component={ChangePasswordScreen} />
+            <Drawer.Screen name="AboutScreen" options={{ headerTitleAlign: "center", title: "About", }} component={AboutScreen} />
 
         </Drawer.Navigator>
     );

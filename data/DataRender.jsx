@@ -1212,12 +1212,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 flexDirection: 'row',
                                 borderRadius: height * .005,
                                 marginHorizontal: width * .022,
+                                marginBottom: height * .005,
                                 paddingVertical: 1,
                                 paddingHorizontal: 5,
                                 backgroundColor: `${currentTheme}`,
                                 justifyContent: 'center',
                                 elevation: 5,
-                                marginLeft: width * .025,
+                                marginLeft: width * .027,
                                 width: width * .25
                             }} >
                             <Text style={{ color: 'white', fontSize: height * .017, fontStyle: 'italic', fontWeight: '700', textAlign: 'center' }} >Update</Text>

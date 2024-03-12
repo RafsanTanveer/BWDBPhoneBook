@@ -70,6 +70,7 @@ Images['hide'] = require('../assets/icons/hide-password.png')
 Images['cngPh'] = require('../assets/icons/change-photo.png')
 Images['gallery'] = require('../assets/icons/gallery.png')
 Images['camera'] = require('../assets/icons/camera.png')
+Images['empdirscrshot'] = require('../assets/empdirscrshot.jpg')
 
 
 

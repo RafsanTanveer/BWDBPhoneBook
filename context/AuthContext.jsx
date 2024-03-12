@@ -137,7 +137,7 @@ export const AuthProvider = ({ children }) => {
             });
             const tempData = response.rows
 
-            __DEV__ && console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData);
+            __DEV__ && console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData[0].id, tempData[0].password);
             if (tempData) {
 
 

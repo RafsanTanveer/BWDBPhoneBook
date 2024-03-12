@@ -54,6 +54,7 @@ const aprIcon = '../assets/icons/apr.png'
 const staffListIcon = '../assets/icons/staff-list.png'
 const bloodsearch = '../assets/icons/bloodsearch.png'
 const others = '../assets/icons/others.png'
+const developedBy = '../assets/icons/coding.png'
 
 //*******************************************icons ********************************************** */
 
@@ -1201,49 +1202,22 @@ const ExpendableDrawer = () => {
                 {userInfo.length != 0 &&
                     userInfo[0].int_ext != 'E' &&
                     true ?
-                        <>
-                            <List.Accordion
-                                style={styles.accordingStyleOffice}
-                                title="Download Staff List"
-                                titleStyle={styles.titlestyle}
+                    <>
+                        <List.Item key={'Individual'}
 
-                                left={props => <List.Icon {...props} icon={() => (
-                                    <Image
-                                        source={require(staffListIcon)}
-                                        style={styles.iconStyle}
-                                    />
-                                )} />}
-                                expanded={expendedList[staffStart]}
-                                onPress={() => handlePress(staffStart)} >
+                            // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                            onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
 
-                                <List.Item key={'Individual'}
-
-                                    // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
-                                    onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
-
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="DOWNLOAD" />
-
-
-                                {/* <List.Item key={'office'}
-                                    onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", false)}
-
-
-                                    left={props => <List.Icon {...props} icon={() => (
-                                        <Image
-                                            source={require(rightArrow)}
-                                            style={styles.iconStyle}
-                                        />
-                                    )} />} style={{ marginLeft: width * .05, marginTop: -16, }} titleStyle={styles.titlestyle} title="OFFICE" />
- */}
-
-                            </List.Accordion>
-                        </>
-                        : ''
+                            left={props => <List.Icon {...props} icon={() => (
+                                <Image
+                                    source={require(staffListIcon)}
+                                    style={styles.iconStyle}
+                                />
+                            )} />} style={{
+                                backgroundColor: "white"
+                            }} titleStyle={styles.titlestyle} title="Download Staff List" />
+                    </>
+                    : ''
                 }
                 {/*******************************************  Staff List ******************************** */}
 
@@ -1451,7 +1425,7 @@ const ExpendableDrawer = () => {
                                     onPress={() => handlePress(27)}  >
 
                                     {/* <List.Item style={{ marginLeft: -30, marginTop: -10 }} title="Addl. Director General" /> */}
-                                    <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 0, marginLeft: width * .1,margin:1 }}>
+                                    <View style={{ flexDirection: 'row', height: height * .05, paddingTop: 0, marginLeft: width * .1, margin: 1 }}>
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[0])} style={{ ...styles.themeStyle, backgroundColor: themeColors[0] }} />
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[3])} style={{ ...styles.themeStyle, backgroundColor: themeColors[3] }} />
                                         <TouchableOpacity onPress={() => setcurrentTheme(themeColors[6])} style={{ ...styles.themeStyle, backgroundColor: themeColors[6] }} />
@@ -1518,6 +1492,27 @@ const ExpendableDrawer = () => {
                 }
                 {/*******************************************  Settings ******************************** */}
 
+                {
+                    //////////////////////////////////////////// About ////////////////////////////////////////////////////
+
+                    <List.Item key={'Individual'}
+
+                        // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                        onPress={() => {
+                            navigation.navigate('AboutScreen', {})
+                        }}
+                        left={props => <List.Icon {...props} icon={() => (
+                            <Image
+                                source={require(developedBy)}
+                                style={styles.iconStyle}
+                            />
+                        )} />} style={{
+                            backgroundColor: "white"
+                        }} titleStyle={styles.titlestyle} title="About" />
+
+
+                    //////////////////////////////////////////// About ////////////////////////////////////////////////////
+                }
 
 
             </List.Section>
