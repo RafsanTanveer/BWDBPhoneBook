@@ -231,11 +231,11 @@ const ItemBlood = ({ id,
 
         if (now - lastTapTimeRef.current < DOUBLE_TAP_DELAY) {
             // Double tap detected
-            console.log('Double tap!');
+            __DEV__ && console.log('Double tap!');
             togglePostModal(true)
         } else {
             // Single tap detected
-            console.log('Single tap!');
+            __DEV__ && console.log('Single tap!');
             // Toggle play/pause video
             onSelect(id)
             setPlaying(!isPlaying);

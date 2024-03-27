@@ -693,7 +693,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     });
                 });
 
-                console.log(vacantRows);
+                __DEV__ && console.log(vacantRows);
                 // const vacantData = vacantRows._array;
 
                 ////////////////////////////////////////vacant list //////////////////////////////////////
@@ -962,7 +962,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const groupHanlder = () => {
         setGroupMenu(!groupMenu)
-        console.log('groupHanlder');
+        __DEV__ && console.log('groupHanlder');
     }
 
 

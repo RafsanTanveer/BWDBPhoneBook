@@ -40,7 +40,7 @@ const ChangePasswordScreen = () => {
                     newPass === confirmNewPass ?
                         await api.put(`updatePass/${pmisId}/${newPass}`)
                             .then(res => {
-                                
+
                                 updatePassword(pmisId, newPass, 'loginHistory')
                                 ToastOrAlert('password successfully updated')
 
@@ -59,7 +59,7 @@ const ChangePasswordScreen = () => {
         const loginHistory = await getAllInfoFromTable('loginHistory')
 
 
-        console.log(loginHistory);
+        __DEV__ && console.log(loginHistory);
 
         loginHistory.map((history) => console.log(history.id, history.password, history.rec_status, history.timestamp))
 

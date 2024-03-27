@@ -33,12 +33,12 @@ const UpdateBloodGroupModalComponent = ({ id, currentGroup, toggleModal, refresh
 
     const updateBloodGrp = async () => {
 
-        console.log(currentGroupValue);
+        __DEV__ && console.log(currentGroupValue);
         // console.log(groupTables[currentGroupValue - 1].label);
 
         const blggrp = typeof currentGroupValue !== 'undefined'? groupTables[currentGroupValue - 1].label:''
 
-        console.log('in update blood');
+        __DEV__ && console.log('in update blood');
 
         typeof currentGroupValue !== 'undefined'?
         await api.put(`updateBldGrp/${id}/${blggrp}`)

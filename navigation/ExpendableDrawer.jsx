@@ -18,6 +18,7 @@ import { DownloadStafflist } from '../utility/DownloadStafflist'
 import { useFonts } from 'expo-font'
 import { useNetInfo } from "@react-native-community/netinfo";
 import { getAllInfoFromTable, getAllTableName } from '../database/SelectQueries'
+import LoadingScreen from '../screens/LoadingScreen'
 
 
 
@@ -33,7 +34,6 @@ let storage = {}
 
 const bwdbLogo = '../assets/bwdLogo.png'
 const rightArrow = '../assets/icons/right.png'
-const engLogo = '../assets/icons8-architect-48.png'
 const desig = '../assets/icons/designation.png'
 const dg = '../assets/icons/dg.png'
 const admin = '../assets/icons/admin.png'
@@ -1205,8 +1205,8 @@ const ExpendableDrawer = () => {
                     <>
                         <List.Item key={'Individual'}
 
-                            // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
-                            onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+
+                            onPress={() =>  DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
 
                             left={props => <List.Icon {...props} icon={() => (
                                 <Image
@@ -1395,7 +1395,7 @@ const ExpendableDrawer = () => {
 
                                 <List.Item key={'password'}
 
-                                    // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+
                                     onPress={() => {
                                         navigation.navigate('ChangePasswordScreen')
                                     }}
@@ -1495,9 +1495,9 @@ const ExpendableDrawer = () => {
                 {
                     //////////////////////////////////////////// About ////////////////////////////////////////////////////
 
-                    <List.Item key={'Individual'}
+                    <List.Item key={'About'}
 
-                        // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+
                         onPress={() => {
                             navigation.navigate('AboutScreen', {})
                         }}

@@ -27,7 +27,7 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
         toggleModal(false)
     }
 
-    console.log('uri  ---------------------=======   ', uri);
+    __DEV__ && console.log('uri  ---------------------=======   ', uri);
 
     const uploadImage = async () => {
 
@@ -37,7 +37,7 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
             const imgHeight = uri.height
             const imgWidth = uri.width
 
-            console.log('file : ');
+            __DEV__ && console.log('file : ');
 
             let file;
             let thumnailImg;
@@ -57,12 +57,12 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
 
 
 
-            console.log(file);
+            __DEV__ && console.log(file);
 
             imgUri = file.uri
 
 
-            console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
+            __DEV__ && console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
 
 
             const formData = new FormData()
@@ -98,7 +98,7 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
 
 
         } catch (error) {
-            console.log(error);
+            __DEV__ && console.log(error);
         }
 
     };

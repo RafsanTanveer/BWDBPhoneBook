@@ -12,7 +12,7 @@ const CorrectionModalComponent = ({ correctionType, txt, toggleModal }) => {
 
     // console.log(correctionType,txt);
 
-    console.log(correctionType);
+    __DEV__ && console.log(correctionType);
     let expTxt
     if (correctionType === 'Experience') {
         expTxt = txt.split('#')

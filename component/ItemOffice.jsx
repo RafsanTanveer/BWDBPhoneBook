@@ -97,9 +97,9 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
     }
 
     const contact = {
-        [Contacts.Fields.FirstName]: name,
-        [Contacts.Fields.LastName]: '',
-        [Contacts.Fields.Company]: 'BWDB',
+        [Contacts.Fields.FirstName]: `BWDB - ${name}, `,
+        [Contacts.Fields.LastName]: post,
+        [Contacts.Fields.Company]: `BWDB`,
         [Contacts.Fields.PhoneNumbers]: [
             {
                 number: mobile,

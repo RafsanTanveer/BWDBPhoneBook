@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
 
     const getDataAndLogin = async (id, password) => {
 
-        console.log(id, password)
+        __DEV__ && console.log(id, password)
         // const tempData = getEmpInfoFromApi(id, password)
 
         try {
@@ -137,8 +137,10 @@ export const AuthProvider = ({ children }) => {
             });
             const tempData = response.rows
 
-            __DEV__ && console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData[0].id, tempData[0].password);
-            if (tempData) {
+
+            if (response.rows.length != 0) {
+
+                __DEV__ && console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::   ' + tempData[0].id, tempData[0].password);
 
 
                 if (tempData[0].rec_status === 'I') {
@@ -152,6 +154,7 @@ export const AuthProvider = ({ children }) => {
 
             }
             else {
+
                 !msgBetweenFn && ToastOrAlert('PMIS ID or PASSWORD IS NOT CORRECT.')
                 logIn_Unsuccessful()
             }
@@ -169,18 +172,20 @@ export const AuthProvider = ({ children }) => {
 
         //////////********************************************** New Login ********************************************* */
 
-        console.log(' in new log in ' + id, password);
+        __DEV__ && console.log(' in new log in ' + id, password);
 
         if (await isTableAvailable('loginHistory')) {
             __DEV__ && console.log('loginHistory exsits :::::::::::::::::::::::::::::::::');
 
             const empInfo = await getEmployeeInfo("loginHistory")
-            __DEV__ && console.log('empInfo --- ',empInfo);
+            __DEV__ && console.log('empInfo --- ', empInfo);
             if (checkCredential(empInfo, id, password)) {
-               __DEV__ && console.log('-------------------------------------------------------------------------');
-               __DEV__ && console.log('------------------------------login from table---------------------------');
-               __DEV__ && console.log('-------------------------------------------------------------------------');
-               __DEV__ && logIn_Successful(tempUserInfo)
+                __DEV__ && console.log('-------------------------------------------------------------------------');
+                __DEV__ && console.log('------------------------------login from table---------------------------');
+                __DEV__ && console.log('-------------------------------------------------------------------------');
+
+                logIn_Successful(tempUserInfo)
+
             } else {
 
                 __DEV__ && console.log('-------------------------------------------------------------------------');
@@ -192,7 +197,7 @@ export const AuthProvider = ({ children }) => {
 
         }
         else {
-            console.log('loginHistory not exsits :::::::::::::::::::::::::::::::::');
+            __DEV__ && console.log('loginHistory not exsits :::::::::::::::::::::::::::::::::');
 
             createLoginHistoryTable('loginHistory')
             getDataAndLogin(id, password)

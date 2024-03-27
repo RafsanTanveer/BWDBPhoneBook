@@ -60,7 +60,7 @@ const Item = ({ id,
     const navigation = useNavigation();
 
     const { pmisId } = useContext(AuthContext);
-    
+
     const { currentSelectedIds, setCurrentSelectedIds, setGroupIds, groupIds } = useContext(ThemeContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
@@ -111,9 +111,9 @@ const Item = ({ id,
 
 
     const contact = {
-        [Contacts.Fields.FirstName]: name,
-        [Contacts.Fields.LastName]: '',
-        [Contacts.Fields.Company]: 'BWDB',
+        [Contacts.Fields.FirstName]: `BWDB - ${name}, ` ,
+        [Contacts.Fields.LastName]: post,
+        [Contacts.Fields.Company]: `BWDB`,
         [Contacts.Fields.PhoneNumbers]: [
             {
                 number: mobile,
@@ -228,11 +228,11 @@ const Item = ({ id,
 
         if (now - lastTapTimeRef.current < DOUBLE_TAP_DELAY) {
             // Double tap detected
-            console.log('Double tap!');
+            __DEV__ && console.log('Double tap!');
             togglePostModal(true)
         } else {
             // Single tap detected
-            console.log('Single tap!');
+            __DEV__ && console.log('Single tap!');
             // Toggle play/pause video
             onSelect(id)
             setPlaying(!isPlaying);

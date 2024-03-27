@@ -23,8 +23,8 @@ const UpdatePostModalComponent = ({ id, name, desig, officeId, currentGroup, tog
     const [isFocus, setIsFocus] = useState(false);
 
 
-    console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-    console.log('officeId' + officeId + '  ' + id);
+    __DEV__ && console.log('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+    __DEV__ && console.log('officeId' + officeId + '  ' + id);
 
     const closeModal = () => {
         toggleModal(false)

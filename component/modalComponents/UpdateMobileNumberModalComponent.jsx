@@ -36,7 +36,7 @@ const UpdateMobileNumberModalComponent = ({ id, currentMobileNumber, toggleModal
 
     const updateMblNm = async () => {
 
-        console.log(mobileNumber);
+        __DEV__ && console.log(mobileNumber);
 
 
 

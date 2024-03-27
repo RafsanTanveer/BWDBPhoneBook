@@ -45,8 +45,7 @@ const officeLevel = [
 const imgDir = FileSystem.documentDirectory + 'images/';
 
 const ensureDirExists = async () => {
-    console.log('jjhhgggff');
-    console.log('imgDir-', imgDir);
+
     const dirInfo = await FileSystem.getInfoAsync(imgDir);
     if (!dirInfo.exists) {
         await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
@@ -119,7 +118,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
     const loadImages = async () => {
-        console.log('ininjjjin');
+
         await ensureDirExists();
         const files = await FileSystem.readDirectoryAsync(imgDir);
         if (files.length > 0) {
@@ -135,7 +134,7 @@ const BiodataScreen = ({ id, navigation }) => {
             const imgHeight = uri.height
             const imgWidth = uri.width
 
-            console.log('file : ');
+
 
             let file;
             let thumnailImg;
@@ -155,7 +154,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
 
-            console.log(file);
+            __DEV__ && console.log(file);
 
             imgUri = file.uri
             // const manipResult = await ImageManipulator.manipulateAsync(
@@ -166,7 +165,7 @@ const BiodataScreen = ({ id, navigation }) => {
             // );
 
 
-            console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
+            __DEV__ && console.log(uri.size, '  ', imgHeight, ' ', imgWidth);
 
             // console.log('manipResult -----------------9999999999000000000   ', manipResult);
 
@@ -203,7 +202,7 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
         } catch (error) {
-            console.log(error);
+            __DEV__ && console.log(error);
         }
 
 
@@ -752,30 +751,30 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setTabelCreationTime(tempBiodata[0].timestamp)
 
                                     setPmisId(tempBiodata[0].id)
-                                    console.log(tempBiodata[0].name);
+                                    __DEV__ && console.log(tempBiodata[0].name);
                                     setName(tempBiodata[0].name)
 
                                     setpostGrade(tempBiodata[0].postGrade)
-                                    console.log('postGrade --- ' + tempBiodata[0].postGrade);
+                                    __DEV__ && console.log('postGrade --- ' + tempBiodata[0].postGrade);
 
                                     setphoto(tempBiodata[0].photo)
                                     setofficeAddres(tempBiodata[0].officeAddress)
-                                    console.log('officeAddress --- ' + tempBiodata[0].officeAddress);
+                                    __DEV__ && console.log('officeAddress --- ' + tempBiodata[0].officeAddress);
 
-                                    console.log('offceCode --- ' + tempBiodata[0].offceCode);
+                                    __DEV__ && console.log('offceCode --- ' + tempBiodata[0].offceCode);
                                     setpresentOfficeCode(tempBiodata[0].offceCode)
 
                                     tempBiodata[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
                                     setofficelevel1code(tempBiodata[0].officelevel1code)
 
-                                    console.log('officelevel1code --- ' + tempBiodata[0].officelevel1code);
-                                    console.log('adminLevel --- ' + tempBiodata[0].adminLevel);
+                                    __DEV__ && console.log('officelevel1code --- ' + tempBiodata[0].officelevel1code);
+                                    __DEV__ && console.log('adminLevel --- ' + tempBiodata[0].adminLevel);
 
                                     setadminLevel(tempBiodata[0].adminLevel)
                                     setcanCallBulk(tempBiodata[0].canCallBulk)
                                     setcanAccessSeniority(tempBiodata[0].canAccessSeniority)
 
-                                    console.log('from database --------------------nnnnnnnnnnnnnnnn----------  ' + tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
+                                    __DEV__ && console.log('from database --------------------nnnnnnnnnnnnnnnn----------  ' + tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
 
                                     // setisAdmin(false)
 
@@ -855,7 +854,7 @@ const BiodataScreen = ({ id, navigation }) => {
                     setadminLevel(personalresponse.rows[0].adminLevel)
                     setcanCallBulk(personalresponse.rows[0].canCallBulk)
                     setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
-                    console.log('id does not exist --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + ' ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
+                    __DEV__ && console.log('id does not exist --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + ' ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
 
                     // setisAdmin(true)
                     // __DEV__ && console.log(response.rows[0].offceCode);

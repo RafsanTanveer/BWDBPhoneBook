@@ -303,7 +303,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) <= 20)
                     return true
                 else
@@ -317,7 +317,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ &&  console.log(Number(itemData));
                 if (Number(itemData) > 21 && Number(itemData) <= 25)
                     return true
                 else
@@ -331,7 +331,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 26 && Number(itemData) <= 30)
                     return true
                 else
@@ -345,7 +345,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 31 && Number(itemData) <= 35)
                     return true
                 else
@@ -359,7 +359,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 36 && Number(itemData) <= 40)
                     return true
                 else
@@ -373,7 +373,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 41 && Number(itemData) <= 45)
                     return true
                 else
@@ -387,7 +387,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 46 && Number(itemData) <= 50)
                     return true
                 else
@@ -401,7 +401,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 51 && Number(itemData) <= 55)
                     return true
                 else
@@ -415,7 +415,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             const newData = distTempData.filter((item) => {
                 const itemData = item.ageYear ? item.ageYear : ''
 
-                console.log(Number(itemData));
+                __DEV__ && console.log(Number(itemData));
                 if (Number(itemData) >= 56 && Number(itemData) <= 59)
                     return true
                 else
@@ -532,7 +532,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
             __DEV__ && console.log("---------- UNREACHED BLOCK HAS BEEN REACHED FOR BLOOD SEARCH --------");
             __DEV__ && console.log('---------------------------------------------------------------------');
 
-            console.log('desig_code-----------blood----------' + desig_code);
+            __DEV__ &&  console.log('desig_code-----------blood----------' + desig_code);
             const { data: response } = await api.get('blood', { params: { bldgrp: desig_code } });
             // console.log('responseURL-------------------+++++ ' + response.config.url);
             const data = response.rows;
@@ -881,7 +881,7 @@ const DataRenderBlood = ({ designation, url, desig_code, tablename }) => {
 
     const groupHanlder = () => {
         setGroupMenu(!groupMenu)
-        console.log('groupHanlder');
+        __DEV__ && console.log('groupHanlder');
     }
 
 

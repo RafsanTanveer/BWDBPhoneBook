@@ -84,7 +84,7 @@ const Login = () => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {
-                console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height, height/3);
+                __DEV__ && console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height, height/3);
                 // setkeyboardHeight(event.endCoordinates.height)
                 setkeyboardHeight(height /3)
             }
@@ -113,9 +113,9 @@ const Login = () => {
         try {
             const results = await LocalAuthentication.authenticateAsync();
 
-            console.log(results);
+            __DEV__ && console.log(results);
             const empInfo = await getEmployeeInfo("loginHistory")
-            console.log(empInfo[empInfo.length - 1].id + '/////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  ' + empInfo.length);
+            __DEV__ && console.log(empInfo[empInfo.length - 1].id + '/////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  ' + empInfo.length);
             //login(pmisId, password)
 
             if (results.success) {

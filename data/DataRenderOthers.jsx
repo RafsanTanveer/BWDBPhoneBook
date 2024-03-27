@@ -709,7 +709,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
 
     const groupHanlder = () => {
         setGroupMenu(!groupMenu)
-        console.log('groupHanlder');
+        __DEV__ && console.log('groupHanlder');
     }
 
 

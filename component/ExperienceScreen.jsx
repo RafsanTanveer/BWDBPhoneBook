@@ -25,7 +25,7 @@ const ExperienceScreen = ({ post, charge, office, joinDate, releaseDate, index }
     // console.log(post, charge, office, joinDate, releaseDate);
 
     let relDt = releaseDate ? releaseDate : 'present'
-    console.log(relDt+' mmmmmmmmmmmmmm');
+    __DEV__ && console.log(relDt+' mmmmmmmmmmmmmm');
 
 
     useEffect(() => {
