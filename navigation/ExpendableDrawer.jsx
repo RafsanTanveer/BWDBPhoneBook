@@ -451,7 +451,9 @@ const ExpendableDrawer = () => {
 
 
                             {
-                                adminLevel === 'superAdmin' &&
+                                ((userInfo.length != 0 && userInfo[0].int_ext == 'E') ||
+                                    adminLevel === 'superAdmin')
+                                &&
                                 <List.Accordion
                                     style={styles.accordingStyle}
                                     title="DG & ADG"
@@ -1206,7 +1208,7 @@ const ExpendableDrawer = () => {
                         <List.Item key={'Individual'}
 
 
-                            onPress={() =>  DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                            onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
 
                             left={props => <List.Icon {...props} icon={() => (
                                 <Image
