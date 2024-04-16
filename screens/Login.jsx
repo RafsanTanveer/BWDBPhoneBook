@@ -9,9 +9,6 @@ import { Images } from '../utility/Images'
 import GradientText from '../component/GradientText'
 import { getEmployeeInfo, getAllTableName } from '../database/SelectQueries'
 
-const paniBhaban = '../assets/paniBhaban.png'
-const botom = '../assets/botom.png'
-const bwdbLogo = '../assets/bwdLogo.png'
 
 const height = Dimensions.get('window').height;
 const screenHeight = Dimensions.get('screen').height;

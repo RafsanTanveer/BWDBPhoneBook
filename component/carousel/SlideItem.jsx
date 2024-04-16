@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginVertical: 12,
         color: '#333',
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignSelf:'center'
     },
     price: {
         fontSize: 32,

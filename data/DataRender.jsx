@@ -23,7 +23,7 @@ import { Camelize } from '../utility/Camelize'
 import db from '../database/database';
 import { imgSizeMini, txtSizeNormal } from '../utility/Scalling'
 import NoDataFoundScreen from '../screens/NoDataFoundScreen'
-
+import {ToastOrAlert} from '../utility/ToastOrAlert'
 import { createDesignationTable } from '../database/CreateQueries'
 import { deleteDataFromDesignationTable } from '../database/DeleteQueries'
 import { insertDataIntoDesignationTable } from '../database/InsertQueries'
@@ -721,9 +721,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 // setIsLoading(true);
                 setSearch()
 
-                setDATA([])
+               // setDATA([])
 
-                deleteDataFromDesignationTable(tablename)
+                // deleteDataFromDesignationTable(tablename)
 
 
                 fetchDataAndInsert()
@@ -778,22 +778,32 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             const { data: response } = await api.get(desigUrl, { params: { desig: desig_code } });
             const data = response.rows;
 
+            if (data.length == 0) {
+
+            }
+            else
+            {
+                setDATA([])
+                deleteDataFromDesignationTable(tablename)
+
+                const dataWithSelected = data.map(item => (
+                    item = { ...item, selected: 'false' }
+
+                ))
+
+                setDATA(dataWithSelected);
+
+                insertDataIntoDesignationTable(tablename, data)
 
 
-            const dataWithSelected = data.map(item => (
-                item = { ...item, selected: 'false' }
+                // return true
 
-            ))
-
-            setDATA(dataWithSelected);
-
-            insertDataIntoDesignationTable(tablename, data)
-
-
+            }
 
 
         } catch (error) {
             __DEV__ && console.error(error);
+            ToastOrAlert("Please check your internet connection")
         }
         setIsLoading(false);
     }
@@ -1147,7 +1157,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     </TouchableOpacity> : ""
                 }
                 {refreshing ? <ActivityIndicator /> : null}
-                <View style={{ flexDirection: 'row', justifyContent:'space-between' }} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
                     {
 
                         notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' &&
@@ -1206,7 +1216,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     }
                     <View style={{}} >
                         <TouchableOpacity
-                            onPress={() => { refreshData ()}}
+                            onPress={() => { refreshData() }}
                             style={{
                                 alignItems: 'center',
                                 flexDirection: 'row',
