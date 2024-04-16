@@ -1,11 +1,19 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Images } from '../utility/Images'
 import { width, height } from '../utility/ScreenDimensions'
 const developedBy = '../assets/empdirscrshot.jpg'
+
+import { ThemeContext } from '../context/ThemeContext'
+
+
 const AboutScreen = () => {
+
+    const { currentTheme } = useContext(ThemeContext);
+
+
     return (
-        <View style={{ alignItems: 'center', backgroundColor: 'white', flex:1 }}>
+        <View style={{ alignItems: 'center', backgroundColor: `${currentTheme}20`, flex:1 }}>
             <View style={{ paddingVertical: width * 0.1 }} >
                 <Text style={{ fontSize: width * 0.06, fontWeight: '700', textAlign: 'center' }} >BWDB EMPLOYEE DIRECTORY</Text>
            </View>
