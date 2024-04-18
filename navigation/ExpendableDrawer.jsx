@@ -58,6 +58,7 @@ const developedBy = '../assets/icons/coding.png'
 
 //*******************************************icons ********************************************** */
 
+const aprList = ["2019 - 2020", "2020 - 2021", "2021 - 2022", "2022 - 2023", "2023 - 2024"]
 
 const ExpendableDrawer = () => {
 
@@ -1153,7 +1154,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    false ?
+                    true && netInfo.isConnected ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1171,27 +1172,32 @@ const ExpendableDrawer = () => {
 
 
 
-                                {/* <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity
-                                        style={{
+                                {aprList.map((year) => (
 
-                                            height: width * .1,
-                                            width: width * .35,
-                                            backgroundColor: `${currentTheme}`,
-                                            marginRight: 6
-                                        }}
-                                        onPress={() => { }}
-                                    >
-                                        <Text
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <TouchableOpacity
                                             style={{
-                                                color: 'white',
-                                                fontWeight: '600',
-                                                paddingLeft: width * .015,
-                                                paddingTop: width * .015,
-                                            }}>Make Change Request</Text>
-                                    </TouchableOpacity>
 
-                                </View> */}
+                                                height: width * .1,
+                                                width: width * .4,
+                                                backgroundColor: `${currentTheme}30`,
+                                                justifyContent: 'center',
+                                                margin: width * .003,
+                                                borderRadius: width * .01,
+                                                marginLeft: width * .1
+                                            }}
+                                            onPress={() => { }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    color: 'black',
+                                                    fontWeight: '600',
+                                                    textAlign:'center'
+                                                }}>{ year}</Text>
+                                        </TouchableOpacity>
+
+                                    </View>
+                                ))}
                                 <Text></Text>
 
                             </List.Accordion>
