@@ -1154,7 +1154,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    true && netInfo.isConnected ?
+                    false && netInfo.isConnected ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1180,7 +1180,7 @@ const ExpendableDrawer = () => {
 
                                                 height: width * .1,
                                                 width: width * .4,
-                                                backgroundColor: `${currentTheme}30`,
+                                                backgroundColor: `${currentTheme}20`,
                                                 justifyContent: 'center',
                                                 margin: width * .003,
                                                 borderRadius: width * .01,
@@ -1191,7 +1191,7 @@ const ExpendableDrawer = () => {
                                             <Text
                                                 style={{
                                                     color: 'black',
-                                                    fontWeight: '600',
+                                                    fontWeight: '700',
                                                     textAlign:'center'
                                                 }}>{ year}</Text>
                                         </TouchableOpacity>
@@ -1214,7 +1214,17 @@ const ExpendableDrawer = () => {
                         <List.Item key={'Individual'}
 
 
-                            onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                        // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+
+                            onPress={() => {
+                                navigation.navigate('ReportScreen', {
+                                    id: pmisId,
+                                    officecode: presentOfficeCode,
+                                    individualOrOffice: true,
+                                    recStatus: "C",
+                                    name: presentOffice
+                                })
+                            }}
 
                             left={props => <List.Icon {...props} icon={() => (
                                 <Image
