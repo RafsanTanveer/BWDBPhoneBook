@@ -58,7 +58,7 @@ const developedBy = '../assets/icons/coding.png'
 
 //*******************************************icons ********************************************** */
 
-const aprList = ["2019 - 2020", "2020 - 2021", "2021 - 2022", "2022 - 2023", "2023 - 2024"]
+const aprList = ["2019", "2020", "2021", "2022", "2023"]
 
 const ExpendableDrawer = () => {
 
@@ -1154,7 +1154,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    false && netInfo.isConnected ?
+                    true && netInfo.isConnected ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
@@ -1174,7 +1174,7 @@ const ExpendableDrawer = () => {
 
                                 {aprList.map((year) => (
 
-                                    <View style={{ flexDirection: 'row' }}>
+                                    <View key={year} style={{ flexDirection: 'row' }}>
                                         <TouchableOpacity
                                             style={{
 

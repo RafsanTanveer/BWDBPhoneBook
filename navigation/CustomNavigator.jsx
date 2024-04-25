@@ -100,7 +100,7 @@ const CustomDrawer = ({ }) => {
             <Drawer.Screen name="BiodataScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={BiodataScreen} />
             <Drawer.Screen name="Biodata" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Biodata} />
             <Drawer.Screen name="DesignationScreenOther" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreenOther} />
-            <Drawer.Screen name="ReportScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={ReportScreen} />
+            <Drawer.Screen name="ReportScreen" options={{ headerTitleAlign: "center", title: "Report", }} component={ReportScreen} />
             <Drawer.Screen name="ChangePasswordScreen" options={{ headerTitleAlign: "center", title: "Change Password", }} component={ChangePasswordScreen} />
             <Drawer.Screen name="AboutScreen" options={{ headerTitleAlign: "center", title: "About", }} component={AboutScreen} />
 

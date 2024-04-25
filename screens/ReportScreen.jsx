@@ -10,11 +10,14 @@ import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utili
 import { Images } from '../utility/Images'
 import PDFReader from 'rn-pdf-reader-js'
 import LoadingScreen from '../screens/LoadingScreen'
+import api from '../api/api'
+
 
 const ReportScreen = ({ route, navigation }) => {
     const animation = useRef(null);
     const netInfo = useNetInfo();
     const [isLoading, setIsLoading] = useState(false);
+    const [apr, setapr] = useState();
 
     const baseUrl = `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?bwdb&report=/san/apps/hrms/fmw/HR/REPORTS/HR_EMPLOYEE_LIST.jsp&desformat=pdf&destype=cache&paramform=no&P_RPT_TYPE=${route.params.recStatus}`
 
@@ -29,8 +32,9 @@ const ReportScreen = ({ route, navigation }) => {
     __DEV__ && console.log(url);
 
     useEffect(() => {
-        // You can control the ref programmatically, rather than using autoPlay
-        // animation.current?.play();
+
+        fetchApr('660403001')
+
     }, []);
 
     const PdfResource = { uri: url, cache: true };
@@ -49,6 +53,24 @@ const ReportScreen = ({ route, navigation }) => {
         await shareAsync(localUri)
             .catch((err) => console.log('Sharing::error', err))
 
+    }
+
+    const fetchApr = async (id) => {
+        setIsLoading(true);
+
+        try {
+
+            const { data: response } = await api.get("getempapr", {
+                params: {
+                    id: id
+                }
+            });
+            setapr(response.rows[0].apr_pdf);
+            // __DEV__ && console.log("in persoanl data " + response.rows.name);
+        } catch (error) {
+            __DEV__ && console.error(error.message);
+        }
+        setIsLoading(false);
     }
 
     return (
@@ -81,8 +103,9 @@ const ReportScreen = ({ route, navigation }) => {
                     </View>
 
                     <PDFReader props={{ withPinchZoom: true, useGoogleReader: true }}
-                        source={{
-                            uri: url, headers: { ["sdf"]: "sdf" }
+                            source={{
+                                // base64: `data:application/pdf;base64,${apr}`,
+                            uri: url,
                         }}
                     />
                 </>
