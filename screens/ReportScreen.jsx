@@ -8,9 +8,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 // import Pdf from 'react-native-pdf';
 import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utility/Scalling'
 import { Images } from '../utility/Images'
-import PDFReader from 'rn-pdf-reader-js'
+// import PDFReader from 'rn-pdf-reader-js'
 import LoadingScreen from '../screens/LoadingScreen'
 import api from '../api/api'
+// import Pdf from 'react-native-pdf';
 
 
 const ReportScreen = ({ route, navigation }) => {
@@ -102,12 +103,15 @@ const ReportScreen = ({ route, navigation }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <PDFReader props={{ withPinchZoom: true, useGoogleReader: true }}
+                        {/* <Pdf style={{flex:1, alignSelf:'stretch'}} source={PdfResource}
+                        /> */}
+
+                    {/* <PDFReader props={{ withPinchZoom: true, useGoogleReader: true }}
                             source={{
                                 // base64: `data:application/pdf;base64,${apr}`,
                             uri: url,
                         }}
-                    />
+                    /> */}
                 </>
             }
         </>
