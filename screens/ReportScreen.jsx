@@ -12,7 +12,8 @@ import { Images } from '../utility/Images'
 import LoadingScreen from '../screens/LoadingScreen'
 import api from '../api/api'
 // import Pdf from 'react-native-pdf';
-
+import { WebView } from 'react-native-webview';
+import * as WebBrowser from 'expo-web-browser';
 
 const ReportScreen = ({ route, navigation }) => {
     const animation = useRef(null);
@@ -21,7 +22,7 @@ const ReportScreen = ({ route, navigation }) => {
     const [apr, setapr] = useState();
 
     const baseUrl = `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?bwdb&report=/san/apps/hrms/fmw/HR/REPORTS/HR_EMPLOYEE_LIST.jsp&desformat=pdf&destype=cache&paramform=no&P_RPT_TYPE=${route.params.recStatus}`
-
+    const [result, setResult] = useState(null);
     const individualUrl = baseUrl + `&P_EMPLOYEE=${route.params.id}`
 
     const officeUrl = baseUrl + `&P_OFFICE=${route.params.officecode}`
@@ -29,6 +30,11 @@ const ReportScreen = ({ route, navigation }) => {
     const url = route.params.individualOrOffice ? individualUrl : officeUrl
 
     const fileName = route.params.individualOrOffice ? `${route.params.name} - ${route.params.id}.pdf` : `${route.params.name}.pdf`
+
+    const _handlePressButtonAsync = async () => {
+        let result = await WebBrowser.openBrowserAsync(url);
+        setResult(result);
+    };
 
     __DEV__ && console.log(url);
 
@@ -106,12 +112,8 @@ const ReportScreen = ({ route, navigation }) => {
                         {/* <Pdf style={{flex:1, alignSelf:'stretch'}} source={PdfResource}
                         /> */}
 
-                    {/* <PDFReader props={{ withPinchZoom: true, useGoogleReader: true }}
-                            source={{
-                                // base64: `data:application/pdf;base64,${apr}`,
-                            uri: url,
-                        }}
-                    /> */}
+                        <Button title="Open WebBrowser" onPress={_handlePressButtonAsync} />
+                        <Text>{result && JSON.stringify(result)}</Text>
                 </>
             }
         </>

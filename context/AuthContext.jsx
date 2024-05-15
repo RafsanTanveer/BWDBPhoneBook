@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
     const [userInfo, setUserInfo] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [isReguler, setisReguler] = useState(false);
     const [isSplashLoading, setSplashLoading] = useState(false);
     const [name, setName] = useState()
     const [pmisId, setPmisId] = useState();
@@ -358,6 +358,7 @@ export const AuthProvider = ({ children }) => {
                     logout,
                     name,
                     isLogged, setisLogged,
+                    isReguler, setisReguler,
                     name, setName,
                     pmisId, setPmisId,
                     photo, setphoto,

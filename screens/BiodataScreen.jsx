@@ -78,7 +78,7 @@ const BiodataScreen = ({ id, navigation }) => {
         officelevel1code,
         setofficelevel1code,
         name,
-        photo } = useContext(AuthContext);
+        photo, isReguler, setisReguler } = useContext(AuthContext);
 
     const { currentTheme } = useContext(ThemeContext);
 
@@ -344,6 +344,7 @@ const BiodataScreen = ({ id, navigation }) => {
             setcanCallBulk(personalresponse.rows[0].canCallBulk)
             setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
 
+            setisReguler(personalresponse.rows[0].isReguler)
 
             __DEV__ && console.log('from startup  --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + '  ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
 
@@ -540,6 +541,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 bdate           TEXT,
                                 postGrade       TEXT,
                                 mstatus         TEXT,
+                                isReguler       TEXT,
                                 gender          TEXT,
                                 religion        TEXT,
                                 gpf             TEXT,
@@ -584,6 +586,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    bdate,
                                    postGrade,
                                    mstatus,
+                                   isReguler,
                                    gender,
                                    religion,
                                    gpf,
@@ -610,7 +613,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canAccessSeniority,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?);`,
                             [
                                 it.id,
                                 it.name,
@@ -623,6 +626,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                 it.bdate,
                                 it.postGrade,
                                 it.mstatus,
+                                it.isReguler,
                                 it.gender,
                                 it.religion,
                                 it.gpf,
@@ -773,6 +777,8 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setadminLevel(tempBiodata[0].adminLevel)
                                     setcanCallBulk(tempBiodata[0].canCallBulk)
                                     setcanAccessSeniority(tempBiodata[0].canAccessSeniority)
+
+                                     setisReguler(tempBiodata[0].isReguler)
 
                                     __DEV__ && console.log('from database --------------------nnnnnnnnnnnnnnnn----------  ' + tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
 
@@ -991,6 +997,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    bdate,
                                    postGrade,
                                    mstatus,
+                                   isReguler,
                                    gender,
                                    religion,
                                    gpf,
@@ -1017,7 +1024,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canAccessSeniority,
                                    timestamp,
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?);`,
                                     [
                                         it.id,
                                         it.name,
@@ -1030,6 +1037,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         it.bdate,
                                         it.postGrade,
                                         it.mstatus,
+                                        it.isReguler,
                                         it.gender,
                                         it.religion,
                                         it.gpf,
@@ -1232,6 +1240,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             <RowComponent headingText="" queryText={item.m_name_bn} />
                                             <RowComponent headingText='Home District' queryText={item.homeDist} />
                                         </View>
+                                        
                                         <Photo pht={item.photo} updateBiodata={updateBiodata} />
 
 
