@@ -1154,7 +1154,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  APR ******************************** */}
                 {
-                    true && netInfo.isConnected ?
+                    false && netInfo.isConnected ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}

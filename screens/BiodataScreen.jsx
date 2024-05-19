@@ -18,7 +18,7 @@ import { height, width, widthScreen } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-
+import { DownloadStafflist } from '../utility/DownloadStafflist'
 import { printAsync, printToFileAsync } from 'expo-print';
 import { Asset } from 'expo-asset';
 import { shareAsync } from 'expo-sharing';
@@ -778,7 +778,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                     setcanCallBulk(tempBiodata[0].canCallBulk)
                                     setcanAccessSeniority(tempBiodata[0].canAccessSeniority)
 
-                                     setisReguler(tempBiodata[0].isReguler)
+                                    setisReguler(tempBiodata[0].isReguler)
 
                                     __DEV__ && console.log('from database --------------------nnnnnnnnnnnnnnnn----------  ' + tempBiodata[0].adminLevel + ' ' + tempBiodata[0].canCallBulk + ' ' + tempBiodata[0].canAccessSeniority);
 
@@ -1125,6 +1125,13 @@ const BiodataScreen = ({ id, navigation }) => {
 
     }
 
+    const shareStafflist = async () => {
+        setIsLoading(true)
+        await DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)
+        setIsLoading(false)
+
+    }
+
 
     let downloadPdf = async () => {
 
@@ -1198,11 +1205,44 @@ const BiodataScreen = ({ id, navigation }) => {
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
 
+                                    {
+                                        true &&
+                                        <TouchableOpacity
+
+                                                onPress={() => (netInfo.isConnected ? shareStafflist() : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+
+                                            style={{ flexDirection: 'column', marginLeft: 3 }}
+                                        >
+                                            <Image
+                                                source={Images['share']}
+                                                style={{ height: imgSizeMidium, width: imgSizeMidium, alignSelf: 'center' }}
+                                            />
+                                            <Text style={{
+                                                fontWeight: 'bold',
+                                                color: 'black',
+                                                fontSize: txtSizeMini * 1.2,
+                                                textAlign: 'center'
+                                            }}>Staff List</Text>
+                                            <Text style={{
+                                                fontWeight: 'bold',
+                                                color: 'black',
+                                                fontSize: txtSizeMini * 1.2,
+                                                textAlign: 'center'
+                                            }}>Download</Text>
+                                            <Text style={{
+                                                fontWeight: 'bold',
+                                                color: 'black',
+                                                fontSize: txtSizeMini * 1.2,
+                                                textAlign: 'center'
+                                            }}> / Share</Text>
+                                        </TouchableOpacity>
+                                    }
+
                                     <TouchableOpacity
 
                                         onPress={() => (netInfo.isConnected ? sharePdf() : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
 
-                                        style={{ flexDirection: 'column', marginLeft: 3 }}
+                                        style={{ flexDirection: 'column', marginLeft: 15 }}
                                     >
                                         <Image
                                             source={Images['share']}
@@ -1213,7 +1253,19 @@ const BiodataScreen = ({ id, navigation }) => {
                                             color: 'black',
                                             fontSize: txtSizeMini * 1.2,
                                             textAlign: 'center'
-                                        }}>Download / Share</Text>
+                                        }}>Bio-data</Text>
+                                        <Text style={{
+                                            fontWeight: 'bold',
+                                            color: 'black',
+                                            fontSize: txtSizeMini * 1.2,
+                                            textAlign: 'center'
+                                        }}>Download</Text>
+                                        <Text style={{
+                                            fontWeight: 'bold',
+                                            color: 'black',
+                                            fontSize: txtSizeMini * 1.2,
+                                            textAlign: 'center'
+                                        }}> / Share</Text>
                                     </TouchableOpacity>
 
 
@@ -1240,7 +1292,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             <RowComponent headingText="" queryText={item.m_name_bn} />
                                             <RowComponent headingText='Home District' queryText={item.homeDist} />
                                         </View>
-                                        
+
                                         <Photo pht={item.photo} updateBiodata={updateBiodata} />
 
 
