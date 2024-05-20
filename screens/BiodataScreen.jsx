@@ -242,11 +242,11 @@ const BiodataScreen = ({ id, navigation }) => {
     const updateBiodata = () => {
         if (netInfo.isConnected) {
 
-            setpersonalData([])
-            setpromotion([])
-            setEdu([])
-            setexperience([])
-            settraining([])
+            // setpersonalData([])
+            // setpromotion([])
+            // setEdu([])
+            // setexperience([])
+            // settraining([])
             deleteAllData([])
             fetchPersonalData()
             setTabelCreationTime(timeStamp())
@@ -843,77 +843,90 @@ const BiodataScreen = ({ id, navigation }) => {
 
                     //biodata
                     const { data: personalresponse } = await api.get("biodata", { params: { id: id } });
-                    setpersonalData(personalresponse.rows);
-                    setTabelCreationTime(timeStamp())
-                    setPmisId(personalresponse.rows[0].id)
-
-                    setName(personalresponse.rows[0].name)
-
-                    setpostGrade(personalresponse.rows[0].postGrade)
-
-                    setphoto(personalresponse.rows[0].photo)
-                    setofficeAddres(personalresponse.rows[0].officeAddress)
-                    setpresentOfficeCode(personalresponse.rows[0].offceCode)
-                    personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
-                    setofficelevel1code(personalresponse.rows[0].officelevel1code)
-
-                    setadminLevel(personalresponse.rows[0].adminLevel)
-                    setcanCallBulk(personalresponse.rows[0].canCallBulk)
-                    setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
-                    __DEV__ && console.log('id does not exist --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + ' ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
-
-                    // setisAdmin(true)
-                    // __DEV__ && console.log(response.rows[0].offceCode);
 
 
-                    //promotion
-                    const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
-                    setpromotion(promotionresponse.rows);
+                    if (personalresponse.length == 0) {
+
+                    }
+                    else {
+                        setpersonalData([])
+                        setpromotion([])
+                        setEdu([])
+                        setexperience([])
+                        settraining([])
+
+
+                        setpersonalData(personalresponse.rows);
+                        setTabelCreationTime(timeStamp())
+                        setPmisId(personalresponse.rows[0].id)
+
+                        setName(personalresponse.rows[0].name)
+
+                        setpostGrade(personalresponse.rows[0].postGrade)
+
+                        setphoto(personalresponse.rows[0].photo)
+                        setofficeAddres(personalresponse.rows[0].officeAddress)
+                        setpresentOfficeCode(personalresponse.rows[0].offceCode)
+                        personalresponse.rows[0].offceCode === '30.0' ? setisAdmin(true) : setisAdmin(false)
+                        setofficelevel1code(personalresponse.rows[0].officelevel1code)
+
+                        setadminLevel(personalresponse.rows[0].adminLevel)
+                        setcanCallBulk(personalresponse.rows[0].canCallBulk)
+                        setcanAccessSeniority(personalresponse.rows[0].canAccessSeniority)
+                        __DEV__ && console.log('id does not exist --------------------nnnnnnnnnnnnnnnn----------  ' + personalresponse.rows[0].adminLevel + ' ' + personalresponse.rows[0].canCallBulk + ' ' + personalresponse.rows[0].canAccessSeniority);
+
+                        // setisAdmin(true)
+                        // __DEV__ && console.log(response.rows[0].offceCode);
+                        setisReguler(personalresponse.rows[0].isReguler)
+
+                        //promotion
+                        const { data: promotionresponse } = await api.get("promotion", { params: { id: id } });
+                        setpromotion(promotionresponse.rows);
 
 
 
 
-                    //edu
-                    const { data: eduresponse } = await api.get("edu", { params: { id: id } });
-                    setEdu(eduresponse.rows);
+                        //edu
+                        const { data: eduresponse } = await api.get("edu", { params: { id: id } });
+                        setEdu(eduresponse.rows);
 
-                    //exp
-                    const { data: expresponse } = await api.get("exp", { params: { id: id } });
-                    setexperience(expresponse.rows);
+                        //exp
+                        const { data: expresponse } = await api.get("exp", { params: { id: id } });
+                        setexperience(expresponse.rows);
 
-                    setpresentOffice(expresponse.rows[0].office)
-                    setpresentDesig(expresponse.rows[0].desig)
-                    setpresentPost(expresponse.rows[0].post);
-                    setpresentCharge(expresponse.rows[0].charge)
+                        setpresentOffice(expresponse.rows[0].office)
+                        setpresentDesig(expresponse.rows[0].desig)
+                        setpresentPost(expresponse.rows[0].post);
+                        setpresentCharge(expresponse.rows[0].charge)
 
-                    //training
-                    const { data: trainingresponse } = await api.get("training", { params: { id: id } });
-                    settraining(trainingresponse.rows);
+                        //training
+                        const { data: trainingresponse } = await api.get("training", { params: { id: id } });
+                        settraining(trainingresponse.rows);
 
-                    await new Promise((resolve, reject) => {
+                        await new Promise((resolve, reject) => {
 
 
-                        db.transaction((tx) => {
+                            db.transaction((tx) => {
 
-                            promotionresponse.rows.forEach((it) => {
-                                tx.executeSql(
-                                    `INSERT INTO promotion (
+                                promotionresponse.rows.forEach((it) => {
+                                    tx.executeSql(
+                                        `INSERT INTO promotion (
                                     id,
                                     desig,
                                     joinDate,
                                     postingDate)
                VALUES (  ?, ?, ?, ?);`,
-                                    [
-                                        it.id,
-                                        it.desig,
-                                        it.joinDate,
-                                        it.postingDate
-                                    ]
-                                );
-                            });
-                            expresponse.rows.forEach((it) => {
-                                tx.executeSql(
-                                    `INSERT INTO experience (
+                                        [
+                                            it.id,
+                                            it.desig,
+                                            it.joinDate,
+                                            it.postingDate
+                                        ]
+                                    );
+                                });
+                                expresponse.rows.forEach((it) => {
+                                    tx.executeSql(
+                                        `INSERT INTO experience (
                                     id,
                                     office,
                                     post,
@@ -922,20 +935,20 @@ const BiodataScreen = ({ id, navigation }) => {
                                     joinDate,
                                     releaseDate)
                VALUES (  ?, ?, ?, ?, ?, ?, ?);`,
-                                    [
-                                        it.id,
-                                        it.office,
-                                        it.post,
-                                        it.charge,
-                                        it.desig,
-                                        it.joinDate,
-                                        it.releaseDate
-                                    ]
-                                );
-                            });
-                            trainingresponse.rows.forEach((it) => {
-                                tx.executeSql(
-                                    `INSERT INTO training (
+                                        [
+                                            it.id,
+                                            it.office,
+                                            it.post,
+                                            it.charge,
+                                            it.desig,
+                                            it.joinDate,
+                                            it.releaseDate
+                                        ]
+                                    );
+                                });
+                                trainingresponse.rows.forEach((it) => {
+                                    tx.executeSql(
+                                        `INSERT INTO training (
                                     id,
                                     title,
                                     subject,
@@ -945,21 +958,21 @@ const BiodataScreen = ({ id, navigation }) => {
                                     startDate,
                                     days)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?);`,
-                                    [
-                                        id,
-                                        it.title,
-                                        it.subject,
-                                        it.institute,
-                                        it.country,
-                                        it.year,
-                                        it.startDate,
-                                        it.days
-                                    ]
-                                );
-                            });
-                            eduresponse.rows.forEach((it) => {
-                                tx.executeSql(
-                                    `INSERT INTO education (
+                                        [
+                                            id,
+                                            it.title,
+                                            it.subject,
+                                            it.institute,
+                                            it.country,
+                                            it.year,
+                                            it.startDate,
+                                            it.days
+                                        ]
+                                    );
+                                });
+                                eduresponse.rows.forEach((it) => {
+                                    tx.executeSql(
+                                        `INSERT INTO education (
                                     id,
                                     passingYear,
                                     qualification,
@@ -970,22 +983,22 @@ const BiodataScreen = ({ id, navigation }) => {
                                     scale,
                                     remarks)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?,?);`,
-                                    [
-                                        it.id,
-                                        it.passingYear,
-                                        it.qualification,
-                                        it.discipline,
-                                        it.institute,
-                                        it.marks,
-                                        it.result,
-                                        it.scale,
-                                        it.remarks
-                                    ]
-                                );
-                            });
-                            personalresponse.rows.forEach((it) => {
-                                tx.executeSql(
-                                    `INSERT INTO biodata (
+                                        [
+                                            it.id,
+                                            it.passingYear,
+                                            it.qualification,
+                                            it.discipline,
+                                            it.institute,
+                                            it.marks,
+                                            it.result,
+                                            it.scale,
+                                            it.remarks
+                                        ]
+                                    );
+                                });
+                                personalresponse.rows.forEach((it) => {
+                                    tx.executeSql(
+                                        `INSERT INTO biodata (
                                    id,
                                    name,
                                    namebn,
@@ -1025,56 +1038,56 @@ const BiodataScreen = ({ id, navigation }) => {
                                    timestamp,
                                    photo)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?);`,
-                                    [
-                                        it.id,
-                                        it.name,
-                                        it.namebn,
-                                        it.f_name,
-                                        it.f_name_bn,
-                                        it.m_name,
-                                        it.m_name_bn,
-                                        it.blood,
-                                        it.bdate,
-                                        it.postGrade,
-                                        it.mstatus,
-                                        it.isReguler,
-                                        it.gender,
-                                        it.religion,
-                                        it.gpf,
-                                        it.accountsid,
-                                        it.retireDate,
-                                        it.homeDist,
-                                        it.homeAddress,
-                                        it.postalCode,
-                                        it.upazila,
-                                        it.village,
-                                        it.officelevel1code,
-                                        it.cadre,
-                                        it.accfile,
-                                        it.joinDesig,
-                                        it.joinDate,
-                                        it.regularDate,
-                                        it.officeAddress,
-                                        it.offceCode,
-                                        it.officeLevel,
-                                        it.officeLevel1,
-                                        it.officeLevel2,
-                                        it.adminLevel,
-                                        it.canCallBulk,
-                                        it.canAccessSeniority,
-                                        timeStamp(),
-                                        it.photo
-                                    ]
-                                );
-                            });
+                                        [
+                                            it.id,
+                                            it.name,
+                                            it.namebn,
+                                            it.f_name,
+                                            it.f_name_bn,
+                                            it.m_name,
+                                            it.m_name_bn,
+                                            it.blood,
+                                            it.bdate,
+                                            it.postGrade,
+                                            it.mstatus,
+                                            it.isReguler,
+                                            it.gender,
+                                            it.religion,
+                                            it.gpf,
+                                            it.accountsid,
+                                            it.retireDate,
+                                            it.homeDist,
+                                            it.homeAddress,
+                                            it.postalCode,
+                                            it.upazila,
+                                            it.village,
+                                            it.officelevel1code,
+                                            it.cadre,
+                                            it.accfile,
+                                            it.joinDesig,
+                                            it.joinDate,
+                                            it.regularDate,
+                                            it.officeAddress,
+                                            it.offceCode,
+                                            it.officeLevel,
+                                            it.officeLevel1,
+                                            it.officeLevel2,
+                                            it.adminLevel,
+                                            it.canCallBulk,
+                                            it.canAccessSeniority,
+                                            timeStamp(),
+                                            it.photo
+                                        ]
+                                    );
+                                });
 
 
 
-                        }, null, resolve);
-                    });
+                            }, null, resolve);
+                        });
 
 
-
+                    }
                 }
 
 
@@ -1096,6 +1109,8 @@ const BiodataScreen = ({ id, navigation }) => {
 
         } catch (error) {
             __DEV__ && console.error(error.message);
+            ToastOrAlert("Please check your internet connection")
+
         }
 
 
@@ -1206,10 +1221,10 @@ const BiodataScreen = ({ id, navigation }) => {
                                 <View style={{ flexDirection: 'row' }}>
 
                                     {
-                                        true &&
+                                        false &&
                                         <TouchableOpacity
 
-                                                onPress={() => (netInfo.isConnected ? shareStafflist() : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                                            onPress={() => (netInfo.isConnected ? shareStafflist() : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
 
                                             style={{ flexDirection: 'column', marginLeft: 3 }}
                                         >
@@ -1259,13 +1274,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                             color: 'black',
                                             fontSize: txtSizeMini * 1.2,
                                             textAlign: 'center'
-                                        }}>Download</Text>
-                                        <Text style={{
+                                        }}>Download / Share</Text>
+                                        {/* <Text style={{
                                             fontWeight: 'bold',
                                             color: 'black',
                                             fontSize: txtSizeMini * 1.2,
                                             textAlign: 'center'
-                                        }}> / Share</Text>
+                                        }}> / Share</Text> */}
                                     </TouchableOpacity>
 
 

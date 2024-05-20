@@ -1192,8 +1192,8 @@ const ExpendableDrawer = () => {
                                                 style={{
                                                     color: 'black',
                                                     fontWeight: '700',
-                                                    textAlign:'center'
-                                                }}>{ year}</Text>
+                                                    textAlign: 'center'
+                                                }}>{year}</Text>
                                         </TouchableOpacity>
 
                                     </View>
@@ -1209,12 +1209,12 @@ const ExpendableDrawer = () => {
                 {/*******************************************  Staff List ******************************** */}
                 {userInfo.length != 0 &&
                     userInfo[0].int_ext != 'E' &&
-                    true ?
+                    false ?
                     <>
                         <List.Item key={'Individual'}
 
 
-                        // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
+                            // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}  
 
                             onPress={() => {
                                 navigation.navigate('ReportScreen', {
