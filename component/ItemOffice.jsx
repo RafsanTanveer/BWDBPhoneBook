@@ -25,6 +25,7 @@ import * as SQLite from 'expo-sqlite'
 
 import db from '../database/database'
 // import { DataContext } from '../context/DataContext';
+import { Charges } from '../utility/Charges';
 
 
 const height = Dimensions.get('window').height;
@@ -43,6 +44,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
     const { pmisId, adminLevel } = useContext(AuthContext);
 
+    const presentCharge = Charges(charge)
 
     const { currentSelectedIds, setCurrentSelectedIds } = useContext(ThemeContext);
 
@@ -211,7 +213,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>Po: {post} {charge == 'C' ? ', cc' : charge == 'A' ? ', Addl.' : ''} </Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>Po: {post}{presentCharge}</Text>
                                 </View> : ''
                         }
 

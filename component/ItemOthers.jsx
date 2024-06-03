@@ -26,7 +26,7 @@ let selectedGroupIds = []
 
 
 
-const Item = ({ id,
+const ItemOthers = ({ id,
     name,
     officeid,
     office,
@@ -287,7 +287,7 @@ const Item = ({ id,
                         onPress={() => (togglePostModal(true))}
 
 
-                        disabled={adminLevel === 'superAdmin' ? false : true}
+                        disabled={adminLevel === 'superAdmin' ? true : true}
 
                     >
                         {
@@ -425,11 +425,11 @@ const Item = ({ id,
                                             <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {
                                                 bwdbJoiningDt &&
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString()}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>
                                             }
                                             {
                                                 retiredate &&
-                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#EF867B', }}>PRL Date       : {retiredate.toString()}</Text>
+                                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#EF867B', }}>Retire Date   : {retiredate.toString().trim().slice(0, 10)}</Text>
                                             }
                                             {/*bwdbJoiningDt <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#E8867B', }}>Retire Date : {item.officeAddress}</Text> */}
 
@@ -941,4 +941,4 @@ const styles = StyleSheet.create({
 
 
 
-export default memo(Item);
+export default memo(ItemOthers);

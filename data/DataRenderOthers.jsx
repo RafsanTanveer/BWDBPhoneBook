@@ -9,7 +9,7 @@ import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, Saf
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
-import Item from '../component/Item';
+import ItemOthers from '../component/ItemOthers'
 import ItemVacant from '../component/ItemVacant'
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -1146,7 +1146,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                             <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
                         }
                         renderItem={({ item, index }) => (
-                            <Item
+                            <ItemOthers
                                 id={item.id}
                                 name={item.name}
                                 office={item.office}
