@@ -291,6 +291,7 @@ const ItemBlood = ({ id,
 
 
                         // disabled={adminLevel === 'superAdmin' ? false : true}
+                        disabled={true}
 
                     >
                         {

@@ -732,7 +732,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 setChecked(false)
                 setisrtDateChecked(false)
                 setisrtJoiningChecked(false)
-                setTabelCreationTime(timeStamp())
+                // setTabelCreationTime(timeStamp())
 
                 setdistName('')
                 setDistrictValue()

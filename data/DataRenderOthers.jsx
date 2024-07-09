@@ -545,6 +545,47 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
 
 
 
+    const fetchVacantDataFromDb = async () => {
+
+        setIsLoading(true);
+
+
+       
+
+
+        try {
+            setRefreshing(false);
+
+
+
+
+            const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
+            const vacantData = vacantResponse.rows;
+
+            let totalVacanPost = 0
+            vacantData.forEach(it => {
+                totalVacanPost += parseInt(it.postNo)
+            });
+
+            setTotalVacantPost(totalVacanPost)
+
+            __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
+
+            setvacantData(vacantData)
+
+            __DEV__ && console.log("in data render");
+
+
+
+
+
+        } catch (error) {
+            __DEV__ && console.error(error);
+        }
+        setIsLoading(false);
+    }
+
+
 
 
     // useeffect for initializing first
@@ -552,7 +593,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
 
         // fetchData();
         fetchDataFromDb();
-        // fetchVacantDataFromDb()
+        fetchVacantDataFromDb()
 
         setisrtDateChecked(false)
         setisrtJoiningChecked(false)
@@ -1002,7 +1043,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
 
 
                                 {
-                                    false &&
+                                    true &&
                                     netInfo.isConnected &&
                                     <View
                                         style={{

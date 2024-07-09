@@ -7,7 +7,7 @@ const BiodataHeader = ({ heading ="BIODATA"}) => {
     return (
         <View style={{
             flexDirection: 'row', borderBottomColor: '#0080FF',
-            borderBottomWidth: 1
+            borderBottomWidth: 1, width: width
         }}>
 
 

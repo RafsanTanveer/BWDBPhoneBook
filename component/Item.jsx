@@ -287,7 +287,9 @@ const Item = ({ id,
                         onPress={() => (togglePostModal(true))}
 
 
-                        disabled={adminLevel === 'superAdmin' ? false : true}
+                        // disabled={adminLevel === 'superAdmin' ? false : true}
+                        disabled={true}
+
 
                     >
                         {
