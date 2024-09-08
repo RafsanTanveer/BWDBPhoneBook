@@ -1214,7 +1214,7 @@ const ExpendableDrawer = () => {
                         <List.Item key={'Individual'}
 
 
-                            // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}  
+                            // onPress={() => DownloadStafflist(pmisId, presentOffice, presentOfficeCode, "C", true)}
 
                             onPress={() => {
                                 navigation.navigate('ReportScreen', {
@@ -1512,7 +1512,7 @@ const ExpendableDrawer = () => {
 
                 {
                     //////////////////////////////////////////// About ////////////////////////////////////////////////////
-
+                    false &&
                     <List.Item key={'About'}
 
 

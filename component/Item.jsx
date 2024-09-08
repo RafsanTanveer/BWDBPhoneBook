@@ -10,6 +10,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import { Images } from '../utility/Images';
 import { Camera, CameraType } from 'expo-camera';
 import MakeCallModalComponent from '../component/MakeCallModalComponent';
+import AddToContactModal from '../component/modalComponents/AddToContactModal'
 import CameraModalComponent from '../component/modalComponents/CameraModalComponent'
 import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateBloodGroupModalComponent'
 import UpdateMobileNumberModalComponent from '../component/modalComponents/UpdateMobileNumberModalComponent'
@@ -69,6 +70,7 @@ const Item = ({ id,
     const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
     const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
     const [isUpdatePostModalVisible, setisUpdatePostModalVisible] = useState(false);
+    const [isAddToContactModalVisible, setisAddToContactModalVisible] = useState(false);
     const [phnOrMsg, setphnOrMsg] = useState('phn');
     const lastTapTimeRef = useRef(null);
     const [modalHeading, setmodalHeading] = useState('');
@@ -107,6 +109,10 @@ const Item = ({ id,
 
     const togglePostModal = (isVisible) => {
         setisUpdatePostModalVisible(isVisible);
+    };
+
+    const toggleAddToContactModal = (isVisible) => {
+        setisAddToContactModalVisible(isVisible);
     };
 
 
@@ -678,19 +684,24 @@ const Item = ({ id,
                         {
                             mobile &&
                             <TouchableOpacity
-                                onPress={async () => {
+                                    onPress={
+                                        () => (toggleAddToContactModal(true, 'msg', 'Send a Message'))
+
+                                    //     async () => {
 
 
-                                    //
-                                    await Contacts.addContactAsync(contact)
-                                        .then((contactId) => {
-                                            ToastOrAlert(name + " has been successfully added to your phone contact")
-                                        })
-                                        .catch((err) => {
-                                            alert(err);
-                                            __DEV__ && console.log(err);
-                                        });
-                                }}
+                                    // //
+                                    // await Contacts.addContactAsync(contact)
+                                    //     .then((contactId) => {
+                                    //         ToastOrAlert(name + " has been successfully added to your phone contact")
+                                    //     })
+                                    //     .catch((err) => {
+                                    //         alert(err);
+                                    //         __DEV__ && console.log(err);
+                                    //     });
+                                    //     }
+
+                                    }
 
                                 style={{ zIndex: 100, justifyContent: 'center' }} >
                                 <Image
@@ -712,6 +723,16 @@ const Item = ({ id,
                 onRequestClose={() => toggleModal(true)}
             >
                 <MakeCallModalComponent number={mobile} toggleModal={toggleModal} type={phnOrMsg} heading={modalHeading} />
+
+            </Modal>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isAddToContactModalVisible}
+                onRequestClose={() => toggleAddToContactModal(true)}
+            >
+                <AddToContactModal mobileNumber={mobile} email={email} toggleModal={toggleAddToContactModal} empName={name} post={post} heading="" />
 
             </Modal>
 
