@@ -792,7 +792,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 ))
 
                 setDATA(dataWithSelected);
-
+                setTabelCreationTime(timeStamp())
                 insertDataIntoDesignationTable(tablename, data)
 
 
