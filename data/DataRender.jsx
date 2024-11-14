@@ -895,7 +895,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-        !isrtJoiningChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.bwdbJoiningDt.toString().trim().slice(0, 10)) - new Date(b.bwdbJoiningDt.toString().trim().slice(0, 10)) })) :
+        !isrtJoiningChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.bwdbJoiningDt) - new Date(b.bwdbJoiningDt) })) :
             setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
 
 
@@ -910,7 +910,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setisrtDateChecked(!isrtDateChecked)
 
 
-        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate.toString().trim().slice(0, 10)) - new Date(b.retiredate.toString().trim().slice(0, 10)) })) :
+        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate) - new Date(b.retiredate) })) :
             setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
 
 
@@ -1173,7 +1173,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     justifyContent: 'center',
                                     alignContent: 'center',
                                     padding: 2,
-                                    elevation: 5
+                                    elevation: 3,
+
                                 }}
                             >
                                 <Image

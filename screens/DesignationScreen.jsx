@@ -17,7 +17,7 @@ const DesignationScreen = ({ route, navigation }) => {
     const [offceEmails, setoffceEmails] = useState([])
 
 
-    
+
 
 
 
@@ -32,18 +32,21 @@ const DesignationScreen = ({ route, navigation }) => {
         <>
 
             <View style={{
-                alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15, marginBottom: 5,
-                backgroundColor: `${currentTheme}`,//'#C1B8DC',  //'#6750a4'
+                alignItems: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 15,
+                marginBottom: 5,
+                backgroundColor: `${currentTheme}`,
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
-                // flexDirection: 'row'
+               
 
             }}>
                 {/* <View style={{ flex: 1 }}>
                     <Image style={{ width: 40, height: 40,backgroundColor:'white' }} source={require('../assets/bwdLogo.png')} />
                 </View> */}
 
-                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null }}>{route.params.designation} </Text>
 
             </View>
 
@@ -54,9 +57,6 @@ const DesignationScreen = ({ route, navigation }) => {
                 // desig_code={route.params.tablename === 'CHENGCIV' ? 44 : route.params.desig_code}
                 tablename={route.params.tablename}
             />
-
-            {/*SUBDIVENGCIV < DataRenderOffice designation='Assistant Engineer (Civil)' office_code={route.params.officeId} navigation={navigation} /> */}
-            {/* desig_code={route.params.tablename === 'SUBDIVENGCIV' ? 52 : route.params.desig_code}  */}
 
 
         </>

@@ -43,7 +43,7 @@ const DesignationScreen = ({ route, navigation }) => {
                     <Image style={{ width: 40, height: 40,backgroundColor:'white' }} source={require('../assets/bwdLogo.png')} />
                 </View> */}
 
-                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.designation} </Text>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null }}>{route.params.designation} </Text>
 
             </View>
 

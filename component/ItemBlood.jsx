@@ -388,7 +388,7 @@ const ItemBlood = ({ id,
                                 {
                                     notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' ?
                                         <View style={{ justifyContent: 'space-between' }}>
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {
                                                 bwdbJoiningDt &&
                                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString().trim().slice(0, 10)}</Text>

@@ -59,7 +59,7 @@ const OfficeScreen = ({ route, navigation }) => {
                 borderBottomRightRadius: 15,
 
             }}>
-                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>{route.params.officeName} {adminLevel === 'superAdmin' ? ", " + route.params.officeId : null}</Text>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null }}>{route.params.officeName} {adminLevel === 'superAdmin' ? ", " + route.params.officeId : null}</Text>
                 {offceEmails.map((item, index) => (
                     <View style={{ paddingTop: 5, }} key={index}>
 
@@ -72,7 +72,7 @@ const OfficeScreen = ({ route, navigation }) => {
                         {
                             item.email1 ?
                                 <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email1}`) }}  >
-                                    <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif',  }}>{item.email1} </Text>
+                                    <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null,  }}>{item.email1} </Text>
                                 </TouchableOpacity>
                                 : ""
                         }
@@ -81,7 +81,7 @@ const OfficeScreen = ({ route, navigation }) => {
                         {
                             item.email2 ?
                                 <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${item.email2}`) }}  >
-                                    <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: 'serif',  }}>{item.email2} </Text>
+                                    <Text style={{ color: '#fff', paddingTop: 2, fontSize: 14, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null,  }}>{item.email2} </Text>
                                 </TouchableOpacity>
                                 : ""
                         }

@@ -1124,17 +1124,23 @@ const BiodataScreen = ({ id, navigation }) => {
         setIsLoading(true)
 
 
-        const { uri: localUri } = await FileSystem.downloadAsync(
-            `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}&p_user=${id}(from App)`,
-            FileSystem.documentDirectory + `${name} - ${id}.pdf`
-        ).catch((error) => {
-            console.error(error)
-        })
+       try {
+         const { uri: localUri } = await FileSystem.downloadAsync(
+             `http://hrms.bwdb.gov.bd:7777/reports/rwservlet?biodata&p_employee=${id}&p_user=${id}(from App)`,
+             FileSystem.documentDirectory + `${name} - ${id}.pdf`
+         ).catch((error) => {
+             console.error(error)
+         })
+
+
+           await shareAsync(localUri)
+               .catch((err) => console.log('Sharing::error', err))
+
+       } catch (error) {
+
+       }
 
         setIsLoading(false)
-
-        await shareAsync(localUri)
-            .catch((err) => console.log('Sharing::error', err))
 
 
 

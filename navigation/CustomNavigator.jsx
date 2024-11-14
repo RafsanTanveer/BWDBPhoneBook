@@ -81,6 +81,7 @@ const CustomDrawer = ({ }) => {
                 {
                     // backgroundColor: 'white'
                     backgroundColor: `${currentTheme}`,
+                    // elevation:1,
 
                 },
                 headerTitleStyle: {

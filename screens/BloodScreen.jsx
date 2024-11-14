@@ -43,7 +43,7 @@ const BloodScreen = ({ route, navigation }) => {
                     <Image style={{ width: 40, height: 40,backgroundColor:'white' }} source={require('../assets/bwdLogo.png')} />
                 </View> */}
 
-                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: 'serif' }}>Blood Group : {route.params.designation} </Text>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null }}>Blood Group : {route.params.designation} </Text>
 
             </View>
 
@@ -54,7 +54,7 @@ const BloodScreen = ({ route, navigation }) => {
                 tablename={route.params.tablename}
             />
 
-         
+
 
         </>
 

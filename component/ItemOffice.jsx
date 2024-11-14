@@ -201,24 +201,24 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                                     <TouchableOpacity onPress={() => {
                                         navigation.navigate('Biodata', { id: id })
                                     }}>
-                                        <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#40696A', }}>PMIS ID : {id}</Text>
+                                        <Text style={{ fontSize: height * .017, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#40696A', }}>PMIS ID : {id}</Text>
                                     </TouchableOpacity>
                                     : null
                             }
 
 
 
-                            <Text style={{ fontSize: height * .019, fontFamily: 'serif', fontWeight: 'bold' }} >{name}  </Text>
+                            <Text style={{ fontSize: height * .019, fontFamily: Platform.OS === "android" ? 'serif' : null, fontWeight: 'bold' }} >{name}  </Text>
                         </View>
                         {
                             post ?
                                 <View style={{ flex: 1, }}>
-                                    <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#f08080', fontWeight: '600' }}>Po: {post}{presentCharge}</Text>
+                                    <Text style={{ fontSize: height * .017, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#f08080', fontWeight: '600' }}>Po: {post}{presentCharge}</Text>
                                 </View> : ''
                         }
 
                         <View style={{ flex: 1, }}>
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: 'grey', fontWeight: '600' }}>De: {designation} </Text>
+                            <Text style={{ fontSize: height * .017, fontFamily: Platform.OS === "android" ? 'serif' : null, color: 'grey', fontWeight: '600' }}>De: {designation} </Text>
                         </View>
 
                     </View>
@@ -226,7 +226,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                     {
                         email &&
                         <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                            <Text style={{ fontSize: height * .017, fontFamily: 'serif', color: '#5f9ea0', }}>{email} </Text>
+                            <Text style={{ fontSize: height * .017, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} </Text>
                         </TouchableOpacity>
                     }
 
@@ -234,23 +234,38 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                         {
                             mobile &&
                             <TouchableOpacity
-                                    onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
-                                    style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                                onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
+                                style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 10
+                                }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{mobile} </Text>
+                                    <Text style={{
+                                        color: 'white',
+                                        height: height * (1 / 40),
+                                        fontSize: height * .017,
+                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                        textAlign:'center'
+                                    }}>{mobile} </Text>
                             </TouchableOpacity>
                         }
                         {
                             pabx &&
-                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10 }}>
+                            <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${pabx}`) }} style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingHorizontal: 10, justifyContent: 'center' }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: 'serif', }}>{pabx} </Text>
+                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: height * .017, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
                             mobile &&
                             <TouchableOpacity
-                                    onPress={() => (toggleModal(true, 'msg', 'Send a Message'))}
+                                onPress={() => (toggleModal(true, 'msg', 'Send a Message'))}
                                 style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: `${currentTheme}`, borderRadius: height * .005, marginHorizontal: 5, paddingVertical: 1, paddingRight: 9, paddingLeft: 12 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={height * .017} color="white" />
                             </TouchableOpacity>

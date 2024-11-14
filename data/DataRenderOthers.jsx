@@ -550,7 +550,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
         setIsLoading(true);
 
 
-       
+
 
 
         try {
@@ -1069,7 +1069,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                                                     color: isCurrentActive ? 'white' : 'black',
                                                     height: height * (1 / 40),
                                                     fontSize: txtSizeNormal,
-                                                    fontFamily: 'serif',
+                                                    fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                     textAlign: 'center',
                                                     fontWeight: 'bold'
                                                 }}>Current</Text>
@@ -1089,7 +1089,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                                                         color: !isVacantActive ? 'black' : 'white',
                                                         height: height * (1 / 40),
                                                         fontSize: txtSizeNormal,
-                                                        fontFamily: 'serif',
+                                                                fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                         textAlign: 'center',
                                                         fontWeight: 'bold'
                                                     }}>Vacant</Text>
@@ -1110,7 +1110,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                                                         color: isReportActive ? 'white' : 'black',
                                                         height: height * (1 / 40),
                                                         fontSize: txtSizeNormal,
-                                                        fontFamily: 'serif',
+                                                                fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                         textAlign: 'center',
                                                         fontWeight: 'bold'
                                                     }}>Report</Text>

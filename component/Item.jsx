@@ -430,7 +430,7 @@ const Item = ({ id,
                                 {
                                     notDgOrAdg && adminLevel === 'superAdmin' && canAccessSeniority === 'true' ?
                                         <View style={{ justifyContent: 'space-between' }}>
-                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: 'serif', color: '#40696A', }}>Seniority : {seniority}</Text>
+                                            <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#40696A', }}>Seniority : {seniority}</Text>
                                             {
                                                 bwdbJoiningDt &&
                                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#4F7942', }}>Joining Date : {bwdbJoiningDt.toString()}</Text>
@@ -502,11 +502,11 @@ const Item = ({ id,
 
                                     marginLeft: width * .2,
 
-                                    opacity: 0.2,
+                                    opacity: 0.3,
                                     width: width * (1 / 6.5),
                                     height: width * (1 / 6.5),
                                     borderRadius: 100,
-                                    borderWidth: 1,
+                                    // borderWidth: 1,
                                     position: 'absolute',
                                     // elevation: 5
 
@@ -609,7 +609,8 @@ const Item = ({ id,
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
                                     onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
-                                    style={{
+                                        style={{
+
                                         alignItems: 'center',
                                         flexDirection: 'row',
                                         backgroundColor: `${currentTheme}`,
@@ -617,10 +618,20 @@ const Item = ({ id,
                                         marginHorizontal: 5,
                                         paddingVertical: 1,
                                         paddingHorizontal: 5,
-                                        elevation: 3
+                                            elevation: 3,
+                                        padding:15
+
                                     }}>
-                                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                    <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{mobile} </Text>
+                                        <Ionicons style={{  marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
+                                        <Text style={{
+
+                                            color: 'white',
+
+                                            fontSize: txtSizeNormal,
+
+                                            fontFamily: Platform.OS === "android" ? 'serif' : null,
+
+                                        }}>{mobile}</Text>
                                 </TouchableOpacity>
 
                                 {
@@ -656,7 +667,7 @@ const Item = ({ id,
                                     elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
+                                <Text style={{ color: 'white',  fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -673,7 +684,8 @@ const Item = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 12,
-                                    elevation: 3
+                                    elevation: 3,
+                                    justifyContent:'center'
                                 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
                             </TouchableOpacity>
