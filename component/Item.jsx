@@ -141,6 +141,14 @@ const Item = ({ id,
         ],
     };
 
+    const sendMail = () => {
+
+        try {
+
+        }
+        catch (error) {
+        }
+    }
 
 
 
@@ -609,7 +617,7 @@ const Item = ({ id,
                                 <TouchableOpacity
                                     // onLongPress={() => (<>  < ModalViewForEditNumber viewModal={true} name={mobile} />    </>)}     onPress={() => { Linking.openURL(`tel:${mobile}`) }}
                                     onPress={() => (toggleModal(true, 'phn', 'Make a Call'))}
-                                        style={{
+                                    style={{
 
                                         alignItems: 'center',
                                         flexDirection: 'row',
@@ -618,20 +626,20 @@ const Item = ({ id,
                                         marginHorizontal: 5,
                                         paddingVertical: 1,
                                         paddingHorizontal: 5,
-                                            elevation: 3,
-                                        padding:15
+                                        elevation: 3,
+                                        padding: 15
 
                                     }}>
-                                        <Ionicons style={{  marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                        <Text style={{
+                                    <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
+                                    <Text style={{
 
-                                            color: 'white',
+                                        color: 'white',
 
-                                            fontSize: txtSizeNormal,
+                                        fontSize: txtSizeNormal,
 
-                                            fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
 
-                                        }}>{mobile}</Text>
+                                    }}>{mobile}</Text>
                                 </TouchableOpacity>
 
                                 {
@@ -667,7 +675,7 @@ const Item = ({ id,
                                     elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
-                                <Text style={{ color: 'white',  fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
+                                <Text style={{ color: 'white', fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -685,7 +693,7 @@ const Item = ({ id,
                                     paddingVertical: 1,
                                     paddingHorizontal: 12,
                                     elevation: 3,
-                                    justifyContent:'center'
+                                    justifyContent: 'center'
                                 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
                             </TouchableOpacity>
@@ -696,8 +704,8 @@ const Item = ({ id,
                         {
                             mobile &&
                             <TouchableOpacity
-                                    onPress={
-                                        () => (toggleAddToContactModal(true, 'msg', 'Send a Message'))
+                                onPress={
+                                    () => (toggleAddToContactModal(true, 'msg', 'Send a Message'))
 
                                     //     async () => {
 
@@ -713,7 +721,7 @@ const Item = ({ id,
                                     //     });
                                     //     }
 
-                                    }
+                                }
 
                                 style={{ zIndex: 100, justifyContent: 'center' }} >
                                 <Image

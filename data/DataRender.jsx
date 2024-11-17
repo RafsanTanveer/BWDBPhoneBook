@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View, Platform } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import api from '../api/api';
 import FloatingBtnComponent from '../component/FloatingBtnComponent';
 import Item from '../component/Item';
@@ -163,6 +164,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [district, setDistrict] = useState([]);
 
 
+
+    const [distValue, setdistValue] = useState(null);
+    const [isDistrictFocus, setIsDistrictFocus] = useState(false);
+    const [isChargeFocus, setIsChargeFocus] = useState(false);
+
+
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
 
@@ -235,7 +242,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         sortByDistrict()
     }, [district]);
 
-    const sortByDistrict = () => {
+    const sortByDistrict = (currentDistValue) => {
 
         setisrtDateChecked(false)
         setChecked(false)
@@ -282,44 +289,12 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         }
 
 
-        // if (distValue != 0 && distValue != 65) {
-
-        //     distValue && console.log(distValue, 'in sortByDistrict func', district[distValue].label);
-        //     distValue && setdistName("in " + district[distValue].label)
-        //     const newData = DATA.filter((item) => {
-        //         const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
-        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-        //         return itemData.indexOf(textData) > -1;
-        //     });
-        //     setFilteredData(newData)
-        //     // console.log('newData.length', newData.length, 'DATA', DATA.length);
-
-        // }
-        // else if (distValue == 65) {
-
-        //     distValue && setdistName("in " + district[distValue].label)
-        //     const newData = DATA.filter((item) => {
-        //         const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
-        //         const textData = distValue ? district[distValue].label.toLocaleLowerCase() : "";
-
-
-        //         return itemData.indexOf(textData) > -1;
-        //     });
-        //     setFilteredData(newData)
-
-
-        // }
-        // else {
-        //     setFilteredData(DATA)
-        //     setdistName("")
-        // }
-
 
 
 
     }
 
-    const chargeFilter = () => {
+    const chargeFilter = (currentChargeValue) => {
 
         setisrtDateChecked(false)
         setChecked(false)
@@ -528,10 +503,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 var sortedKeys = Object.keys(distMap).sort();
 
+                // tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
                 tempDist = [...tempDist, { label: "All DISTRICT", value: "All DISTRICT" }]
 
                 sortedKeys.map(item =>
-                    // console.log(item, ' - ', distMap[item])
+                    // { label: 'Item 8', value: '8' },
                     tempDist = [...tempDist, { label: item + ' - ' + distMap[item], value: item }],
                     // tempLevel = [...tempLevel, {item}],
                     //tempValue=[...tempValue,{item}]
@@ -1260,7 +1236,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         color={isChecked ? `${currentTheme}` : undefined}
                                     />
 
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to seniority</Text>
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to Seniority</Text>
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -1273,7 +1249,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         color={isrtJoiningChecked ? `${currentTheme}` : undefined}
                                     />
 
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to joining date</Text>
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to Joining Date</Text>
 
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -1286,7 +1262,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         color={isrtDateChecked ? `${currentTheme}` : undefined}
                                     />
 
-                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to retirement date</Text>
+                                    <Text style={{ marginLeft: 5, fontSize: 13 }}>According to PRL Date</Text>
 
                                 </TouchableOpacity>
                                 <Text style={{ fontSize: width * .032, fontWeight: '600', paddingTop: 10 }}>{totalNeedBaseSetup}</Text>
@@ -1377,29 +1353,55 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             <View style={{ flex: 1 }}>
 
                                 <View style={{ width: width * .40, marginRight: 10, marginBottom: 2 }}>
-                                    <DropDownPicker
-                                        style={{ zIndex: 1000 }}
-                                        items={tempDist}
-                                        open={isOpen}
-                                        setOpen={() => { setIsOpen(!isOpen), setIsChargeOpen(false) }}
+
+                                    <Dropdown
+                                        style={[styles.elementDropdown, isDistrictFocus && { borderColor: 'blue' }]}
+                                        placeholderStyle={styles.placeholderStyle}
+                                        selectedTextStyle={styles.selectedTextStyle}
+                                        inputSearchStyle={styles.inputSearchStyle}
+                                        iconStyle={styles.iconStyle}
+                                        data={tempDist}
+
+                                        maxHeight={500}
+                                        labelField="label"
+                                        valueField="value"
+                                        placeholder={!isDistrictFocus ? 'Select item' : '...'}
+
                                         value={currentDistValue}
-                                        setValue={setCurrentDistValue}
-                                        maxHeight={450}
-                                        placeholder="Select Office Location"
-                                        onChangeValue={() => sortByDistrict()}
+                                        onFocus={() => setIsDistrictFocus(true)}
+                                        onBlur={() => setIsDistrictFocus(false)}
+                                        onChange={item => {
+                                            setCurrentDistValue(item.value);
+                                            setIsDistrictFocus(false);
+                                            sortByDistrict(item.value)
+                                        }}
+
                                     />
+
                                 </View>
                                 <View style={{ width: width * .40, marginRight: 10, }}>
-                                    <DropDownPicker
-                                        style={{ zIndex: 900 }}
-                                        items={charges}
-                                        open={isChargeOpen}
-                                        setOpen={() => { setIsChargeOpen(!isChargeOpen), setIsOpen(false) }}
+                                    <Dropdown
+                                        style={[styles.elementDropdown, isChargeFocus && { borderColor: 'blue' }]}
+                                        placeholderStyle={styles.placeholderStyle}
+                                        selectedTextStyle={styles.selectedTextStyle}
+                                        inputSearchStyle={styles.inputSearchStyle}
+                                        iconStyle={styles.iconStyle}
+                                        data={charges}
+
+                                        maxHeight={500}
+                                        labelField="label"
+                                        valueField="value"
+                                        placeholder={!isDistrictFocus ? 'Select item' : '...'}
+
                                         value={currentChargeValue}
-                                        setValue={setCurrentChargeValue}
-                                        maxHeight={200}
-                                        placeholder="Select Charge"
-                                        onChangeValue={() => chargeFilter()}
+                                        onFocus={() => setIsChargeFocus(true)}
+                                        onBlur={() => setIsChargeFocus(false)}
+                                        onChange={item => {
+                                            setCurrentChargeValue(item.value);
+                                            setIsChargeFocus(false);
+                                            chargeFilter(item.value)
+                                        }}
+
                                     />
                                 </View>
 
@@ -2079,6 +2081,49 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         width: 50,
         height: 30,
+    },
+
+
+
+
+
+    elementContainer: {
+        backgroundColor: 'white',
+        padding: 16,
+    },
+    elementDropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+        backgroundColor:'white'
+    },
+    icon: {
+        marginRight: 5,
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
     },
 
 });
