@@ -55,6 +55,7 @@ const staffListIcon = '../assets/icons/staff-list.png'
 const bloodsearch = '../assets/icons/bloodsearch.png'
 const others = '../assets/icons/others.png'
 const developedBy = '../assets/icons/coding.png'
+const biodata = '../assets/icons/bio-data.png'
 
 //*******************************************icons ********************************************** */
 
@@ -431,11 +432,37 @@ const ExpendableDrawer = () => {
 
             <List.Section title="" style={styles.sectionStyle}>
 
+                <List.Accordion
+                    style={styles.accordingStyleOffice}
+                    title="Bio-data"
+                    titleStyle={styles.titlestyle}
+
+                    left={props => <List.Icon {...props} icon={() => (
+                        <Image
+                            source={require(biodata)}
+                            style={styles.iconStyle}
+                        />
+                    )} />}
+                    // expanded={expendedList[groupEMStart]}
+                    onPress={() => {
+                        navigation.navigate('Home', {})
+                    }}
+                    right={() => { }}>
+
+
+
+
+
+                </List.Accordion>
+
                 {/**************************************** Designation *************************************/}
 
                 {
                     adminLevel !== 'viewer' &&
                     <>
+
+
+
                         <List.Accordion
                             style={styles.sectionStyle}
                             title="Designations"
