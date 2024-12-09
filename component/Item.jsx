@@ -562,41 +562,74 @@ const Item = ({ id,
 
                     </View>
 
+
                     {
-                        email &&
-                        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-                            <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                                <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
+                        <View style={{ flexDirection:'row' }} >
+                        { email &&
+                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+                             <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
 
-                            </TouchableOpacity>
+                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{
-                                flex: .13,
-                                // marginHorizontal: width * .02,
-                            }}>
-                                {
+                             <TouchableOpacity style={{
+                                 flex: .13,
+                                 // marginHorizontal: width * .02,
+                             }}>
+
+                             </TouchableOpacity>
+                         </View>}
+                            {
 
 
-                                    pmisId === id &&
-                                    <TouchableOpacity
+                                pmisId === id ?
+                                    email?
+                                <TouchableOpacity
 
-                                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
-                                        style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}`,
-                                            borderRadius: height * .005,
-                                            paddingVertical: 2,
-                                            paddingHorizontal: 5,
-                                            elevation: 3
-                                        }}>
-                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+                                    onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
+                                    style={{
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        backgroundColor: `${currentTheme}`,
+                                        borderRadius: height * .005,
+                                        paddingVertical: 1,
+                                        paddingHorizontal: 5,
+                                        elevation: 3,
+
+                                        justifyContent: 'center'
+                                    }}>
+
+
+                                            <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
+
+
 
                                     </TouchableOpacity>
-                                }
-                            </TouchableOpacity>
-                        </View>
+                                        : <TouchableOpacity
+
+                                            onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
+                                            style={{
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                                backgroundColor: `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                                paddingVertical: 1,
+                                                paddingHorizontal: 5,
+                                                elevation: 3,
+                                                width: 80,
+                                                justifyContent: 'center'
+                                            }}>
+
+                                                    <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic', }} >Add Email</Text>
+
+                                            
+
+                                        </TouchableOpacity>
+                                    : ''
+                            }
+                       </View>
                     }
+
                     {
                         netInfo.isConnected &&
                         <View style={{ flexDirection: 'row', }}>
@@ -610,6 +643,26 @@ const Item = ({ id,
 
 
                     <View style={{ flexDirection: "row-reverse", marginTop: 3 }}>
+                        {
+                            pmisId === id &&
+                            <TouchableOpacity
+                                onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
+                                style={{
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    // marginHorizontal: 5,
+                                    paddingVertical: 1,
+                                    paddingHorizontal: 5,
+                                    elevation: 3
+                                }}>
+                                {
+                                    mobile ?
+                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text> :
+                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Add Mobile</Text>}
+                            </TouchableOpacity>
+                        }
 
                         {
                             mobile &&
@@ -642,25 +695,10 @@ const Item = ({ id,
                                     }}>{mobile}</Text>
                                 </TouchableOpacity>
 
-                                {
-                                    pmisId === id &&
-                                    <TouchableOpacity
-                                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
-                                        style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            backgroundColor: `${currentTheme}`,
-                                            borderRadius: height * .005,
-                                            // marginHorizontal: 5,
-                                            paddingVertical: 1,
-                                            paddingHorizontal: 5,
-                                            elevation: 3
-                                        }}>
-                                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
-                                    </TouchableOpacity>
-                                }
+
                             </View>
                         }
+
                         {
                             pabx &&
                             <TouchableOpacity onPress={() => { Linking.openURL(`tel:022222${pabx}`) }}
