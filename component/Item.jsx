@@ -116,30 +116,7 @@ const Item = ({ id,
     };
 
 
-    const contact = {
-        [Contacts.Fields.FirstName]: `BWDB - ${name}, `,
-        [Contacts.Fields.LastName]: post,
-        [Contacts.Fields.Company]: `BWDB`,
-        [Contacts.Fields.PhoneNumbers]: [
-            {
-                number: mobile,
-                isPrimary: true,
-                digits: "1234567890",
-                countryCode: "880",
-                id: null,
-                label: "mobile",
 
-            },
-        ],
-        [Contacts.Fields.Emails]: [
-            {
-                email: email,
-                isPrimary: true,
-                id: null,
-                label: "mobile",
-            },
-        ],
-    };
 
     const sendMail = () => {
 
@@ -564,47 +541,47 @@ const Item = ({ id,
 
 
                     {
-                        <View style={{ flexDirection:'row' }} >
-                        { email &&
-                         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-                             <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
-                                 <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
+                        <View style={{ flexDirection: 'row' }} >
+                            {email &&
+                                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+                                    <TouchableOpacity style={{ flex: 1, }} onPress={() => { Linking.openURL(`mailto:${email}`) }}  >
+                                        <Text style={{ fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, color: '#5f9ea0', }}>{email} ✉️</Text>
 
-                             </TouchableOpacity>
+                                    </TouchableOpacity>
 
-                             <TouchableOpacity style={{
-                                 flex: .13,
-                                 // marginHorizontal: width * .02,
-                             }}>
+                                    <TouchableOpacity style={{
+                                        flex: .13,
+                                        // marginHorizontal: width * .02,
+                                    }}>
 
-                             </TouchableOpacity>
-                         </View>}
+                                    </TouchableOpacity>
+                                </View>}
                             {
 
 
                                 pmisId === id ?
-                                    email?
-                                <TouchableOpacity
+                                    email ?
+                                        <TouchableOpacity
 
-                                    onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
-                                    style={{
-                                        alignItems: 'center',
-                                        flexDirection: 'row',
-                                        backgroundColor: `${currentTheme}`,
-                                        borderRadius: height * .005,
-                                        paddingVertical: 1,
-                                        paddingHorizontal: 5,
-                                        elevation: 3,
+                                            onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
+                                            style={{
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                                backgroundColor: `${currentTheme}`,
+                                                borderRadius: height * .005,
+                                                paddingVertical: 1,
+                                                paddingHorizontal: 5,
+                                                elevation: 3,
 
-                                        justifyContent: 'center'
-                                    }}>
+                                                justifyContent: 'center'
+                                            }}>
 
 
                                             <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
 
 
-                                    </TouchableOpacity>
+                                        </TouchableOpacity>
                                         : <TouchableOpacity
 
                                             onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastOrAlert('Please Check Your Internet Connection'))}
@@ -620,14 +597,14 @@ const Item = ({ id,
                                                 justifyContent: 'center'
                                             }}>
 
-                                                    <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic', }} >Add Email</Text>
+                                            <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic', }} >Add Email</Text>
 
-                                            
+
 
                                         </TouchableOpacity>
                                     : ''
                             }
-                       </View>
+                        </View>
                     }
 
                     {

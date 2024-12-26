@@ -5,7 +5,7 @@ import Checkbox from 'expo-checkbox';
 import * as Contacts from 'expo-contacts';
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
-import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View, Platform } from "react-native";
+import { Modal, ActivityIndicator, Image, Keyboard, Linking, RefreshControl, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View, Platform, ScrollView } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Dropdown } from 'react-native-element-dropdown';
 import api from '../api/api';
@@ -24,7 +24,7 @@ import { Camelize } from '../utility/Camelize'
 import db from '../database/database';
 import { imgSizeMini, txtSizeNormal } from '../utility/Scalling'
 import NoDataFoundScreen from '../screens/NoDataFoundScreen'
-import {ToastOrAlert} from '../utility/ToastOrAlert'
+import { ToastOrAlert } from '../utility/ToastOrAlert'
 import { createDesignationTable } from '../database/CreateQueries'
 import { deleteDataFromDesignationTable } from '../database/DeleteQueries'
 import { insertDataIntoDesignationTable } from '../database/InsertQueries'
@@ -96,6 +96,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [state, setState] = React.useState({ open: false });
     const [vacantData, setvacantData] = useState([]);
     const [totalVacantPost, setTotalVacantPost] = useState(0);
+    const [totalVacantPostWithProject, settotalVacantPostWithProject] = useState(0);
     const onStateChange = ({ open }) => setState({ open });
     const [groupMenu, setGroupMenu] = useState(false);
     const { open } = state;
@@ -231,7 +232,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     // __DEV__ && console.log(charge);
     let msg = `\n\n\n\n\n...\nBest Regards, \n\n${name}\n${presentPost} ${charge}\n${presentOffice},BWDB.`
 
-    let totalNeedBaseSetup = `Total ${totalNBSPost} post of ${designation} (Need Base Setup)`
+    let totalNeedBaseSetup = `Total ${Math.trunc(totalNBSPost)} post of ${designation} (Need Base Setup)`
 
 
     let toastMsg = `Please Select at least 1\n ${designation}`
@@ -637,12 +638,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-                    const { data: vacantResponse } = await api.get("vacantDesigList", { params: { desig: desig_code } });
+                    const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code } });
                     const vacantData = vacantResponse.rows;
 
                     let totalVacanPost = 0
                     vacantData.forEach(it => {
-                        totalVacanPost += parseInt(it.postNo)
+                        if (it.postType === "R") {
+                            totalVacanPost += parseInt(it.blank);
+                        }
+                    });
+
+                    let totalVacanPostWithProject = 0
+                    vacantData.forEach(it => {
+
+                            totalVacanPostWithProject += parseInt(it.blank);
+
                     });
 
                     setTotalVacantPost(totalVacanPost)
@@ -697,7 +707,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 // setIsLoading(true);
                 setSearch()
 
-               // setDATA([])
+                // setDATA([])
 
                 // deleteDataFromDesignationTable(tablename)
 
@@ -757,8 +767,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
             if (data.length == 0) {
 
             }
-            else
-            {
+            else {
                 setDATA([])
                 deleteDataFromDesignationTable(tablename)
 
@@ -1346,7 +1355,85 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     </View>
                                 }
 
+                                {
+                                    true && isVacantActive &&
+                                    netInfo.isConnected &&
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            marginTop: 7,
+                                            // backgroundColor: 'white',
+                                            borderRadius: height * .005,
+                                            // width: isReportActive ? 210 : 140,
+                                            // elevation: 5
+                                            // borderColor: 'black',
+                                            // borderWidth:1
+                                        }}>
+                                        <TouchableOpacity
+                                            onPress={() => (setIsCurrentActive(true), setIsVacantActive(false), setIsReportActive(false))}
+                                            style={{
+                                                height: 20,
+                                                // width: 70,
+                                                backgroundColor: isCurrentActive ? `${currentTheme}` : 'white',
+                                                borderRadius: height * .005,
+                                                paddingHorizontal:15
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: isCurrentActive ? 'white' : 'black',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>All</Text>
+                                        </TouchableOpacity>
+                                        {
+                                            netInfo.isConnected &&
+                                            <TouchableOpacity
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
+                                                style={{
+                                                    height: 20,
+                                                    // width: 70,
+                                                    backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                                    borderRadius: height * .005,
+                                                    paddingHorizontal: 15
 
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: !isVacantActive ? 'black' : 'white',
+                                                        height: height * (1 / 40),
+                                                        fontSize: txtSizeNormal,
+                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold'
+                                                    }}>Vacant</Text>
+                                            </TouchableOpacity>
+                                        }
+                                        {
+                                            false &&
+                                            <TouchableOpacity
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
+                                                style={{
+                                                    height: 20,
+                                                    width: 70,
+                                                    backgroundColor: isReportActive ? `${currentTheme}` : 'white',
+                                                    borderRadius: height * .005,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: isReportActive ? 'white' : 'black',
+                                                        height: height * (1 / 40),
+                                                        fontSize: txtSizeNormal,
+                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold'
+                                                    }}>Report</Text>
+                                            </TouchableOpacity>
+                                        }
+                                    </View>
+                                }
 
                             </View>
 
@@ -1485,6 +1572,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     isVacantActive &&
                     <>
 
+
+
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
@@ -1507,13 +1596,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                             <View style={{
-                                flex: 8, backgroundColor: `${currentTheme}50`,
+                                flex: 6, backgroundColor: `${currentTheme}50`,
                                 justifyContent: 'center', padding: 5
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Office Name</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Office Name</Text>
                             </View>
+
+
+
 
                             <View style={{
                                 flex: 2, backgroundColor: `${currentTheme}50`,
@@ -1522,17 +1614,25 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant Post</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Total</Text>
                             </View>
                             <View style={{
-                                flex: 2,
-                                backgroundColor: `${currentTheme}50`,
-                                justifyContent: 'center',
-                                padding: 5,
-                                borderTopRightRadius: height * .005,
+                                flex: 2, backgroundColor: `${currentTheme}50`,
+
+                                justifyContent: 'center', padding: 5
 
                             }}>
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Post Type</Text>
+
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Existing</Text>
+                            </View>
+                            <View style={{
+                                flex: 2, backgroundColor: `${currentTheme}50`,
+
+                                justifyContent: 'center', padding: 5, borderTopRightRadius: height * .005,
+
+                            }}>
+
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Vacant</Text>
                             </View>
                         </View>
 
@@ -1540,9 +1640,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             data={vacantData}
                             estimatedItemSize={200}
                             // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
-                            }
+
                             ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
                             renderItem={({ item, index }) => (
                                 <ItemVacant
@@ -1550,8 +1648,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                     index={index + 1}
                                     office={item.office}
                                     officeName={item.officeName}
-                                    postNo={item.postNo}
+                                    blank={item.blank}
                                     postType={item.postType}
+                                    totalPost={item.totalPost}
+                                    occupied={item.occupied}
 
                                 />
 
@@ -1561,6 +1661,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}
 
                         />
+
+
                     </>
                 }
 
@@ -2097,7 +2199,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        backgroundColor:'white'
+        backgroundColor: 'white'
     },
     icon: {
         marginRight: 5,

@@ -19,7 +19,7 @@ let selectedGroupIds = []
 
 
 
-const ItemVacant = ({ index, office, officeName, postNo, postType }) => {
+const ItemVacant = ({ index, office, officeName, blank, postType,totalPost,occupied }) => {
 
 
 
@@ -58,10 +58,28 @@ const ItemVacant = ({ index, office, officeName, postNo, postType }) => {
 
 
             <View style={{
-                flex: 8, borderWidth: 1,
+                flex: 6, borderWidth: 1,
                 borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
 
-                <Text style={{ textAlign: 'center' }}>{officeText} { office}</Text>
+                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{officeText} </Text>
+            </View>
+
+            {/* <View style={{
+                flex: 2, borderWidth: 1,
+                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center'
+            }}>
+                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{postType}</Text>
+            </View> */}
+
+            <View style={{
+                flex: 2,
+                borderWidth: 1,
+                borderColor: `${currentTheme}`, padding: 5,
+                justifyContent: 'center'
+
+            }}>
+
+                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{totalPost}</Text>
             </View>
 
             <View style={{
@@ -72,13 +90,14 @@ const ItemVacant = ({ index, office, officeName, postNo, postType }) => {
 
             }}>
 
-                <Text style={{ textAlign: 'center' }}>{postNo}</Text>
+                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{occupied}</Text>
             </View>
+
             <View style={{
                 flex: 2, borderWidth: 1,
                 borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center'
             }}>
-                <Text style={{ textAlign: 'center', color: postType!='R'?'red':'black' }}>{postType}</Text>
+                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{blank}</Text>
             </View>
 
         </View>

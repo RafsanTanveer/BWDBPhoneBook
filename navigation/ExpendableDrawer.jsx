@@ -780,7 +780,7 @@ const ExpendableDrawer = () => {
 
                             <List.Accordion
                                 style={styles.accordingStyle}
-                                title="ME"
+                                title="Mechanical"
                                 titleStyle={styles.titlestyle}
 
                                 left={props => <List.Icon {...props} icon={() => (
@@ -891,44 +891,50 @@ const ExpendableDrawer = () => {
 
                             </List.Accordion>
 
-                            <List.Accordion
-                                style={styles.accordingStyle}
-                                title="Others"
-                                titleStyle={styles.titlestyle}
+                            {
+                                true && netInfo.isConnected ?
+                                    <List.Accordion
+                                        style={styles.accordingStyle}
+                                        title="Others"
+                                        titleStyle={styles.titlestyle}
 
-                                left={props => <List.Icon {...props} icon={() => (
-                                    <Image
-                                        source={require(others)}
-                                        style={styles.iconStyle}
-                                    />
-                                )} />}
-                                expanded={expendedList[12]}
-                                onPress={() => handlePress(12)}
-                            >
+                                        left={props => <List.Icon {...props} icon={() => (
+                                            <Image
+                                                source={require(others)}
+                                                style={styles.iconStyle}
+                                            />
+                                        )} />}
+                                        expanded={expendedList[12]}
+                                        onPress={() => handlePress(12)}
+                                    >
 
-                                {
-                                    desigListOthers.map((it) => (
-                                        <List.Item key={it.desig}
-                                            onPress={() => {
-                                                navigation.navigate('DesignationScreenOther', {
-                                                    designation: it.designame,
-                                                    desig_code: it.desig,
-                                                    title: 'Employee List',
-                                                    tablename: it.tablename
-                                                })
-                                            }}
-                                            left={props => <List.Icon {...props} icon={() => (
-                                                <Image
-                                                    source={require(rightArrow)}
-                                                    style={styles.iconStyle}
-                                                />
-                                            )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
-                                    ))
-                                }
+                                        {
+
+                                            desigListOthers.map((it) => (
+                                                <List.Item key={it.desig}
+                                                    onPress={() => {
+                                                        navigation.navigate('DesignationScreenOther', {
+                                                            designation: it.designame,
+                                                            desig_code: it.desig,
+                                                            title: 'Employee List',
+                                                            tablename: it.tablename
+                                                        })
+                                                    }}
+                                                    left={props => <List.Icon {...props} icon={() => (
+                                                        <Image
+                                                            source={require(rightArrow)}
+                                                            style={styles.iconStyle}
+                                                        />
+                                                    )} />} style={{ marginLeft: 20, marginTop: -16, }} titleStyle={styles.innerTitlestyle} title={it.designame} />
+                                            ))
+                                        }
 
 
 
-                            </List.Accordion>
+                                    </List.Accordion>
+                                :
+                                ''
+                             }
 
 
                         </List.Accordion>
@@ -1268,7 +1274,7 @@ const ExpendableDrawer = () => {
 
                 {/*******************************************  Blood Search ******************************** */}
                 {
-                    true ?
+                    true && netInfo.isConnected ?
                         <>
                             <List.Accordion
                                 style={styles.accordingStyleOffice}
