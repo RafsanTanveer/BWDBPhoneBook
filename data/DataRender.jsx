@@ -94,10 +94,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
     const [isFilterOn, setIsFilterOn] = useState(false);
     const [state, setState] = React.useState({ open: false });
+
     const [vacantData, setvacantData] = useState([]);
     const [totalVacantPost, setTotalVacantPost] = useState(0);
     const [totalProjectVacant, settotalProjectVacant] = useState(0);
     const [totalSetupVacant, settotalSetupVacant] = useState();
+
+
+    const [allOffice, setallOffice] = useState([]);
+    const [setupOffice, setsetupOffice] = useState([]);
+    const [projectOffice, setprojectOffice] = useState([]);
+
+
+
+
     const onStateChange = ({ open }) => setState({ open });
     const [groupMenu, setGroupMenu] = useState(false);
     const { open } = state;
@@ -112,8 +122,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isReportActive, setIsReportActive] = useState(false);
     const [isCurrentActive, setIsCurrentActive] = useState(true);
 
-    const [isAllActive, setisAllActive] = useState(false);
-    
+    const [isAllActive, setisAllActive] = useState(true);
+    const [isProjectActive, setisProjectActive] = useState(false);
+    const [isSetupActive, setisSetupActive] = useState(false);
 
 
     const [selectedItems, setSelectedItems] = useState([]);
@@ -328,6 +339,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     }
+
+    const loadAllOffice = () => { setvacantData(allOffice)}
+
+    const loadSetupOffice = () => { setvacantData(setupOffice) }
+
+    const loadProjectOffice = () => { setvacantData(projectOffice) }
+
 
 
 
@@ -648,38 +666,47 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                     const vacantData = vacantResponse.rows;
 
                     let totalVacanPost = 0
+                    let allOfficeList = []
                     vacantData.forEach(it => {
 
-                            totalVacanPost += parseInt(it.blank);
+                        totalVacanPost += parseInt(it.blank);
+                        allOfficeList.push(it)
 
                     });
 
 
 
                     setTotalVacantPost(totalVacanPost)
+                    setallOffice(allOfficeList)
 
                     let totalProjectVacant = 0
+                    let projectOfficeList = []
                     vacantData.forEach(it => {
 
-                         if (it.postType != "R") {
-                             totalProjectVacant += parseInt(it.blank);
+                        if (it.postType != "R") {
+                            totalProjectVacant += parseInt(it.blank);
+                            projectOfficeList.push(it)
                         }
 
                     });
 
                     settotalProjectVacant(totalProjectVacant)
+                    setprojectOffice(projectOfficeList)
 
 
                     let totalsetupVacant = 0
+                    let setupOfficeList = []
                     vacantData.forEach(it => {
 
                         if (it.postType === "R") {
                             totalsetupVacant += parseInt(it.blank);
+                            setupOfficeList.push(it)
                         }
 
                     });
 
                     settotalSetupVacant(totalsetupVacant)
+                    setsetupOffice(setupOfficeList)
 
 
 
@@ -1313,7 +1340,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             marginTop: 7,
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                            width:  140,
+                                            width: 140,
                                             // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
@@ -1390,23 +1417,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             marginTop: 7,
                                             // backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                             width: isReportActive ? 210 : 140,
+                                            width: isReportActive ? 210 : 140,
                                             // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
                                         }}>
                                         <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
+                                                onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice())}
                                             style={{
                                                 height: 20,
                                                 // width: 70,
-                                                backgroundColor: isCurrentActive ? `${currentTheme}` : 'white',
+                                                backgroundColor: isAllActive ? `${currentTheme}` : 'white',
                                                 borderRadius: height * .005,
-                                                paddingHorizontal:15
+                                                paddingHorizontal: 15
                                             }}>
                                             <Text
                                                 style={{
-                                                    color: isCurrentActive ? 'white' : 'black',
+                                                    color: isAllActive ? 'white' : 'black',
                                                     height: height * (1 / 40),
                                                     fontSize: txtSizeNormal,
                                                     fontFamily: Platform.OS === "android" ? 'serif' : null,
@@ -1417,18 +1444,18 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         {
                                             netInfo.isConnected &&
                                             <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
+                                                onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(true), setisProjectActive(false), loadSetupOffice())}
                                                 style={{
                                                     height: 20,
                                                     // width: 70,
-                                                    backgroundColor: !isVacantActive ? 'white' : `${currentTheme}`,
+                                                    backgroundColor: isSetupActive ? `${currentTheme}` : 'white',
                                                     borderRadius: height * .005,
                                                     paddingHorizontal: 15
 
                                                 }}>
                                                 <Text
                                                     style={{
-                                                        color: !isVacantActive ? 'black' : 'white',
+                                                        color: isSetupActive ? 'white' : 'black',
                                                         height: height * (1 / 40),
                                                         fontSize: txtSizeNormal,
                                                         fontFamily: Platform.OS === "android" ? 'serif' : null,
@@ -1440,16 +1467,16 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         {
                                             true &&
                                             <TouchableOpacity
-                                                        onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(true))}
+                                                onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(false), setisProjectActive(true), loadProjectOffice())}
                                                 style={{
                                                     height: 20,
                                                     width: 70,
-                                                    backgroundColor: isReportActive ? `${currentTheme}` : 'white',
+                                                    backgroundColor: isProjectActive ? `${currentTheme}` : 'white',
                                                     borderRadius: height * .005,
                                                 }}>
                                                 <Text
                                                     style={{
-                                                        color: isReportActive ? 'white' : 'black',
+                                                        color: isProjectActive ? 'white' : 'black',
                                                         height: height * (1 / 40),
                                                         fontSize: txtSizeNormal,
                                                         fontFamily: Platform.OS === "android" ? 'serif' : null,
@@ -1627,7 +1654,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Office Name</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Office Name</Text>
                             </View>
 
 
@@ -1640,7 +1667,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Total</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Total</Text>
                             </View>
                             <View style={{
                                 flex: 2, backgroundColor: `${currentTheme}50`,
@@ -1649,7 +1676,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Existing</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Existing</Text>
                             </View>
                             <View style={{
                                 flex: 2, backgroundColor: `${currentTheme}50`,
@@ -1658,7 +1685,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                             }}>
 
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal , fontWeight: '500' }}>Vacant</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant</Text>
                             </View>
                         </View>
 
