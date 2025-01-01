@@ -96,7 +96,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [state, setState] = React.useState({ open: false });
     const [vacantData, setvacantData] = useState([]);
     const [totalVacantPost, setTotalVacantPost] = useState(0);
-    const [totalVacantPostWithProject, settotalVacantPostWithProject] = useState(0);
+    const [totalProjectVacant, settotalProjectVacant] = useState(0);
+    const [totalSetupVacant, settotalSetupVacant] = useState();
     const onStateChange = ({ open }) => setState({ open });
     const [groupMenu, setGroupMenu] = useState(false);
     const { open } = state;
@@ -110,6 +111,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isVacantActive, setIsVacantActive] = useState(false);
     const [isReportActive, setIsReportActive] = useState(false);
     const [isCurrentActive, setIsCurrentActive] = useState(true);
+
+    const [isAllActive, setisAllActive] = useState(false);
+
+
     const [selectedItems, setSelectedItems] = useState([]);
     const [activeIcon, setActiveIcon] = useState();
     const [masterData, setMasterData] = useState([])
@@ -643,19 +648,39 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                     let totalVacanPost = 0
                     vacantData.forEach(it => {
-                        if (it.postType === "R") {
+
                             totalVacanPost += parseInt(it.blank);
-                        }
-                    });
-
-                    let totalVacanPostWithProject = 0
-                    vacantData.forEach(it => {
-
-                            totalVacanPostWithProject += parseInt(it.blank);
 
                     });
+
+
 
                     setTotalVacantPost(totalVacanPost)
+
+                    let totalProjectVacant = 0
+                    vacantData.forEach(it => {
+
+                         if (it.postType != "R") {
+                             totalProjectVacant += parseInt(it.blank);
+                        }
+
+                    });
+
+                    settotalProjectVacant(totalProjectVacant)
+
+
+                    let totalsetupVacant = 0
+                    vacantData.forEach(it => {
+
+                        if (it.postType === "R") {
+                            totalsetupVacant += parseInt(it.blank);
+                        }
+
+                    });
+
+                    settotalSetupVacant(totalsetupVacant)
+
+
 
                     __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
 
@@ -1287,7 +1312,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             marginTop: 7,
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                            width: isReportActive ? 210 : 140,
+                                            width:  140,
                                             // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
@@ -1364,13 +1389,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             marginTop: 7,
                                             // backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                            // width: isReportActive ? 210 : 140,
+                                             width: isReportActive ? 210 : 140,
                                             // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1
                                         }}>
                                         <TouchableOpacity
-                                            onPress={() => (setIsCurrentActive(true), setIsVacantActive(false), setIsReportActive(false))}
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
                                             style={{
                                                 height: 20,
                                                 // width: 70,
@@ -1408,13 +1433,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                         fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                         textAlign: 'center',
                                                         fontWeight: 'bold'
-                                                    }}>Vacant</Text>
+                                                    }}>Setup</Text>
                                             </TouchableOpacity>
                                         }
                                         {
-                                            false &&
+                                            true &&
                                             <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(false), setIsReportActive(true))}
+                                                        onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(true))}
                                                 style={{
                                                     height: 20,
                                                     width: 70,
@@ -1429,7 +1454,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                         fontFamily: Platform.OS === "android" ? 'serif' : null,
                                                         textAlign: 'center',
                                                         fontWeight: 'bold'
-                                                    }}>Report</Text>
+                                                    }}>Project</Text>
                                             </TouchableOpacity>
                                         }
                                     </View>
@@ -1504,7 +1529,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost : filteredData.length}  </Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost + ` ${totalSetupVacant}` + ` ${totalProjectVacant} ` : filteredData.length}  </Text>
                             <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{notDgOrAdg && canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
