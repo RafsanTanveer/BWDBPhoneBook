@@ -113,6 +113,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isCurrentActive, setIsCurrentActive] = useState(true);
 
     const [isAllActive, setisAllActive] = useState(false);
+    
 
 
     const [selectedItems, setSelectedItems] = useState([]);
