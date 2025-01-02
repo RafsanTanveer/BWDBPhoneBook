@@ -340,7 +340,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     }
 
-    const loadAllOffice = () => { setvacantData(allOffice)}
+    const loadAllOffice = () => { setvacantData(allOffice) }
 
     const loadSetupOffice = () => { setvacantData(setupOffice) }
 
@@ -630,117 +630,80 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         try {
             setRefreshing(false);
 
-            // check if table exits or not
-
-            const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
-                db.transaction((tx) => {
-                    tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
-                        resolve([tableExistsResult, null]);
-                    });
-                });
-            });
-
-
-            const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            __DEV__ && console.log('Total table number = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
-
-            const tableExists = tableNames.includes(tablename);
-
-            // const vacantTableNames = tableNames.map(it => (it.includes('vacant') ? it : ''))
-
-            const vacantTableName = `VACANT${tablename}`
 
 
 
 
-            __DEV__ && console.log(vacantTableName);
-
-            if (tableExists) {
-
-                if (netInfo.isConnected) {
+            if (netInfo.isConnected) {
 
 
 
-                    const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code } });
-                    const vacantData = vacantResponse.rows;
+                const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code } });
+                const vacantData = vacantResponse.rows;
 
-                    let totalVacanPost = 0
-                    let allOfficeList = []
-                    vacantData.forEach(it => {
+                let totalVacanPost = 0
+                let allOfficeList = []
+                vacantData.forEach(it => {
 
-                        totalVacanPost += parseInt(it.blank);
-                        allOfficeList.push(it)
+                    totalVacanPost += parseInt(it.blank);
+                    allOfficeList.push(it)
 
-                    });
-
-
-
-                    setTotalVacantPost(totalVacanPost)
-                    setallOffice(allOfficeList)
-
-                    let totalProjectVacant = 0
-                    let projectOfficeList = []
-                    vacantData.forEach(it => {
-
-                        if (it.postType != "R") {
-                            totalProjectVacant += parseInt(it.blank);
-                            projectOfficeList.push(it)
-                        }
-
-                    });
-
-                    settotalProjectVacant(totalProjectVacant)
-                    setprojectOffice(projectOfficeList)
-
-
-                    let totalsetupVacant = 0
-                    let setupOfficeList = []
-                    vacantData.forEach(it => {
-
-                        if (it.postType === "R") {
-                            totalsetupVacant += parseInt(it.blank);
-                            setupOfficeList.push(it)
-                        }
-
-                    });
-
-                    settotalSetupVacant(totalsetupVacant)
-                    setsetupOffice(setupOfficeList)
-
-
-
-                    __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
-
-                    setvacantData(vacantData)
-
-                    __DEV__ && console.log("in data render");
-                    // console.log(vacantData);
-                }
-                else {
-                    setTotalVacantPost(0)
-                    setvacantData([])
-                }
-
-                ////////////////////////////////////////vacant list //////////////////////////////////////
-
-                const { vacantRows } = await new Promise((resolve, reject) => {
-                    db.transaction((tx) => {
-                        tx.executeSql(`SELECT * FROM vacantSUBDIVENGCIV;`, [], (_, result) => {
-                            resolve(result);
-                        });
-                    });
                 });
 
-                __DEV__ && console.log(vacantRows);
-                // const vacantData = vacantRows._array;
-
-                ////////////////////////////////////////vacant list //////////////////////////////////////
 
 
+                setTotalVacantPost(totalVacanPost)
+                setallOffice(allOfficeList)
+
+                let totalProjectVacant = 0
+                let projectOfficeList = []
+                vacantData.forEach(it => {
+
+                    if (it.postType != "R") {
+                        totalProjectVacant += parseInt(it.blank);
+                        projectOfficeList.push(it)
+                    }
+
+                });
+
+                settotalProjectVacant(totalProjectVacant)
+                setprojectOffice(projectOfficeList)
 
 
+                let totalsetupVacant = 0
+                let setupOfficeList = []
+                vacantData.forEach(it => {
+
+                    if (it.postType === "R") {
+                        totalsetupVacant += parseInt(it.blank);
+                        setupOfficeList.push(it)
+                    }
+
+                });
+
+                settotalSetupVacant(totalsetupVacant)
+                setsetupOffice(setupOfficeList)
+
+
+
+                __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
+
+                setvacantData(vacantData)
+
+                __DEV__ && console.log("in data render");
+                // console.log(vacantData);
             }
+            else {
+                setTotalVacantPost(0)
+                setvacantData([])
+            }
+
+
+
+
+
+
+
         } catch (error) {
             __DEV__ && console.error(error);
         }
@@ -1411,81 +1374,117 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 {
                                     true && isVacantActive &&
                                     netInfo.isConnected &&
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            marginTop: 7,
-                                            // backgroundColor: 'white',
-                                            borderRadius: height * .005,
-                                            width: isReportActive ? 210 : 140,
-                                            // elevation: 5
-                                            // borderColor: 'black',
-                                            // borderWidth:1
-                                        }}>
-                                        <TouchableOpacity
-                                                onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice())}
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between',  width: width * .95 }} >
+                                        <View
                                             style={{
-                                                height: 20,
-                                                // width: 70,
-                                                backgroundColor: isAllActive ? `${currentTheme}` : 'white',
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                marginTop: 7,
+                                                // backgroundColor: 'white',
                                                 borderRadius: height * .005,
-                                                paddingHorizontal: 15
+                                                width: isReportActive ? 210 : 140,
+                                                // elevation: 5
+                                                // borderColor: 'black',
+                                                // borderWidth:1
                                             }}>
-                                            <Text
-                                                style={{
-                                                    color: isAllActive ? 'white' : 'black',
-                                                    height: height * (1 / 40),
-                                                    fontSize: txtSizeNormal,
-                                                    fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold'
-                                                }}>All</Text>
-                                        </TouchableOpacity>
-                                        {
-                                            netInfo.isConnected &&
+                                            
                                             <TouchableOpacity
-                                                onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(true), setisProjectActive(false), loadSetupOffice())}
+                                                onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice())}
                                                 style={{
                                                     height: 20,
                                                     // width: 70,
-                                                    backgroundColor: isSetupActive ? `${currentTheme}` : 'white',
+                                                    backgroundColor: isAllActive ? `${currentTheme}` : 'white',
                                                     borderRadius: height * .005,
                                                     paddingHorizontal: 15
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: isAllActive ? 'white' : 'black',
+                                                        height: height * (1 / 40),
+                                                        fontSize: txtSizeNormal,
+                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                        textAlign: 'center',
+                                                        fontWeight: 'bold'
+                                                    }}>All</Text>
+                                            </TouchableOpacity>
+                                            {
+                                                netInfo.isConnected &&
+                                                <TouchableOpacity
+                                                    onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(true), setisProjectActive(false), loadSetupOffice())}
+                                                    style={{
+                                                        height: 20,
+                                                        // width: 70,
+                                                        backgroundColor: isSetupActive ? `${currentTheme}` : 'white',
+                                                        borderRadius: height * .005,
+                                                        paddingHorizontal: 15
 
-                                                }}>
-                                                <Text
+                                                    }}>
+                                                    <Text
+                                                        style={{
+                                                            color: isSetupActive ? 'white' : 'black',
+                                                            height: height * (1 / 40),
+                                                            fontSize: txtSizeNormal,
+                                                            fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                            textAlign: 'center',
+                                                            fontWeight: 'bold'
+                                                        }}>Setup</Text>
+                                                </TouchableOpacity>
+                                            }
+                                            {
+                                                true &&
+                                                <TouchableOpacity
+                                                    onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(false), setisProjectActive(true), loadProjectOffice())}
                                                     style={{
-                                                        color: isSetupActive ? 'white' : 'black',
-                                                        height: height * (1 / 40),
-                                                        fontSize: txtSizeNormal,
-                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                                        textAlign: 'center',
-                                                        fontWeight: 'bold'
-                                                    }}>Setup</Text>
-                                            </TouchableOpacity>
-                                        }
-                                        {
-                                            true &&
-                                            <TouchableOpacity
-                                                onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(false), setisProjectActive(true), loadProjectOffice())}
-                                                style={{
-                                                    height: 20,
-                                                    width: 70,
-                                                    backgroundColor: isProjectActive ? `${currentTheme}` : 'white',
-                                                    borderRadius: height * .005,
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        color: isProjectActive ? 'white' : 'black',
-                                                        height: height * (1 / 40),
-                                                        fontSize: txtSizeNormal,
-                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                                        textAlign: 'center',
-                                                        fontWeight: 'bold'
-                                                    }}>Project</Text>
-                                            </TouchableOpacity>
-                                        }
+                                                        height: 20,
+                                                        width: 70,
+                                                        backgroundColor: isProjectActive ? `${currentTheme}` : 'white',
+                                                        borderRadius: height * .005,
+                                                    }}>
+                                                    <Text
+                                                        style={{
+                                                            color: isProjectActive ? 'white' : 'black',
+                                                            height: height * (1 / 40),
+                                                            fontSize: txtSizeNormal,
+                                                            fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                            textAlign: 'center',
+                                                            fontWeight: 'bold'
+                                                        }}>Project</Text>
+                                                </TouchableOpacity>
+                                            }
+
+
+
+                                        </View>
+
+                                        <View style={{ width: width * .40, marginRight: 10, marginTop: 7 }} >
+                                            <Dropdown
+                                                style={[styles.elementDropdown, isDistrictFocus && { borderColor: 'blue' }, {}]}
+                                                placeholderStyle={styles.placeholderStyle}
+                                                selectedTextStyle={styles.selectedTextStyle}
+                                                inputSearchStyle={styles.inputSearchStyle}
+                                                iconStyle={styles.iconStyle}
+                                                data={tempDist}
+
+                                                maxHeight={500}
+                                                labelField="label"
+                                                valueField="value"
+                                                placeholder={!isDistrictFocus ? 'Select District' : '...'}
+
+                                                value={currentDistValue}
+                                                onFocus={() => setIsDistrictFocus(true)}
+                                                onBlur={() => setIsDistrictFocus(false)}
+                                                onChange={item => {
+                                                    setCurrentDistValue(item.value);
+                                                    setIsDistrictFocus(false);
+                                                    sortByDistrict(item.value)
+                                                }}
+
+                                            />
+                                        </View>
+
                                     </View>
+
+
                                 }
 
                             </View>
@@ -1505,7 +1504,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         maxHeight={500}
                                         labelField="label"
                                         valueField="value"
-                                        placeholder={!isDistrictFocus ? 'Select item' : '...'}
+                                        placeholder={!isDistrictFocus ? 'Select District' : '...'}
 
                                         value={currentDistValue}
                                         onFocus={() => setIsDistrictFocus(true)}
@@ -1531,7 +1530,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         maxHeight={500}
                                         labelField="label"
                                         valueField="value"
-                                        placeholder={!isDistrictFocus ? 'Select item' : '...'}
+                                        placeholder={!isDistrictFocus ? 'Select Charge' : '...'}
 
                                         value={currentChargeValue}
                                         onFocus={() => setIsChargeFocus(true)}
