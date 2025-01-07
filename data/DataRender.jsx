@@ -45,16 +45,7 @@ let chargeMap = {};
 let tempDist = []
 let postMap = {}
 let postKeys
-let tempDropVal = [
-    { label: "All DISTRICT", value: 0 },
-    { label: "CHATTOGRAM", value: 1 },
-    { label: "DHAKA", value: 2 },
-    { label: "MUNSHIGANJ", value: 3 },
-    { label: "RANGAMATI", value: 4 },
-    { label: "PANI BHABAN", value: 5 }]
-let tempValue = []
-let tempLevel = []
-
+let vacantDistrict = []
 
 
 let charges = [
@@ -114,6 +105,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isFloatingBtnExteded, setIsFloatingBtnExteded] = useState(false);
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isVacantLoading, setIsVacantLoading] = useState(false);
     const [DATA, setDATA] = useState([])
     const [districtFromDB, setDistrictFromDB] = useState([]);
     const { handleSubmit, control } = useForm();
@@ -173,6 +165,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [totalNBSPost, setTotalNBSPost] = useState('');
 
     const [currentDistValue, setCurrentDistValue] = useState();
+    const [currentVacantDisrictValue, setcurrentVacantDisrictValue] = useState();
     const [currentChargeValue, setCurrentChargeValue] = useState();
     const [distName, setdistName] = useState();
 
@@ -311,6 +304,61 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
     }
+
+
+
+    const sortByVacantDistrict = (currentDistValue) => {
+
+        setisrtDateChecked(false)
+        setChecked(false)
+        setisrtJoiningChecked(false)
+
+        __DEV__ && console.log('sortByVacantDistrict', currentDistValue);
+
+        if (currentDistValue === 'All DISTRICT') {
+            setdistName('')
+            setvacantData(allOffice)
+        }
+        else if (currentDistValue === 'PANI BHABAN') {
+            setdistName('in HEADQUARTER')
+            const newDataDhakaDist = allOffice.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = "DHAKA".toLocaleLowerCase();
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newDataPaniBhaban = newDataDhakaDist.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? 'PANI BHABAN'.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newDataHydrologyBuilding = newDataDhakaDist.filter((item) => {
+                const itemData = item.officeAddress ? item.officeAddress.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? 'Hydro'.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+
+            const newData = [...newDataPaniBhaban, ...newDataHydrologyBuilding]
+
+            setvacantData(newData)
+        }
+        else {
+            setdistName("in " + currentDistValue)
+            const newData = allOffice.filter((item) => {
+                const itemData = item.officeDistrict ? item.officeDistrict.toLocaleLowerCase() : ''
+                const textData = currentDistValue ? currentDistValue.toLocaleLowerCase() : '';
+                return itemData.indexOf(textData) > -1;
+            });
+            setvacantData(newData)
+        }
+
+
+
+
+
+    }
+
 
     const chargeFilter = (currentChargeValue) => {
 
@@ -620,7 +668,13 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
     const fetchVacantDataFromDb = async () => {
 
-        setIsLoading(true);
+        setIsVacantLoading(true)
+
+        console.log('invvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+
+
+
+        // setIsLoading(true);
 
 
         // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
@@ -628,18 +682,22 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
         try {
-            setRefreshing(false);
+            // setRefreshing(false);
 
 
-
+            console.log('invv    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 
             if (netInfo.isConnected) {
 
 
 
+                console.log('invv    -------------------------------------------///////////////////////');
+
                 const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code } });
                 const vacantData = vacantResponse.rows;
+
+                setvacantData(vacantData)
 
                 let totalVacanPost = 0
                 let allOfficeList = []
@@ -688,7 +746,35 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
 
-                setvacantData(vacantData)
+
+
+
+                const distMap = {};
+                vacantData.forEach(item => {
+                    if (distMap[item.officeDistrict]) {
+                        distMap[item.officeDistrict]++;
+                    } else {
+                        distMap[item.officeDistrict] = 1;
+                    }
+                });
+                // console.log("distMap =---------------------------", distMap);
+
+                var sortedKeys = Object.keys(distMap).sort();
+
+
+                vacantDistrict = [...vacantDistrict, { label: "All DISTRICT", value: "All DISTRICT" }]
+
+                sortedKeys.map(item =>
+                    // { label: 'Item 8', value: '8' },
+                    vacantDistrict = [...vacantDistrict, { label: item + ' - ' + distMap[item], value: item }],
+                    // tempLevel = [...tempLevel, {item}],
+                    //tempValue=[...tempValue,{item}]
+                )
+
+                vacantDistrict = [...vacantDistrict, { label: "HQ", value: "PANI BHABAN" }]
+
+
+
 
                 __DEV__ && console.log("in data render");
                 // console.log(vacantData);
@@ -707,7 +793,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         } catch (error) {
             __DEV__ && console.error(error);
         }
-        setIsLoading(false);
+        setIsVacantLoading(false)
+
     }
 
 
@@ -818,7 +905,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         // fetchData();
         fetchDataFromDb();
-        fetchVacantDataFromDb()
+        // fetchVacantDataFromDb()
+
+        setvacantData()
+        setTotalVacantPost()
+        setallOffice()
+        settotalProjectVacant()
+        setprojectOffice()
+        settotalSetupVacant()
+        setsetupOffice()
 
         setisrtDateChecked(false)
         setisrtJoiningChecked(false)
@@ -827,6 +922,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setSearch('')
         setdistName('')
         tempDist = []
+        vacantDistrict = []
         chargeMap = {};
         postMap = {}
         setIsSummeryVisible(false)
@@ -842,6 +938,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setIsChargeOpen(false)
         setIsFloatingBtnExteded(false)
         setGroupMenu(false)
+
+        setisAllActive(true)
+        setisProjectActive(false)
+        setisSetupActive(false)
 
     }, [desig_code]);
 
@@ -1329,7 +1429,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                         {
                                             netInfo.isConnected &&
                                             <TouchableOpacity
-                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false))}
+                                                onPress={() => (setIsCurrentActive(false), setIsVacantActive(true), setIsReportActive(false), fetchVacantDataFromDb())}
                                                 style={{
                                                     height: 20,
                                                     width: 70,
@@ -1374,7 +1474,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 {
                                     true && isVacantActive &&
                                     netInfo.isConnected &&
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between',  width: width * .95 }} >
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width * .95 }} >
                                         <View
                                             style={{
                                                 flex: 1,
@@ -1387,9 +1487,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                 // borderColor: 'black',
                                                 // borderWidth:1
                                             }}>
-                                            
+
                                             <TouchableOpacity
-                                                onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice())}
+                                                onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice(), setcurrentVacantDisrictValue())}
                                                 style={{
                                                     height: 20,
                                                     // width: 70,
@@ -1410,7 +1510,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             {
                                                 netInfo.isConnected &&
                                                 <TouchableOpacity
-                                                    onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(true), setisProjectActive(false), loadSetupOffice())}
+                                                    onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(true), setisProjectActive(false), loadSetupOffice(), setcurrentVacantDisrictValue())}
                                                     style={{
                                                         height: 20,
                                                         // width: 70,
@@ -1433,7 +1533,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             {
                                                 true &&
                                                 <TouchableOpacity
-                                                    onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(false), setisProjectActive(true), loadProjectOffice())}
+                                                    onPress={() => (setIsVacantActive(true), setisAllActive(false), setisSetupActive(false), setisProjectActive(true), loadProjectOffice(), setcurrentVacantDisrictValue())}
                                                     style={{
                                                         height: 20,
                                                         width: 70,
@@ -1463,20 +1563,20 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                 selectedTextStyle={styles.selectedTextStyle}
                                                 inputSearchStyle={styles.inputSearchStyle}
                                                 iconStyle={styles.iconStyle}
-                                                data={tempDist}
+                                                data={vacantDistrict}
 
                                                 maxHeight={500}
                                                 labelField="label"
                                                 valueField="value"
                                                 placeholder={!isDistrictFocus ? 'Select District' : '...'}
 
-                                                value={currentDistValue}
+                                                value={currentVacantDisrictValue}
                                                 onFocus={() => setIsDistrictFocus(true)}
                                                 onBlur={() => setIsDistrictFocus(false)}
                                                 onChange={item => {
-                                                    setCurrentDistValue(item.value);
+                                                    setcurrentVacantDisrictValue(item.value);
                                                     setIsDistrictFocus(false);
-                                                    sortByDistrict(item.value)
+                                                    sortByVacantDistrict(item.value)
                                                 }}
 
                                             />
@@ -1556,7 +1656,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 {
                     !search && DATA ?
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
-                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? totalVacantPost + ` ${totalSetupVacant}` + ` ${totalProjectVacant} ` : filteredData.length}  </Text>
+                            <Text style={{ marginLeft: width * .035, color: 'black', fontSize: height * .016, marginRight: height * .001, fontWeight: 'bold' }}>Total {isVacantActive ? "vacant post of" : ""} {designation} {isVacantActive ? "" : distName}: {isVacantActive ? isAllActive ? totalVacantPost : isSetupActive ? totalSetupVacant : totalProjectVacant : filteredData.length}  </Text>
                             <Text style={{ marginLeft: 1, color: 'grey', fontSize: height * .015, fontStyle: 'italic', justifyContent: 'center' }}>{notDgOrAdg && canAccessSeniority != 'true' ? 'Alphabatically' : ''}</Text>
                         </View>
                         : ""
@@ -1688,31 +1788,36 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             </View>
                         </View>
 
-                        <FlashList
-                            data={vacantData}
-                            estimatedItemSize={200}
-                            // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
+                        {
+                            !isVacantLoading ?
+                                <FlashList
+                                    data={vacantData}
+                                    estimatedItemSize={200}
+                                    // keyExtractor={(item) => item.id}    // do not set key for flashlist , it creates problem rendering ovelap
 
-                            ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
-                            renderItem={({ item, index }) => (
-                                <ItemVacant
+                                    ListEmptyComponent={<NoDataFoundScreen designation={Camelize(designation)} />}
+                                    renderItem={({ item, index }) => (
+                                        <ItemVacant
 
-                                    index={index + 1}
-                                    office={item.office}
-                                    officeName={item.officeName}
-                                    blank={item.blank}
-                                    postType={item.postType}
-                                    totalPost={item.totalPost}
-                                    occupied={item.occupied}
+                                            index={index + 1}
+                                            office={item.office}
+                                            officeName={item.officeName}
+                                            blank={item.blank}
+                                            postType={item.postType}
+                                            totalPost={item.totalPost}
+                                            occupied={item.occupied}
+
+                                        />
+
+                                    )}
+                                    ref={(ref) => {
+                                        listViewRef = ref;
+                                    }}
 
                                 />
-
-                            )}
-                            ref={(ref) => {
-                                listViewRef = ref;
-                            }}
-
-                        />
+                                :
+                                <LoadingScreen />
+                        }
 
 
                     </>
