@@ -66,6 +66,7 @@ const selectAll_3 = '../assets/icons/selectAll-theme-3.png'
 const selectAll_6 = '../assets/icons/selectAll-theme-6.png'
 
 let higherPost = ''
+let lowerPost = ''
 
 
 
@@ -82,6 +83,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [isSummeryVisible, setIsSummeryVisible] = useState(false);
 
     const [higherPostForCurrentDesig, setHigherPostForCurrentDesig] = useState('');
+    const [lowerPostForCurrentDesig, setLowerPostForCurrentDesig] = useState('');
     const [selectIcon, setselectIcon] = useState(selectAllInactive);
     const [isFilterOn, setIsFilterOn] = useState(false);
     const [state, setState] = React.useState({ open: false });
@@ -443,14 +445,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 setTotalNBSPost(desigItem.totalPostNBS)
                 // console.log('desigItem.totalPostNBS ######################################',desigItem.totalPostNBS);
                 if (index - 1 >= 0)
-                    if (desigItem.cadre === designationContext[index - 1].cadre)
+                    if (desigItem.cadre === designationContext[index - 1].cadre) {
                         higherPost = designationContext[index - 1].designame
+
+                    }
+
+                if (desigItem.cadre === designationContext[index + 1].cadre)
+                    lowerPost = designationContext[index + 1].desig
+                else
+                    lowerPost = 888
             }
         });
 
         setHigherPostForCurrentDesig(higherPost)
+        setLowerPostForCurrentDesig(lowerPost)
 
         __DEV__ && console.log(designation, '---------higherPost /////  ---------------------------', higherPost);
+        __DEV__ && console.log(designation, '---------lowerPost /////  ---------------------------', lowerPost);
 
         try {
             setRefreshing(false);
@@ -694,14 +705,15 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 console.log('invv    -------------------------------------------///////////////////////');
 
-                const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code } });
+                const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code, lowerdesig: lowerPostForCurrentDesig } });
                 const vacantData = vacantResponse.rows;
+                // console.log(vacantData);
 
                 setvacantData(vacantData)
 
                 let totalVacanPost = 0
                 let allOfficeList = []
-                vacantData.forEach(it => {
+                vacantData?.forEach(it => {
 
                     totalVacanPost += parseInt(it.blank);
                     allOfficeList.push(it)
@@ -715,9 +727,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 let totalProjectVacant = 0
                 let projectOfficeList = []
-                vacantData.forEach(it => {
+                vacantData?.forEach(it => {
 
-                    if (it.postType != "R") {
+                    if (it.level == "8") {
                         totalProjectVacant += parseInt(it.blank);
                         projectOfficeList.push(it)
                     }
@@ -730,9 +742,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 let totalsetupVacant = 0
                 let setupOfficeList = []
-                vacantData.forEach(it => {
+                vacantData?.forEach(it => {
 
-                    if (it.postType === "R") {
+                    if (it.level != "8") {
+                        console.log(it.level);
+
                         totalsetupVacant += parseInt(it.blank);
                         setupOfficeList.push(it)
                     }
@@ -750,7 +764,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 const distMap = {};
-                vacantData.forEach(item => {
+                vacantData?.forEach(item => {
                     if (distMap[item.officeDistrict]) {
                         distMap[item.officeDistrict]++;
                     } else {
@@ -925,6 +939,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         vacantDistrict = []
         chargeMap = {};
         postMap = {}
+        lowerPost = ''
+        higherPost = ''
         setIsSummeryVisible(false)
         setIsVacantActive(false)
         setIsReportActive(false)
@@ -1803,9 +1819,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             office={item.office}
                                             officeName={item.officeName}
                                             blank={item.blank}
-                                            postType={item.postType}
+
                                             totalPost={item.totalPost}
                                             occupied={item.occupied}
+                                            level={item.level}
 
                                         />
 

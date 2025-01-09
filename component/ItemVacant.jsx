@@ -19,7 +19,7 @@ let selectedGroupIds = []
 
 
 
-const ItemVacant = ({ index, office, officeName, blank, postType,totalPost,occupied }) => {
+const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, level }) => {
 
 
 
@@ -61,7 +61,7 @@ const ItemVacant = ({ index, office, officeName, blank, postType,totalPost,occup
                 flex: 6, borderWidth: 1,
                 borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
 
-                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{officeText}-{office}</Text>
+                <Text style={{ textAlign: 'center', color: level == "8" ? 'red' : 'black' }}>{officeText}-{office}</Text>
             </View>
 
             {/* <View style={{
@@ -79,7 +79,7 @@ const ItemVacant = ({ index, office, officeName, blank, postType,totalPost,occup
 
             }}>
 
-                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{totalPost}</Text>
+                <Text style={{ textAlign: 'center', color: level == "8" ? 'red' : 'black' }}>{totalPost}</Text>
             </View>
 
             <View style={{
@@ -90,16 +90,16 @@ const ItemVacant = ({ index, office, officeName, blank, postType,totalPost,occup
 
             }}>
 
-                <Text style={{ textAlign: 'center', color: postType != 'R' ? 'red' : 'black' }}>{occupied}</Text>
+                <Text style={{ textAlign: 'center', color: level == "8" ? 'red' : 'black' }}>{occupied}</Text>
             </View>
 
             <View style={{
                 flex: 2, borderWidth: 1,
-                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center'
+                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center', backgroundColor: blank >= 1 ? `${currentTheme}40` :''
             }}>
                 <Text style={{
                     textAlign: 'center',
-                    color: postType != 'R' ? 'red' : 'black',
+                    color: level == "8" ? 'red' : 'black',
                     color: blank ? 'green' : 'black',
                     textDecorationLine: blank ? 'underline' : 'none',
                     fontWeight: blank? '700' : '400'
