@@ -105,7 +105,7 @@ const ExpendableDrawer = () => {
     const [waterDesig, setwaterDesig] = useState([])
     const [mechDesig, setmechDesig] = useState([])
     const [medicalDesig, setmedicalDesig] = useState([])
-
+    const [aprData, setaprData] = useState([]);
 
 
 
@@ -120,23 +120,14 @@ const ExpendableDrawer = () => {
 
             setRefreshing(false);
 
+            console.log('pmisId' + userInfo[0].id);
+
+            const { data: responseApr } = await api.get("getAprDetails", { params: { id: userInfo[0].id } });
+            setaprData(responseApr.rows)
+
+            console.log(responseApr.rows);
 
 
-            // const [tableExistsResult, dataResult] = await new Promise((resolve, reject) => {
-            //     db.transaction((tx) => {
-            //         tx.executeSql("SELECT name FROM sqlite_master WHERE type='table';", [], (_, tableExistsResult) => {
-            //             resolve([tableExistsResult, null]);
-            //         });
-            //     });
-            // });
-
-
-
-            // const tableNames = tableExistsResult.rows._array.map((table) => table.name);
-            // __DEV__ && console.log('Total table = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
-
-            // const tableExists = tableNames.includes('designation');
 
 
 
@@ -465,7 +456,7 @@ const ExpendableDrawer = () => {
 
                         <List.Accordion
                             style={styles.sectionStyle}
-                            title="Designations"
+                            title="PhoneBook"
                             titleStyle={styles.titlestyle}
 
                             left={props => <List.Icon {...props} icon={() => (
@@ -932,9 +923,9 @@ const ExpendableDrawer = () => {
 
 
                                     </List.Accordion>
-                                :
-                                ''
-                             }
+                                    :
+                                    ''
+                            }
 
 
                         </List.Accordion>
@@ -1185,29 +1176,91 @@ const ExpendableDrawer = () => {
                 }
                 {/*******************************************  Change Request ******************************** */}
 
+
+
                 {/*******************************************  APR ******************************** */}
                 {
-                    false && netInfo.isConnected ?
+                    true && netInfo.isConnected ?
                         <>
+                            <TouchableOpacity
+                                // onPress={() => { selectImage(true) }}
+                                onPress={() => { }}
+                                style={{
+                                    right: 0,
+                                    margin: 3,
+                                    backgroundColor: `${currentTheme}`,
+                                    borderRadius: height * .005,
+                                    paddingVertical: .5,
+                                    paddingHorizontal: 5,
+                                    elevation: 2,
+                                    height: height * .022,
+                                    justifyContent: 'center',
+                                    width: height * .09,
+
+                                }} >
+
+
+
+                                <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Update APR</Text>
+
+
+                            </TouchableOpacity>
                             <List.Accordion
-                                style={styles.accordingStyleOffice}
+                                style={{}}
                                 title="APR"
                                 titleStyle={styles.titlestyle}
 
                                 left={props => <List.Icon {...props} icon={() => (
-                                    <Image
-                                        source={require(aprIcon)}
-                                        style={styles.iconStyle}
-                                    />
+
+
+                                    <View style={{}} >
+
+
+
+                                        <Image
+                                            source={require(aprIcon)}
+                                            style={styles.iconStyle}
+                                        />
+                                    </View>
+
                                 )} />}
+
+                                // right={props => <List.Icon {...props} icon={() => (
+                                //     <>
+
+                                //         <TouchableOpacity
+                                //             // onPress={() => { selectImage(true) }}
+                                //             onPress={() => { toggleModal(true) }}
+                                //             style={{
+                                //                 right: 0,
+                                //                 margin: 3,
+                                //                 backgroundColor: `${currentTheme}`,
+                                //                 borderRadius: height * .005,
+                                //                 paddingVertical: .5,
+                                //                 paddingHorizontal: 5,
+                                //                 elevation: 2,
+                                //                 height: height * .022,
+                                //                 justifyContent: 'center'
+                                //             }} >
+                                //             {/* <Image style={{ height: width * .045, width: width * .045, }} source={Images['cngPh']} ></Image> */}
+
+
+                                //             <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Update</Text>
+
+
+                                //         </TouchableOpacity>
+                                //     </>
+                                // )} />}
+
+
                                 expanded={expendedList[aprStart]}
                                 onPress={() => handlePress(aprStart)} >
 
 
 
-                                {aprList.map((year) => (
+                                {aprData.map((apr) => (
 
-                                    <View key={year} style={{ flexDirection: 'row' }}>
+                                    <View key={apr.APRID} style={{ flexDirection: 'row' }}>
                                         <TouchableOpacity
                                             style={{
 
@@ -1226,7 +1279,7 @@ const ExpendableDrawer = () => {
                                                     color: 'black',
                                                     fontWeight: '700',
                                                     textAlign: 'center'
-                                                }}>{year}</Text>
+                                                }}>{apr?.year} ({apr?.start}-{apr?.end})</Text>
                                         </TouchableOpacity>
 
                                     </View>
