@@ -120,12 +120,11 @@ const ExpendableDrawer = () => {
 
             setRefreshing(false);
 
-            console.log('pmisId' + userInfo[0].id);
 
             const { data: responseApr } = await api.get("getAprDetails", { params: { id: userInfo[0].id } });
             setaprData(responseApr.rows)
 
-            console.log(responseApr.rows);
+
 
 
 
@@ -451,6 +450,7 @@ const ExpendableDrawer = () => {
                 {
                     adminLevel !== 'viewer' &&
                     <>
+
 
 
 
@@ -1181,13 +1181,14 @@ const ExpendableDrawer = () => {
                 {/*******************************************  APR ******************************** */}
                 {
                     true && netInfo.isConnected ?
-                        <>
+                        <View style={{flex:1, flexDirection:'column'}}>
                             <TouchableOpacity
-                                // onPress={() => { selectImage(true) }}
+
                                 onPress={() => { }}
                                 style={{
-                                    right: 0,
-                                    margin: 3,
+
+                                    position: 'absolute',
+                                    left:0,
                                     backgroundColor: `${currentTheme}`,
                                     borderRadius: height * .005,
                                     paddingVertical: .5,
@@ -1195,18 +1196,19 @@ const ExpendableDrawer = () => {
                                     elevation: 2,
                                     height: height * .022,
                                     justifyContent: 'center',
-                                    width: height * .09,
-
+                                    width: height * .1,
+                                    marginLeft: 20,
+                                    marginBottm: -10
                                 }} >
 
 
 
-                                <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Update APR</Text>
+                                <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic', fontWeight: '700' }} >Update APR</Text>
 
 
                             </TouchableOpacity>
                             <List.Accordion
-                                style={{}}
+                                style={styles.accordingStyleOffice}
                                 title="APR"
                                 titleStyle={styles.titlestyle}
 
@@ -1225,32 +1227,6 @@ const ExpendableDrawer = () => {
 
                                 )} />}
 
-                                // right={props => <List.Icon {...props} icon={() => (
-                                //     <>
-
-                                //         <TouchableOpacity
-                                //             // onPress={() => { selectImage(true) }}
-                                //             onPress={() => { toggleModal(true) }}
-                                //             style={{
-                                //                 right: 0,
-                                //                 margin: 3,
-                                //                 backgroundColor: `${currentTheme}`,
-                                //                 borderRadius: height * .005,
-                                //                 paddingVertical: .5,
-                                //                 paddingHorizontal: 5,
-                                //                 elevation: 2,
-                                //                 height: height * .022,
-                                //                 justifyContent: 'center'
-                                //             }} >
-                                //             {/* <Image style={{ height: width * .045, width: width * .045, }} source={Images['cngPh']} ></Image> */}
-
-
-                                //             <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Update</Text>
-
-
-                                //         </TouchableOpacity>
-                                //     </>
-                                // )} />}
 
 
                                 expanded={expendedList[aprStart]}
@@ -1287,7 +1263,7 @@ const ExpendableDrawer = () => {
                                 <Text></Text>
 
                             </List.Accordion>
-                        </>
+                        </View>
                         : ''
                 }
                 {/*******************************************  APR ******************************** */}
@@ -1295,7 +1271,7 @@ const ExpendableDrawer = () => {
                 {/*******************************************  Staff List ******************************** */}
                 {userInfo.length != 0 &&
                     userInfo[0].int_ext != 'E' &&
-                    false ?
+                    true ?
                     <>
                         <List.Item key={'Individual'}
 
