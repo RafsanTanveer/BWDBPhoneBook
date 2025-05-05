@@ -1271,7 +1271,7 @@ const ExpendableDrawer = () => {
                 {/*******************************************  Staff List ******************************** */}
                 {userInfo.length != 0 &&
                     userInfo[0].int_ext != 'E' &&
-                    true ?
+                    false ?
                     <>
                         <List.Item key={'Individual'}
 
