@@ -1234,32 +1234,51 @@ const ExpendableDrawer = () => {
 
 
 
-                                {aprData.map((apr) => (
-
-                                    <View key={apr.APRID} style={{ flexDirection: 'row' }}>
-                                        <TouchableOpacity
-                                            style={{
-
-                                                height: width * .1,
-                                                width: width * .4,
-                                                backgroundColor: `${currentTheme}20`,
-                                                justifyContent: 'center',
-                                                margin: width * .003,
-                                                borderRadius: width * .01,
-                                                marginLeft: width * .1
-                                            }}
-                                            onPress={() => { }}
-                                        >
-                                            <Text
+                                {aprData && aprData.length > 0 ? (
+                                    aprData.map((apr) => (
+                                        <View key={apr.APRID} style={{ flexDirection: 'row' }}>
+                                            <TouchableOpacity
                                                 style={{
-                                                    color: 'black',
-                                                    fontWeight: '700',
-                                                    textAlign: 'center'
-                                                }}>{apr?.year} ({apr?.start}-{apr?.end})</Text>
-                                        </TouchableOpacity>
+                                                    height: width * 0.1,
+                                                    width: width * 0.4,
+                                                    backgroundColor: `${currentTheme}20`,
+                                                    justifyContent: 'center',
+                                                    margin: width * 0.003,
+                                                    borderRadius: width * 0.01,
+                                                    marginLeft: width * 0.1
+                                                }}
+                                                onPress={() => {
+                                                    navigation.navigate('AprScreen', {
+                                                        id: pmisId,
+                                                        officecode: presentOfficeCode,
+                                                        individualOrOffice: true,
+                                                        recStatus: "C",
+                                                        name: presentOffice,
+                                                        apr: apr
+                                                    });
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        color: 'black',
+                                                        fontWeight: '700',
+                                                        textAlign: 'center'
+                                                    }}
+                                                >
+                                                    {apr?.year} ({apr?.start} - {apr?.end})
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    ))
+                                ) : (
+                                        <View style={{ paddingLeft: '30%',  }}>
+                                            <Text style={{ color: '#666', fontSize: 16, fontStyle: 'italic', fontWeight:'600' }}>
+                                                No APR data available
+                                            </Text>
+                                        </View>
 
-                                    </View>
-                                ))}
+                                )}
+
                                 <Text></Text>
 
                             </List.Accordion>
