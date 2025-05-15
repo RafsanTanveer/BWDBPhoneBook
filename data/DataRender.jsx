@@ -437,20 +437,23 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setseniorityText(snrTxt);
 
 
-        // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
+        //  console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
 
 
         designationContext.forEach((desigItem, index) => {
+
             if (desigItem.designame === designation) {
+            console.log(' -------------------------------in designationContext --------------------------------- ');
+
                 setTotalNBSPost(desigItem.totalPostNBS)
                 // console.log('desigItem.totalPostNBS ######################################',desigItem.totalPostNBS);
                 if (index - 1 >= 0)
-                    if (desigItem.cadre === designationContext[index - 1].cadre) {
+                    if (desigItem?.cadre === designationContext[index - 1]?.cadre) {
                         higherPost = designationContext[index - 1].designame
 
                     }
 
-                if (desigItem.cadre === designationContext[index + 1].cadre)
+                if (desigItem?.cadre === designationContext[index + 1]?.cadre)
                     lowerPost = designationContext[index + 1].desig
                 else
                     lowerPost = 888
@@ -479,13 +482,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
             __DEV__ && console.log('Total table = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
+
+
+
+
 
             const tableExists = tableNames.includes(tablename);
 
-            // const vacantTableNames = tableNames.map(it => (it.includes('vacant') ? it : ''))
-
-            // const vacantTableName = `vacant${tablename}`
+          console.log("************************ tableExists = ",tableExists,'**********************************');
 
 
 
@@ -495,6 +499,21 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
             if (tableExists) {
                 __DEV__ && console.log(tablename, ' table exists');
+
+                  __DEV__ && console.log();
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log("--------------- TABLE FROM DATABASE HAS BEEN REACHED ----------------");
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
 
                 const { rows } = await new Promise((resolve, reject) => {
                     db.transaction((tx) => {
@@ -609,7 +628,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 __DEV__ && console.log();
                 __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
                 __DEV__ && console.log("----------------- UNREACHED BLOCK HAS BEEN REACHED ------------------");
+                __DEV__ && console.log('---------------------------------------------------------------------');
+                __DEV__ && console.log('---------------------------------------------------------------------');
                 __DEV__ && console.log('---------------------------------------------------------------------');
 
 
@@ -1003,20 +1026,19 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     }
 
     const joiningDateUpdate = () => {
+    setChecked(false);
+    setisrtDateChecked(false);
 
-        setChecked(false)
-        setisrtDateChecked(false)
+    const newJoiningChecked = !isrtJoiningChecked;
+    setisrtJoiningChecked(newJoiningChecked);
 
+    const sortedData = newJoiningChecked
+        ? [...filteredData].sort((a, b) => new Date(a.bwdbJoiningDt) - new Date(b.bwdbJoiningDt))
+        : [...filteredData].sort((a, b) => a.name.localeCompare(b.name));
 
-        setisrtJoiningChecked(!isrtJoiningChecked)
+    setFilteredData(sortedData);
+};
 
-
-
-        !isrtJoiningChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.bwdbJoiningDt) - new Date(b.bwdbJoiningDt) })) :
-            setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
-
-
-    }
 
     const retirementDateUpdate = () => {
 
@@ -1025,6 +1047,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
         setisrtDateChecked(!isrtDateChecked)
+
 
 
         !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate) - new Date(b.retiredate) })) :

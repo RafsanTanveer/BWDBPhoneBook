@@ -107,6 +107,12 @@ const ExpendableDrawer = () => {
     const [medicalDesig, setmedicalDesig] = useState([])
     const [aprData, setaprData] = useState([]);
 
+    const fetchAPRData=async()=>{
+
+          const { data: responseApr } = await api.get("getAprDetails", { params: { id: userInfo[0].id } });
+            setaprData(responseApr.rows)
+
+    }
 
 
 
@@ -119,11 +125,6 @@ const ExpendableDrawer = () => {
             __DEV__ && console.log('in expendable fetch  try...........');
 
             setRefreshing(false);
-
-
-            const { data: responseApr } = await api.get("getAprDetails", { params: { id: userInfo[0].id } });
-            setaprData(responseApr.rows)
-
 
 
 
@@ -141,7 +142,13 @@ const ExpendableDrawer = () => {
 
             if (tableExists) {
 
+                console.log('desig table  exists {}{}{}{}{}{}{}{}{}-=======================================}');
+
+
                 const designationTableContent = await getAllInfoFromTable("designation")
+
+                // console.log(designationTableContent);
+
 
                 setdesigList(designationTableContent);
                 setDesignationContext(designationTableContent)
@@ -149,6 +156,8 @@ const ExpendableDrawer = () => {
                 const desiglistothersTableContent = await getAllInfoFromTable("designationothers")
 
                 setdesigListOthers(desiglistothersTableContent);
+
+                 console.log('desig table  exists {}{}{}{}{}{}{}{}{}-=======================================}');
 
 
             } else {
@@ -266,6 +275,12 @@ const ExpendableDrawer = () => {
     };
 
 
+
+    useEffect(() => {
+
+        fetchAPRData();
+
+    }, []);
 
 
 

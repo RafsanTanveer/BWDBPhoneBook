@@ -72,47 +72,50 @@ const AprScreen = ({ route }) => {
     const counterKeys = Object.keys(apr).filter(k => k.startsWith('COUNTERSIGNATORY_'));
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.periodContainer}>
-                <Text style={styles.header}>এপিআর বিবরণী</Text>
-                <View style={styles.periodBox}>
-                    <Text style={styles.periodText}>বিবেচ্য বছর: {apr.year}</Text>
-                    <Text style={styles.periodRange}>({apr.start} - {apr.end})</Text>
+         <>
+
+                <View style={styles.periodContainer}>
+                    <Text style={styles.header}>এপিআর বিবরণী</Text>
+                    <View style={styles.periodBox}>
+                        <Text style={styles.periodText}>বিবেচ্য বছর: {apr.year}</Text>
+                        <Text style={styles.periodRange}>({apr.start} - {apr.end})</Text>
+                    </View>
                 </View>
-            </View>
 
-            {/* General Info */}
-            <View style={styles.card}>
-                {generalKeys.map(key => (
-                    <View key={key} style={styles.row}>
-                        <Text style={styles.label}>{labelMap[key] || key}</Text>
-                        <Text style={styles.value}>{formatDate(apr[key]) || '—'}</Text>
-                    </View>
-                ))}
-            </View>
+    <ScrollView style={styles.container}>
+                {/* General Info */}
+                <View style={styles.card}>
+                    {generalKeys.map(key => (
+                        <View key={key} style={styles.row}>
+                            <Text style={styles.label}>{labelMap[key] || key}</Text>
+                            <Text style={styles.value}>{formatDate(apr[key]) || '—'}</Text>
+                        </View>
+                    ))}
+                </View>
 
-            {/* Reporter Info */}
-            <Text style={styles.sectionTitle}>প্রতিস্বাক্ষরকারীর তথ্য</Text>
-            <View style={styles.card}>
-                {reporterKeys.map(key => (
-                    <View key={key} style={styles.row}>
-                        <Text style={styles.label}>{labelMap[key] || key}</Text>
-                        <Text style={styles.value}>{formatDate(apr[key]) || '—'}</Text>
-                    </View>
-                ))}
-            </View>
+                {/* Reporter Info */}
+                <Text style={styles.sectionTitle}>প্রতিস্বাক্ষরকারীর তথ্য</Text>
+                <View style={styles.card}>
+                    {reporterKeys.map(key => (
+                        <View key={key} style={styles.row}>
+                            <Text style={styles.label}>{labelMap[key] || key}</Text>
+                            <Text style={styles.value}>{formatDate(apr[key]) || '—'}</Text>
+                        </View>
+                    ))}
+                </View>
 
-            {/* Countersignatory Info */}
-            <Text style={styles.sectionTitle}>প্রতিবেদনকারীর তথ্য</Text>
-            <View style={styles.card}>
-                {counterKeys.map(key => (
-                    <View key={key} style={styles.row}>
-                        <Text style={styles.label}>{labelMap[key] || key}</Text>
-                        <Text style={styles.value}>{formatDate(apr[key]) || '—'}</Text>
-                    </View>
-                ))}
-            </View>
-        </ScrollView>
+                {/* Countersignatory Info */}
+                <Text style={styles.sectionTitle}>প্রতিবেদনকারীর তথ্য</Text>
+                <View style={styles.card}>
+                    {counterKeys.map(key => (
+                        <View key={key} style={styles.row}>
+                            <Text style={styles.label}>{labelMap[key] || key}</Text>
+                            <Text style={styles.value}>{formatDate(apr[key]) || '—'}</Text>
+                        </View>
+                    ))}
+                </View>
+            </ScrollView>
+            </>
     );
 };
 
