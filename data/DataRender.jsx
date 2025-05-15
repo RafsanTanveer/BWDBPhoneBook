@@ -1009,6 +1009,26 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     // }, []);
 
 
+    const monthMap = {
+        JAN: 0,
+        FEB: 1,
+        MAR: 2,
+        APR: 3,
+        MAY: 4,
+        JUN: 5,
+        JUL: 6,
+        AUG: 7,
+        SEP: 8,
+        OCT: 9,
+        NOV: 10,
+        DEC: 11
+      }
+
+      function parseRetireDate(str) {
+        const [day, mon, year] = str.split('-');
+        return new Date(+year, monthMap[mon.toUpperCase()], +day);
+      }
+
 
     const seniorityUpdate = () => {
 
@@ -1018,10 +1038,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         setChecked(!isChecked)
 
+        console.log(filteredData);
 
-        !isChecked ? setFilteredData(filteredData.sort((a, b) => { return a.seniority - b.seniority })) :
-            setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
 
+        !isChecked ? setFilteredData(filteredData.sort((a, b) => { return a.seniority - b.seniority }))
+        : setFilteredData([...filteredData].sort((a, b) => a.name.localeCompare(b.name)));
 
     }
 
@@ -1033,7 +1054,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     setisrtJoiningChecked(newJoiningChecked);
 
     const sortedData = newJoiningChecked
-        ? [...filteredData].sort((a, b) => new Date(a.bwdbJoiningDt) - new Date(b.bwdbJoiningDt))
+        ? [...filteredData].sort((a, b) => parseRetireDate(a.bwdbJoiningDt) - parseRetireDate(b.bwdbJoiningDt))
         : [...filteredData].sort((a, b) => a.name.localeCompare(b.name));
 
     setFilteredData(sortedData);
@@ -1048,10 +1069,10 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
         setisrtDateChecked(!isrtDateChecked)
 
+        console.log(filteredData);
 
-
-        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => { return new Date(a.retiredate) - new Date(b.retiredate) })) :
-            setFilteredData(filteredData.sort((a, b) => { return a.name > b.name }))
+        !isrtDateChecked ? setFilteredData(filteredData.sort((a, b) => parseRetireDate(a.retiredate) - parseRetireDate(b.retiredate))) :
+            setFilteredData(filteredData.sort((a, b) => a.name.localeCompare(b.name)))
 
 
     }
