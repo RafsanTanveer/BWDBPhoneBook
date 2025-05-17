@@ -17,9 +17,9 @@ const CameraModalComponent = ({ toggleModal, photo }) => {
 
 
 
-    // function toggleCameraType() {
-    //     setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-    // }
+    function toggleCameraType() {
+        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+    }
 
     // useEffect(() => {
     //     getGroupTableNames()
@@ -36,9 +36,9 @@ const CameraModalComponent = ({ toggleModal, photo }) => {
 
                         <Camera style={styles.camera} type={type}>
                             <View style={styles.buttonContainer}>
-                                {/* <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+                                <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
                                     <Text style={styles.text}>Flip Camera</Text>
-                                </TouchableOpacity> */}
+                                </TouchableOpacity>
                             </View>
                         </Camera>
 

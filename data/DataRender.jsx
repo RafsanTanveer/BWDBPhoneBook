@@ -93,6 +93,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [totalProjectVacant, settotalProjectVacant] = useState(0);
     const [totalSetupVacant, settotalSetupVacant] = useState();
 
+    const [totalPost, settotalPost] = useState(0);
+    const [totalPostInSetup, settotalPostInSetup] = useState(0);
+    const [totalPostinProject, settotalPostinProject] = useState();
+
+    const [totalOccupied, settotalOccupied] = useState(0);
+    const [totalOccupitedInSetup, settotalOccupitedInSetup] = useState(0);
+    const [totalOccupiedinProject, settotalOccupiedinProject] = useState(0);
+
 
     const [allOffice, setallOffice] = useState([]);
     const [setupOffice, setsetupOffice] = useState([]);
@@ -726,7 +734,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
-                console.log('invv    -------------------------------------------///////////////////////');
 
                 const { data: vacantResponse } = await api.get("vacantBudgetDesigList", { params: { desig: desig_code, lowerdesig: lowerPostForCurrentDesig } });
                 const vacantData = vacantResponse.rows;
@@ -734,10 +741,14 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 setvacantData(vacantData)
 
+                let totalPost=0
+                let totalOccupied=0
                 let totalVacanPost = 0
                 let allOfficeList = []
                 vacantData?.forEach(it => {
 
+                    totalPost += parseInt(it.totalPost);
+                    totalOccupied += parseInt(it.occupied);
                     totalVacanPost += parseInt(it.blank);
                     allOfficeList.push(it)
 
@@ -745,37 +756,52 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
 
+                settotalPost(totalPost)
+                settotalOccupied(totalOccupied)
                 setTotalVacantPost(totalVacanPost)
                 setallOffice(allOfficeList)
 
+                let totalPostinProject=0
+                let totalOccupiedinProject=0
                 let totalProjectVacant = 0
                 let projectOfficeList = []
                 vacantData?.forEach(it => {
 
                     if (it.level == "8") {
+
+                        totalPostinProject += parseInt(it.totalPost);
+                        totalOccupiedinProject += parseInt(it.occupied);
                         totalProjectVacant += parseInt(it.blank);
                         projectOfficeList.push(it)
                     }
 
                 });
 
+                settotalPostinProject(totalPostinProject)
+                settotalOccupiedinProject(totalOccupiedinProject)
                 settotalProjectVacant(totalProjectVacant)
                 setprojectOffice(projectOfficeList)
 
 
+                let totalPostInSetup=0
+                let totalOccupiedinSetup=0
                 let totalsetupVacant = 0
                 let setupOfficeList = []
                 vacantData?.forEach(it => {
 
                     if (it.level != "8") {
-                        console.log(it.level);
 
+
+                        totalPostInSetup += parseInt(it.totalPost);
+                        totalOccupiedinSetup += parseInt(it.occupied);
                         totalsetupVacant += parseInt(it.blank);
                         setupOfficeList.push(it)
                     }
 
                 });
 
+                settotalPostInSetup(totalPostInSetup)
+                settotalOccupitedInSetup(totalOccupiedinSetup)
                 settotalSetupVacant(totalsetupVacant)
                 setsetupOffice(setupOfficeList)
 
@@ -978,9 +1004,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setIsFloatingBtnExteded(false)
         setGroupMenu(false)
 
-        setisAllActive(true)
+        setisAllActive(false)
         setisProjectActive(false)
-        setisSetupActive(false)
+        setisSetupActive(true)
 
     }, [desig_code]);
 
@@ -1548,25 +1574,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                 // borderWidth:1
                                             }}>
 
-                                            <TouchableOpacity
-                                                onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice(), setcurrentVacantDisrictValue())}
-                                                style={{
-                                                    height: 20,
-                                                    // width: 70,
-                                                    backgroundColor: isAllActive ? `${currentTheme}` : 'white',
-                                                    borderRadius: height * .005,
-                                                    paddingHorizontal: 15
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        color: isAllActive ? 'white' : 'black',
-                                                        height: height * (1 / 40),
-                                                        fontSize: txtSizeNormal,
-                                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                                        textAlign: 'center',
-                                                        fontWeight: 'bold'
-                                                    }}>All</Text>
-                                            </TouchableOpacity>
+
                                             {
                                                 netInfo.isConnected &&
                                                 <TouchableOpacity
@@ -1611,12 +1619,31 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                         }}>Project</Text>
                                                 </TouchableOpacity>
                                             }
+                                            <TouchableOpacity
+                                            onPress={() => (setIsVacantActive(true), setisAllActive(true), setisSetupActive(false), setisProjectActive(false), loadAllOffice(), setcurrentVacantDisrictValue())}
+                                            style={{
+                                                height: 20,
+                                                // width: 70,
+                                                backgroundColor: isAllActive ? `${currentTheme}` : 'white',
+                                                borderRadius: height * .005,
+                                                paddingHorizontal: 15
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    color: isAllActive ? 'white' : 'black',
+                                                    height: height * (1 / 40),
+                                                    fontSize: txtSizeNormal,
+                                                    fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold'
+                                                }}>All</Text>
+                                        </TouchableOpacity>
 
 
 
                                         </View>
 
-                                        <View style={{ width: width * .40, marginRight: 10, marginTop: 7 }} >
+                                       {false && <View style={{ width: width * .40, marginRight: 10, marginTop: 7 }} >
                                             <Dropdown
                                                 style={[styles.elementDropdown, isDistrictFocus && { borderColor: 'blue' }, {}]}
                                                 placeholderStyle={styles.placeholderStyle}
@@ -1640,7 +1667,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                                 }}
 
                                             />
-                                        </View>
+                                        </View>}
 
                                     </View>
 
@@ -1803,6 +1830,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>No.</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}></Text>
                             </View>
 
 
@@ -1814,6 +1842,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Office Name</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}></Text>
                             </View>
 
 
@@ -1827,6 +1856,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Total</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>({ isAllActive ? totalPost : isSetupActive? totalPostInSetup:totalPostinProject})</Text>
                             </View>
                             <View style={{
                                 flex: 2, backgroundColor: `${currentTheme}50`,
@@ -1836,6 +1866,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Existing</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>({ isAllActive ? totalOccupied : isSetupActive? totalOccupitedInSetup :totalOccupiedinProject}) </Text>
                             </View>
                             <View style={{
                                 flex: 2, backgroundColor: `${currentTheme}50`,
@@ -1845,6 +1876,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant</Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>({ isAllActive ? totalOccupied : isSetupActive?totalPostInSetup- totalOccupitedInSetup :totalPostinProject-totalOccupiedinProject}) </Text>
+
                             </View>
                         </View>
 

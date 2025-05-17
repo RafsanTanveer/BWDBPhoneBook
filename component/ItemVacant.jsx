@@ -61,7 +61,7 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
                 flex: 6, borderWidth: 1,
                 borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
 
-                <Text style={{ textAlign: 'center', color: level == "8" ? 'red' : 'black' }}>{officeText}:{office}</Text>
+                <Text style={{ textAlign: 'center', color: level == "8" ? 'mediumvioletred' : 'black' }}>{officeText}:{office}</Text>
             </View>
 
             {/* <View style={{
@@ -79,7 +79,7 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
 
             }}>
 
-                <Text style={{ textAlign: 'center', color: level == "8" ? 'red' : 'black' }}>{totalPost}</Text>
+                <Text style={{ textAlign: 'center',  }}>{totalPost}</Text>
             </View>
 
             <View style={{
@@ -90,7 +90,7 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
 
             }}>
 
-                <Text style={{ textAlign: 'center', color: level == "8" ? 'red' : 'black' }}>{occupied}</Text>
+                <Text style={{ textAlign: 'center',  }}>{occupied}</Text>
             </View>
 
             <View style={{
@@ -99,8 +99,8 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
             }}>
                 <Text style={{
                     textAlign: 'center',
-                    color: level == "8" ? 'red' : 'black',
-                    color: blank ? 'green' : 'black',
+
+                    color: blank > 0 ? 'green' : 'red',
                     textDecorationLine: blank ? 'underline' : 'none',
                     fontWeight: blank? '700' : '400'
                 }}>{blank}</Text>
