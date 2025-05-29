@@ -61,8 +61,8 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
                 }
-                {/* {
-                    (firstHeading === 'GPF File No') &&
+                {
+                    (firstHeading === 'Email') &&
                     <TouchableOpacity
                         onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
 
@@ -78,7 +78,25 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                         }} >
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
-                } */}
+                }
+                 {
+                    (firstHeading === 'Mobile') &&
+                    <TouchableOpacity
+                        onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+
+                        style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            backgroundColor: `${currentTheme}`,
+                            borderRadius: height * .005,
+                            marginHorizontal: 5,
+                            paddingVertical: .5,
+                            paddingHorizontal: 5,
+                            elevation: 2
+                        }} >
+                        <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
+                    </TouchableOpacity>
+                }
             </View>
 
 

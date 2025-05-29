@@ -1,3 +1,3 @@
 git add .
-git commit -m "Fix sorting bug"
+git commit -m "Add mobile and email in bio data"
 git push

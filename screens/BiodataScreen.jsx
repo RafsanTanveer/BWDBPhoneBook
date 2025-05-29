@@ -1353,6 +1353,26 @@ const BiodataScreen = ({ id, navigation }) => {
                                         />
 
                                     </View>
+                                    <View style={{ flex: 1, }} >
+                                        <SingleColumnComponent
+                                            id={id}
+                                            firstHeading="Mobile"
+                                            firstQueryResult={item.mobile}
+                                            delimiter=":"
+                                            reloadList={updateBiodata}
+                                        />
+
+                                    </View>
+                                    <View style={{ flex: 1, }} >
+                                        <SingleColumnComponent
+                                            id={id}
+                                            firstHeading="Email"
+                                            firstQueryResult={item.email}
+                                            delimiter=":"
+                                            reloadList={updateBiodata}
+                                        />
+
+                                    </View>
 
                                     <SingleColumnComponent
                                         firstHeading="Marital Status"
