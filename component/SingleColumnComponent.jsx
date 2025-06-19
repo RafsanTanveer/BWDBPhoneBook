@@ -8,6 +8,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import AuthContext from '../context/AuthContext'
 import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateBloodGroupModalComponent'
 
+import UpdateMobileNumberModalComponent from '../component/modalComponents/UpdateMobileNumberModalComponent'
+import UpdateEmailModalComponent from '../component/modalComponents/UpdateEmailModalComponent'
 
 
 const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, reloadList }) => {
@@ -26,6 +28,19 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
     const toggleBloodGroupModal = (isVisible) => {
         setisBloodGroupUpdateVisible(isVisible);
     };
+
+
+    const [isMobileUpdateVisible, setisMobileUpdateVisible] = useState(false);
+    const [isEmailUpdateVisible, setisEmailUpdateVisible] = useState(false);
+
+    const toggleUpdateMobileModal = (isVisible) => {
+        setisMobileUpdateVisible(isVisible);
+    };
+
+    const toggleUpdateEmailModal = (isVisible) => {
+        setisEmailUpdateVisible(isVisible);
+    };
+
 
     const updateTxt = firstQueryResult? "Edit":'Update'
 
@@ -64,7 +79,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                 {
                     (firstHeading === 'Email') &&
                     <TouchableOpacity
-                        onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                        onPress={() => (netInfo.isConnected ? toggleUpdateEmailModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
 
                         style={{
                             alignItems: 'center',
@@ -82,7 +97,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                  {
                     (firstHeading === 'Mobile') &&
                     <TouchableOpacity
-                        onPress={() => (netInfo.isConnected ? toggleBloodGroupModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
+                        onPress={() => (netInfo.isConnected ? toggleUpdateMobileModal(true) : ToastAndroid.show("Please Check Your Internet Connection", ToastAndroid.LONG, ToastAndroid.TOP))}
 
                         style={{
                             alignItems: 'center',
@@ -117,6 +132,26 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
             >
 
                 <UpdateBloodGroupModalComponent id={id} currentGroup={firstQueryResult} toggleModal={toggleBloodGroupModal} refreshList={reloadList} />
+            </Modal>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isMobileUpdateVisible}
+                onRequestClose={() => toggleUpdateMobileModal(true)}
+            >
+
+                <UpdateMobileNumberModalComponent id={id} currentMobileNumber={firstQueryResult} toggleModal={toggleUpdateMobileModal} refreshList={reloadList} />
+            </Modal>
+
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={isEmailUpdateVisible}
+                onRequestClose={() => toggleUpdateEmailModal(true)}
+            >
+
+                <UpdateEmailModalComponent id={id} currentMobileNumber={firstQueryResult} toggleModal={toggleUpdateEmailModal} refreshList={reloadList} />
             </Modal>
 
         </View>

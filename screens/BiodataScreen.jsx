@@ -29,6 +29,8 @@ import mime from "mime";
 import Photo from "../component/Photo";
 
 
+
+
 const officeLevel = [
     "Board",
     "Region",
@@ -113,6 +115,7 @@ const BiodataScreen = ({ id, navigation }) => {
     // };
 
     ////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -325,6 +328,13 @@ const BiodataScreen = ({ id, navigation }) => {
 
 
     const fetchDataAndInsertintoDatabase = async () => {
+        console.log("==============================================================================");
+
+        console.log("=====================  fetchDataAndInsertintoDatabase ========================");
+
+        console.log("==============================================================================");
+
+
         //biodata
         setIsLoading(true)
         try {
@@ -383,6 +393,12 @@ const BiodataScreen = ({ id, navigation }) => {
             await new Promise((resolve, reject) => {
                 db.transaction((tx) => {
 
+                    console.log();
+                    console.log("=================================================");
+                    console.log("------------- creating promotion tabe------------ ");
+                    console.log("=================================================");
+                    console.log();
+
                     tx.executeSql(
                         `CREATE TABLE IF NOT EXISTS promotion (
                                 id             TEXT,
@@ -410,6 +426,13 @@ const BiodataScreen = ({ id, navigation }) => {
                             ]
                         );
                     });
+
+
+                    console.log();
+                    console.log("=================================================");
+                    console.log("------------- creating experience tabe------------ ");
+                    console.log("=================================================");
+                    console.log();
 
 
                     tx.executeSql(
@@ -448,6 +471,11 @@ const BiodataScreen = ({ id, navigation }) => {
                         );
                     });
 
+                    console.log();
+                    console.log("=================================================");
+                    console.log("------------- creating training table------------ ");
+                    console.log("=================================================");
+                    console.log();
 
                     tx.executeSql(
                         `CREATE TABLE IF NOT EXISTS training (
@@ -486,6 +514,12 @@ const BiodataScreen = ({ id, navigation }) => {
                             ]
                         );
                     });
+
+                    console.log();
+                    console.log("=================================================");
+                    console.log("------------- creating education table------------ ");
+                    console.log("=================================================");
+                    console.log();
 
                     tx.executeSql(
                         `CREATE TABLE IF NOT EXISTS education (
@@ -528,6 +562,15 @@ const BiodataScreen = ({ id, navigation }) => {
                         );
                     });
 
+
+                    console.log();
+                    console.log("=================================================");
+                    console.log("------------- creating bio-data table------------ ");
+                    console.log("=================================================");
+                    console.log();
+
+
+
                     tx.executeSql(
                         `CREATE TABLE IF NOT EXISTS biodata (
                                 id              TEXT,
@@ -567,11 +610,13 @@ const BiodataScreen = ({ id, navigation }) => {
                                 canCallBulk     TEXT,
                                 canAccessSeniority TEXT,
                                 timestamp       TEXT,
+
                                 photo           BLOB
                                                  );`
                     );
 
-
+                    // mobile       TEXT,
+                    // email       TEXT,
                     personalresponse.rows.forEach((it) => {
                         tx.executeSql(
                             `INSERT INTO biodata (
@@ -612,8 +657,11 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canCallBulk,
                                    canAccessSeniority,
                                    timestamp,
+                                  
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?
+
+               );`,
                             [
                                 it.id,
                                 it.name,
@@ -652,6 +700,8 @@ const BiodataScreen = ({ id, navigation }) => {
                                 it.canCallBulk,
                                 it.canAccessSeniority,
                                 timeStamp(),
+                                // it.mobile,
+                                // it.email,
                                 it.photo
                             ]
                         );
@@ -698,7 +748,10 @@ const BiodataScreen = ({ id, navigation }) => {
 
             const tableNames = tableExistsResult.rows._array.map((table) => table.name);
             // __DEV__ && console.log('Total table = ', tableNames.length);
-            // __DEV__ && console.log('Table names:', tableNames);
+
+            console.log("------------------  table name ------------------------------------------");
+
+             __DEV__ && console.log('Table names:', tableNames);
 
             const tableExists = tableNames.includes('biodata');
 
@@ -1036,8 +1089,11 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canCallBulk,
                                    canAccessSeniority,
                                    timestamp,
+
                                    photo)
-               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?);`,
+               VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?
+
+               );`,
                                         [
                                             it.id,
                                             it.name,
@@ -1076,6 +1132,8 @@ const BiodataScreen = ({ id, navigation }) => {
                                             it.canCallBulk,
                                             it.canAccessSeniority,
                                             timeStamp(),
+                                            // it.mobile,
+                                            // it.email,
                                             it.photo
                                         ]
                                     );
@@ -1090,7 +1148,8 @@ const BiodataScreen = ({ id, navigation }) => {
                     }
                 }
 
-
+                // mobile,
+                // email,
 
 
 
@@ -1754,6 +1813,11 @@ const BiodataScreen = ({ id, navigation }) => {
                 <CameraOrGalleryModal number={''} toggleModal={toggleModal} type={''} heading={'Select Photo'} refreshList={updateBiodata} />
 
             </Modal> */}
+
+
+
+
+
         </>
 
 

@@ -91,7 +91,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
     const [vacantData, setvacantData] = useState([]);
     const [totalVacantPost, setTotalVacantPost] = useState(0);
     const [totalProjectVacant, settotalProjectVacant] = useState(0);
-    const [totalSetupVacant, settotalSetupVacant] = useState();
+    const [totalSetupVacant, settotalSetupVacant] = useState(0);
 
     const [totalPost, settotalPost] = useState(0);
     const [totalPostInSetup, settotalPostInSetup] = useState(0);
@@ -715,11 +715,9 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         console.log('invvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
 
 
-
-        // setIsLoading(true);
-
-
-        // console.log(`designationContext==============\n=\n=\n=====================`, designationContext);
+        setTotalVacantPost(0)
+        settotalProjectVacant(0)
+        settotalSetupVacant(0)
 
 
 
@@ -739,7 +737,6 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                 const vacantData = vacantResponse.rows;
                 // console.log(vacantData);
 
-                setvacantData(vacantData)
 
                 let totalPost=0
                 let totalOccupied=0
@@ -809,6 +806,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
                 __DEV__ && console.log('totalVacanPost ' + totalVacanPost);
 
+
+                setvacantData(setupOfficeList)
 
 
 
@@ -971,11 +970,11 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         // fetchVacantDataFromDb()
 
         setvacantData()
-        setTotalVacantPost()
+        setTotalVacantPost(0)
         setallOffice()
-        settotalProjectVacant()
+        settotalProjectVacant(0)
         setprojectOffice()
-        settotalSetupVacant()
+        settotalSetupVacant(0)
         setsetupOffice()
 
         setisrtDateChecked(false)
@@ -1007,6 +1006,8 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
         setisAllActive(false)
         setisProjectActive(false)
         setisSetupActive(true)
+
+        loadSetupOffice()
 
     }, [desig_code]);
 
@@ -1876,7 +1877,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                             }}>
 
                                 <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>Vacant</Text>
-                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>({ isAllActive ? totalOccupied : isSetupActive?totalPostInSetup- totalOccupitedInSetup :totalPostinProject-totalOccupiedinProject}) </Text>
+                                <Text style={{ textAlign: 'center', fontSize: txtSizeNormal, fontWeight: '500' }}>({ isAllActive ? totalVacantPost : isSetupActive?totalPostInSetup- totalOccupitedInSetup :totalPostinProject-totalOccupiedinProject}) </Text>
 
                             </View>
                         </View>
@@ -1919,7 +1920,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
 
 
                 {
-                    isReportActive &&
+                   false && isReportActive &&
                     <View style={{
                         margin: 10,
                         borderColor: 'black',

@@ -182,6 +182,7 @@ export const createBiodataTable = (tableName) => {
                                 canCallBulk     TEXT,
                                 canAccessSeniority TEXT,
                                 timestamp       TEXT,
+                              
                                 photo           BLOB
                                                  );`,
                     [],
