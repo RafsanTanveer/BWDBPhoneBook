@@ -31,7 +31,7 @@ const tree = {
     offices: ['offices', 'dg', 'adg-admin', 'adg-finance', 'adg-planning', 'adg-east', 'adg-west', 'present-office'],
     apr: ['apr'],
     blood: ['blood'],
-    settings: ['settings', 'theme', 'update-organogram']
+    settings: ['settings', 'theme','update-organogram']
 }
 
 const ExpendableDrawer = () => {
@@ -762,7 +762,7 @@ const styles = StyleSheet.create({
     designationItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 5,
+        paddingVertical: 8,
         paddingHorizontal: 16,
     },
     updateAprButton: {
