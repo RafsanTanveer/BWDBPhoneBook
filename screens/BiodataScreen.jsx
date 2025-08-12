@@ -657,7 +657,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                    canCallBulk,
                                    canAccessSeniority,
                                    timestamp,
-                                  
+
                                    photo)
                VALUES (  ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?,?,?
 
@@ -1412,7 +1412,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         />
 
                                     </View>
-                                    <View style={{ flex: 1, }} >
+                                    {/* <View style={{ flex: 1, }} >
                                         <SingleColumnComponent
                                             id={id}
                                             firstHeading="Mobile"
@@ -1431,7 +1431,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             reloadList={updateBiodata}
                                         />
 
-                                    </View>
+                                    </View> */}
 
                                     <SingleColumnComponent
                                         firstHeading="Marital Status"

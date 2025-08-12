@@ -24,6 +24,7 @@ Images['selectAll_9'] = require('../assets/icons/selectAll-theme-9.png')
 Images['menuIcon'] = require('../assets/icons/menu-icon.png')
 Images['paniBhaban'] = require('../assets/paniBhaban.png')
 Images['menuIcon'] = require('../assets/icons/menu-icon.png')
+
 Images['desig'] = require('../assets/icons/designation.png')
 Images['dg'] = require('../assets/icons/dg.png')
 Images['admin'] = require('../assets/icons/admin.png')
@@ -71,6 +72,32 @@ Images['cngPh'] = require('../assets/icons/change-photo.png')
 Images['gallery'] = require('../assets/icons/gallery.png')
 Images['camera'] = require('../assets/icons/camera.png')
 Images['empdirscrshot'] = require('../assets/empdirscrshot.jpg')
+
+// Images['bwdbLogo'] = require('../assets/bwdLogo.png');
+// Images['rightArrow'] = require('../assets/icons/right.png');
+// Images['desig'] = require('../assets/icons/designation.png');
+// Images['dg'] = require('../assets/icons/dg.png');
+// Images['admin'] = require('../assets/icons/admin.png');
+// Images['computer'] = require('../assets/icons/computer.png');
+// Images['land'] = require('../assets/icons/land.png');
+// Images['geology'] = require('../assets/icons/geology.png');
+// Images['fa'] = require('../assets/icons/accounts.png');
+// Images['civil'] = require('../assets/icons/civil.png');
+// Images['economic'] = require('../assets/icons/economic.png');
+// Images['me'] = require('../assets/icons/me.png');
+// Images['water'] = require('../assets/icons/water.png');
+// Images['office'] = require('../assets/icons/office.png');
+// Images['medical'] = require('../assets/icons/medical.png');
+// Images['settings'] = require('../assets/icons/settings.png');
+// Images['groupIcon'] = require('../assets/icons/groupIcon.png');
+// Images['requestIcon'] = require('../assets/icons/request.png');
+// Images['aprIcon'] = require('../assets/icons/apr.png');
+// Images['staffListIcon'] = require('../assets/icons/staff-list.png');
+// Images['bloodsearch'] = require('../assets/icons/bloodsearch.png');
+// Images['others'] = require('../assets/icons/others.png');
+// Images['developedBy'] = require('../assets/icons/coding.png');
+// Images['biodata'] = require('../assets/icons/bio-data.png');
+
 
 
 
