@@ -46,7 +46,7 @@ const Photo = ({ pht, updateBiodata }) => {
                             borderRadius: height * .005,
                             paddingVertical: .5,
                             paddingHorizontal: 5,
-                            elevation: 2,
+                            // elevation: 2,
                             height: height * .022,
                             justifyContent: 'center'
                         }} >

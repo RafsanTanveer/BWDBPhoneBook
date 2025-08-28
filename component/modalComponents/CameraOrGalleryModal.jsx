@@ -30,7 +30,7 @@ const CameraOrGalleryModal = ({ number, toggleModal, type, heading, refreshList 
     }
 
 
-   
+
 
     const selectImage = async (useLibrary) => {
         let result;
@@ -103,8 +103,8 @@ const CameraOrGalleryModal = ({ number, toggleModal, type, heading, refreshList 
                         backgroundColor: `${currentTheme}`,
                         paddingVertical: 5,
                         paddingHorizontal: 10,
-                        borderRadius: height * .009
-                        , elevation: 5
+                        borderRadius: height * .009,
+                        // elevation: 5
                     }} >
                     <Text style={{ fontWeight: '600', fontSize: width * .04, color: 'white' }} >Cancel</Text>
                 </TouchableOpacity>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         marginHorizontal: width * .20,
         backgroundColor: 'white',
         borderRadius: height * .015,
-        elevation: 5,
+        // elevation: 5,
         paddingVertical: 15
     },
     modalView: {
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        // elevation: 5,
         // borderWidth: 1,
 
     },

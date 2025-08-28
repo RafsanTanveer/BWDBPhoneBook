@@ -182,7 +182,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
                     }
                     <View style={{
-                        elevation: 3,
+                        // elevation: 3,
                         backgroundColor: `${currentTheme}`,
                         alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5)
                     }}>

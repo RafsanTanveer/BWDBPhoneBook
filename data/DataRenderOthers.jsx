@@ -955,7 +955,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                                 justifyContent: 'center',
                                 alignContent: 'center',
                                 padding: 2,
-                                elevation: 5
+                                // elevation: 5
                             }}
                         >
                             <Image
@@ -1484,7 +1484,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                                 backgroundColor: `${currentTheme}`,
                                 borderTopRightRadius: height * .005,
                                 borderBottomEndRadius: height * .005,
-                                elevation: 2
+                                // elevation: 2
 
 
                             }}>
@@ -1513,7 +1513,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                                 backgroundColor: `${currentTheme}`,
                                 borderTopLeftRadius: height * .005,
                                 borderBottomStartRadius: height * .005,
-                                elevation: 2
+                                // elevation: 2
 
                             }}>
                             <Image
@@ -1546,7 +1546,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                             bottom: height * .35,
                             //  backgroundColor: `${currentTheme}`,
 
-                            elevation: 10
+                            // elevation: 10
 
                         }}>
                         <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded), setGroupMenu(false), setIsFilterOn(false) }}>
@@ -1612,7 +1612,7 @@ const DataRenderOthers = ({ designation, url, desig_code, tablename }) => {
                         bottom: height * .46,
                         //  backgroundColor: `${currentTheme}`,
                         zIndex: 1200,
-                        elevation: 10
+                        // elevation: 10
 
                     }}>
 
@@ -1754,12 +1754,12 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        // elevation: 5,
     },
     button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2,
+        // elevation: 2,
     },
     buttonOpen: {
         backgroundColor: '#F194FF',

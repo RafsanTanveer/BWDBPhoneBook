@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         // borderWidth: 1,
         borderColor: 'blue',
-        elevation: 5
+        // elevation: 5
     },
     button: {
         borderRadius: 10,

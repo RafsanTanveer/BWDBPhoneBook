@@ -163,7 +163,7 @@ const Login = () => {
                             position: 'absolute',
                             width: screenWidth * 1,
                             height: screenHeight * .6,
-                            elevation: 5
+                            // elevation: 5
                         }}
                         source={Images['paniBhaban']}
                     />
@@ -177,7 +177,7 @@ const Login = () => {
                             height: screenHeight * 0.12,
                             marginLeft: screenWidth * .70,
                             marginTop: screenHeight * .42,
-                            elevation: 5
+                            // elevation: 5
                         }}
                         source={Images['bwdLogo']}
                     />
@@ -239,7 +239,7 @@ const Login = () => {
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         backgroundColor: '#FF0000',
-                                        elevation: 10
+                                        // elevation: 10
                                     }}
                                     onPress={() => {
 
@@ -262,7 +262,7 @@ const Login = () => {
                                             width: screenHeight * 0.07,
                                             height: screenHeight * 0.045,
                                             zIndex: 100,
-                                            elevation: 5
+                                            // elevation: 5
                                         }}
                                         source={Images['fingerprint']}
                                     />
@@ -305,7 +305,7 @@ const Login = () => {
                                 style={{
                                     width: screenWidth,
                                     height: screenHeight * .1,
-                                    elevation: 5
+                                    // elevation: 5
                                 }}
                                 source={Images['bottom']} />
                         </View>

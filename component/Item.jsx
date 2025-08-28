@@ -571,7 +571,7 @@ const Item = ({ id,
                                                 borderRadius: height * .005,
                                                 paddingVertical: 1,
                                                 paddingHorizontal: 5,
-                                                elevation: 3,
+                                                // elevation: 3,
 
                                                 justifyContent: 'center'
                                             }}>
@@ -592,7 +592,7 @@ const Item = ({ id,
                                                 borderRadius: height * .005,
                                                 paddingVertical: 1,
                                                 paddingHorizontal: 5,
-                                                elevation: 3,
+                                                // elevation: 3,
                                                 width: 80,
                                                 justifyContent: 'center'
                                             }}>
@@ -632,7 +632,7 @@ const Item = ({ id,
                                     // marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 5,
-                                    elevation: 3
+                                    // elevation: 3
                                 }}>
                                 {
                                     mobile ?
@@ -656,7 +656,7 @@ const Item = ({ id,
                                         marginHorizontal: 5,
                                         paddingVertical: 1,
                                         paddingHorizontal: 5,
-                                        elevation: 3,
+                                        // elevation: 3,
                                         padding: 15
 
                                     }}>
@@ -687,7 +687,7 @@ const Item = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 10,
-                                    elevation: 3
+                                    // elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
                                 <Text style={{ color: 'white', fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
@@ -707,7 +707,7 @@ const Item = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 12,
-                                    elevation: 3,
+                                    // elevation: 3,
                                     justifyContent: 'center'
                                 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
@@ -924,7 +924,7 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2,
+        // elevation: 2,
     },
     buttonOpen: {
         backgroundColor: '#F194FF',

@@ -70,13 +70,13 @@ const MakeCallModalComponent = ({ number, toggleModal, type, heading }) => {
 
 
         <View style={styles.centeredView}>
-            <View style={{ flex: 1, backgroundColor: `${currentTheme}5`, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: height * .015, borderTopRightRadius: height * .015,  }} >
+            <View style={{ flex: 1, backgroundColor: `${currentTheme}5`, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: height * .015, borderTopRightRadius: height * .015, }} >
                 <Text style={{ fontWeight: 'bold', fontSize: width * .048, color: 'Black' }} >{heading}</Text>
             </View>
             <View style={{ flex: 2, alignItems: 'center', }} >
                 <TouchableOpacity
                     onPress={() => type === 'phn' ? callViaSimCard() : sendMsgViaSimCard()}
-                    style={{ flex: 1, flexDirection: 'row',  alignItems: 'center', }} >
+                    style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }} >
                     <Image
                         source={require(phoneCallIcon)}
                         style={{ width: 30, height: 30 }}
@@ -85,29 +85,29 @@ const MakeCallModalComponent = ({ number, toggleModal, type, heading }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => type === 'phn' ? callViaWhatsapp() : sendMsgViaWhatsapp()}
-                    style={{  flex: 1, flexDirection: 'row', alignItems: 'center', }} >
+                    style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }} >
                     <Image
                         source={require(whatsappIcon)}
                         style={{ width: 30, height: 30 }}
                     />
-                    <Text style={{ fontSize: width * .045, fontWeight: '500' , margin:10}}>Whatsapp</Text>
+                    <Text style={{ fontSize: width * .045, fontWeight: '500', margin: 10 }}>Whatsapp</Text>
                 </TouchableOpacity>
             </View>
 
             <View
 
-                style={{ flex: 1,  justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: height * .015, borderBottomEndRadius: height * .015 }} >
-               <TouchableOpacity
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: height * .015, borderBottomEndRadius: height * .015 }} >
+                <TouchableOpacity
                     onPress={() => closeModal()}
                     style={{
                         backgroundColor: `${currentTheme}`,
                         paddingVertical: 5,
-                        paddingHorizontal:10,
-                        borderRadius: height * .009
-                        , elevation: 5
+                        paddingHorizontal: 10,
+                        borderRadius: height * .009,
+                        // elevation: 5
                     }} >
-                 <Text style={{ fontWeight: '600', fontSize: width * .04,color:'white'}} >Cancel</Text>
-               </TouchableOpacity>
+                    <Text style={{ fontWeight: '600', fontSize: width * .04, color: 'white' }} >Cancel</Text>
+                </TouchableOpacity>
             </View>
         </View>
 
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
         marginHorizontal: width * .20,
         backgroundColor: 'white',
         borderRadius: height * .015,
-        elevation: 5,
-        paddingVertical:15
+        // elevation: 5,
+        paddingVertical: 15
     },
     modalView: {
 
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        // elevation: 5,
         // borderWidth: 1,
 
     },

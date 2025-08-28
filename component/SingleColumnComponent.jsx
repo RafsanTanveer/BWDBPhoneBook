@@ -71,7 +71,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                             marginHorizontal: 5,
                             paddingVertical: .5,
                             paddingHorizontal: 5,
-                            elevation: 2,
+                            // elevation: 2,
                             height: height * .022,
                             justifyContent: 'center'
                         }} >
@@ -91,7 +91,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                             marginHorizontal: 5,
                             paddingVertical: .5,
                             paddingHorizontal: 5,
-                            elevation: 2
+                            // elevation: 2
                         }} >
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
@@ -109,7 +109,7 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                             marginHorizontal: 5,
                             paddingVertical: .5,
                             paddingHorizontal: 5,
-                            elevation: 2
+                            // elevation: 2
                         }} >
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>

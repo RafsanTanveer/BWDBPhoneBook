@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         alignItems: 'center',
 
-        elevation: 5,
+        // elevation: 5,
         // borderWidth:1
 
     },

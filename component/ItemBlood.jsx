@@ -484,7 +484,7 @@ const ItemBlood = ({ id,
                                             borderRadius: height * .005,
                                             paddingVertical: 2,
                                             paddingHorizontal: 5,
-                                            elevation: 3
+                                            // elevation: 3
                                         }}>
                                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
@@ -521,7 +521,7 @@ const ItemBlood = ({ id,
                                         marginHorizontal: 5,
                                         paddingVertical: 1,
                                         paddingHorizontal: 5,
-                                        elevation: 3
+                                        // elevation: 3
                                     }}>
                                     <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
                                     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{mobile} </Text>
@@ -539,7 +539,7 @@ const ItemBlood = ({ id,
                                             // marginHorizontal: 5,
                                             paddingVertical: 1,
                                             paddingHorizontal: 5,
-                                            elevation: 3
+                                            // elevation: 3
                                         }}>
                                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
                                     </TouchableOpacity>
@@ -557,7 +557,7 @@ const ItemBlood = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 10,
-                                    elevation: 3
+                                    // elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
                                 <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
@@ -577,7 +577,7 @@ const ItemBlood = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 12,
-                                    elevation: 3
+                                    // elevation: 3
                                 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
                             </TouchableOpacity>
@@ -778,7 +778,7 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2,
+        // elevation: 2,
     },
     buttonOpen: {
         backgroundColor: '#F194FF',

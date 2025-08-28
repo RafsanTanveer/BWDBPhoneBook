@@ -1274,7 +1274,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                             paddingHorizontal: 5,
                                             backgroundColor: `${currentTheme}`,
                                             justifyContent: 'center',
-                                            elevation: 5,
+                                            // elevation: 5,
                                             width: width * .25
                                             //marginLeft: width * .025
                                         }} >

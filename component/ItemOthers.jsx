@@ -353,7 +353,7 @@ const ItemOthers = ({ id,
 
 
                     <View style={{
-                        elevation: 3,
+                        // elevation: 3,
                         backgroundColor: `${currentTheme}`,
                         alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5)
                     }}>
@@ -572,7 +572,7 @@ const ItemOthers = ({ id,
                                             borderRadius: height * .005,
                                             paddingVertical: 2,
                                             paddingHorizontal: 5,
-                                            elevation: 3
+                                            // elevation: 3
                                         }}>
                                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
 
@@ -609,7 +609,7 @@ const ItemOthers = ({ id,
                                         marginHorizontal: 5,
                                         paddingVertical: 1,
                                         paddingHorizontal: 5,
-                                        elevation: 3
+                                        // elevation: 3
                                     }}>
                                     <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
                                     <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{mobile} </Text>
@@ -627,7 +627,7 @@ const ItemOthers = ({ id,
                                             // marginHorizontal: 5,
                                             paddingVertical: 1,
                                             paddingHorizontal: 5,
-                                            elevation: 3
+                                            // elevation: 3
                                         }}>
                                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >Edit</Text>
                                     </TouchableOpacity>
@@ -645,7 +645,7 @@ const ItemOthers = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 10,
-                                    elevation: 3
+                                    // elevation: 3
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={txtSizeNormal} color="white" />
                                 <Text style={{ color: 'white', height: height * (1 / 40), fontSize: txtSizeNormal, fontFamily: Platform.OS === "android" ? 'serif' : null, }}>{pabx} </Text>
@@ -665,7 +665,7 @@ const ItemOthers = ({ id,
                                     marginHorizontal: 5,
                                     paddingVertical: 1,
                                     paddingHorizontal: 12,
-                                    elevation: 3
+                                    // elevation: 3
                                 }}>
                                 <MaterialCommunityIcons name="android-messages" style={{ marginRight: 5 }} size={txtSizeNormal} color="white" />
                             </TouchableOpacity>

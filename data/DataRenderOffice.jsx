@@ -331,7 +331,7 @@ const DataRenderOffice = ({ office_code, navigation }) => {
                             bottom: height * .35,
                             //  backgroundColor: `${currentTheme}`,
 
-                            elevation: 10
+                            // elevation: 10
 
                         }}>
                         <TouchableOpacity onPress={() => { setIsFloatingBtnExteded(!isFloatingBtnExteded) }}>
