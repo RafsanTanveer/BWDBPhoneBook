@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Modal } from 'react-native'
 import React, { useState } from "react";
 
 import CorrectionModalComponent from '../component/CorrectionModalComponent'
-
+import { txtSizeNormal, txtSizeBig } from '../utility/Scalling'
 
 const RowComponent = ({ headingText, queryText }) => {
 
@@ -50,20 +50,20 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     headingTxt: {
-        fontSize: 15,
+        fontSize: txtSizeBig,
         fontWeight: '500',
         color: '#00ced1',
 
     },
     textStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: '#0080FF',
         marginBottom: 2
 
     },
     queryTextStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: 'black',
         marginBottom: 2,

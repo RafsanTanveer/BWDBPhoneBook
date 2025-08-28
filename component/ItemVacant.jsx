@@ -19,7 +19,7 @@ let selectedGroupIds = []
 
 
 
-const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, level }) => {
+const ItemVacant = ({ index, office, officeName, blank, totalPost, occupied, level }) => {
 
 
 
@@ -59,7 +59,8 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
 
             <View style={{
                 flex: 6, borderWidth: 1,
-                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center' }}>
+                borderColor: `${currentTheme}`, padding: 5, justifyContent: 'center'
+            }}>
 
                 <Text style={{ textAlign: 'center', color: level == "8" ? 'mediumvioletred' : 'black' }}>{officeText}:{office}</Text>
             </View>
@@ -79,7 +80,7 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
 
             }}>
 
-                <Text style={{ textAlign: 'center',  }}>{totalPost}</Text>
+                <Text style={{ textAlign: 'center', }}>{totalPost}</Text>
             </View>
 
             <View style={{
@@ -90,7 +91,7 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
 
             }}>
 
-                <Text style={{ textAlign: 'center',  }}>{occupied}</Text>
+                <Text style={{ textAlign: 'center', }}>{occupied}</Text>
             </View>
 
             <View style={{
@@ -102,7 +103,7 @@ const ItemVacant = ({ index, office, officeName, blank,  totalPost, occupied, le
 
                     color: blank > 0 ? 'green' : 'red',
                     textDecorationLine: blank ? 'underline' : 'none',
-                    fontWeight: blank? '700' : '400'
+                    fontWeight: blank ? '700' : '400'
                 }}>{blank}</Text>
             </View>
 
@@ -127,8 +128,8 @@ const styles = StyleSheet.create({
         padding: 20,
         marginVertical: 8,
         //marginHorizontal: 16,
-        height: 40,
-        width: 90
+        height: height * .06,
+        width: width * .25
     },
     title: {
         fontSize: 32,

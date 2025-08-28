@@ -3,7 +3,8 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import api from '../api/api';
 import { AuthContext } from '../context/AuthContext';
 import CorrectionModalComponent from '../component/CorrectionModalComponent'
-
+import { txtSizeNormal, txtSizeBig } from '../utility/Scalling'
+import { width } from '../utility/ScreenDimensions'
 
 const ExperienceScreen = ({ post, charge, office, joinDate, releaseDate, index }) => {
 
@@ -41,16 +42,16 @@ const ExperienceScreen = ({ post, charge, office, joinDate, releaseDate, index }
         <>
             <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 5, }}>
                 < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <View style={{ flex: .75, width: 200, }}>
+                    <View style={{ flex: .75, width: width * .6, }}>
                         <Text style={styles.queryTextStyle} onLongPress={() => toggleModal(true)}>{post} {charge}</Text>
                     </View>
-                    <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
+                    <View style={{ flex: 1, width: width * .7, marginLeft: 8 }}>
                         <Text style={styles.queryTextStyle} onLongPress={() => toggleModal(true)}>{office}</Text>
                     </View>
-                    <View style={{ flex: 1, width: 90, marginLeft: 8, }}>
+                    <View style={{ flex: 1, width: width * .3, marginLeft: 8, }}>
                         <Text style={styles.queryTextStyle} onLongPress={() => toggleModal(true)}>{joinDate}</Text>
                     </View>
-                    <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
+                    <View style={{ flex: 1, width: width * .3, marginLeft: 8 }}>
                         <Text style={styles.queryTextStyle} onLongPress={() => toggleModal(true)}>{releaseDate}</Text>
                     </View>
                 </View >
@@ -84,20 +85,20 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     headingTxt: {
-        fontSize: 15,
+        fontSize: txtSizeBig,
         fontWeight: '500',
         color: '#00ced1',
 
     },
     textStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: '#0080FF',
         marginBottom: 2
 
     },
     secondTextStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: '#8040BF',
         marginBottom: 2,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
 
     },
     queryTextStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: 'black',
         marginBottom: 2,

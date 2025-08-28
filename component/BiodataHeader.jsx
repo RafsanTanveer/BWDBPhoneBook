@@ -15,7 +15,7 @@ const BiodataHeader = ({ heading ="BIODATA"}) => {
                 <Image style={{ width: width * .15, height: width * .15 }} source={Images['bwdLogo']} />
             </View>
             <View style={{
-                alignItems: 'center',
+                alignItems: 'center', height: height *.1, justifyContent: 'center'
             }}>
                 <Text style={{ color: '#0080FF', fontWeight: '500', fontSize: width * .038, marginBottom: 2 }} >BANGLADESH WATER DEVELOPMENT BOARD</Text>
                 <Text style={{ color: '#008023', fontWeight: '500', fontSize: width * .0369, marginBottom: 2 }} >Human Resource Data Management (HRDM)</Text>

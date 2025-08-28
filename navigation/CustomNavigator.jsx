@@ -53,7 +53,7 @@ const CustomDrawer = ({ }) => {
 
                         <Image
                             source={require('../assets/icons/menu-icon.png')}
-                            style={{ height: 28, width: 28, marginLeft: 10 }}
+                            style={{ height: Math.max(22, Math.min(40, width * 0.07)), width: Math.max(22, Math.min(40, width * 0.07)), marginLeft: 10 }}
                         />
 
                     </TouchableOpacity>
@@ -65,12 +65,12 @@ const CustomDrawer = ({ }) => {
 
                             photo ?
                                 <Image
-                                    style={{ height: width * .1, width: width * .1, borderRadius: 70, marginRight: 10 }}
+                                    style={{ height: height * .05, width: height * .05, borderRadius: 70, marginRight: 10 }}
                                     source={{ uri: "data:image/jpeg;base64," + photo }}
                                 /> :
                                 userInfo.length != 0 && userInfo[0].int_ext != 'E' &&
                                 <Image
-                                    style={{ height: width * .1, width: width * .1, borderRadius: 70, marginRight: 10 }}
+                                    style={{ height: height * .05, width: height * .05, borderRadius: 70, marginRight: 10 }}
                                     source={Images['placeHolderImg']}
                                 />
                         }
@@ -82,6 +82,7 @@ const CustomDrawer = ({ }) => {
                 {
                     // backgroundColor: 'white'
                     backgroundColor: `${currentTheme}`,
+                    height: height * .08,
                     // elevation:1,
 
                 },

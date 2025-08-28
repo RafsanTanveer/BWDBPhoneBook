@@ -12,7 +12,7 @@ import LoadingScreen from '../screens/LoadingScreen'
 import db from '../database/database'
 import { Images } from '../utility/Images'
 import { timeStamp } from '../utility/Time'
-import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini } from '../utility/Scalling'
+import { imgSizeMini, txtSizeNormal, imgSizeMidium, txtSizeMini, txtSizeBig } from '../utility/Scalling'
 import BiodataHeader from '../component/BiodataHeader'
 import { height, width, widthScreen } from '../utility/ScreenDimensions'
 import ExperienceScreen from '../component/ExperienceScreen'
@@ -1591,22 +1591,22 @@ const BiodataScreen = ({ id, navigation }) => {
                                     <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 10, marginTop: 5 }}>
                                         <View>
                                             < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                <View style={{ flex: .75, width: 50, }}>
+                                                <View style={{ flex: .75, width: width * .2, }}>
                                                     <Text style={styles.secondTextStyle}>Year</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 100, }}>
+                                                <View style={{ flex: 1, width: width * .3, }}>
                                                     <Text style={styles.secondTextStyle}>Qualification</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 120, }}>
+                                                <View style={{ flex: 1, width: width * .3, }}>
                                                     <Text style={styles.secondTextStyle}>Decipline</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
+                                                <View style={{ flex: 1, width: width * .6, marginLeft: 8 }}>
                                                     <Text style={styles.secondTextStyle}>Institution</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 100, alignItems: 'center' }}>
+                                                <View style={{ flex: 1, width: width * .3, alignItems: 'center' }}>
                                                     <Text style={styles.secondTextStyle}>Class/GPA</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 80 }}>
+                                                <View style={{ flex: 1, width: width * .4}}>
                                                     <Text style={styles.secondTextStyle}>Remarks</Text>
                                                 </View>
                                             </View >
@@ -1614,22 +1614,22 @@ const BiodataScreen = ({ id, navigation }) => {
                                             {
                                                 edu.map((item, index) => (
                                                     < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                        <View style={{ flex: .75, width: 50, }}>
+                                                        <View style={{ flex: .75, width: width * .2, }}>
                                                             <Text style={styles.queryTextStyle}>{item.passingYear}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 100, }}>
+                                                        <View style={{ flex: 1, width: width * .3, }}>
                                                             <Text style={styles.queryTextStyle}>{item.qualification}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 120, }}>
+                                                        <View style={{ flex: 1, width: width * .3, }}>
                                                             <Text style={styles.queryTextStyle}>{item.discipline}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 200, marginLeft: 10 }}>
+                                                        <View style={{ flex: 1, width: width * .6, marginLeft: 10 }}>
                                                             <Text style={styles.queryTextStyle}>{item.institute}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 100, marginLeft: 5, alignItems: 'center' }}>
+                                                        <View style={{ flex: 1, width: width * .3, marginLeft: 5, alignItems: 'center' }}>
                                                             <Text style={styles.queryTextStyle}>{item.marks ? item.marks.toString().trim().slice(0, 4) : item.result}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 80 }}>
+                                                        <View style={{ flex: 1, width: width * .4 }}>
                                                             <Text style={styles.queryTextStyle}>{item.remarks}</Text>
                                                         </View>
                                                     </View >
@@ -1653,16 +1653,16 @@ const BiodataScreen = ({ id, navigation }) => {
                                     <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20, marginTop: 5 }} >
                                         <View>
                                             < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                <View style={{ flex: 1.5, width: 40, }}>
+                                                <View style={{ flex: 1.5, width: width*.05, }}>
                                                     <Text style={styles.secondTextStyle}></Text>
                                                 </View>
-                                                <View style={{ flex: 1.5, width: 150, }}>
+                                                <View style={{ flex: 1.5, width: width * .6, }}>
                                                     <Text style={styles.secondTextStyle}>Rank</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 100, }}>
+                                                <View style={{ flex: 1, width: width * .4, }}>
                                                     <Text style={styles.secondTextStyle}>Posting Date</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 120, }}>
+                                                <View style={{ flex: 1, width: width * .3, }}>
                                                     <Text style={styles.secondTextStyle}>Join Date</Text>
                                                 </View>
 
@@ -1671,16 +1671,16 @@ const BiodataScreen = ({ id, navigation }) => {
                                             {
                                                 promotion.map((item, index) => (
                                                     < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                        <View style={{ flex: 1.5, width: 40, }}>
+                                                        <View style={{ flex: 1.5, width: width * .05, }}>
                                                             <Text style={styles.queryTextStyle}></Text>
                                                         </View>
-                                                        <View style={{ flex: 1.5, width: 150, }}>
+                                                        <View style={{ flex: 1.5, width: width * .6, }}>
                                                             <Text style={styles.queryTextStyle}>{item.desig}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 100, }}>
+                                                        <View style={{ flex: 1, width: width * .4, }}>
                                                             <Text style={styles.queryTextStyle}>{item.postingDate}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 120, marginRight: 10 }}>
+                                                        <View style={{ flex: 1, width: width * .3, marginRight: 10 }}>
                                                             <Text style={styles.queryTextStyle}>{item.joinDate}</Text>
                                                         </View>
 
@@ -1700,16 +1700,16 @@ const BiodataScreen = ({ id, navigation }) => {
                                     <ScrollView horizontal={true} style={{ flex: 1, marginBottom: 20, marginTop: 5 }}>
                                         <View>
                                             < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                <View style={{ flex: .75, width: 200, }}>
+                                                <View style={{ flex: .75, width: width * .6, }}>
                                                     <Text style={styles.secondTextStyle}>Post Name</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 200, marginLeft: 8 }}>
+                                                <View style={{ flex: 1, width: width * .7, marginLeft: 8 }}>
                                                     <Text style={styles.secondTextStyle}>Office Name</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
+                                                <View style={{ flex: 1, width: width * .3, marginLeft: 8 }}>
                                                     <Text style={styles.secondTextStyle}>From</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 90, marginLeft: 8 }}>
+                                                <View style={{ flex: 1, width: width * .3, marginLeft: 8 }}>
                                                     <Text style={styles.secondTextStyle}>To</Text>
                                                 </View>
 
@@ -1744,44 +1744,44 @@ const BiodataScreen = ({ id, navigation }) => {
                                     <ScrollView horizontal={true} style={{ flex: 1, }}>
                                         <View style={{ marginBottom: 10, marginTop: 5 }}>
                                             < View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                <View style={{ flex: .75, width: 200, }}>
+                                                <View style={{ flex: .75, width: width * .5, }}>
                                                     <Text style={styles.secondTextStyle}>Training Title</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 150, }}>
+                                                <View style={{ flex: 1, width: width * .4, }}>
                                                     <Text style={styles.secondTextStyle}>Training Subject</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 150, }}>
+                                                <View style={{ flex: 1, width: width * .5, }}>
                                                     <Text style={styles.secondTextStyle}>Institute and Place</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 100, marginLeft: 8 }}>
+                                                <View style={{ flex: 1, width: width * .3, marginLeft: 8 }}>
                                                     <Text style={styles.secondTextStyle}>Country</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 50, }}>
+                                                <View style={{ flex: 1, width: width * .2, }}>
                                                     <Text style={styles.secondTextStyle}>Year</Text>
                                                 </View>
-                                                <View style={{ flex: 1, width: 50 }}>
+                                                <View style={{ flex: 1, width: width * .2 }}>
                                                     <Text style={styles.secondTextStyle}>Days</Text>
                                                 </View>
                                             </View >
                                             {
                                                 training.map((item, index) => (
                                                     < View key={index} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                                        <View style={{ flex: .75, width: 200, }}>
+                                                        <View style={{ flex: .75, width: width * .5, }}>
                                                             <Text style={styles.queryTextStyle}>{item.title}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 150, }}>
+                                                        <View style={{ flex: 1, width: width * .4, }}>
                                                             <Text style={styles.queryTextStyle}>{item.subject}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 150, }}>
+                                                        <View style={{ flex: 1, width: width * .5, }}>
                                                             <Text style={styles.queryTextStyle}>{item.institute}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 100, marginLeft: 10 }}>
+                                                        <View style={{ flex: 1, width: width * .3, marginLeft: 10 }}>
                                                             <Text style={styles.queryTextStyle}>{item.country}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 50, marginLeft: 5, }}>
+                                                        <View style={{ flex: 1, width: width * .2, marginLeft: 5, }}>
                                                             <Text style={styles.queryTextStyle}>{item.year}</Text>
                                                         </View>
-                                                        <View style={{ flex: 1, width: 50 }}>
+                                                        <View style={{ flex: 1, width: width * .2 }}>
                                                             <Text style={styles.queryTextStyle}>{item.days}</Text>
                                                         </View>
                                                     </View >
@@ -1835,20 +1835,20 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     headingTxt: {
-        fontSize: 15,
+        fontSize: txtSizeBig,
         fontWeight: '500',
         color: '#00ced1',
 
     },
     textStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: '#0080FF',
         marginBottom: 2
 
     },
     queryTextStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: 'black',
         marginBottom: 2,
@@ -1856,7 +1856,7 @@ const styles = StyleSheet.create({
 
     },
     secondTextStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: '#8040BF',
         marginBottom: 2,

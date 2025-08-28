@@ -81,9 +81,9 @@ const Login = () => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {
-                __DEV__ && console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height, height/3);
+                __DEV__ && console.log('inmmmmmmmmmmm  ' + event.endCoordinates.height + 400, ' ', screenHeight, ' ', height, height / 3);
                 // setkeyboardHeight(event.endCoordinates.height)
-                setkeyboardHeight(height /3)
+                setkeyboardHeight(height / 3)
             }
         );
         const keyboardDidHideListener = Keyboard.addListener(
@@ -205,6 +205,7 @@ const Login = () => {
                                 borderRadius: 10,
                                 marginBottom: 5,
                                 fontWeight: '700',
+                                fontSize: Math.max(14, Math.min(24, height * 0.02)),
                             }}
                             placeholder='BWDB PMIS ID'>
                         </TextInput>
@@ -224,6 +225,7 @@ const Login = () => {
                                 borderRadius: 10,
                                 marginBottom: 5,
                                 fontWeight: '700',
+                                fontSize: Math.max(14, Math.min(24, height * 0.02)),
                             }}
                             placeholder='PASSWORD'>
                         </TextInput>
@@ -313,8 +315,8 @@ const Login = () => {
 
 
                 <View style={{
-                    backgroundColor:'white',
-                    height: keyboardHeight*4
+                    backgroundColor: 'white',
+                    height: keyboardHeight * 4
                 }} >
 
                 </View>

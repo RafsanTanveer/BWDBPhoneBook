@@ -10,7 +10,7 @@ import UpdateBloodGroupModalComponent from '../component/modalComponents/UpdateB
 
 import UpdateMobileNumberModalComponent from '../component/modalComponents/UpdateMobileNumberModalComponent'
 import UpdateEmailModalComponent from '../component/modalComponents/UpdateEmailModalComponent'
-
+import { txtSizeNormal, txtSizeBig } from '../utility/Scalling'
 
 const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, reloadList }) => {
 
@@ -71,7 +71,9 @@ const SingleColumnComponent = ({ id, firstHeading, firstQueryResult, delimiter, 
                             marginHorizontal: 5,
                             paddingVertical: .5,
                             paddingHorizontal: 5,
-                            elevation: 2
+                            elevation: 2,
+                            height: height * .022,
+                            justifyContent: 'center'
                         }} >
                         <Text style={{ color: 'white', fontSize: height * .015, fontStyle: 'italic' }} >{updateTxt}</Text>
                     </TouchableOpacity>
@@ -171,20 +173,20 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     headingTxt: {
-        fontSize: 15,
+        fontSize: txtSizeBig,
         fontWeight: '500',
         color: '#00ced1',
 
     },
     textStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: '#0080FF',
         marginBottom: 2
 
     },
     queryTextStyle: {
-        fontSize: 13,
+        fontSize: txtSizeNormal,
         fontWeight: '500',
         color: 'black',
         marginBottom: 2,

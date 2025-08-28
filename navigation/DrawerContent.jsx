@@ -42,9 +42,9 @@ const DrawerContent = (props) => {
                 <View style={{
                     backgroundColor: `${currentTheme}30`,
                     //backgroundColor: `${currentTheme}50`,  for opacity
-                    height: 200,
+                    height: Math.max(140, Math.min(300, height * 0.18)),
                     flexDirection: 'row',
-                    paddingVertical: 15,
+                    paddingVertical: Math.max(10, height * 0.01),
                     paddingHorizontal: 5
                 }}>
                     <View style={{ flex: 2, height: width * .25, width: width * .25, paddingTop: 5, alignContent: 'center', justifyContent: 'center', }}>
@@ -114,7 +114,7 @@ const DrawerContent = (props) => {
                         flexDirection: 'row',
                         margin: 20,
                         backgroundColor: `${currentTheme}99`,
-                        height: 30,
+                        height: Math.max(28, Math.min(56, height * 0.035)),
                         width: width * .25,
                         borderRadius: height * .005,
                         alignItems: 'center',

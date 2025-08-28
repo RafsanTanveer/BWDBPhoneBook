@@ -246,13 +246,13 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
                                     paddingHorizontal: 10
                                 }}>
                                 <Ionicons style={{ marginRight: 5 }} name="call-outline" size={height * .017} color="white" />
-                                    <Text style={{
-                                        color: 'white',
-                                        height: height * (1 / 40),
-                                        fontSize: height * .017,
-                                        fontFamily: Platform.OS === "android" ? 'serif' : null,
-                                        textAlign:'center'
-                                    }}>{mobile} </Text>
+                                <Text style={{
+                                    color: 'white',
+                                    height: height * (1 / 40),
+                                    fontSize: height * .017,
+                                    fontFamily: Platform.OS === "android" ? 'serif' : null,
+                                    textAlign: 'center'
+                                }}>{mobile} </Text>
                             </TouchableOpacity>
                         }
                         {
@@ -339,8 +339,8 @@ const styles = StyleSheet.create({
         padding: 20,
         marginVertical: 8,
         //marginHorizontal: 16,
-        height: 40,
-        width: 90
+        height: height * .06,
+        width: width * .25
     },
     title: {
         fontSize: 32,
