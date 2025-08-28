@@ -21,6 +21,7 @@ import { insertDataIntoDesignationTable, insertDataIntoDesignationListTable, ins
 import db from '../database/database';
 import { useNetInfo } from "@react-native-community/netinfo";
 import { getAllInfoFromTable, getAllTableName } from '../database/SelectQueries';
+import { txtSizeNormal } from '../utility/Scalling';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -31,7 +32,7 @@ const tree = {
     offices: ['offices', 'dg', 'adg-admin', 'adg-finance', 'adg-planning', 'adg-east', 'adg-west', 'present-office'],
     apr: ['apr'],
     blood: ['blood'],
-    settings: ['settings', 'theme', 'update-organogram']
+    settings: ['settings', 'change-password','theme', 'update-organogram']
 }
 
 const ExpendableDrawer = () => {
@@ -75,6 +76,8 @@ const ExpendableDrawer = () => {
     const [waterDesig, setWaterDesig] = useState([]);
     const [mechDesig, setMechDesig] = useState([]);
     const [medicalDesig, setMedicalDesig] = useState([]);
+
+    const [currentTree, setCurrentTree] = useState([])
 
     const renderIcon = (iconName) => {
         switch (iconName) {
@@ -125,7 +128,7 @@ const ExpendableDrawer = () => {
             case 'rightArrow':
                 return <Image source={require('../assets/icons/right.png')} style={styles.iconStyle} />;
             case 'arrowDown':
-                return <Image source={require('../assets/icons/down.png')} style={styles.arrowIcon} />;
+                return <Image source={require('../assets/icons/down-chevron.png')} style={styles.arrowIcon} />;
             case 'arrowUp':
                 return <Image source={require('../assets/icons/up.png')} style={styles.arrowIcon} />;
             default:
@@ -231,6 +234,7 @@ const ExpendableDrawer = () => {
                 // If parent already active → close all
                 if (prev[0] === key) return [];
                 // Else activate only the parent
+                setCurrentTree([key])
                 return [key];
             } else {
                 // It's a child → find its parent
@@ -241,7 +245,10 @@ const ExpendableDrawer = () => {
                 if (!parent) return prev; // not in tree
 
                 // If parent not active yet → activate parent + this child
-                if (prev[0] !== parent) return [parent, key];
+                if (prev[0] !== parent) {
+                    setCurrentTree([parent, key])
+                    return [parent, key]
+                };
 
                 // Parent active → toggle child
                 if (prev.includes(key)) {
@@ -255,6 +262,7 @@ const ExpendableDrawer = () => {
 
                     console.log();
 
+                    setCurrentTree(prev.filter(item => item !== key))
                     return prev.filter(item => item !== key);
                 } else {
                     // add child
@@ -265,7 +273,7 @@ const ExpendableDrawer = () => {
 
                     console.log('==========================================');
                     console.log();
-
+                    setCurrentTree([...prev, key])
                     return [...prev, key];
                 }
             }
@@ -285,7 +293,7 @@ const ExpendableDrawer = () => {
                     activeOpacity={0.7}
                 >
                     <View style={styles.iconContainer}>
-                        {renderIcon(icon)}
+                        {icon ? renderIcon(icon) : <Text style={{ color: '#000080' }}>➥</Text>}
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
@@ -318,7 +326,7 @@ const ExpendableDrawer = () => {
                     activeOpacity={0.7}
                 >
                     <View style={styles.iconContainer}>
-                        {renderIcon(icon)}
+                        {icon ? renderIcon(icon) : <Text style={{ color: '#000080' }}>➥</Text>}
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
@@ -333,7 +341,7 @@ const ExpendableDrawer = () => {
                                 style={styles.designationItem}
                                 onPress={() => onItemPress(it)}
                             >
-                                {renderIcon('rightArrow')}
+                                <Text style={{ color: '#000080' }}>➥</Text>
                                 <Text style={styles.innerTitlestyle}>{it.designame}</Text>
                             </TouchableOpacity>
                         ))}
@@ -542,42 +550,42 @@ const ExpendableDrawer = () => {
                                 <>
                                     {renderAccordionItem({
                                         title: "DIRECTOR GENERAL",
-                                        icon: 'rightArrow',
+                                        icon: '',
                                         accordionKey: 'dg',
                                         children: <OfficeList lcode='01' />
                                     })}
 
                                     {renderAccordionItem({
                                         title: "ADG(ADMIN)",
-                                        icon: 'rightArrow',
+                                        icon: '',
                                         accordionKey: 'adg-admin',
                                         children: <OfficeList lcode='02' />
                                     })}
 
                                     {renderAccordionItem({
                                         title: "ADG(FIANANCE)",
-                                        icon: 'rightArrow',
+                                        icon: '',
                                         accordionKey: 'adg-finance',
                                         children: <OfficeList lcode='03' />
                                     })}
 
                                     {renderAccordionItem({
                                         title: "ADG(PLANNING)",
-                                        icon: 'rightArrow',
+                                        icon: '',
                                         accordionKey: 'adg-planning',
                                         children: <OfficeList lcode='04' />
                                     })}
 
                                     {renderAccordionItem({
                                         title: "ADG(EAST)",
-                                        icon: 'rightArrow',
+                                        icon: '',
                                         accordionKey: 'adg-east',
                                         children: <OfficeList lcode='05' />
                                     })}
 
                                     {renderAccordionItem({
                                         title: "ADG(WEST)",
-                                        icon: 'rightArrow',
+                                        icon: '',
                                         accordionKey: 'adg-west',
                                         children: <OfficeList lcode='06' />
                                     })}
@@ -585,7 +593,7 @@ const ExpendableDrawer = () => {
                             ) : (
                                 renderAccordionItem({
                                     title: presentOffice,
-                                    icon: 'rightArrow',
+                                    icon: '',
                                     accordionKey: 'present-office',
                                     children: <OfficeListSingle lcode={officelevel1code} officeId={presentOfficeCode} />
                                 })
@@ -670,7 +678,7 @@ const ExpendableDrawer = () => {
             )}
 
             {/* Settings */}
-            {renderAccordionItem({
+            { renderAccordionItem({
                 title: "Settings",
                 icon: 'settings',
                 accordionKey: 'settings',
@@ -680,13 +688,15 @@ const ExpendableDrawer = () => {
                             style={styles.settingsItem}
                             onPress={() => navigation.navigate('ChangePasswordScreen')}
                         >
-                            {renderIcon('rightArrow')}
+                            <Text style={{ color: '#000080' }}>➥</Text>
                             <Text style={styles.settingsText}>Change Password</Text>
                         </TouchableOpacity>
 
+
+
                         {renderAccordionItem({
                             title: "Theme",
-                            icon: 'rightArrow',
+                            icon: '',
                             accordionKey: 'theme',
                             children: (
                                 <View style={styles.themeContainer}>
@@ -703,7 +713,7 @@ const ExpendableDrawer = () => {
 
                         {renderAccordionItem({
                             title: "Update Organogram",
-                            icon: 'rightArrow',
+                            icon: '',
                             accordionKey: 'update-organogram',
                             children: (
                                 <TouchableOpacity
@@ -742,10 +752,11 @@ const styles = StyleSheet.create({
     },
     arrowContainer: {
         marginLeft: 'auto',
+
     },
     arrowIcon: {
-        width: 16,
-        height: 16,
+        width: width*.05,
+        height: width * .05,
     },
     accordionContent: {
         paddingLeft: 32,
@@ -753,10 +764,11 @@ const styles = StyleSheet.create({
     },
     titlestyle: {
         fontWeight: "bold",
+        fontSize: txtSizeNormal,
     },
     innerTitlestyle: {
         fontWeight: "bold",
-        fontSize: width * 0.036,
+        fontSize: txtSizeNormal,
         marginLeft: 8,
     },
     designationItem: {
@@ -778,7 +790,7 @@ const styles = StyleSheet.create({
     },
     updateAprText: {
         color: 'white',
-        fontSize: height * 0.015,
+        fontSize: txtSizeNormal,
         fontStyle: 'italic',
         fontWeight: '700',
     },
@@ -804,7 +816,7 @@ const styles = StyleSheet.create({
     },
     noAprText: {
         color: '#666',
-        fontSize: 16,
+        fontSize: txtSizeNormal,
         fontStyle: 'italic',
         fontWeight: '600',
     },
@@ -823,12 +835,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 8,
-        paddingHorizontal: 16,
-        marginLeft: width * 0.031,
+        paddingHorizontal: 8,
+        marginLeft: width * 0.025,
     },
     settingsText: {
         fontWeight: "bold",
-        marginLeft: 8,
+        marginLeft: 14,
     },
     themeContainer: {
         flexDirection: 'row',
@@ -855,11 +867,11 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: '600',
         textAlign: 'center',
-        fontSize: width * 0.036,
+        fontSize: txtSizeNormal,
     },
     iconStyle: {
-        width: 20,
-        height: 20,
+        width: width*.05,
+        height: width * .05,
     },
 });
 

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Button, StyleSheet, View, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
-
+import {height,width} from '../utility/ScreenDimensions'
 
 
 const LoadingScreen = () => {
@@ -17,8 +17,8 @@ const LoadingScreen = () => {
                 autoPlay
                 ref={animation}
                 style={{
-                    width: 200,
-                    height: 200,
+                    width: width*.5,
+                    height: width * .5,
                 }}
                 speed={1.25}
                 source={require('../assets/lottie/loading-rectangle.json')}

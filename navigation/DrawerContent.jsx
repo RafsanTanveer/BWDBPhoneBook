@@ -42,7 +42,7 @@ const DrawerContent = (props) => {
                 <View style={{
                     backgroundColor: `${currentTheme}30`,
                     //backgroundColor: `${currentTheme}50`,  for opacity
-                    height: Math.max(140, Math.min(300, height * 0.18)),
+                    height: Math.max(height * 0.25, Math.min(300, height * 0.25)),
                     flexDirection: 'row',
                     paddingVertical: Math.max(10, height * 0.01),
                     paddingHorizontal: 5
@@ -64,42 +64,19 @@ const DrawerContent = (props) => {
                         </View>
                     </View>
                     <View style={{ flex: 4.2 }}>
-                        <Text style={{ fontSize: width * .045, fontWeight: '700' }}>{name}</Text>
+                        <Text style={{ fontSize: txtSizeBig, fontWeight: '700' }}>{name}</Text>
+                        <Text style={{ fontSize: width * .035, fontWeight: '700', marginTop: 5 }}>PMIS ID: {pmisId}</Text>
+
                         {
                             presentPost &&
-                            <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentPost} {presentCharge === 'C' ? ', CC' : ''}</Text>
+                            <Text style={{ fontSize: txtSizeNormal, marginTop: 3, fontWeight: '700' }}>{presentPost} {presentCharge === 'C' ? ', CC' : ''}</Text>
                         }
-                        <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{presentOffice}</Text>
-                        <Text style={{ fontSize: width * .033, marginTop: 3, fontWeight: '700' }}>{officeAddres}</Text>
+                        <Text style={{ fontSize: txtSizeNormal, marginTop: 3, fontWeight: '700' }}>{presentOffice}</Text>
+                        <Text style={{ fontSize: txtSizeNormal, marginTop: 3, fontWeight: '700' }}>{officeAddres}</Text>
                     </View>
                 </View>
             }
-            {/* <View style={{
 
-
-                // left: width * .15,
-                justifyContent: 'center',
-                marginTop: height * .235,
-                marginLeft:width*.15,
-                // alignItems: 'center',
-                flexDirection: 'column',
-                backgroundColor: `${currentTheme}`,
-                borderRadius: height * .005,
-                marginHorizontal: 1,
-                marginVertical:0,
-                paddingTop:4,
-                paddingHorizontal: 10,
-                elevation:55,
-                position: 'absolute',
-                zIndex:120
-            }}>
-                <Text style={{
-                    color: 'white',
-                    height: height * (1 / 40),
-                    fontSize: txtSizeNormal,
-                    // fontFamily: 'imperial-normal',
-                }}>{name}</Text>
-            </View> */}
 
             <DrawerContentScrollView style={{ backgroundColor: "#ffffff", marginTop: 10 }} {...props}>
                 <ExpendableDrawer />
@@ -114,7 +91,7 @@ const DrawerContent = (props) => {
                         flexDirection: 'row',
                         margin: 20,
                         backgroundColor: `${currentTheme}99`,
-                        height: Math.max(28, Math.min(56, height * 0.035)),
+                        height: Math.max(width * .1, Math.min(56, height * 0.035)),
                         width: width * .25,
                         borderRadius: height * .005,
                         alignItems: 'center',
@@ -125,7 +102,7 @@ const DrawerContent = (props) => {
                     </View>
 
                     <View style={{ flex: 2.5, }} >
-                        <Text style={{ fontSize: 15, fontWeight: '600', color: 'white' }}>Logout</Text>
+                        <Text style={{ fontSize: txtSizeBig, fontWeight: '600', color: 'white' }}>Logout</Text>
                     </View>
 
                 </View>

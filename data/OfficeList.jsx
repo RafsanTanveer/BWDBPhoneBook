@@ -10,6 +10,7 @@ import { txtSizeMini, txtSizeBig, txtSizeNormal } from '../utility/Scalling'
 import {heightScreen, widthScreen} from '../utility/ScreenDimensions'
 import ItemOfficeList from '../component/ItemOfficeList';
 
+
 const rightArrow = '../assets/icons/right.png'
 
 
