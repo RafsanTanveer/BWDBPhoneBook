@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
         margin: 2,
         padding: 2,
         borderRadius: 3,
-        elevation: 8
+        // elevation: 8
     },
     probTopicStyle: {
         fontSize: height * .017,

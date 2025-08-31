@@ -377,7 +377,7 @@ const ItemOthers = ({ id,
 
                                 {
                                     false &&
-                                    <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}
+                                    <TouchableOpacity style={{ padding: 2,  borderRadius: height * .009, }}
                                         onPress={() => toggleCameraModal()}
                                     >
                                         <Image
@@ -389,7 +389,7 @@ const ItemOthers = ({ id,
 
                                 {
                                     false &&
-                                    <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}>
+                                    <TouchableOpacity style={{ padding: 2,  borderRadius: height * .009, }}>
                                         <Image
                                             source={Images['chat']}
                                             style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
@@ -692,7 +692,7 @@ const ItemOthers = ({ id,
 
                                 style={{ zIndex: 100, justifyContent: 'center' }} >
                                 <Image
-                                    style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                    style={{ height: width * .05, width: width * .05,  }}
                                     source={Images['plus-green']} />
                             </TouchableOpacity>
                         }

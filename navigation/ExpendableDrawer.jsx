@@ -32,7 +32,8 @@ const tree = {
     offices: ['offices', 'dg', 'adg-admin', 'adg-finance', 'adg-planning', 'adg-east', 'adg-west', 'present-office'],
     apr: ['apr'],
     blood: ['blood'],
-    settings: ['settings', 'change-password','theme', 'update-organogram']
+    settings: ['settings', 'change-password', 'theme', 'update-organogram'],
+    about: ['about']
 }
 
 const ExpendableDrawer = () => {
@@ -253,27 +254,27 @@ const ExpendableDrawer = () => {
                 // Parent active → toggle child
                 if (prev.includes(key)) {
                     // remove child
-                    console.log();
+                    // console.log();
 
-                    console.log('==========================================');
-                    console.log(prev.filter(item => item !== key));
+                    // console.log('==========================================');
+                    // console.log(prev.filter(item => item !== key));
 
-                    console.log('==========================================');
+                    // console.log('==========================================');
 
-                    console.log();
+                    // console.log();
 
                     setCurrentTree(prev.filter(item => item !== key))
                     return prev.filter(item => item !== key);
                 } else {
                     // add child
-                    console.log();
+                    // console.log();
 
-                    console.log('==========================================');
-                    console.log([...prev, key]);
+                    // console.log('==========================================');
+                    // console.log([...prev, key]);
 
-                    console.log('==========================================');
-                    console.log();
-                    setCurrentTree([...prev, key])
+                    // console.log('==========================================');
+                    // console.log();
+                    // setCurrentTree([...prev, key])
                     return [...prev, key];
                 }
             }
@@ -283,7 +284,7 @@ const ExpendableDrawer = () => {
     const renderAccordionItem = ({ title, icon, accordionKey, children }) => {
         const isActive = activeAccordion === accordionKey;
 
-        isActive ? console.log('isActive -', accordionKey, ' -------------------b---------- ' + isActive) : console.log('isActive -', accordionKey, ' - ' + isActive);
+        // isActive ? console.log('isActive -', accordionKey, ' -------------------b---------- ' + isActive) : console.log('isActive -', accordionKey, ' - ' + isActive);
 
         return (
             <View style={styles.accordionContainer}>
@@ -314,7 +315,7 @@ const ExpendableDrawer = () => {
 
 
 
-        isActive ? console.log('isActive -', accordionKey, ' ------------------------------- ' + isActive) : console.log('isActive -', accordionKey, ' - ' + isActive);
+        // isActive ? console.log('isActive -', accordionKey, ' ------------------------------- ' + isActive) : console.log('isActive -', accordionKey, ' - ' + isActive);
 
 
 
@@ -678,7 +679,7 @@ const ExpendableDrawer = () => {
             )}
 
             {/* Settings */}
-            { renderAccordionItem({
+            {renderAccordionItem({
                 title: "Settings",
                 icon: 'settings',
                 accordionKey: 'settings',
@@ -691,8 +692,6 @@ const ExpendableDrawer = () => {
                             <Text style={{ color: '#000080' }}>➥</Text>
                             <Text style={styles.settingsText}>Change Password</Text>
                         </TouchableOpacity>
-
-
 
                         {renderAccordionItem({
                             title: "Theme",
@@ -724,9 +723,19 @@ const ExpendableDrawer = () => {
                                 </TouchableOpacity>
                             )
                         })}
+
+                        {/* About (moved inside Settings) */}
+                        {<TouchableOpacity
+                            style={styles.settingsItem}
+                            onPress={() => navigation.navigate('AboutScreen', {})}
+                        >
+                            <Text style={{ color: '#000080' }}>➥</Text>
+                            <Text style={styles.settingsText}>About</Text>
+                        </TouchableOpacity>}
                     </>
                 )
             })}
+
         </ScrollView>
     );
 };
@@ -737,7 +746,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     accordionContainer: {
-        marginBottom: 1,
+        marginBottom: width * .01,
         backgroundColor: 'white',
     },
     accordionHeader: {
@@ -755,7 +764,7 @@ const styles = StyleSheet.create({
 
     },
     arrowIcon: {
-        width: width*.05,
+        width: width * .05,
         height: width * .05,
     },
     accordionContent: {
@@ -870,7 +879,7 @@ const styles = StyleSheet.create({
         fontSize: txtSizeNormal,
     },
     iconStyle: {
-        width: width*.05,
+        width: width * .05,
         height: width * .05,
     },
 });

@@ -4,8 +4,7 @@ import React, { useContext, useState, useEffect } from "react";
 import DataRender from '../data/DataRender'
 import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
-
-import api from '../api/api';
+import {txtSizeBig} from '../utility/Scalling'
 
 const DesignationScreen = ({ route, navigation }) => {
 
@@ -39,14 +38,14 @@ const DesignationScreen = ({ route, navigation }) => {
                 backgroundColor: `${currentTheme}`,
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
-               
+
 
             }}>
                 {/* <View style={{ flex: 1 }}>
                     <Image style={{ width: 40, height: 40,backgroundColor:'white' }} source={require('../assets/bwdLogo.png')} />
                 </View> */}
 
-                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null }}>{route.params.designation} </Text>
+                <Text style={{ color: '#fff', fontSize: txtSizeBig*1.3, fontWeight: '600', textAlign: 'center', fontFamily: Platform.OS === "android" ? 'serif' : null }}>{route.params.designation} </Text>
 
             </View>
 
@@ -54,7 +53,6 @@ const DesignationScreen = ({ route, navigation }) => {
             <DataRender
                 designation={route.params.designation}
                 desig_code={route.params.desig_code}
-                // desig_code={route.params.tablename === 'CHENGCIV' ? 44 : route.params.desig_code}
                 tablename={route.params.tablename}
             />
 

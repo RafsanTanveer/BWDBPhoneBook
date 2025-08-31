@@ -319,7 +319,7 @@ const ItemBlood = ({ id,
 
 
                     <View style={{
-                        elevation: 3,
+
                         backgroundColor: `${currentTheme}`,
                         alignSelf: 'center', borderRadius: 5, borderColor: `${currentTheme}`, borderWidth: 1, marginTop: 5, width: width * (1 / 8.5)
                     }}>
@@ -343,7 +343,7 @@ const ItemBlood = ({ id,
 
                                 {
                                     false &&
-                                    <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}
+                                    <TouchableOpacity style={{ padding: 2,  borderRadius: height * .009, }}
                                         onPress={() => toggleCameraModal()}
                                     >
                                         <Image
@@ -355,7 +355,7 @@ const ItemBlood = ({ id,
 
                                 {
                                     false &&
-                                    <TouchableOpacity style={{ padding: 2, elevation: 0, borderRadius: height * .009, }}>
+                                    <TouchableOpacity style={{ padding: 2,  borderRadius: height * .009, }}>
                                         <Image
                                             source={Images['chat']}
                                             style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
@@ -604,7 +604,7 @@ const ItemBlood = ({ id,
 
                                 style={{ zIndex: 100, justifyContent: 'center' }} >
                                 <Image
-                                    style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                    style={{ height: width * .05, width: width * .05, }}
                                     source={Images['plus-green']} />
                             </TouchableOpacity>
                         }

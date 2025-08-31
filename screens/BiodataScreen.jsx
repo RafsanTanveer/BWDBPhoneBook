@@ -1331,7 +1331,7 @@ const BiodataScreen = ({ id, navigation }) => {
                                         <Text style={{
                                             fontWeight: 'bold',
                                             color: 'black',
-                                            fontSize: txtSizeMini * 1.2,
+                                            fontSize: txtSizeBig*.8 ,
                                             textAlign: 'center'
                                         }}>Bio-data</Text>
                                         <Text style={{

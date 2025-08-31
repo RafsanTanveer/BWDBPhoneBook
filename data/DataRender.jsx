@@ -1245,20 +1245,24 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                 selectionColor={'black'}       // for changing curcsor color
                                 style={{
                                     height: height / 20,
-                                    width: "97%",
+                                    width: "98%",
                                     borderRadius: 5,
-                                    marginBottom: 5,
-                                    marginLeft: 5,
+                                    marginBottom: width * .02,
+                                    marginHorizontal: width * .01,
                                     borderColor: `${currentTheme}`,//'#6750a4',
                                     borderWidth: 2,
                                     paddingLeft: 15,
-                                    backgroundColor: 'white'
+                                    backgroundColor: 'white',
+                                    fontSize: txtSizeNormal,
                                 }}
                                 placeholder="Search Name or Mobile or PABX (3..) or Blood (+..)"
+                                placeholderTextColor="#888" // Added placeholder style
                                 value={search}
                                 //underlineColorAndroid='trasparent'
                                 onChangeText={(text) => { searchFilter(text) }}
                                 mode='outlined'
+
+
                             />
                         </View>
                         <View>
@@ -1490,7 +1494,7 @@ const DataRender = ({ designation, url, desig_code, tablename }) => {
                                             marginTop: 7,
                                             backgroundColor: 'white',
                                             borderRadius: height * .005,
-                                            width: 140,
+                                            width: width*.25,
                                             // elevation: 5
                                             // borderColor: 'black',
                                             // borderWidth:1

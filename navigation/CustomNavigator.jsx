@@ -21,7 +21,7 @@ import DataRenderOffice from '../data/DataRenderOffice'
 import ReportScreen from '../screens/ReportScreen'
 import SplashScreen from '../screens/SplashScreen'
 import { useState, useEffect } from "react";
-
+import {txtSizeBig,txtSizeNormal} from '../utility/Scalling'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -53,7 +53,7 @@ const CustomDrawer = ({ }) => {
 
                         <Image
                             source={require('../assets/icons/menu-icon.png')}
-                            style={{ height: Math.max(22, Math.min(40, width * 0.07)), width: Math.max(22, Math.min(40, width * 0.07)), marginLeft: 10 }}
+                            style={{ height: width * 0.08, width: width * 0.08, marginLeft: 10 }}
                         />
 
                     </TouchableOpacity>
@@ -96,17 +96,160 @@ const CustomDrawer = ({ }) => {
 
             drawerContent={(props) => <DrawerContent {...props} />}>
 
-            <Drawer.Screen name="Home" options={{ headerTitleAlign: "center", title: homeScreenTitle, }} component={Home} />
-            <Drawer.Screen name="OfficeScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={OfficeScreen} />
-            <Drawer.Screen name="DesignationScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreen} />
-            <Drawer.Screen name="BloodScreen" options={{ headerTitleAlign: "center", title: "BloodScreen", }} component={BloodScreen} />
-            <Drawer.Screen name="BiodataScreen" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={BiodataScreen} />
-            <Drawer.Screen name="Biodata" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={Biodata} />
-            <Drawer.Screen name="DesignationScreenOther" options={{ headerTitleAlign: "center", title: "Bio-data", }} component={DesignationScreenOther} />
-            <Drawer.Screen name="ReportScreen" options={{ headerTitleAlign: "center", title: "Report", }} component={ReportScreen} />
-            <Drawer.Screen name="ChangePasswordScreen" options={{ headerTitleAlign: "center", title: "Change Password", }} component={ChangePasswordScreen} />
-            <Drawer.Screen name="AboutScreen" options={{ headerTitleAlign: "center", title: "About", }} component={AboutScreen} />
-            <Drawer.Screen name="AprScreen" options={{ headerTitleAlign: "center", title: "APR", }} component={AprScreen} />
+            <Drawer.Screen
+                name="Home"
+                options={{
+                    headerTitleAlign: "center",
+                    title: homeScreenTitle,
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.3,
+                        textAlign: 'center',
+                    },
+                }}
+                component={Home}
+            />
+            <Drawer.Screen
+                name="OfficeScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Bio-data",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={OfficeScreen}
+            />
+            <Drawer.Screen
+                name="DesignationScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Bio-data",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={DesignationScreen}
+            />
+            <Drawer.Screen
+                name="BloodScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "BloodScreen",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={BloodScreen}
+            />
+            <Drawer.Screen
+                name="BiodataScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Bio-data",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={BiodataScreen}
+            />
+            <Drawer.Screen
+                name="Biodata"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Bio-data",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={Biodata}
+            />
+            <Drawer.Screen
+                name="DesignationScreenOther"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Bio-data",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={DesignationScreenOther}
+            />
+            <Drawer.Screen
+                name="ReportScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Report",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={ReportScreen}
+            />
+            <Drawer.Screen
+                name="ChangePasswordScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "Change Password",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={ChangePasswordScreen}
+            />
+            <Drawer.Screen
+                name="AboutScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "About",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={AboutScreen}
+            />
+            <Drawer.Screen
+                name="AprScreen"
+                options={{
+                    headerTitleAlign: "center",
+                    title: "APR",
+                    headerTitleStyle: {
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: txtSizeBig * 1.2,
+                        textAlign: 'center',
+                    },
+                }}
+                component={AprScreen}
+            />
 
         </Drawer.Navigator>
     );

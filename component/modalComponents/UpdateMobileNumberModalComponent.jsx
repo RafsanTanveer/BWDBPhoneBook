@@ -97,13 +97,13 @@ const UpdateMobileNumberModalComponent = ({ id, currentMobileNumber, toggleModal
 
                     <View style={{ flexDirection: 'row' }} >
                         <TouchableOpacity
-                            style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
+                            style={{ ...styles.button, backgroundColor: `${currentTheme}`,  }}
 
                             onPress={() => updateMblNm()}>
                             <Text style={styles.textStyle}>Update</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={{ ...styles.button, backgroundColor: `${currentTheme}`, elevation: 5 }}
+                            style={{ ...styles.button, backgroundColor: `${currentTheme}`,  }}
                             onPress={() => closeModal()}>
                             <Text style={{ ...styles.textStyle }}>Cancel</Text>
                         </TouchableOpacity>

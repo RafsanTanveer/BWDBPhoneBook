@@ -289,7 +289,7 @@ const ItemOffice = ({ id, name, designation, office, email, mobile, pabx, select
 
                                 style={{ zIndex: 100, justifyContent: 'center' }} >
                                 <Image
-                                    style={{ height: width * .05, width: width * .05, elevation: 15 }}
+                                    style={{ height: width * .05, width: width * .05, }}
                                     source={Images['plus-green']} />
                             </TouchableOpacity>
                         }
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2,
+       
     },
     buttonOpen: {
         backgroundColor: '#F194FF',
