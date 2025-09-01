@@ -21,6 +21,8 @@ import { height, width } from '../utility/ScreenDimensions';
 import { imgSizeMini, txtSizeNormal, txtSizeBig } from "../utility/Scalling";
 import UpdatePostModalComponent from './modalComponents/UpdatePostModalComponent';
 
+import ChatModal from './modalComponents/ChatModal';
+
 let selectedPId = []
 let selectedGroupIds = []
 
@@ -83,6 +85,11 @@ const Item = ({ id,
     const [image, setImage] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
 
+
+    const [isChatVisible, setIsChatVisible] = useState(false);
+
+    const openChat = () => setIsChatVisible(true);
+    const closeChat = () => setIsChatVisible(false);
 
     const toggleModal = (isVisible, type, heading) => {
         setphnOrMsg(type)
@@ -370,7 +377,7 @@ const Item = ({ id,
 
                                 {
                                     false &&
-                                    <TouchableOpacity style={{ padding: 2,  borderRadius: height * .009, }}
+                                    <TouchableOpacity style={{ padding: 2, borderRadius: height * .009, }}
                                         onPress={() => toggleCameraModal()}
                                     >
                                         <Image
@@ -381,8 +388,10 @@ const Item = ({ id,
                                 }
 
                                 {
-                                    false &&
-                                    <TouchableOpacity style={{ padding: 2,  borderRadius: height * .009, }}>
+                                    true &&
+                                    <TouchableOpacity
+                                        onPress={() => { openChat() }}
+                                        style={{ padding: 2, borderRadius: height * .009, }}>
                                         <Image
                                             source={Images['chat']}
                                             style={{ height: imgSizeMini * 1, width: imgSizeMini * 1.1 }}
@@ -740,7 +749,7 @@ const Item = ({ id,
 
                                 style={{ zIndex: 100, justifyContent: 'center' }} >
                                 <Image
-                                    style={{ height: width * .05, width: width * .05,  }}
+                                    style={{ height: width * .05, width: width * .05, }}
                                     source={Images['plus-green']} />
                             </TouchableOpacity>
                         }
@@ -824,6 +833,13 @@ const Item = ({ id,
 
                 <UpdatePostModalComponent id={id} name={name} desig={designation} officeId={officeid} toggleModal={togglePostModal} refreshList={reloadList} />
             </Modal>
+
+
+            {/* Chat Modal */}
+            <ChatModal
+                visible={isChatVisible}
+                onClose={closeChat}
+            />
 
 
             {/**********************************************  MODALS **********************************************************/}
