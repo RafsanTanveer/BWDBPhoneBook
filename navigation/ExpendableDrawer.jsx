@@ -131,7 +131,7 @@ const ExpendableDrawer = () => {
             case 'arrowDown':
                 return <Image source={require('../assets/icons/down-chevron.png')} style={styles.arrowIcon} />;
             case 'arrowUp':
-                return <Image source={require('../assets/icons/up.png')} style={styles.arrowIcon} />;
+                return <Image source={require('../assets/icons/up-chevron.png')} style={styles.arrowIcon} />;
             default:
                 return null;
         }
@@ -233,7 +233,11 @@ const ExpendableDrawer = () => {
 
             if (isParent) {
                 // If parent already active → close all
-                if (prev[0] === key) return [];
+                if (prev[0] === key)
+                {
+                    setCurrentTree([])
+                    return []
+                };
                 // Else activate only the parent
                 setCurrentTree([key])
                 return [key];
@@ -253,15 +257,6 @@ const ExpendableDrawer = () => {
 
                 // Parent active → toggle child
                 if (prev.includes(key)) {
-                    // remove child
-                    // console.log();
-
-                    // console.log('==========================================');
-                    // console.log(prev.filter(item => item !== key));
-
-                    // console.log('==========================================');
-
-                    // console.log();
 
                     setCurrentTree(prev.filter(item => item !== key))
                     return prev.filter(item => item !== key);
@@ -274,7 +269,7 @@ const ExpendableDrawer = () => {
 
                     // console.log('==========================================');
                     // console.log();
-                    // setCurrentTree([...prev, key])
+                    setCurrentTree([...prev, key])
                     return [...prev, key];
                 }
             }
@@ -298,7 +293,8 @@ const ExpendableDrawer = () => {
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
-                        {renderIcon(isActive ? 'arrowUp' : 'arrowDown')}
+                        {console.log(currentTree)}
+                        {renderIcon(currentTree.includes(accordionKey) ? 'arrowUp' : 'arrowDown')}
                     </View>
                 </TouchableOpacity>
                 {accordinsList.includes(accordionKey) && (
@@ -331,7 +327,8 @@ const ExpendableDrawer = () => {
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
-                        {renderIcon(isActive ? 'arrowUp' : 'arrowDown')}
+                        {console.log(currentTree)}
+                        {renderIcon(currentTree.includes(accordionKey) ? 'arrowUp' : 'arrowDown')}
                     </View>
                 </TouchableOpacity>
                 {accordinsList.includes(accordionKey) && (
