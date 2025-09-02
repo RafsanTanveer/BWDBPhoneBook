@@ -97,7 +97,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
             // Process messages
             const processedMessages = data.map(message => {
                 let content = message.content;
-                console.log(`Processing message ID ${message.id} (raw):`, content);
+                // console.log(`Processing message ID ${message.id} (raw):`, content);
                 if (typeof content === 'string' && content.trim() !== '') {
                     if (content === '[object Object]') {
                         console.warn(`Invalid content for message ${message.id}: [object Object]`);
@@ -114,7 +114,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
                     console.warn(`Invalid content for message ${message.id}:`, content);
                     content = 'Message content unavailable';
                 }
-                console.log(`Processing message ID ${message.id} (processed):`, content);
+                // console.log(`Processing message ID ${message.id} (processed):`, content);
                 return { ...message, content };
             });
 
@@ -203,7 +203,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
 
     const renderMessage = ({ item }) => {
         let messageText = item.content;
-        console.log(`Rendering message ID ${item.id} (raw):`, messageText);
+        // console.log(`Rendering message ID ${item.id} (raw):`, messageText);
         if (typeof messageText === 'string' && messageText.trim() !== '') {
             if (messageText === '[object Object]') {
                 console.warn(`Invalid content for message ${item.id}: [object Object]`);
@@ -220,7 +220,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
             console.warn(`Invalid content for message ${item.id}:`, messageText);
             messageText = 'Message content unavailable';
         }
-        console.log(`Rendering message ID ${item.id} (processed):`, messageText);
+        // console.log(`Rendering message ID ${item.id} (processed):`, messageText);
 
         return (
             <View key={item.id} style={[
@@ -240,7 +240,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
                     ]}>
                         {messageText}
                     </Text>
-                    <Text style={styles.timestamp}>
+                    <Text style={item.senderId === pmisId ? styles.timestamp : styles.timestampOther}>
                         {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </Text>
                 </View>
@@ -312,7 +312,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
                             </TouchableOpacity>
                         </View>
 
-                        {chatType === 'private' && (
+                        {/* {chatType === 'private' && (
                             <TouchableOpacity
                                 style={styles.inviteButton}
                                 onPress={() => {
@@ -321,7 +321,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
                             >
                                 <Text style={styles.inviteText}>Invite Others</Text>
                             </TouchableOpacity>
-                        )}
+                        )} */}
                     </View>
                 </KeyboardAvoidingView>
             </View>
@@ -414,11 +414,16 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     otherMessageText: {
-        color: '#333',
+        color: '#000',
     },
     timestamp: {
         fontSize: 10,
         color: '#fff',
+        alignSelf: 'flex-end',
+    },
+    timestampOther: {
+        fontSize: 10,
+        color: '#000',
         alignSelf: 'flex-end',
     },
     inputContainer: {
