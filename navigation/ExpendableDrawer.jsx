@@ -261,14 +261,7 @@ const ExpendableDrawer = () => {
                     setCurrentTree(prev.filter(item => item !== key))
                     return prev.filter(item => item !== key);
                 } else {
-                    // add child
-                    // console.log();
 
-                    // console.log('==========================================');
-                    // console.log([...prev, key]);
-
-                    // console.log('==========================================');
-                    // console.log();
                     setCurrentTree([...prev, key])
                     return [...prev, key];
                 }
@@ -293,7 +286,7 @@ const ExpendableDrawer = () => {
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
-                        {console.log(currentTree)}
+                      
                         {renderIcon(currentTree.includes(accordionKey) ? 'arrowUp' : 'arrowDown')}
                     </View>
                 </TouchableOpacity>
@@ -327,7 +320,7 @@ const ExpendableDrawer = () => {
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
-                        {console.log(currentTree)}
+                        {/* {console.log(currentTree)} */}
                         {renderIcon(currentTree.includes(accordionKey) ? 'arrowUp' : 'arrowDown')}
                     </View>
                 </TouchableOpacity>
