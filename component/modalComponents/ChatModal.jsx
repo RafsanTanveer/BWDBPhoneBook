@@ -242,7 +242,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                         {messageText}
                     </Text>
                     <Text style={item.senderId === pmisId ? styles.timestamp : styles.timestampOther}>
-                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {`${new Date(item.timestamp).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </Text>
                 </View>
             </View>
