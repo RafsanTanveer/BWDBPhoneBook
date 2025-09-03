@@ -9,15 +9,16 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     Platform,
-    ActivityIndicator
+    ActivityIndicator, Image
 } from 'react-native';
 import { Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 import { chatServerAddress } from '../../api/ServerAddress';
 import { AuthContext } from '../../context/AuthContext';
+import { txtSizeMini, txtSizeNormal } from '../../utility/Scalling';
 
-const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => {
+const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientName, recipientDesignation, recipientOffice, recipientPhoto }) => {
     const { userInfo, photo, name, pmisId } = useContext(AuthContext);
 
     const senderPmisId = pmisId;
@@ -68,10 +69,10 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
 
     // Load message history when chat changes
     useEffect(() => {
-        if (visible && chatId) {
+        if (visible && recipientId) {
             loadMessageHistory();
         }
-    }, [visible, chatId, chatType]);
+    }, [visible, recipientId, chatType]);
 
     const loadMessageHistory = async () => {
         setLoading(true);
@@ -82,9 +83,9 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
         try {
             let url;
             if (chatType === 'private') {
-                url = `http://192.168.16.41:6900/api/messages/private/${pmisId}/${chatId}`;
+                url = `http://192.168.16.41:6900/api/messages/private/${pmisId}/${recipientId}`;
             } else {
-                url = `http://192.168.16.41:6900/api/messages/room/${chatId}`;
+                url = `http://192.168.16.41:6900/api/messages/room/${recipientId}`;
             }
 
             const response = await fetch(url, {
@@ -167,7 +168,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
             const message = {
                 type: chatType === 'private' ? 'private_message' : 'room_message',
                 content: inputText.trim(),
-                [chatType === 'private' ? 'recipientId' : 'roomId']: chatId,
+                [chatType === 'private' ? 'recipientId' : 'roomId']: recipientId,
                 messageType: 'text',
             };
             console.log('Sending message:', JSON.stringify(message, null, 2));
@@ -275,9 +276,38 @@ const ChatModal = ({ visible, onClose, userId, chatType, chatId, chatName }) => 
                 >
                     <View style={styles.modalContent}>
                         <View style={styles.header}>
-                            <Text style={styles.headerTitle}>
-                                {chatType === 'private' ? `Chat with ${chatName}` : `Room: ${chatName}`}
-                            </Text>
+
+                                {chatType === 'private' ?
+
+                                    <View style={{ flexDirection: 'row', flex:1, height:height*.075 }} >
+                                    <View style={{ marginRight: 5, paddingTop: 5,  }} >
+                                         <Image style={{ height: width * .1, width: width * .1, borderRadius: 100, }}
+                                             source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
+                                         />
+                                       </View>
+                                        <View style={{flex:1}}>
+
+                                           <View style={{  }} >
+                                             <Text style={{ fontSize: txtSizeNormal, fontWeight: 600 }}>
+                                                 {recipientName}
+                                             </Text>
+                                           </View>
+                                           <View style={{  }} >
+                                             <Text style={{ fontSize: txtSizeMini * 1.3, flexWrap: "wrap", }}>
+                                                 {recipientDesignation}
+                                             </Text>
+                                           </View>
+                                         <View style={{ flex:1, }} >
+                                               <Text style={{ fontSize: txtSizeMini * 1.2,  }}>
+                                                   {recipientOffice}
+                                               </Text>
+                                         </View>
+
+                                        </View>
+                                    </View>
+                                    :
+                                    `Room: ${recipientName}`}
+
                             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                                 <Text style={styles.closeText}>✕</Text>
                             </TouchableOpacity>
@@ -353,21 +383,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 16,
+        paddingHorizontal: 10,
+       paddingVertical:8,
         borderBottomWidth: 1,
         borderBottomColor: '#f0f0f0',
         backgroundColor: '#fff',
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: txtSizeNormal,
         fontWeight: 'bold',
         color: '#333',
+    },
+    headerTitleContainer: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
     },
     closeButton: {
         padding: 4,
     },
     closeText: {
-        fontSize: 20,
+        fontSize: txtSizeNormal,
         fontWeight: 'bold',
         color: '#666',
     },
@@ -402,12 +437,12 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 4,
     },
     senderName: {
-        fontSize: 12,
+        fontSize: txtSizeNormal,
         color: '#666',
         marginBottom: 4,
     },
     messageText: {
-        fontSize: 16,
+        fontSize: txtSizeNormal,
         marginBottom: 4,
     },
     userMessageText: {
@@ -417,12 +452,12 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     timestamp: {
-        fontSize: 10,
+        fontSize: txtSizeNormal,
         color: '#fff',
         alignSelf: 'flex-end',
     },
     timestampOther: {
-        fontSize: 10,
+        fontSize: txtSizeNormal,
         color: '#000',
         alignSelf: 'flex-end',
     },
@@ -443,7 +478,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         marginRight: 8,
         maxHeight: 100,
-        fontSize: 16,
+        fontSize: txtSizeNormal,
     },
     sendButton: {
         backgroundColor: '#007AFF',
@@ -457,7 +492,7 @@ const styles = StyleSheet.create({
     sendText: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 14,
+        fontSize: txtSizeNormal,
     },
     inviteButton: {
         backgroundColor: '#34C759',
@@ -476,7 +511,7 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         marginTop: 10,
-        fontSize: 16,
+        fontSize: txtSizeNormal,
         color: '#666',
     },
 });

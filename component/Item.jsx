@@ -89,14 +89,10 @@ const Item = ({ id,
 
     const [isChatVisible, setIsChatVisible] = useState(false);
     const [chatType, setChatType] = useState('private'); // or 'room'
-    const [chatId, setChatId] = useState(null);
-    const [chatName, setChatName] = useState('');
     const [userId, setUserId] = useState(pmisId); // You need to set this
 
     const openChat = () => {
         setChatType('private');
-        setChatId(id); // This is the PMIS ID of the recipient
-        setChatName(name); // This is the name of the recipient
         setIsChatVisible(true);
     };
     const closeChat = () => setIsChatVisible(false);
@@ -851,8 +847,11 @@ const Item = ({ id,
                 onClose={closeChat}
                 userId={userId}
                 chatType={chatType}
-                chatId={chatId}
-                chatName={chatName}
+                recipientId={id}
+                recipientName={name}
+                recipientDesignation={designation}
+                recipientOffice={office}
+                recipientPhoto={photo}
             />
 
 
