@@ -269,80 +269,89 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             transparent={true}
             onRequestClose={onClose}
         >
-            <View style={styles.modalOverlay}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={styles.keyboardAvoidingView}
-                >
-                    <View style={styles.modalContent}>
-                        <View style={styles.header}>
+            {
+                loading ?
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator size="large" color="#007AFF" />
+                            <Text style={styles.loadingText}>Loading messages...</Text>
+                        </View>
+                    </View>
+                    :
+                    <View style={styles.modalOverlay}>
+                        <KeyboardAvoidingView
+                            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                            style={styles.keyboardAvoidingView}
+                        >
+                            <View style={styles.modalContent}>
+                                <View style={styles.header}>
 
-                                {chatType === 'private' ?
+                                    {chatType === 'private' ?
 
-                                    <View style={{ flexDirection: 'row', flex:1, height:height*.075 }} >
-                                    <View style={{ marginRight: 5, paddingTop: 5,  }} >
-                                         <Image style={{ height: width * .1, width: width * .1, borderRadius: 100, }}
-                                             source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
-                                         />
-                                       </View>
-                                        <View style={{flex:1}}>
+                                        <View style={{ flexDirection: 'row', flex: 1, height: height * .075 }} >
+                                            <View style={{ marginRight: 5, paddingTop: 5, }} >
+                                                <Image style={{ height: width * .1, width: width * .1, borderRadius: 100, }}
+                                                    source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
+                                                />
+                                            </View>
+                                            <View style={{ flex: 1 }}>
 
-                                           <View style={{  }} >
-                                             <Text style={{ fontSize: txtSizeNormal, fontWeight: 600 }}>
-                                                 {recipientName}
-                                             </Text>
-                                           </View>
-                                           <View style={{  }} >
-                                             <Text style={{ fontSize: txtSizeMini * 1.3, flexWrap: "wrap", }}>
-                                                 {recipientDesignation}
-                                             </Text>
-                                           </View>
-                                         <View style={{ flex:1, }} >
-                                               <Text style={{ fontSize: txtSizeMini * 1.2,  }}>
-                                                   {recipientOffice}
-                                               </Text>
-                                         </View>
+                                                <View style={{}} >
+                                                    <Text style={{ fontSize: txtSizeNormal, fontWeight: 600 }}>
+                                                        {recipientName}
+                                                    </Text>
+                                                </View>
+                                                <View style={{}} >
+                                                    <Text style={{ fontSize: txtSizeMini * 1.3, flexWrap: "wrap", }}>
+                                                        {recipientDesignation}
+                                                    </Text>
+                                                </View>
+                                                <View style={{ flex: 1, }} >
+                                                    <Text style={{ fontSize: txtSizeMini * 1.2, }}>
+                                                        {recipientOffice}
+                                                    </Text>
+                                                </View>
 
+                                            </View>
                                         </View>
-                                    </View>
-                                    :
-                                    `Room: ${recipientName}`}
+                                        :
+                                        `Room: ${recipientName}`}
 
-                            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                                <Text style={styles.closeText}>✕</Text>
-                            </TouchableOpacity>
-                        </View>
+                                    <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                                        <Text style={styles.closeText}>✕</Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                        <FlatList
-                            ref={flatListRef}
-                            data={messages}
-                            renderItem={renderMessage}
-                            keyExtractor={item => item.id}
-                            style={styles.messagesList}
-                            contentContainerStyle={styles.messagesContainer}
-                            onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
-                        />
+                                <FlatList
+                                    ref={flatListRef}
+                                    data={messages}
+                                    renderItem={renderMessage}
+                                    keyExtractor={item => item.id}
+                                    style={styles.messagesList}
+                                    contentContainerStyle={styles.messagesContainer}
+                                    onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+                                />
 
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                value={inputText}
-                                onChangeText={setInputText}
-                                placeholder="Type your message..."
-                                placeholderTextColor="#999"
-                                multiline
-                                maxLength={500}
-                            />
-                            <TouchableOpacity
-                                style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
-                                onPress={sendMessage}
-                                disabled={!inputText.trim()}
-                            >
-                                <Text style={styles.sendText}>Send</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput
+                                        style={styles.textInput}
+                                        value={inputText}
+                                        onChangeText={setInputText}
+                                        placeholder="Type your message..."
+                                        placeholderTextColor="#999"
+                                        multiline
+                                        maxLength={500}
+                                    />
+                                    <TouchableOpacity
+                                        style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
+                                        onPress={sendMessage}
+                                        disabled={!inputText.trim()}
+                                    >
+                                        <Text style={styles.sendText}>Send</Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                        {/* {chatType === 'private' && (
+                                {/* {chatType === 'private' && (
                             <TouchableOpacity
                                 style={styles.inviteButton}
                                 onPress={() => {
@@ -352,9 +361,13 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 <Text style={styles.inviteText}>Invite Others</Text>
                             </TouchableOpacity>
                         )} */}
+                            </View>
+                        </KeyboardAvoidingView>
                     </View>
-                </KeyboardAvoidingView>
-            </View>
+
+            }
+
+
         </Modal>
     );
 };
