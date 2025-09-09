@@ -147,7 +147,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             // Process messages
             const processedMessages = data.map(message => {
                 let content = message.content;
-                console.log(`Processing message ID ${message.id} (raw):`, content);
+                // console.log(`Processing message ID ${message.id} (raw):`, content);
                 if (typeof content === 'string' && content.trim() !== '') {
                     if (content === '[object Object]') {
                         console.warn(`Invalid content for message ${message.id}: [object Object]`);
@@ -164,7 +164,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                     console.warn(`Invalid content for message ${message.id}:`, content);
                     content = 'Message content unavailable';
                 }
-                console.log(`Processing message ID ${message.id} (processed):`, content);
+                // console.log(`Processing message ID ${message.id} (processed):`, content);
                 return { ...message, content };
             });
 
@@ -194,7 +194,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         }
 
         let content = message.content;
-        console.log(`Processing incoming message ID ${message.id} (raw):`, content);
+        // console.log(`Processing incoming message ID ${message.id} (raw):`, content);
         if (typeof content === 'string' && content.trim() !== '') {
             if (content === '[object Object]') {
                 console.warn(`Invalid content for incoming message ${message.id}: [object Object]`);
@@ -211,7 +211,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             console.warn(`Invalid content for incoming message ${message.id}:`, content);
             content = 'Message content unavailable';
         }
-        console.log(`Processing incoming message ID ${message.id} (processed):`, content);
+        // console.log(`Processing incoming message ID ${message.id} (processed):`, content);
 
         setMessages(prev => [...prev, { ...message, content }]);
         setTimeout(() => {
@@ -264,7 +264,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
 
     const renderMessage = ({ item }) => {
         let messageText = item.content;
-        console.log(`Rendering message ID ${item.id} (raw):`, messageText);
+        // console.log(`Rendering message ID ${item.id} (raw):`, messageText);
         if (typeof messageText === 'string' && messageText.trim() !== '') {
             if (messageText === '[object Object]') {
                 console.warn(`Invalid content for message ${item.id}: [object Object]`);
@@ -281,7 +281,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             console.warn(`Invalid content for message ${item.id}:`, messageText);
             messageText = 'Message content unavailable';
         }
-        console.log(`Rendering message ID ${item.id} (processed):`, messageText);
+        // console.log(`Rendering message ID ${item.id} (processed):`, messageText);
 
         return (
             <View key={item.id} style={[
@@ -396,7 +396,10 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 contentContainerStyle={styles.messagesContainer}
                                 onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
                                 ListFooterComponent={renderTypingIndicator}
-                            />
+                                />
+                               {/* <View style={{  }} >
+                                    <Text style={{}} >{renderTypingIndicator()}</Text>
+                               </View> */}
 
                             <View style={styles.inputContainer}>
                                 <TextInput
