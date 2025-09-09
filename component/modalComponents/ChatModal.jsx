@@ -10,7 +10,9 @@ import {
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
-    Image
+    Image,
+    Animated,
+    Easing,
 } from 'react-native';
 import { Dimensions } from 'react-native';
 
@@ -34,6 +36,57 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     const [typingUsers, setTypingUsers] = useState(new Set());
     const flatListRef = useRef(null);
     const typingTimeoutRef = useRef(null);
+
+    // For bouncing dots animation
+    const dot1 = useRef(new Animated.Value(0)).current;
+    const dot2 = useRef(new Animated.Value(0)).current;
+    const dot3 = useRef(new Animated.Value(0)).current;
+
+    // Animate the dots when typing indicator is shown
+    useEffect(() => {
+        let isMounted = true;
+        if (typingUsers.size > 0) {
+            const bounce = (dot, delay) => {
+                return Animated.loop(
+                    Animated.sequence([
+                        Animated.timing(dot, {
+                            toValue: -6,
+                            duration: 250,
+                            delay,
+                            useNativeDriver: true,
+                            easing: Easing.inOut(Easing.ease),
+                        }),
+                        Animated.timing(dot, {
+                            toValue: 0,
+                            duration: 250,
+                            useNativeDriver: true,
+                            easing: Easing.inOut(Easing.ease),
+                        }),
+                    ])
+                );
+            };
+            const anim1 = bounce(dot1, 0);
+            const anim2 = bounce(dot2, 120);
+            const anim3 = bounce(dot3, 240);
+
+            anim1.start();
+            anim2.start();
+            anim3.start();
+
+            return () => {
+                anim1.stop();
+                anim2.stop();
+                anim3.stop();
+            };
+        } else {
+            // Reset dots to original position when not typing
+            dot1.setValue(0);
+            dot2.setValue(0);
+            dot3.setValue(0);
+        }
+        return () => { isMounted = false; };
+        // eslint-disable-next-line
+    }, [typingUsers.size]);
 
     // WebSocket connection using PMIS ID
     useEffect(() => {
@@ -310,11 +363,35 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     const renderTypingIndicatorDiv = () => {
         if (typingUsers.size === 0) return null;
         const typingText = chatType === 'private'
-            ? 'Typing...'
-            : `${typingUsers.size} user${typingUsers.size > 1 ? 's' : ''} typing...`;
+            ? 'Typing'
+            : `${typingUsers.size} user${typingUsers.size > 1 ? 's' : ''} typing`;
+
+        // Only the dots bounce, not the text
         return (
             <View style={styles.typingIndicator}>
-                <Text style={styles.typingText}>{typingText}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={styles.typingText}>{typingText}</Text>
+                    <View style={{ width: 24, flexDirection: 'row', marginLeft: 4 }}>
+                        <Animated.Text
+                            style={[
+                                styles.typingDot,
+                                { transform: [{ translateY: dot1 }] }
+                            ]}
+                        >.</Animated.Text>
+                        <Animated.Text
+                            style={[
+                                styles.typingDot,
+                                { transform: [{ translateY: dot2 }] }
+                            ]}
+                        >.</Animated.Text>
+                        <Animated.Text
+                            style={[
+                                styles.typingDot,
+                                { transform: [{ translateY: dot3 }] }
+                            ]}
+                        >.</Animated.Text>
+                    </View>
+                </View>
             </View>
         );
     };
@@ -574,14 +651,19 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         paddingVertical:2,
         alignItems: 'flex-start',
-        // minHeight: 24,
         minWidth: 80,
-        // marginTop:2
     },
     typingText: {
         fontSize: txtSizeNormal,
         color: '#666',
         fontStyle: 'italic',
+    },
+    typingDot: {
+        fontSize: txtSizeNormal + 4,
+        color: '#666',
+        fontWeight: 'bold',
+        marginHorizontal: 1,
+        lineHeight: txtSizeNormal + 4,
     },
 });
 
