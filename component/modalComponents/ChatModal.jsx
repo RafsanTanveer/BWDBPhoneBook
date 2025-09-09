@@ -9,7 +9,8 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     Platform,
-    ActivityIndicator, Image
+    ActivityIndicator,
+    Image
 } from 'react-native';
 import { Dimensions } from 'react-native';
 
@@ -29,7 +30,10 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(true);
     const [ws, setWs] = useState(null);
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingUsers, setTypingUsers] = useState(new Set());
     const flatListRef = useRef(null);
+    const typingTimeoutRef = useRef(null);
 
     // WebSocket connection using PMIS ID
     useEffect(() => {
@@ -59,6 +63,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             websocket.onclose = () => {
                 console.log('WebSocket disconnected');
                 setWs(null);
+                setTypingUsers(new Set());
             };
 
             return () => {
@@ -73,6 +78,50 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             loadMessageHistory();
         }
     }, [visible, recipientId, chatType]);
+
+    // Handle typing input
+    useEffect(() => {
+        if (ws && ws.readyState === WebSocket.OPEN && inputText.trim() !== '') {
+            if (!isTyping) {
+                setIsTyping(true);
+                ws.send(JSON.stringify({
+                    type: chatType === 'private' ? 'private_typing' : 'room_typing',
+                    [chatType === 'private' ? 'recipientId' : 'roomId']: recipientId,
+                    isTyping: true
+                }));
+            }
+
+            // Reset typing timeout
+            if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current);
+            }
+            typingTimeoutRef.current = setTimeout(() => {
+                setIsTyping(false);
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: chatType === 'private' ? 'private_typing' : 'room_typing',
+                        [chatType === 'private' ? 'recipientId' : 'roomId']: recipientId,
+                        isTyping: false
+                    }));
+                }
+            }, 3000);
+        } else if (isTyping && inputText.trim() === '') {
+            setIsTyping(false);
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: chatType === 'private' ? 'private_typing' : 'room_typing',
+                    [chatType === 'private' ? 'recipientId' : 'roomId']: recipientId,
+                    isTyping: false
+                }));
+            }
+        }
+
+        return () => {
+            if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current);
+            }
+        };
+    }, [inputText, ws, isTyping, chatType, recipientId]);
 
     const loadMessageHistory = async () => {
         setLoading(true);
@@ -98,7 +147,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             // Process messages
             const processedMessages = data.map(message => {
                 let content = message.content;
-                // console.log(`Processing message ID ${message.id} (raw):`, content);
+                console.log(`Processing message ID ${message.id} (raw):`, content);
                 if (typeof content === 'string' && content.trim() !== '') {
                     if (content === '[object Object]') {
                         console.warn(`Invalid content for message ${message.id}: [object Object]`);
@@ -115,7 +164,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                     console.warn(`Invalid content for message ${message.id}:`, content);
                     content = 'Message content unavailable';
                 }
-                // console.log(`Processing message ID ${message.id} (processed):`, content);
+                console.log(`Processing message ID ${message.id} (processed):`, content);
                 return { ...message, content };
             });
 
@@ -133,6 +182,17 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     };
 
     const handleIncomingMessage = (message) => {
+        if (message.type === 'private_typing' || message.type === 'room_typing') {
+            const newTypingUsers = new Set(typingUsers);
+            if (message.isTyping && message.senderId !== pmisId) {
+                newTypingUsers.add(message.senderId);
+            } else {
+                newTypingUsers.delete(message.senderId);
+            }
+            setTypingUsers(newTypingUsers);
+            return;
+        }
+
         let content = message.content;
         console.log(`Processing incoming message ID ${message.id} (raw):`, content);
         if (typeof content === 'string' && content.trim() !== '') {
@@ -204,7 +264,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
 
     const renderMessage = ({ item }) => {
         let messageText = item.content;
-        // console.log(`Rendering message ID ${item.id} (raw):`, messageText);
+        console.log(`Rendering message ID ${item.id} (raw):`, messageText);
         if (typeof messageText === 'string' && messageText.trim() !== '') {
             if (messageText === '[object Object]') {
                 console.warn(`Invalid content for message ${item.id}: [object Object]`);
@@ -221,7 +281,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             console.warn(`Invalid content for message ${item.id}:`, messageText);
             messageText = 'Message content unavailable';
         }
-        // console.log(`Rendering message ID ${item.id} (processed):`, messageText);
+        console.log(`Rendering message ID ${item.id} (processed):`, messageText);
 
         return (
             <View key={item.id} style={[
@@ -232,9 +292,6 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                     styles.messageBubble,
                     item.senderId === pmisId ? styles.userBubble : styles.otherBubble
                 ]}>
-                    {/* <Text style={styles.senderName}>
-                        {item.senderName || 'Unknown User'}
-                    </Text> */}
                     <Text style={[
                         styles.messageText,
                         item.senderId === pmisId ? styles.userMessageText : styles.otherMessageText
@@ -245,6 +302,18 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                         {`${new Date(item.timestamp).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </Text>
                 </View>
+            </View>
+        );
+    };
+
+    const renderTypingIndicator = () => {
+        if (typingUsers.size === 0) return null;
+        const typingText = chatType === 'private'
+            ? 'Typing...'
+            : `${typingUsers.size} user${typingUsers.size > 1 ? 's' : ''} typing...`;
+        return (
+            <View style={styles.typingIndicator}>
+                <Text style={styles.typingText}>{typingText}</Text>
             </View>
         );
     };
@@ -269,105 +338,88 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             transparent={true}
             onRequestClose={onClose}
         >
-            {
-                loading ?
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.loadingContainer}>
-                            <ActivityIndicator size="large" color="#007AFF" />
-                            <Text style={styles.loadingText}>Loading messages...</Text>
-                        </View>
+            {loading ? (
+                <View style={styles.modalOverlay}>
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#007AFF" />
+                        <Text style={styles.loadingText}>Loading messages...</Text>
                     </View>
-                    :
-                    <View style={styles.modalOverlay}>
-                        <KeyboardAvoidingView
-                            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                            style={styles.keyboardAvoidingView}
-                        >
-                            <View style={styles.modalContent}>
-                                <View style={styles.header}>
-
-                                    {chatType === 'private' ?
-
-                                        <View style={{ flexDirection: 'row', flex: 1, height: height * .075 }} >
-                                            <View style={{ marginRight: 5, paddingTop: 5, }} >
-                                                <Image style={{ height: width * .1, width: width * .1, borderRadius: 100, }}
-                                                    source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
-                                                />
+                </View>
+            ) : (
+                <View style={styles.modalOverlay}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        style={styles.keyboardAvoidingView}
+                    >
+                        <View style={styles.modalContent}>
+                            <View style={styles.header}>
+                                {chatType === 'private' ? (
+                                    <View style={{ flexDirection: 'row', flex: 1, height: height * .075 }}>
+                                        <View style={{ marginRight: 5, paddingTop: 5 }}>
+                                            <Image
+                                                style={{ height: width * .1, width: width * .1, borderRadius: 100 }}
+                                                source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <View>
+                                                <Text style={{ fontSize: txtSizeNormal, fontWeight: 600 }}>
+                                                    {recipientName}
+                                                </Text>
+                                            </View>
+                                            <View>
+                                                <Text style={{ fontSize: txtSizeMini * 1.3, flexWrap: "wrap" }}>
+                                                    {recipientDesignation}
+                                                </Text>
                                             </View>
                                             <View style={{ flex: 1 }}>
-
-                                                <View style={{}} >
-                                                    <Text style={{ fontSize: txtSizeNormal, fontWeight: 600 }}>
-                                                        {recipientName}
-                                                    </Text>
-                                                </View>
-                                                <View style={{}} >
-                                                    <Text style={{ fontSize: txtSizeMini * 1.3, flexWrap: "wrap", }}>
-                                                        {recipientDesignation}
-                                                    </Text>
-                                                </View>
-                                                <View style={{ flex: 1, }} >
-                                                    <Text style={{ fontSize: txtSizeMini * 1.2, }}>
-                                                        {recipientOffice}
-                                                    </Text>
-                                                </View>
-
+                                                <Text style={{ fontSize: txtSizeMini * 1.2 }}>
+                                                    {recipientOffice}
+                                                </Text>
                                             </View>
                                         </View>
-                                        :
-                                        `Room: ${recipientName}`}
-
-                                    <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                                        <Text style={styles.closeText}>✕</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <FlatList
-                                    ref={flatListRef}
-                                    data={messages}
-                                    renderItem={renderMessage}
-                                    keyExtractor={item => item.id}
-                                    style={styles.messagesList}
-                                    contentContainerStyle={styles.messagesContainer}
-                                    onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
-                                />
-
-                                <View style={styles.inputContainer}>
-                                    <TextInput
-                                        style={styles.textInput}
-                                        value={inputText}
-                                        onChangeText={setInputText}
-                                        placeholder="Type your message..."
-                                        placeholderTextColor="#999"
-                                        multiline
-                                        maxLength={500}
-                                    />
-                                    <TouchableOpacity
-                                        style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
-                                        onPress={sendMessage}
-                                        disabled={!inputText.trim()}
-                                    >
-                                        <Text style={styles.sendText}>Send</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                {/* {chatType === 'private' && (
-                            <TouchableOpacity
-                                style={styles.inviteButton}
-                                onPress={() => {
-                                    alert('User selection would appear here');
-                                }}
-                            >
-                                <Text style={styles.inviteText}>Invite Others</Text>
-                            </TouchableOpacity>
-                        )} */}
+                                    </View>
+                                ) : (
+                                    <Text style={styles.headerTitle}>Room: {recipientName}</Text>
+                                )}
+                                <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                                    <Text style={styles.closeText}>✕</Text>
+                                </TouchableOpacity>
                             </View>
-                        </KeyboardAvoidingView>
-                    </View>
 
-            }
+                            <FlatList
+                                ref={flatListRef}
+                                data={messages}
+                                renderItem={renderMessage}
+                                keyExtractor={item => item.id}
+                                style={styles.messagesList}
+                                contentContainerStyle={styles.messagesContainer}
+                                onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+                                ListFooterComponent={renderTypingIndicator}
+                            />
 
-
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    value={inputText}
+                                    onChangeText={setInputText}
+                                    placeholder="Type your message..."
+                                    placeholderTextColor="#999"
+                                    multiline
+                                    maxLength={500}
+                                />
+                                <TouchableOpacity
+                                    style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
+                                    onPress={sendMessage}
+                                    disabled={!inputText.trim()}
+                                >
+                                    <Text style={styles.sendText}>Send</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </KeyboardAvoidingView>
+                </View>
+            )}
         </Modal>
     );
 };
@@ -397,7 +449,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
-       paddingVertical:8,
+        paddingVertical: 8,
         borderBottomWidth: 1,
         borderBottomColor: '#f0f0f0',
         backgroundColor: '#fff',
@@ -406,10 +458,6 @@ const styles = StyleSheet.create({
         fontSize: txtSizeNormal,
         fontWeight: 'bold',
         color: '#333',
-    },
-    headerTitleContainer: {
-        flexDirection: 'column',
-        alignItems: 'flex-start',
     },
     closeButton: {
         padding: 4,
@@ -448,11 +496,6 @@ const styles = StyleSheet.create({
     otherBubble: {
         backgroundColor: '#f0f0f0',
         borderBottomLeftRadius: 4,
-    },
-    senderName: {
-        fontSize: txtSizeNormal,
-        color: '#666',
-        marginBottom: 4,
     },
     messageText: {
         fontSize: txtSizeNormal,
@@ -507,15 +550,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: txtSizeNormal,
     },
-    inviteButton: {
-        backgroundColor: '#34C759',
-        padding: 12,
-        alignItems: 'center',
-    },
-    inviteText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -526,6 +560,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: txtSizeNormal,
         color: '#666',
+    },
+    typingIndicator: {
+        padding: 8,
+        alignItems: 'flex-start',
+    },
+    typingText: {
+        fontSize: txtSizeNormal,
+        color: '#666',
+        fontStyle: 'italic',
     },
 });
 
