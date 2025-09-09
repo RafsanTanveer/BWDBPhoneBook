@@ -36,6 +36,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     const [typingUsers, setTypingUsers] = useState(new Set());
     const flatListRef = useRef(null);
     const typingTimeoutRef = useRef(null);
+    const [showReactionPicker, setShowReactionPicker] = useState(null); // Track which message shows reaction picker
 
     // For bouncing dots animation
     const dot1 = useRef(new Animated.Value(0)).current;
@@ -79,13 +80,11 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 anim3.stop();
             };
         } else {
-            // Reset dots to original position when not typing
             dot1.setValue(0);
             dot2.setValue(0);
             dot3.setValue(0);
         }
         return () => { isMounted = false; };
-        // eslint-disable-next-line
     }, [typingUsers.size]);
 
     // WebSocket connection using PMIS ID
@@ -144,7 +143,6 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 }));
             }
 
-            // Reset typing timeout
             if (typingTimeoutRef.current) {
                 clearTimeout(typingTimeoutRef.current);
             }
@@ -197,10 +195,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             const data = await response.json();
             console.log('Raw API response for message history:', JSON.stringify(data, null, 2));
 
-            // Process messages
             const processedMessages = data.map(message => {
                 let content = message.content;
-                // console.log(`Processing message ID ${message.id} (raw):`, content);
                 if (typeof content === 'string' && content.trim() !== '') {
                     if (content === '[object Object]') {
                         console.warn(`Invalid content for message ${message.id}: [object Object]`);
@@ -217,8 +213,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                     console.warn(`Invalid content for message ${message.id}:`, content);
                     content = 'Message content unavailable';
                 }
-                // console.log(`Processing message ID ${message.id} (processed):`, content);
-                return { ...message, content };
+                return { ...message, content, reactions: message.reactions || [] };
             });
 
             setMessages(processedMessages.reverse());
@@ -246,8 +241,34 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             return;
         }
 
+        if (message.type === 'private_reaction' || message.type === 'room_reaction') {
+            setMessages(prevMessages => {
+                const updatedMessages = prevMessages.map(msg => {
+                    if (msg.id === message.messageId) {
+                        const existingReaction = msg.reactions.find(r => r.pmisId === message.pmisId && r.reactionType === message.reactionType);
+                        let updatedReactions;
+                        if (existingReaction) {
+                            // Remove reaction
+                            updatedReactions = msg.reactions.filter(r => r.reactionId !== existingReaction.reactionId);
+                        } else {
+                            // Add reaction
+                            updatedReactions = [...msg.reactions, {
+                                reactionId: generateId(),
+                                pmisId: message.pmisId,
+                                reactionType: message.reactionType,
+                                timestamp: message.timestamp
+                            }];
+                        }
+                        return { ...msg, reactions: updatedReactions };
+                    }
+                    return msg;
+                });
+                return updatedMessages;
+            });
+            return;
+        }
+
         let content = message.content;
-        // console.log(`Processing incoming message ID ${message.id} (raw):`, content);
         if (typeof content === 'string' && content.trim() !== '') {
             if (content === '[object Object]') {
                 console.warn(`Invalid content for incoming message ${message.id}: [object Object]`);
@@ -264,9 +285,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             console.warn(`Invalid content for incoming message ${message.id}:`, content);
             content = 'Message content unavailable';
         }
-        // console.log(`Processing incoming message ID ${message.id} (processed):`, content);
 
-        setMessages(prev => [...prev, { ...message, content }]);
+        setMessages(prev => [...prev, { ...message, content, reactions: [] }]);
         setTimeout(() => {
             flatListRef.current?.scrollToEnd({ animated: true });
         }, 100);
@@ -287,6 +307,22 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             console.log('Sending message:', JSON.stringify(message, null, 2));
             ws.send(JSON.stringify(message));
             setInputText('');
+        } else {
+            alert('Chat server is disconnected. Please try again.');
+        }
+    };
+
+    const sendReaction = (messageId, reactionType) => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            const reaction = {
+                type: chatType === 'private' ? 'private_reaction' : 'room_reaction',
+                messageId,
+                reactionType,
+                [chatType === 'private' ? 'recipientId' : 'roomId']: recipientId,
+            };
+            console.log('Sending reaction:', JSON.stringify(reaction, null, 2));
+            ws.send(JSON.stringify(reaction));
+            setShowReactionPicker(null); // Close reaction picker
         } else {
             alert('Chat server is disconnected. Please try again.');
         }
@@ -315,9 +351,17 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         }
     };
 
+    // Helper function to generate unique IDs
+    const generateId = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
+    };
+
     const renderMessage = ({ item }) => {
         let messageText = item.content;
-        // console.log(`Rendering message ID ${item.id} (raw):`, messageText);
         if (typeof messageText === 'string' && messageText.trim() !== '') {
             if (messageText === '[object Object]') {
                 console.warn(`Invalid content for message ${item.id}: [object Object]`);
@@ -334,61 +378,96 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             console.warn(`Invalid content for message ${item.id}:`, messageText);
             messageText = 'Message content unavailable';
         }
-        // console.log(`Rendering message ID ${item.id} (processed):`, messageText);
+
+        const reactionEmojiMap = {
+            like: '👍',
+            love: '❤️',
+            angry: '😣',
+            haha: '😂',
+            sad: '😢',
+        };
+
+        const toggleReactionPicker = () => {
+            setShowReactionPicker(showReactionPicker === item.id ? null : item.id);
+        };
 
         return (
             <View key={item.id} style={[
                 styles.messageContainer,
                 item.senderId === pmisId ? styles.userMessage : styles.otherMessage
             ]}>
-                <View style={[
-                    styles.messageBubble,
-                    item.senderId === pmisId ? styles.userBubble : styles.otherBubble
-                ]}>
-                    <Text style={[
-                        styles.messageText,
-                        item.senderId === pmisId ? styles.userMessageText : styles.otherMessageText
+                <TouchableOpacity onLongPress={toggleReactionPicker}>
+                    <View style={[
+                        styles.messageBubble,
+                        item.senderId === pmisId ? styles.userBubble : styles.otherBubble
                     ]}>
-                        {messageText}
-                    </Text>
-                    <Text style={item.senderId === pmisId ? styles.timestamp : styles.timestampOther}>
-                        {`${new Date(item.timestamp).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
-                    </Text>
-                </View>
+                        <Text style={[
+                            styles.messageText,
+                            item.senderId === pmisId ? styles.userMessageText : styles.otherMessageText
+                        ]}>
+                            {messageText}
+                        </Text>
+                        <Text style={item.senderId === pmisId ? styles.timestamp : styles.timestampOther}>
+                            {`${new Date(item.timestamp).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                {item.reactions && item.reactions.length > 0 && (
+                    <View style={styles.reactionContainer}>
+                        {Object.keys(reactionEmojiMap).map((reactionType) => {
+                            const reactionsOfType = item.reactions.filter(r => r.reactionType === reactionType);
+                            if (reactionsOfType.length > 0) {
+                                return (
+                                    <TouchableOpacity
+                                        key={reactionType}
+                                        style={styles.reactionBadge}
+                                        onPress={() => sendReaction(item.id, reactionType)}
+                                    >
+                                        <Text style={styles.reactionEmoji}>{reactionEmojiMap[reactionType]}</Text>
+                                        <Text style={styles.reactionCount}>{reactionsOfType.length}</Text>
+                                    </TouchableOpacity>
+                                );
+                            }
+                            return null;
+                        })}
+                    </View>
+                )}
+                {showReactionPicker === item.id && (
+                    <View style={styles.reactionPicker}>
+                        {Object.keys(reactionEmojiMap).map((reactionType) => (
+                            <TouchableOpacity
+                                key={reactionType}
+                                style={styles.reactionButton}
+                                onPress={() => sendReaction(item.id, reactionType)}
+                            >
+                                <Text style={styles.reactionEmoji}>{reactionEmojiMap[reactionType]}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                )}
             </View>
         );
     };
 
-    // Typing indicator to be shown between FlatList and input box
     const renderTypingIndicatorDiv = () => {
         if (typingUsers.size === 0) return null;
         const typingText = chatType === 'private'
             ? 'Typing'
             : `${typingUsers.size} user${typingUsers.size > 1 ? 's' : ''} typing`;
 
-        // Only the dots bounce, not the text
         return (
             <View style={styles.typingIndicator}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.typingText}>{typingText}</Text>
                     <View style={{ width: 24, flexDirection: 'row', marginLeft: 4 }}>
                         <Animated.Text
-                            style={[
-                                styles.typingDot,
-                                { transform: [{ translateY: dot1 }] }
-                            ]}
+                            style={[styles.typingDot, { transform: [{ translateY: dot1 }] }]}
                         >.</Animated.Text>
                         <Animated.Text
-                            style={[
-                                styles.typingDot,
-                                { transform: [{ translateY: dot2 }] }
-                            ]}
+                            style={[styles.typingDot, { transform: [{ translateY: dot2 }] }]}
                         >.</Animated.Text>
                         <Animated.Text
-                            style={[
-                                styles.typingDot,
-                                { transform: [{ translateY: dot3 }] }
-                            ]}
+                            style={[styles.typingDot, { transform: [{ translateY: dot3 }] }]}
                         >.</Animated.Text>
                     </View>
                 </View>
@@ -430,7 +509,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                         style={styles.keyboardAvoidingView}
                     >
                         <View style={styles.modalContent}>
-                            <View style={[styles.header, { backgroundColor: '#f7f8fa',  paddingHorizontal: 16, paddingVertical: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }]}>
+                            <View style={[styles.header, { backgroundColor: '#f7f8fa', paddingHorizontal: 16, paddingVertical: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }]}>
                                 {chatType === 'private' ? (
                                     <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                                         <Image
@@ -439,14 +518,12 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                                 width: width * 0.12,
                                                 borderRadius: width * 0.06,
                                                 marginRight: 12,
-                                                // borderWidth: 2,
-                                                // borderColor: '#007AFF',
                                                 backgroundColor: '#fffffe'
                                             }}
                                             source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
                                         />
                                         <View style={{ flex: 1, justifyContent: 'center' }}>
-                                            <Text style={{ fontSize: txtSizeNormal , fontWeight: '700', color: '#222' }} numberOfLines={1}>
+                                            <Text style={{ fontSize: txtSizeNormal, fontWeight: '700', color: '#222' }} numberOfLines={1}>
                                                 {recipientName}
                                             </Text>
                                             <Text style={{ fontSize: txtSizeMini * 1.3, color: '#555', marginTop: 2 }} numberOfLines={1}>
@@ -471,14 +548,12 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                     onPress={onClose}
                                     style={{
                                         marginLeft: 12,
-
                                         borderRadius: 100,
                                         padding: 6,
-
                                     }}
                                     activeOpacity={0.7}
                                 >
-                                    <Text style={{ fontSize: 15,  fontWeight: 'bold' }}>✕</Text>
+                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>✕</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -490,16 +565,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 style={styles.messagesList}
                                 contentContainerStyle={styles.messagesContainer}
                                 onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
-                                // Remove ListFooterComponent for typing indicator
-                                />
-                                {/* <View style={{ height:10, backgroundColor:'green' }} >
-
-                                </View> */}
-
-                            {/* typing indicator div - now only here, fixed between FlatList and input */}
+                            />
                             {renderTypingIndicatorDiv()}
-                            {/* typing indicator div */}
-
                             <View style={styles.inputContainer}>
                                 <TextInput
                                     style={styles.textInput}
@@ -509,6 +576,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                     placeholderTextColor="#999"
                                     multiline
                                     maxLength={500}
+                                    blurOnSubmit={false}
                                 />
                                 <TouchableOpacity
                                     style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
@@ -561,21 +629,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
     },
-    closeButton: {
-        padding: 4,
-    },
-    closeText: {
-        fontSize: txtSizeNormal,
-        fontWeight: 'bold',
-        color: '#666',
-    },
     messagesList: {
         flex: 1,
     },
     messagesContainer: {
         padding: 16,
         paddingBottom: 8,
-        marginBottom:5
+        marginBottom: 5
     },
     messageContainer: {
         marginBottom: 12,
@@ -666,7 +726,7 @@ const styles = StyleSheet.create({
     },
     typingIndicator: {
         paddingHorizontal: 14,
-        paddingVertical:2,
+        paddingVertical: 2,
         alignItems: 'flex-start',
         minWidth: 80,
     },
@@ -681,6 +741,44 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginHorizontal: 1,
         lineHeight: txtSizeNormal + 4,
+    },
+    reactionContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 4,
+    },
+    reactionBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#e0e0e0',
+        borderRadius: 12,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        marginRight: 6,
+        marginBottom: 4,
+    },
+    reactionEmoji: {
+        fontSize: txtSizeNormal,
+        marginRight: 4,
+    },
+    reactionCount: {
+        fontSize: txtSizeMini,
+        color: '#333',
+    },
+    reactionPicker: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        padding: 8,
+        marginTop: 4,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    reactionButton: {
+        padding: 8,
     },
 });
 
