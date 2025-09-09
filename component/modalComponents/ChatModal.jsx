@@ -430,38 +430,55 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                         style={styles.keyboardAvoidingView}
                     >
                         <View style={styles.modalContent}>
-                            <View style={styles.header}>
+                            <View style={[styles.header, { backgroundColor: '#f7f8fa',  paddingHorizontal: 16, paddingVertical: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }]}>
                                 {chatType === 'private' ? (
-                                    <View style={{ flexDirection: 'row', flex: 1, height: height * .075 }}>
-                                        <View style={{ marginRight: 5, paddingTop: 5 }}>
-                                            <Image
-                                                style={{ height: width * .1, width: width * .1, borderRadius: 100 }}
-                                                source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
-                                            />
-                                        </View>
-                                        <View style={{ flex: 1 }}>
-                                            <View>
-                                                <Text style={{ fontSize: txtSizeNormal, fontWeight: 600 }}>
-                                                    {recipientName}
-                                                </Text>
-                                            </View>
-                                            <View>
-                                                <Text style={{ fontSize: txtSizeMini * 1.3, flexWrap: "wrap" }}>
-                                                    {recipientDesignation}
-                                                </Text>
-                                            </View>
-                                            <View style={{ flex: 1 }}>
-                                                <Text style={{ fontSize: txtSizeMini * 1.2 }}>
-                                                    {recipientOffice}
-                                                </Text>
-                                            </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                                        <Image
+                                            style={{
+                                                height: width * 0.12,
+                                                width: width * 0.12,
+                                                borderRadius: width * 0.06,
+                                                marginRight: 12,
+                                                // borderWidth: 2,
+                                                // borderColor: '#007AFF',
+                                                backgroundColor: '#fffffe'
+                                            }}
+                                            source={{ uri: "data:image/jpeg;base64," + recipientPhoto }}
+                                        />
+                                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                                            <Text style={{ fontSize: txtSizeNormal , fontWeight: '700', color: '#222' }} numberOfLines={1}>
+                                                {recipientName}
+                                            </Text>
+                                            <Text style={{ fontSize: txtSizeMini * 1.3, color: '#555', marginTop: 2 }} numberOfLines={1}>
+                                                {recipientDesignation}
+                                            </Text>
+                                            <Text style={{ fontSize: txtSizeMini * 1.1, color: '#555', marginTop: 1 }} numberOfLines={1}>
+                                                {recipientOffice}
+                                            </Text>
                                         </View>
                                     </View>
                                 ) : (
-                                    <Text style={styles.headerTitle}>Room: {recipientName}</Text>
+                                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={{ backgroundColor: '#007AFF', borderRadius: 16, paddingHorizontal: 10, paddingVertical: 4, marginRight: 8 }}>
+                                            <Text style={{ color: '#fff', fontWeight: '700', fontSize: txtSizeMini * 1.3 }}>Room</Text>
+                                        </View>
+                                        <Text style={[styles.headerTitle, { color: '#222', fontWeight: '700', fontSize: txtSizeNormal + 2 }]} numberOfLines={1}>
+                                            {recipientName}
+                                        </Text>
+                                    </View>
                                 )}
-                                <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                                    <Text style={styles.closeText}>✕</Text>
+                                <TouchableOpacity
+                                    onPress={onClose}
+                                    style={{
+                                        marginLeft: 12,
+
+                                        borderRadius: 100,
+                                        padding: 6,
+
+                                    }}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={{ fontSize: 15,  fontWeight: 'bold' }}>✕</Text>
                                 </TouchableOpacity>
                             </View>
 
