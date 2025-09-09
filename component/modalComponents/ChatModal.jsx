@@ -397,7 +397,10 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 contentContainerStyle={styles.messagesContainer}
                                 onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
                                 // Remove ListFooterComponent for typing indicator
-                            />
+                                />
+                                {/* <View style={{ height:10, backgroundColor:'green' }} >
+
+                                </View> */}
 
                             {/* typing indicator div - now only here, fixed between FlatList and input */}
                             {renderTypingIndicatorDiv()}
@@ -568,11 +571,12 @@ const styles = StyleSheet.create({
         color: '#666',
     },
     typingIndicator: {
-        padding: 8,
+        paddingHorizontal: 14,
+        paddingVertical:2,
         alignItems: 'flex-start',
-        minHeight: 24,
+        // minHeight: 24,
         minWidth: 80,
-        marginTop:2
+        // marginTop:2
     },
     typingText: {
         fontSize: txtSizeNormal,
