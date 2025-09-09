@@ -306,7 +306,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         );
     };
 
-    const renderTypingIndicator = () => {
+    // Typing indicator to be shown between FlatList and input box
+    const renderTypingIndicatorDiv = () => {
         if (typingUsers.size === 0) return null;
         const typingText = chatType === 'private'
             ? 'Typing...'
@@ -395,11 +396,12 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 style={styles.messagesList}
                                 contentContainerStyle={styles.messagesContainer}
                                 onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
-                                ListFooterComponent={renderTypingIndicator}
-                                />
-                               {/* <View style={{  }} >
-                                    <Text style={{}} >{renderTypingIndicator()}</Text>
-                               </View> */}
+                                // Remove ListFooterComponent for typing indicator
+                            />
+
+                            {/* typing indicator div - now only here, fixed between FlatList and input */}
+                            {renderTypingIndicatorDiv()}
+                            {/* typing indicator div */}
 
                             <View style={styles.inputContainer}>
                                 <TextInput
@@ -476,6 +478,7 @@ const styles = StyleSheet.create({
     messagesContainer: {
         padding: 16,
         paddingBottom: 8,
+        marginBottom:5
     },
     messageContainer: {
         marginBottom: 12,
@@ -567,6 +570,9 @@ const styles = StyleSheet.create({
     typingIndicator: {
         padding: 8,
         alignItems: 'flex-start',
+        minHeight: 24,
+        minWidth: 80,
+        marginTop:2
     },
     typingText: {
         fontSize: txtSizeNormal,
