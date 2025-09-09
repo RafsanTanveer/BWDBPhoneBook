@@ -66,8 +66,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 );
             };
             const anim1 = bounce(dot1, 0);
-            const anim2 = bounce(dot2, 120);
-            const anim3 = bounce(dot3, 240);
+            const anim2 = bounce(dot2, 5);
+            const anim3 = bounce(dot3, 10);
 
             anim1.start();
             anim2.start();
