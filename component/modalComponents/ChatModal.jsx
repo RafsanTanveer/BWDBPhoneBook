@@ -452,7 +452,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     const renderTypingIndicatorDiv = () => {
         if (typingUsers.size === 0) return null;
         const typingText = chatType === 'private'
-            ? 'Typing'
+            ? ''
             : `${typingUsers.size} user${typingUsers.size > 1 ? 's' : ''} typing`;
 
         return (
