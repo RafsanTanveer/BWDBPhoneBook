@@ -431,13 +431,13 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        marginTop: -14,
+                        marginTop: -18,
                         marginLeft: 2,
                         // Overlap by negative margin
                         height: 36,
                         backgroundColor: 'transparent',
                     }}>
-                        {item.reactions.slice(0, 5).map((reaction, idx) => {
+                        {item.reactions.slice(0, reactionEmojiMap.length).map((reaction, idx) => {
                             // If you have user avatars, use them here. Otherwise, use emoji or a placeholder.
                             // For demonstration, we'll use emoji or a white circle with emoji inside.
                             const emoji = reactionEmojiMap[reaction.reactionType] || '❓';
@@ -473,7 +473,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 </TouchableOpacity>
                             );
                         })}
-                        {item.reactions.length > 5 && (
+                        {/* {item.reactions.length > 5 && (
                             <View
                                 style={{
                                     marginLeft: -14,
@@ -492,20 +492,25 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                     +{item.reactions.length - 5}
                                 </Text>
                             </View>
-                        )}
+                        )} */}
                     </View>
                 )}
                 {showReactionPicker === item.id && (
                     <View style={styles.reactionPicker}>
-                        {Object.keys(reactionEmojiMap).map((reactionType) => (
-                            <TouchableOpacity
-                                key={reactionType}
-                                style={styles.reactionButton}
-                                onPress={() => sendReaction(item.id, reactionType)}
-                            >
-                                <Text style={styles.reactionEmoji}>{reactionEmojiMap[reactionType]}</Text>
-                            </TouchableOpacity>
-                        ))}
+                        <FlatList
+                            data={Object.keys(reactionEmojiMap)}
+                            keyExtractor={(reactionType) => reactionType}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item: reactionType }) => (
+                                <TouchableOpacity
+                                    style={styles.reactionButton}
+                                    onPress={() => sendReaction(item.id, reactionType)}
+                                >
+                                    <Text style={styles.reactionEmoji}>{reactionEmojiMap[reactionType]}</Text>
+                                </TouchableOpacity>
+                            )}
+                        />
                     </View>
                 )}
             </View>
