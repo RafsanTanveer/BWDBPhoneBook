@@ -385,6 +385,21 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             angry: '😣',
             haha: '😂',
             sad: '😢',
+            // wow: '😮',
+            // celebrate: '🎉',
+            // cool: '😎',
+            // thinking: '🤔',
+            // clap: '👏',
+            // fire: '🔥',
+            // star: '⭐',
+            // party: '🥳',
+            // ok: '👌',
+            // cry: '😭',
+            // kiss: '😘',
+            // surprised: '😲',
+            // sick: '🤢',
+            // sleepy: '😴',
+            // nerd: '🤓',
         };
 
         const toggleReactionPicker = () => {
@@ -413,23 +428,70 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                     </View>
                 </TouchableOpacity>
                 {item.reactions && item.reactions.length > 0 && (
-                    <View style={styles.reactionContainer}>
-                        {Object.keys(reactionEmojiMap).map((reactionType) => {
-                            const reactionsOfType = item.reactions.filter(r => r.reactionType === reactionType);
-                            if (reactionsOfType.length > 0) {
-                                return (
-                                    <TouchableOpacity
-                                        key={reactionType}
-                                        style={styles.reactionBadge}
-                                        onPress={() => sendReaction(item.id, reactionType)}
-                                    >
-                                        <Text style={styles.reactionEmoji}>{reactionEmojiMap[reactionType]}</Text>
-                                        <Text style={styles.reactionCount}>{reactionsOfType.length}</Text>
-                                    </TouchableOpacity>
-                                );
-                            }
-                            return null;
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: -14,
+                        marginLeft: 2,
+                        // Overlap by negative margin
+                        height: 36,
+                        backgroundColor: 'transparent',
+                    }}>
+                        {item.reactions.slice(0, 5).map((reaction, idx) => {
+                            // If you have user avatars, use them here. Otherwise, use emoji or a placeholder.
+                            // For demonstration, we'll use emoji or a white circle with emoji inside.
+                            const emoji = reactionEmojiMap[reaction.reactionType] || '❓';
+                            return (
+                                <View
+                                    key={idx}
+                                    style={{
+                                        zIndex: item.reactions.length - idx,
+                                        marginLeft: idx === 0 ? 0 : -10, // overlap
+                                        borderWidth: 2,
+                                        borderColor: '#fff',
+                                        borderRadius: 999,
+                                        backgroundColor: '#fff',
+                                        width: 26,
+                                        height: 26,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        shadowColor: '#000',
+                                        shadowOffset: { width: 0, height: 1 },
+                                        shadowOpacity: 0.08,
+                                        shadowRadius: 2,
+                                        elevation: 1,
+                                    }}
+                                >
+                                    {/* If you have a user avatar, use <Image source={{uri: reaction.userAvatar}} ... /> */}
+                                    <Text style={{
+                                        fontSize: txtSizeNormal,
+                                        textAlign: 'center',
+                                    }}>
+                                        {emoji}
+                                    </Text>
+                                </View>
+                            );
                         })}
+                        {item.reactions.length > 5 && (
+                            <View
+                                style={{
+                                    marginLeft: -14,
+                                    borderWidth: 2,
+                                    borderColor: '#fff',
+                                    borderRadius: 999,
+                                    backgroundColor: '#fff',
+                                    width: 36,
+                                    height: 36,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    zIndex: 0,
+                                }}
+                            >
+                                <Text style={{ fontSize: 14, color: '#333' }}>
+                                    +{item.reactions.length - 5}
+                                </Text>
+                            </View>
+                        )}
                     </View>
                 )}
                 {showReactionPicker === item.id && (
@@ -751,7 +813,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#e0e0e0',
-        borderRadius: 12,
+        borderRadius: 100,
         paddingHorizontal: 8,
         paddingVertical: 4,
         marginRight: 6,
