@@ -13,6 +13,7 @@ import {
     Image,
     Animated,
     Easing,
+    findNodeHandle,
 } from 'react-native';
 import { Dimensions } from 'react-native';
 
@@ -37,6 +38,9 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
     const flatListRef = useRef(null);
     const typingTimeoutRef = useRef(null);
     const [showReactionPicker, setShowReactionPicker] = useState(null); // Track which message shows reaction picker
+
+    // --- ADDED: refs for each message for scrolling to it on reaction picker open ---
+    const messageRefs = useRef({});
 
     // For bouncing dots animation
     const dot1 = useRef(new Animated.Value(0)).current;
@@ -360,7 +364,18 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         });
     };
 
-    const renderMessage = ({ item }) => {
+    // --- ADDED: Scroll to message when opening reaction picker ---
+    const scrollToMessage = (msgId) => {
+        if (!flatListRef.current) return;
+        const idx = messages.findIndex(m => m.id === msgId);
+        if (idx !== -1) {
+            // Use scrollToIndex to bring the message into view
+            flatListRef.current.scrollToIndex({ index: idx, animated: true, viewPosition: 0.5 });
+        }
+    };
+
+    // --- MODIFIED: renderMessage to attach ref and scroll on long press ---
+    const renderMessage = ({ item, index }) => {
         let messageText = item.content;
         if (typeof messageText === 'string' && messageText.trim() !== '') {
             if (messageText === '[object Object]') {
@@ -402,15 +417,32 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             nerd: '🤓',
         };
 
+        // Attach ref for this message
+        if (!messageRefs.current[item.id]) {
+            messageRefs.current[item.id] = React.createRef();
+        }
+
         const toggleReactionPicker = () => {
-            setShowReactionPicker(showReactionPicker === item.id ? null : item.id);
+            if (showReactionPicker === item.id) {
+                setShowReactionPicker(null);
+            } else {
+                setShowReactionPicker(item.id);
+                // Scroll to this message so the reaction picker is visible
+                setTimeout(() => {
+                    scrollToMessage(item.id);
+                }, 100);
+            }
         };
 
         return (
-            <View key={item.id} style={[
-                styles.messageContainer,
-                item.senderId === pmisId ? styles.userMessage : styles.otherMessage
-            ]}>
+            <View
+                key={item.id}
+                style={[
+                    styles.messageContainer,
+                    item.senderId === pmisId ? styles.userMessage : styles.otherMessage
+                ]}
+                ref={messageRefs.current[item.id]}
+            >
                 <TouchableOpacity onLongPress={toggleReactionPicker}>
                     <View style={[
                         styles.messageBubble,
@@ -473,26 +505,6 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 </TouchableOpacity>
                             );
                         })}
-                        {/* {item.reactions.length > 5 && (
-                            <View
-                                style={{
-                                    marginLeft: -14,
-                                    borderWidth: 2,
-                                    borderColor: '#fff',
-                                    borderRadius: 999,
-                                    backgroundColor: '#fff',
-                                    width: 36,
-                                    height: 36,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    zIndex: 0,
-                                }}
-                            >
-                                <Text style={{ fontSize: 14, color: '#333' }}>
-                                    +{item.reactions.length - 5}
-                                </Text>
-                            </View>
-                        )} */}
                     </View>
                 )}
                 {showReactionPicker === item.id && (
@@ -515,6 +527,20 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 )}
             </View>
         );
+    };
+
+    // --- ADDED: handle FlatList scrollToIndex error (e.g. if item not rendered yet) ---
+    const handleScrollToIndexFailed = (info) => {
+        // Try again after a short delay
+        setTimeout(() => {
+            if (flatListRef.current) {
+                flatListRef.current.scrollToIndex({
+                    index: info.index,
+                    animated: true,
+                    viewPosition: 0.5,
+                });
+            }
+        }, 300);
     };
 
     const renderTypingIndicatorDiv = () => {
@@ -633,6 +659,9 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 style={styles.messagesList}
                                 contentContainerStyle={styles.messagesContainer}
                                 onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+                                onScrollToIndexFailed={handleScrollToIndexFailed}
+                                // ADDED: extraData to re-render on showReactionPicker change
+                                extraData={showReactionPicker}
                             />
                             {renderTypingIndicatorDiv()}
                             <View style={styles.inputContainer}>
