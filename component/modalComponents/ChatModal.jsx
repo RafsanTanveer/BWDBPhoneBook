@@ -178,6 +178,13 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         };
     }, [inputText, ws, isTyping, chatType, recipientId]);
 
+    useEffect(() => {
+        flatListRef.current?.scrollToEnd()
+    }, [])
+
+
+
+
     const loadMessageHistory = async () => {
         setLoading(true);
         const TIMEOUT_DURATION = 10000;
@@ -316,6 +323,10 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         }
     };
 
+    // --- FIX: Prevent FlatList from scrolling to end after reaction is added ---
+    // We use a ref to track if the last action was a reaction, so we can avoid auto-scrolling
+    const lastActionWasReaction = useRef(false);
+
     const sendReaction = (messageId, reactionType) => {
         if (ws && ws.readyState === WebSocket.OPEN) {
             const reaction = {
@@ -325,6 +336,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 [chatType === 'private' ? 'recipientId' : 'roomId']: recipientId,
             };
             console.log('Sending reaction:', JSON.stringify(reaction, null, 2));
+            lastActionWasReaction.current = true; // Set flag before sending
             ws.send(JSON.stringify(reaction));
             setShowReactionPicker(null); // Close reaction picker
         } else {
@@ -543,6 +555,23 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         }, 300);
     };
 
+    // --- FIX: Only scroll to end on new message, not on reaction ---
+    // We use a ref to track the previous messages length
+    const prevMessagesLength = useRef(messages.length);
+
+    useEffect(() => {
+        // If a new message is added (not a reaction), scroll to end
+        if (messages.length > prevMessagesLength.current) {
+            if (!lastActionWasReaction.current) {
+                // Only scroll if not a reaction
+                flatListRef.current?.scrollToEnd({ animated: true });
+            }
+        }
+        // Reset the flag after handling
+        lastActionWasReaction.current = false;
+        prevMessagesLength.current = messages.length;
+    }, [messages]);
+
     const renderTypingIndicatorDiv = () => {
         if (typingUsers.size === 0) return null;
         const typingText = chatType === 'private'
@@ -658,7 +687,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 keyExtractor={item => item.id}
                                 style={styles.messagesList}
                                 contentContainerStyle={styles.messagesContainer}
-                                onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+                                // --- FIX: Remove auto scroll to end on content size change ---
+                                // onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
                                 onScrollToIndexFailed={handleScrollToIndexFailed}
                                 // ADDED: extraData to re-render on showReactionPicker change
                                 extraData={showReactionPicker}
