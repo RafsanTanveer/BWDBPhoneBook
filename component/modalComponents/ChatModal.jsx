@@ -178,10 +178,16 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         };
     }, [inputText, ws, isTyping, chatType, recipientId]);
 
-    useEffect(() => {
-        flatListRef.current?.scrollToEnd()
-    }, [])
+    const firstLoad = useRef(true);
 
+    useEffect(() => {
+        if (firstLoad.current) {
+            setTimeout(() => {
+                flatListRef.current?.scrollToEnd({ animated: false });
+            }, 100);
+            firstLoad.current = false;
+        }
+    }, []);
 
 
 
@@ -688,7 +694,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 style={styles.messagesList}
                                 contentContainerStyle={styles.messagesContainer}
                                 // --- FIX: Remove auto scroll to end on content size change ---
-                                // onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+                                    onContentSizeChange={() =>  flatListRef.current?.scrollToEnd()}
                                 onScrollToIndexFailed={handleScrollToIndexFailed}
                                 // ADDED: extraData to re-render on showReactionPicker change
                                 extraData={showReactionPicker}
