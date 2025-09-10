@@ -385,21 +385,21 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             angry: '😣',
             haha: '😂',
             sad: '😢',
-            // wow: '😮',
-            // celebrate: '🎉',
-            // cool: '😎',
-            // thinking: '🤔',
-            // clap: '👏',
-            // fire: '🔥',
-            // star: '⭐',
-            // party: '🥳',
-            // ok: '👌',
-            // cry: '😭',
-            // kiss: '😘',
-            // surprised: '😲',
-            // sick: '🤢',
-            // sleepy: '😴',
-            // nerd: '🤓',
+            wow: '😮',
+            celebrate: '🎉',
+            cool: '😎',
+            thinking: '🤔',
+            clap: '👏',
+            fire: '🔥',
+            star: '⭐',
+            party: '🥳',
+            ok: '👌',
+            cry: '😭',
+            kiss: '😘',
+            surprised: '😲',
+            sick: '🤢',
+            sleepy: '😴',
+            nerd: '🤓',
         };
 
         const toggleReactionPicker = () => {
@@ -442,17 +442,18 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                             // For demonstration, we'll use emoji or a white circle with emoji inside.
                             const emoji = reactionEmojiMap[reaction.reactionType] || '❓';
                             return (
-                                <View
+                                <TouchableOpacity
+                                    onPress={() => sendReaction(item.id, reaction.reactionType)}
                                     key={idx}
                                     style={{
                                         zIndex: item.reactions.length - idx,
-                                        marginLeft: idx === 0 ? 0 : -10, // overlap
-                                        borderWidth: 2,
+                                        marginLeft: idx === 0 ? 0 : -8, // overlap
+                                        borderWidth: 1,
                                         borderColor: '#fff',
                                         borderRadius: 999,
                                         backgroundColor: '#fff',
-                                        width: 26,
-                                        height: 26,
+                                        width: 20,
+                                        height: 20,
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         shadowColor: '#000',
@@ -469,7 +470,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                     }}>
                                         {emoji}
                                     </Text>
-                                </View>
+                                </TouchableOpacity>
                             );
                         })}
                         {item.reactions.length > 5 && (
