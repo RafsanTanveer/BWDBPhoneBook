@@ -286,7 +286,7 @@ const ExpendableDrawer = () => {
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
                     <View style={styles.arrowContainer}>
-                      
+
                         {renderIcon(currentTree.includes(accordionKey) ? 'arrowUp' : 'arrowDown')}
                     </View>
                 </TouchableOpacity>

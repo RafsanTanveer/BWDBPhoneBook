@@ -21,6 +21,7 @@ const { width, height } = Dimensions.get('window');
 import { chatServerAddress } from '../../api/ServerAddress';
 import { AuthContext } from '../../context/AuthContext';
 import { txtSizeMini, txtSizeNormal } from '../../utility/Scalling';
+import { FlashList } from '@shopify/flash-list';
 
 const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientName, recipientDesignation, recipientOffice, recipientPhoto }) => {
     const { userInfo, photo, name, pmisId } = useContext(AuthContext);
@@ -502,8 +503,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                         borderColor: '#fff',
                                         borderRadius: 999,
                                         backgroundColor: '#fff',
-                                        width: 20,
-                                        height: 20,
+                                        width: txtSizeNormal*1.5,
+                                        height: txtSizeNormal*1.5,
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         shadowColor: '#000',
