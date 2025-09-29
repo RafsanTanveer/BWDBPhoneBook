@@ -190,8 +190,6 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         }
     }, []);
 
-
-
     const loadMessageHistory = async () => {
         setLoading(true);
         const TIMEOUT_DURATION = 10000;
@@ -235,6 +233,19 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
             });
 
             setMessages(processedMessages.reverse());
+
+            // Mark unseen messages as seen after loading
+            const unseenMessageIds = processedMessages
+                .filter(msg => msg.senderId !== pmisId && msg.status !== 'seen')
+                .map(msg => msg.id);
+            if (unseenMessageIds.length > 0 && ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'mark_seen',
+                    messageIds: unseenMessageIds,
+                    isRoom: chatType === 'room',
+                    roomId: chatType === 'room' ? recipientId : null,
+                }));
+            }
         } catch (error) {
             if (error.name === 'AbortError') {
                 console.error('Request timed out after', TIMEOUT_DURATION, 'ms');
@@ -256,6 +267,13 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 newTypingUsers.delete(message.senderId);
             }
             setTypingUsers(newTypingUsers);
+            return;
+        }
+
+        if (message.type === 'status_update') {
+            setMessages(prevMessages => prevMessages.map(msg =>
+                msg.id === message.messageId ? { ...msg, status: message.status } : msg
+            ));
             return;
         }
 
@@ -284,6 +302,19 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                 return updatedMessages;
             });
             return;
+        }
+
+        // For new messages, ack delivered
+        if ((message.type === 'private_message' || message.type === 'room_message') &&
+            !messages.find(m => m.id === message.id)) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'ack_delivered',
+                    messageId: message.id,
+                    isRoom: message.type === 'room_message',
+                    roomId: message.roomId || null,
+                }));
+            }
         }
 
         let content = message.content;
@@ -393,6 +424,20 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
         }
     };
 
+    // Get status icon
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'sent':
+                return '⏰';
+            case 'delivered':
+                return '✓';
+            case 'seen':
+                return '✓✓';
+            default:
+                return '';
+        }
+    };
+
     // --- MODIFIED: renderMessage to attach ref and scroll on long press ---
     const renderMessage = ({ item, index }) => {
         let messageText = item.content;
@@ -473,9 +518,16 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                         ]}>
                             {messageText}
                         </Text>
-                        <Text style={item.senderId === pmisId ? styles.timestamp : styles.timestampOther}>
-                            {`${new Date(item.timestamp).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
-                        </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: item.senderId === pmisId ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
+                            <Text style={item.senderId === pmisId ? styles.timestamp : styles.timestampOther}>
+                                {`${new Date(item.timestamp).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                            </Text>
+                            {item.senderId === pmisId && (
+                                <Text style={styles.statusIcon}>
+                                    {getStatusIcon(item.status || 'sent')}
+                                </Text>
+                            )}
+                        </View>
                     </View>
                 </TouchableOpacity>
                 {item.reactions && item.reactions.length > 0 && (
@@ -503,8 +555,8 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                         borderColor: '#fff',
                                         borderRadius: 999,
                                         backgroundColor: '#fff',
-                                        width: txtSizeNormal*1.5,
-                                        height: txtSizeNormal*1.5,
+                                        width: txtSizeNormal * 1.5,
+                                        height: txtSizeNormal * 1.5,
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         shadowColor: '#000',
@@ -695,7 +747,7 @@ const ChatModal = ({ visible, onClose, userId, chatType, recipientId, recipientN
                                 style={styles.messagesList}
                                 contentContainerStyle={styles.messagesContainer}
                                 // --- FIX: Remove auto scroll to end on content size change ---
-                                    onContentSizeChange={() =>  flatListRef.current?.scrollToEnd()}
+                                onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
                                 onScrollToIndexFailed={handleScrollToIndexFailed}
                                 // ADDED: extraData to re-render on showReactionPicker change
                                 extraData={showReactionPicker}
@@ -813,6 +865,11 @@ const styles = StyleSheet.create({
         fontSize: txtSizeNormal,
         color: '#000',
         alignSelf: 'flex-end',
+    },
+    statusIcon: {
+        fontSize: txtSizeNormal * 0.8,
+        color: '#fff',
+        marginLeft: 4,
     },
     inputContainer: {
         flexDirection: 'row',

@@ -269,7 +269,7 @@ const ExpendableDrawer = () => {
         });
     };
 
-    const renderAccordionItem = ({ title, icon, accordionKey, children }) => {
+    const renderAccordionItem = ({ title,description, icon, accordionKey, children }) => {
         const isActive = activeAccordion === accordionKey;
 
         // isActive ? console.log('isActive -', accordionKey, ' -------------------b---------- ' + isActive) : console.log('isActive -', accordionKey, ' - ' + isActive);
@@ -285,6 +285,7 @@ const ExpendableDrawer = () => {
                         {icon ? renderIcon(icon) : <Text style={{ color: '#000080' }}>➥</Text>}
                     </View>
                     <Text style={styles.titlestyle}>{title}</Text>
+                    <Text style={{ fontSize: txtSizeNormal*.8, fontStyle:'italic', fontWeight:'500', color:'gray'}}>  {description}</Text>
                     <View style={styles.arrowContainer}>
 
                         {renderIcon(currentTree.includes(accordionKey) ? 'arrowUp' : 'arrowDown')}
@@ -353,14 +354,15 @@ const ExpendableDrawer = () => {
                 <View style={styles.iconContainer}>
                     {renderIcon('biodata')}
                 </View>
-                <Text style={styles.titlestyle}>Bio-data</Text>
+                <Text style={styles.titlestyle}>Bio-dataaa</Text>
             </TouchableOpacity>
 
 
             {/* PhoneBook */}
             {adminLevel !== 'viewer' && (
                 renderAccordionItem({
-                    title: "PhoneBook",
+                    title: "Employees",
+                    description:"(Designation-wise)",
                     icon: 'desig',
                     accordionKey: 'phonebook',
                     children: (
@@ -532,7 +534,8 @@ const ExpendableDrawer = () => {
             {/* Offices */}
             {netInfo.isConnected && (
                 renderAccordionItem({
-                    title: "Offices",
+                    title: "Employees",
+                    description:"(Office-wise)",
                     icon: 'office',
                     accordionKey: 'offices',
                     children: (
