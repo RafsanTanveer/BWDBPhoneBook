@@ -88,6 +88,7 @@ const ShowPhotoModalComponent = ({ heading, toggleModal, refreshList, uri }) => 
                 body: formData,
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'ngrok-skip-browser-warning': '69420',
                 },
             }).then(() => {
                 closeModal()
