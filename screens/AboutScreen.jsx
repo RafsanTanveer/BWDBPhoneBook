@@ -32,7 +32,7 @@ const AboutScreen = () => {
             <Text style={{ fontSize: width * 0.055, fontWeight: '700', paddingBottom: width * 0.005 }} >Rafsan Zani Rabbi</Text>
 
             <Text style={{ fontSize: width * 0.045, fontWeight: '600', paddingBottom: width * 0.02 }} >Programmer</Text>
-            <Text style={{ fontSize: width * 0.045, fontWeight: '600', paddingBottom: width * 0.02, textAlign: 'center' }} >Human Resourse Development Directorate, BWDB</Text>
+            <Text style={{ fontSize: width * 0.045, fontWeight: '600', paddingBottom: width * 0.02, textAlign: 'center' }} >CENTRAL ICT Directorate, BWDB</Text>
         </View>
     )
 }
